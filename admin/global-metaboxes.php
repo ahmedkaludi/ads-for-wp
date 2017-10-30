@@ -28,7 +28,7 @@ function adsforwp_ads_meta_box() {
 
 		add_meta_box(
 			'adsforwp_ads_meta_box',
-			__( 'Ads on this ' . $value, 'hide_ads_on_this_post' ),
+			__( 'Ads on this ' . $value, 'ads-for-wp' ),
 			'adsforwp_ads_meta_box_html',
 			$ampforwp_post_type,
 			'side',

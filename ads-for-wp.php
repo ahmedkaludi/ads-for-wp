@@ -28,9 +28,13 @@ require ( ADSFORWP_PLUGIN_DIR.'/admin/control-center.php' );
 require ( ADSFORWP_PLUGIN_DIR.'/admin/global-metaboxes.php' );
 
 
-// add_filter('adsforwp_advert_on_off', 'modify_code');
-function modify_code($show) {
-	if ( is_archive() ) {
+add_filter('adsforwp_advert_on_off', 'adsforwp_hide_ads_controller');
+function adsforwp_hide_ads_controller($show) {
+	global $post;
+
+	$current = adsforwp_ads_meta_box_get_meta( 'adsforwp_ads_meta_box_ads_on_off' );
+
+	if ( $current === 'hide' ) {
 		$show = 'no';
 	}
 	return $show;
