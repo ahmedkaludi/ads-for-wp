@@ -32,7 +32,7 @@ add_filter('adsforwp_advert_on_off', 'adsforwp_hide_ads_controller');
 function adsforwp_hide_ads_controller($show) {
 	global $post;
 
-	$current = adsforwp_ads_meta_box_get_meta( 'adsforwp_ads_meta_box_ads_on_off' );
+	$current = adsforwp_get_meta_post( 'adsforwp_ads_meta_box_ads_on_off' );
 
 	if ( $current === 'hide' ) {
 		$show = 'no';

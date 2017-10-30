@@ -4,7 +4,7 @@
  * at http://jeremyhixon.com/tool/wordpress-meta-box-generator/
  */
 
-function adsforwp_ads_meta_box_get_meta( $value ) {
+function adsforwp_get_meta_post( $value ) {
 	global $post;
 	$field = "";
 
@@ -43,11 +43,11 @@ function adsforwp_ads_meta_box_html( $post) {
 	wp_nonce_field( '_adsforwp_ads_meta_box_nonce', 'adsforwp_ads_meta_box_nonce' ); ?>
 
 	<p>
-		<input type="radio" name="adsforwp_ads_meta_box_ads_on_off" id="adsforwp_ads_meta_box_radio_show" value="show" <?php echo ( adsforwp_ads_meta_box_get_meta( 'adsforwp_ads_meta_box_ads_on_off' ) === 'show' ) ? 'checked' : ''; ?>>
+		<input type="radio" name="adsforwp_ads_meta_box_ads_on_off" id="adsforwp_ads_meta_box_radio_show" value="show" <?php echo ( adsforwp_get_meta_post( 'adsforwp_ads_meta_box_ads_on_off' ) === 'show' ) ? 'checked' : ''; ?>>
 		<label for="adsforwp_ads_meta_box_radio_show">Show</label> 
 	</p>
 	<p>
-		<input type="radio" name="adsforwp_ads_meta_box_ads_on_off" id="adsforwp_ads_meta_box_radio_hide" value="hide" <?php echo ( adsforwp_ads_meta_box_get_meta( 'adsforwp_ads_meta_box_ads_on_off' ) === 'hide' ) ? 'checked' : ''; ?>>
+		<input type="radio" name="adsforwp_ads_meta_box_ads_on_off" id="adsforwp_ads_meta_box_radio_hide" value="hide" <?php echo ( adsforwp_get_meta_post( 'adsforwp_ads_meta_box_ads_on_off' ) === 'hide' ) ? 'checked' : ''; ?>>
 		<label for="adsforwp_ads_meta_box_radio_hide">Hide</label><br>
 	</p><?php
 }
@@ -62,9 +62,54 @@ function adsforwp_ads_meta_box_save( $post_id ) {
 	// Save Data
 	if ( isset( $_POST['adsforwp_ads_meta_box_ads_on_off'] ) )
 		update_post_meta( $post_id, 'adsforwp_ads_meta_box_ads_on_off', esc_attr( $_POST['adsforwp_ads_meta_box_ads_on_off'] ) );
+
+	if ( isset( $_POST["adsforwp_ads_position"] ) )
+		update_post_meta( $post_id, "adsforwp_ads_position", esc_attr( $_POST["adsforwp_ads_position"] ) );
 }
 add_action( 'save_post', 'adsforwp_ads_meta_box_save' );
 
 /*
-	Usage: adsforwp_ads_meta_box_get_meta( 'adsforwp_ads_meta_box_ads_on_off' );
+	Usage: adsforwp_get_meta_post( 'adsforwp_ads_meta_box_ads_on_off' );
 */
+
+/*
+ * Creating ShortCode meta box for the users to get the ad code.
+ */
+add_action( 'add_meta_boxes', 'adsforwp_generate_ads_shortcode' );
+function adsforwp_generate_ads_shortcode(){
+
+	add_meta_box(
+		'adsforwp_ads_shortcode',
+		esc_html__( 'Ad Code ', 'ads-for-wp' ),
+		'adsforwp_ads_shortcode_html',
+		'ads-for-wp-ads',
+		'normal',
+		'default'
+	);
+}
+
+//  
+
+function adsforwp_ads_shortcode_html( $post ) {
+	wp_nonce_field( '_adsforwp_ads_meta_box_nonce', 'adsforwp_ads_meta_box_nonce' ); ?>
+
+	<p>
+		<input type="radio" name="adsforwp_ads_position" id="adsforwp_ads_position_global" value="show" <?php echo ( adsforwp_get_meta_post( 'adsforwp_ads_position' ) === 'show' ) ? 'checked' : ''; ?>>
+		<label for="adsforwp_ads_position_global"> Global </label> 
+		<code id="adsforwp_position_global_code"> [ads-for-wp ads-id="<?php echo get_the_ID(); ?>"]</code>  
+
+	</p>
+	<p>
+		<input type="radio" name="adsforwp_ads_position" id="adsforwp_ads_position_specific" value="hide" <?php echo ( adsforwp_get_meta_post( 'adsforwp_ads_position' ) === 'hide' ) ? 'checked' : ''; ?>>
+		<label for="adsforwp_ads_position_specific"> Incontent </label> 
+
+		<p>
+			<label style="display: none"  id="adsforwp_ads_position_specific_controls"> <textarea name="adcode" id="" cols="30" rows="10"></textarea> </label> 
+		</p>
+
+	</p>
+
+	
+
+	<?php
+}
