@@ -9,6 +9,7 @@ function adsforwp_setup_post_type() {
       ),
       'public' 		=> true,
       'has_archive' => flase,
+      'exclude_from_search'	=> true
     );
     register_post_type( 'ads-for-wp-ads', $args );
 }
@@ -30,5 +31,8 @@ function adsforwp_hide_visual_editor($content) {
 
 
 /*
- * Creating 
+ * Creating ShortCode meta box for the users to get the ad code.
  */
+function adsforwp_generate_ads_shortcode(){
+
+}
