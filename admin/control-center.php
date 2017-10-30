@@ -7,10 +7,10 @@ function adsforwp_setup_post_type() {
         'name' 			=> esc_html__( 'Ads', 'ads-for-wp' ),
         'singular_name' => esc_html__( 'Ad', 'ads-for-wp' )
       ),
-      'public' 		=> true,
-      'has_archive' => flase,
-      'exclude_from_search'	=> true,
-    //  'publicly_queryable'	=> false
+      	'public' 		=> true,
+      	'has_archive' => flase,
+      	'exclude_from_search'	=> true,
+    	'publicly_queryable'	=> false
     );
     register_post_type( 'ads-for-wp-ads', $args );
 }
@@ -29,29 +29,8 @@ function adsforwp_hide_visual_editor($content) {
     return $content;
 }
 
-
 /*
- * Creating ShortCode meta box for the users to get the ad code.
- */
-add_action( 'add_meta_boxes', 'adsforwp_generate_ads_shortcode' );
-function adsforwp_generate_ads_shortcode(){
-
-	add_meta_box(
-		'adsforwp_ads_shortcode',
-		__( 'Ad Code ', 'ads-for-wp' ),
-		'adsforwp_ads_shortcode_html',
-		'ads-for-wp-ads',
-		'side',
-		'default'
-	);
-}
-function adsforwp_ads_shortcode_html(){
-	echo '<code> [ads-for-wp ads-id="'.get_the_ID().'"]</code>';
-}
-
-
-/*
- * Generating ShortCode
+ * Generating Ad ShortCode
  */
 
 add_shortcode('ads-for-wp', 'adsforwp_shortcode_generator');
@@ -69,3 +48,35 @@ function adsforwp_shortcode_generator( $atts ){
 
 	return $content ;
 }
+
+
+
+
+add_action('admin_footer', function(){ ?>
+	<script type="text/javascript">
+
+
+	jQuery( document ).ready(function($) {
+
+		// $('#adsforwp_position_global_code').hide();
+		
+		
+			$('#adsforwp_ads_position_global').on('click', function() {
+
+				$('#adsforwp_position_global_code').show();
+				$('#adsforwp_ads_position_specific_controls').hide();
+			});
+
+			$('#adsforwp_ads_position_specific').on('click', function() {
+
+				$('#adsforwp_position_global_code').hide();
+				$('#adsforwp_ads_position_specific_controls').show();
+			});
+
+
+
+		});
+		
+	</script> <?php
+
+});
