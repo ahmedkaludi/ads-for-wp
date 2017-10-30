@@ -22,6 +22,9 @@ define('ADSFORWP_VERSION','0.1');
 
 /* Adding Files*/
 require ( ADSFORWP_PLUGIN_DIR.'/widget/ads-widget.php' );
+// Options panel
+// require ( ADSFORWP_PLUGIN_DIR.'/admin/settings/ads-settings.php' );
+require ( ADSFORWP_PLUGIN_DIR.'/admin/control-center.php' );
 
 
 // add_filter('adsforwp_advert_on_off', 'modify_code');
