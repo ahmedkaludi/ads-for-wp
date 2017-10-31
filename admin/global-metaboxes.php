@@ -6,14 +6,21 @@
 
 function adsforwp_get_meta_post( $value ) {
 	global $post;
-	$field = "";
+	$field  	= "";
+	$default 	= "";
+
+	$default 	= "show"; 
+	
+	if ( $value === 'adsforwp_incontent_ads_paragraphs') {
+		$default 	= "2"; 
+	}
 
 	$field = get_post_meta( $post->ID, $value, true );
 
 	if ( ! empty( $field ) ) {
 		return is_array( $field ) ? stripslashes_deep( $field ) : stripslashes( wp_kses_decode_entities( $field ) );
 	} else {
-		return $field = 'show';
+		return $field = $default;
 	}
 }
 
@@ -92,7 +99,8 @@ function adsforwp_generate_ads_shortcode(){
 
 function adsforwp_ads_shortcode_html( $post ) {
 	wp_nonce_field( '_adsforwp_ads_meta_box_nonce', 'adsforwp_ads_meta_box_nonce' ); ?>
-
+	
+	<input type="text" class="screen-reader-text" id="adsforwp-current-ad-type" value="<?php echo adsforwp_get_meta_post( 'adsforwp_ads_position' );?>">
 	<p>
 		<input type="radio" name="adsforwp_ads_position" id="adsforwp_ads_position_global" value="show" <?php echo ( adsforwp_get_meta_post( 'adsforwp_ads_position' ) === 'show' ) ? 'checked' : ''; ?>>
 		<label for="adsforwp_ads_position_global"> Global </label> 
@@ -103,9 +111,25 @@ function adsforwp_ads_shortcode_html( $post ) {
 		<input type="radio" name="adsforwp_ads_position" id="adsforwp_ads_position_specific" value="hide" <?php echo ( adsforwp_get_meta_post( 'adsforwp_ads_position' ) === 'hide' ) ? 'checked' : ''; ?>>
 		<label for="adsforwp_ads_position_specific"> Incontent </label> 
 
-		<p>
-			<label style="display: none"  id="adsforwp_ads_position_specific_controls"> <textarea name="adcode" id="" cols="30" rows="10"></textarea> </label> 
-		</p>
+		<div id="adsforwp_ads_position_specific_controls" style="display: none">
+			<div>
+				<p> Default Ads </p>
+				<p class="incontent-radio">
+					<input type="radio" name="adsforwp_incontent_ads_default" id="adsforwp_incontent_ads_default_show" value="show" <?php echo ( adsforwp_get_meta_post( 'adsforwp_incontent_ads_default' ) === 'show' ) ? 'checked' : ''; ?>>
+					<label for="adsforwp_incontent_ads_default_show"> Show </label> 
+
+					<input type="radio" name="adsforwp_incontent_ads_default" id="adsforwp_incontent_ads_default_hide" value="hide" <?php echo ( adsforwp_get_meta_post( 'adsforwp_incontent_ads_default' ) === 'hide' ) ? 'checked' : ''; ?>>
+					<label for="adsforwp_incontent_ads_default_hide"> Hide </label> 
+				</p>
+			</div>
+			<div>
+				<p> <label for="adsforwp_incontent_ads_paragraphs">Show ads after </label>
+					<input type="number" max="30" min="1" value="<?php echo adsforwp_get_meta_post( 'adsforwp_incontent_ads_paragraphs' );?>" id="adsforwp_incontent_ads_paragraphs" class="ads-paragraphs small-text"  name="adsforwp_incontent_ads_paragraphs">
+					<label for="adsforwp_incontent_ads_paragraphs">paragraphs. </label>
+					
+				</p>
+			</div>
+		</div>
 
 	</p>
 
