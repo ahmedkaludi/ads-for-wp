@@ -55,25 +55,29 @@ function adsforwp_shortcode_generator( $atts ){
 add_action('admin_footer', function(){ ?>
 	<script type="text/javascript">
 
+		jQuery( document ).ready(function($) {
 
-	jQuery( document ).ready(function($) {
+			var currentSelectedField 	= $('#adsforwp-current-ad-type').val();
+			var adsforwpGlobalCode 		= $('#adsforwp_position_global_code');		
+			var adsforwpSpecificCode 	= $('#adsforwp_ads_position_specific_controls');
 
-		// $('#adsforwp_position_global_code').hide();
-		
-		
+			if ( currentSelectedField == 'show' ) {
+				$(adsforwpGlobalCode).show();
+				$(adsforwpSpecificCode).hide();
+			} else {
+				$(adsforwpGlobalCode).hide();
+				$(adsforwpSpecificCode).show();
+			}
+
 			$('#adsforwp_ads_position_global').on('click', function() {
-
-				$('#adsforwp_position_global_code').show();
-				$('#adsforwp_ads_position_specific_controls').hide();
+				$(adsforwpGlobalCode).show();
+				$(adsforwpSpecificCode).hide();
 			});
 
 			$('#adsforwp_ads_position_specific').on('click', function() {
-
-				$('#adsforwp_position_global_code').hide();
-				$('#adsforwp_ads_position_specific_controls').show();
+				$(adsforwpGlobalCode).hide();
+				$(adsforwpSpecificCode).show();
 			});
-
-
 
 		});
 		
