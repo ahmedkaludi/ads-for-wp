@@ -57,6 +57,8 @@ add_action('admin_footer', function(){ ?>
 
 		jQuery( document ).ready(function($) {
 
+
+			/* ADS CPT */
 			var currentSelectedField 	= $('#adsforwp-current-ad-type').val();
 			var adsforwpGlobalCode 		= $('#adsforwp_position_global_code');		
 			var adsforwpSpecificCode 	= $('#adsforwp_ads_position_specific_controls');
@@ -78,6 +80,24 @@ add_action('admin_footer', function(){ ?>
 				$(adsforwpGlobalCode).hide();
 				$(adsforwpSpecificCode).show();
 			});
+
+
+			/* Global */
+			var singleAdsStatus = $('#adsforwp-current-ad-status').val(); 
+			if ( singleAdsStatus == 'show') {
+				$('#adsforwp-all-ads').show();
+			} else {
+				$('#adsforwp-all-ads').hide();
+			}
+		
+			$('.adsforwp-ads-controls').on('change', '#adsforwp_ads_meta_box_radio_show', function(){
+				$('#adsforwp-all-ads').show();
+			} );
+
+			$('.adsforwp-ads-controls').on('change', '#adsforwp_ads_meta_box_radio_hide', function(){
+				$('#adsforwp-all-ads').hide();
+			} );
+
 
 		});
 		

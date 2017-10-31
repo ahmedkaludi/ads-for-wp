@@ -4,10 +4,14 @@
  * at http://jeremyhixon.com/tool/wordpress-meta-box-generator/
  */
 
-function adsforwp_get_meta_post( $value ) {
+function adsforwp_get_meta_post( $value, $post_id = '' ) {
 	global $post;
 	$field  	= "";
 	$default 	= "";
+
+	if ( empty( $post_id ) ) {
+		$post_id = $post->ID;
+	}
 
 	$default 	= "show"; 
 	
@@ -15,7 +19,7 @@ function adsforwp_get_meta_post( $value ) {
 		$default 	= "2"; 
 	}
 
-	$field = get_post_meta( $post->ID, $value, true );
+	$field = get_post_meta( $post_id, $value, true );
 
 	if ( ! empty( $field ) ) {
 		return is_array( $field ) ? stripslashes_deep( $field ) : stripslashes( wp_kses_decode_entities( $field ) );
@@ -47,16 +51,51 @@ function adsforwp_ads_meta_box() {
 add_action( 'add_meta_boxes', 'adsforwp_ads_meta_box' );
 
 function adsforwp_ads_meta_box_html( $post) {
+	$ampforwp_post_types = " ";
 	wp_nonce_field( '_adsforwp_ads_meta_box_nonce', 'adsforwp_ads_meta_box_nonce' ); ?>
 
-	<p>
+	<input type="text" class="screen-reader-text" id="adsforwp-current-ad-status" value="<?php echo adsforwp_get_meta_post( 'adsforwp_ads_meta_box_ads_on_off' ); ?>">
+	<p class="adsforwp-ads-controls">
 		<input type="radio" name="adsforwp_ads_meta_box_ads_on_off" id="adsforwp_ads_meta_box_radio_show" value="show" <?php echo ( adsforwp_get_meta_post( 'adsforwp_ads_meta_box_ads_on_off' ) === 'show' ) ? 'checked' : ''; ?>>
 		<label for="adsforwp_ads_meta_box_radio_show">Show</label> 
 	</p>
-	<p>
+	<p class="adsforwp-ads-controls">
 		<input type="radio" name="adsforwp_ads_meta_box_ads_on_off" id="adsforwp_ads_meta_box_radio_hide" value="hide" <?php echo ( adsforwp_get_meta_post( 'adsforwp_ads_meta_box_ads_on_off' ) === 'hide' ) ? 'checked' : ''; ?>>
 		<label for="adsforwp_ads_meta_box_radio_hide">Hide</label><br>
-	</p><?php
+	</p>
+
+	<p id="adsforwp-all-ads" style="display: none">
+	<?php
+
+	$query 		= "";
+	$post_id 	= "";
+	$post_id 	= "";
+	$ad_type 	= "";
+
+	$query = new WP_Query(array(
+	    'post_type' 	=> 'ads-for-wp-ads',
+	    'post_status' 	=> 'publish',
+	    'post_per_page' => -1,
+	));
+
+
+	while ($query->have_posts()) {
+	    $query->the_post();
+
+	    $post_id = get_the_ID();
+
+	    $ad_type =  adsforwp_get_meta_post( 'adsforwp_ads_position', $post_id );
+
+		echo "<br />";
+
+	    if ( 'hide' === $ad_type ) {
+		    echo 'Ad name: ' . get_the_title() . '<br />';
+		   	echo 'Default: ' . adsforwp_get_meta_post( 'adsforwp_incontent_ads_default', $post_id ) . '<br />';
+		   	echo 'Paragraph Position: ' . adsforwp_get_meta_post( 'adsforwp_incontent_ads_paragraphs', $post_id ) . '<br />';
+		}
+		echo "<br />";
+	} ?>
+	</p> <?php
 }
 
 function adsforwp_ads_meta_box_save( $post_id ) {
@@ -72,6 +111,13 @@ function adsforwp_ads_meta_box_save( $post_id ) {
 
 	if ( isset( $_POST["adsforwp_ads_position"] ) )
 		update_post_meta( $post_id, "adsforwp_ads_position", esc_attr( $_POST["adsforwp_ads_position"] ) );
+
+	// Incontent Sub Controls
+	if ( isset( $_POST["adsforwp_incontent_ads_default"] ) )
+		update_post_meta( $post_id, "adsforwp_incontent_ads_default", esc_attr( $_POST["adsforwp_incontent_ads_default"] ) );
+
+	if ( isset( $_POST["adsforwp_incontent_ads_paragraphs"] ) )
+		update_post_meta( $post_id, "adsforwp_incontent_ads_paragraphs", esc_attr( $_POST["adsforwp_incontent_ads_paragraphs"] ) );
 }
 add_action( 'save_post', 'adsforwp_ads_meta_box_save' );
 
