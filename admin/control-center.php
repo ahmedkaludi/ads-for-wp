@@ -8,7 +8,7 @@ function adsforwp_setup_post_type() {
         'singular_name' => esc_html__( 'Ad', 'ads-for-wp' )
       ),
       	'public' 		=> true,
-      	'has_archive' => flase,
+      	'has_archive' => false,
       	'exclude_from_search'	=> true,
     	'publicly_queryable'	=> false
     );
@@ -99,8 +99,247 @@ add_action('admin_footer', function(){ ?>
 			} );
 
 
+			// function marked() {        // define event handler
+			//         var $this   = $(this),
+			//             parent = $this.parent(".ads-child");
+			//             siblings = $this.siblings(".ads-visibility");
+
+			//             //saveButton = '<label class="ads-save">Save</label>';
+
+			//             $(siblings).prop('disabled', false);
+			//            // $this.before(saveButton);
+			//     }
+
+
+			//     $('.edit-ads').on('click',marked);
+
+
+			// function functionToRun(){
+			// 	var $this = $(this);
+			// 	console.log( $this );
+
+			// }
+
+			// $('#adsforwp-all-ads').on('click', function(){
+			// 	console.log(this);
+			// });
+
+
+			ajaxURL 		= "<?php echo admin_url( 'admin-ajax.php' );?>";
+			currentPostID 	= $("#current-post-id").val();
+
+			$("#adsforwp-all-ads").on('click','span', function() {
+				var adsID, visibility,paragraph, currentClass, parentElement, saveAds, editAds ;
+
+				currentClass 		= $(this).attr("class");
+				parentElement 		= $(this).parent();
+
+				// Get parents of all the elements
+				saveAds 			= $(parentElement[0]).children('.save-ads');
+				editAds  			= $(parentElement[0]).children('.edit-ads');
+				visibilityParent 	= $(parentElement).find('select');
+				paragraphParent 	= $(parentElement).find('input');
+				
+				// Get proper value
+				parentElement		= parentElement[0];
+				visibility 			= visibilityParent[0];
+				paragraph  			= paragraphParent[0];
+				saveAds 			= saveAds[0];
+				editAds  			= editAds[0];
+				
+
+
+				// Values of ads sending via ajax
+				adsID 				= $(parentElement).attr('data-ads-id');
+				visibility 			= $(visibility).attr('data-ad-visibility');
+				paragraph 			= $(paragraph).attr('data-ad-paragraph');
+
+
+				// console.log(adsID + ' '+visibility+' '+paragraph);
+				
+				// Edit Button is pressed
+				if ( currentClass == 'edit-ads') {
+					$(saveAds).show();
+					$(editAds).hide();
+
+					// Enable Fields to edit 
+					$(visibilityParent[0]).prop('disabled', false); 
+					$(paragraphParent[0]).prop('disabled', false); 
+
+				}
+
+				// Save Button is pressed and values will be updated via AJAX
+				if ( currentClass == 'save-ads') {
+					$(saveAds).hide();
+					$(editAds).show();
+
+		        	// Disable the fields back
+					$(visibilityParent[0]).prop('disabled', 'disabled'); 
+					$(paragraphParent[0]).prop('disabled', 'disabled'); 
+
+					// Ajax will run now.
+				      $.ajax({
+				        url : ajaxURL,
+				        method : "POST",			        
+				        data: { 
+				       		action: "save_ads_data", 	
+				          	adsdata:{
+				          		post_id : currentPostID,
+					          	ads_id: adsID,
+					          	visibility : visibility,
+					          	paragraph : paragraph,
+				          	},
+				        },
+				        beforeSend: function(){ 
+				        },
+				        success: function(data){
+				        	console.log( 'Done !!!' + data);
+				        },
+				        error: function(data){
+				          console.log('Failed Ajax Request');
+				          console.log(data);
+				        }
+				      }); // End of Ajax
+
+				}
+ 
+
+			});
+
 		});
 		
-	</script> <?php
+	</script>
+	<style>
+		.edit-ads:hover,
+		.save-ads:hover {
+			cursor: pointer;
+		}
+		
+		.edit-ads,
+		.save-ads {
+			background: #006799;
+			color: #fff;
+			margin: 5px;
+			padding: 0 5px;
+		}
+	</style>
+	 <?php
 
 });
+
+
+
+add_action( 'wp_ajax_save_ads_data', 'adsforwp_save_ads_data' );
+
+function adsforwp_save_ads_data() {
+    // Handle request then generate response using WP_Ajax_Response
+	$data 		= "";
+	$save_data 	= array();
+
+	$data 		= $_POST['adsdata'];
+	
+	//echo $data['post_id'];
+	//echo $data['adsid'];
+	// echo $data['visibility'];
+	// echo $data['paragraph'];
+
+ 
+	//$save_data[] = '';
+
+	//if ( ! array_key_exists($data['adsid'], $data) ) {
+	$save_data[ $data['ads_id'] ] = $data;
+	//}
+
+	//echo json_encode($save_data);
+
+	// var_dump($save_data);
+
+
+	$current_post_meta = get_post_meta($data['post_id'], 'new-data-daala', true);
+
+	$new_post_meta = array_replace_recursive($current_post_meta, $save_data);
+
+	// echo json_encode($new_post_meta);
+
+
+	update_post_meta($data['post_id'], 'new-data-daala', $new_post_meta);
+
+    // Don't forget to stop execution afterward.
+    wp_die();
+}
+
+
+add_action('wp_head', 'add_action_in_header');
+function add_action_in_header(){
+
+	 global $post;
+
+	// echo "$post->ID <br />";
+
+	$post_meta = get_post_meta($post->ID, 'new-data-daala', true);
+
+	var_dump($post_meta);
+
+	// $clean_array = unserialize( $post_meta[0] );
+
+	// var_dump($post_meta);
+
+	// $post_meta_1 =  array(
+	// '2524' => 
+	//     array  (
+	//       'post_id' 	=>  '2474',
+	//       'ads_id' 		=>  '2524',
+	//       'visibility' 	=>  'show',
+	//       'paragraph' 	=>  '2',
+	//   	),
+	// '2663' => 
+	//     array  (
+	//       'post_id' 	=>  '2570',
+	//       'ads_id' 		=>  '2524',
+	//       'visibility' 	=>  'HIDE',
+	//       'paragraph' 	=>  '55',
+	//   	),
+
+ //  	);
+ //  	$post_meta_2 =  array(
+	// '4444' => 
+	//     array  (
+	//       'post_id' 	=>  '333',
+	//       'ads_id' 		=>  '25424',
+	//       'visibility' 	=>  'HIvfDE',
+	//       'paragraph' 	=>  '5522',
+	//   	),
+
+ //  	);
+ //  	$post_meta_3 =  array(
+	// '4444' => 
+	//     array  (
+	//       'post_id' 	=>  '333',
+	//       'ads_id' 		=>  '25424',
+	//       'visibility' 	=>  'HIvfDE',
+	//       'paragraph' 	=>  '5522',
+	//   	),
+
+ //  	);
+
+
+ 
+ // 	$post_meta_5 =  array_replace_recursive($post_meta_1, $post_meta_2, $post_meta_3);
+
+ 	 
+
+
+
+
+ //  	 $post_meta_3 =  array_merge($post_meta_1, $post_meta_2);
+ //  	 $post_meta_4 = array_merge_recursive($post_meta_1, $post_meta_2);
+
+	// var_dump($post_meta_3);
+	// var_dump($post_meta_4);
+	// var_dump($post_meta_5);
+
+
+
+	echo "this";
+
+}
