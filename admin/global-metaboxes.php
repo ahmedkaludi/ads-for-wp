@@ -64,13 +64,17 @@ function adsforwp_ads_meta_box_html( $post) {
 		<label for="adsforwp_ads_meta_box_radio_hide">Hide</label><br>
 	</p>
 
-	<p id="adsforwp-all-ads" style="display: none">
+	<div id="adsforwp-all-ads" style="display: none">
+		<input hidden type="text" id="current-post-id" value="<?php echo get_the_ID();?>">
 	<?php
 
 	$query 		= "";
 	$post_id 	= "";
-	$post_id 	= "";
+	$count 		= "";
 	$ad_type 	= "";
+	$visibility  = "";
+	$paragraph 	= "";
+	$ad_data 	= array();
 
 	$query = new WP_Query(array(
 	    'post_type' 	=> 'ads-for-wp-ads',
@@ -78,24 +82,45 @@ function adsforwp_ads_meta_box_html( $post) {
 	    'post_per_page' => -1,
 	));
 
+	$count = 0;
+
 
 	while ($query->have_posts()) {
 	    $query->the_post();
 
 	    $post_id = get_the_ID();
 
-	    $ad_type =  adsforwp_get_meta_post( 'adsforwp_ads_position', $post_id );
+	    $ad_type 	=  adsforwp_get_meta_post( 'adsforwp_ads_position', $post_id );
+	    $visibility 	=  adsforwp_get_meta_post( 'adsforwp_incontent_ads_default', $post_id );
+	    $paragraph 	=  adsforwp_get_meta_post( 'adsforwp_incontent_ads_paragraphs', $post_id );
 
-		echo "<br />";
+		echo '<div data-ads-id="'.$post_id.'" id="ad-control-child-'.$count.'">'; 
 
-	    if ( 'hide' === $ad_type ) {
-		    echo 'Ad name: ' . get_the_title() . '<br />';
-		   	echo 'Default: ' . adsforwp_get_meta_post( 'adsforwp_incontent_ads_default', $post_id ) . '<br />';
-		   	echo 'Paragraph Position: ' . adsforwp_get_meta_post( 'adsforwp_incontent_ads_paragraphs', $post_id ) . '<br />';
-		}
-		echo "<br />";
-	} ?>
-	</p> <?php
+			echo "<br />";
+
+		    if ( 'hide' === $ad_type ) {
+			    echo 'Ad name: ' . get_the_title() . '<br />';
+			   	echo 'Default: ' . $visibility . '<br />';
+	  	
+				echo ' <select  data-ad-visibility="' . $visibility . '" name="" class="ads-visibility widefat" id="" disabled="disabled">
+						<option value="show">Show</option>
+						<option selected="selected" value="hide">Hide</option>
+					</select>';
+
+		   		echo ' <label for="ad-paragraph-' . $count . '"> Paragraph Position:</label>
+		   		<input class="small-text" id="ad-paragraph-' . $count . '" data-ad-paragraph="' . $paragraph . '" type="number" disabled="disabled" value="' . $paragraph . '" >
+		   		 <br />';
+
+		   		echo "<span class='edit-ads'> Edit</span>";
+		   		echo '<span class="save-ads" style="display:none"> Save</span>';
+			}
+			echo "<br />";
+
+		echo "</div>";
+		$count++;
+	} 
+	wp_reset_postdata();?>
+	</div> <?php
 }
 
 function adsforwp_ads_meta_box_save( $post_id ) {
