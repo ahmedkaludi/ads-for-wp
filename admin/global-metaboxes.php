@@ -208,3 +208,27 @@ function adsforwp_ads_shortcode_html( $post ) {
 
 	<?php
 }
+
+
+function adsforwp_change_button_text($translation, $text, $domain) {
+        global $post;
+
+    if ($post->post_type == 'ads-for-wp-ads') {
+        $translations = &get_translations_for_domain( 'ads-for-wp' );
+        if ( $text == 'Publish') {
+            return $translations->translate( 'Publish Ad' );
+        }
+        if ( $text == 'Schedule') {
+            return $translations->translate( 'Schedule Ad' );
+        }
+        if ( $text == 'Update') {
+            return $translations->translate( 'Update Ad' );
+        }
+        if ( $text == 'Save Draft') {
+            return $translations->translate( 'Save Ad' );
+        }
+    }
+    return $translation;
+}
+add_filter('gettext', 'adsforwp_change_button_text', 10, 4);
+
