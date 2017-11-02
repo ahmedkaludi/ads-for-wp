@@ -72,15 +72,23 @@ function adsforwp_ads_meta_box_html( $post) {
 	$post_id 	= "";
 	$count 		= "";
 	$ad_type 	= "";
-	$visibility  = "";
+	$visibility = "";
 	$paragraph 	= "";
+	$all_ads_info = "";
 	$ad_data 	= array();
+
+	$selected  	= '';
 
 	$query = new WP_Query(array(
 	    'post_type' 	=> 'ads-for-wp-ads',
 	    'post_status' 	=> 'publish',
 	    'post_per_page' => -1,
 	));
+
+
+	$all_ads_info 	=  adsforwp_get_meta_post( 'new-data-daala', $post_id );
+
+	var_dump($all_ads_info);
 
 	$count = 0;
 
@@ -91,32 +99,32 @@ function adsforwp_ads_meta_box_html( $post) {
 	    $post_id = get_the_ID();
 
 	    $ad_type 	=  adsforwp_get_meta_post( 'adsforwp_ads_position', $post_id );
-	    $visibility 	=  adsforwp_get_meta_post( 'adsforwp_incontent_ads_default', $post_id );
+	    $visibility =  adsforwp_get_meta_post( 'adsforwp_incontent_ads_default', $post_id );
 	    $paragraph 	=  adsforwp_get_meta_post( 'adsforwp_incontent_ads_paragraphs', $post_id );
 
-		echo '<div data-ads-id="'.$post_id.'" id="ad-control-child-'.$count.'">'; 
+		if ( 'hide' === $ad_type ) { 
+		    echo '<div data-ads-id="'.$post_id.'" id="ad-control-child-'.$count.'">'; ?>
+			   	Ad name: <?php echo get_the_title(); ?> <br />
+			   	Default: <?php echo $visibility ?> 
+			   	<br />  	
+				
+				<select  data-ad-visibility="' . $visibility . '" name="" class="ads-visibility widefat" id="" disabled="disabled">
 
-			echo "<br />";
+					<option value="show" <?php if ( $visibility == "show" ) echo 'selected="selected"'; ?>>Show</option> 				
+					<option value="hide" <?php if ( $visibility == "hide" ) echo 'selected="selected"'; ?>>Hide</option>
+				</select>
+				
 
-		    if ( 'hide' === $ad_type ) {
-			    echo 'Ad name: ' . get_the_title() . '<br />';
-			   	echo 'Default: ' . $visibility . '<br />';
-	  	
-				echo ' <select  data-ad-visibility="' . $visibility . '" name="" class="ads-visibility widefat" id="" disabled="disabled">
-						<option value="show">Show</option>
-						<option selected="selected" value="hide">Hide</option>
-					</select>';
+		   		<label for="ad-paragraph-<?php echo $count ?>"> Paragraph Position:</label>
+		   		<input class="small-text" id="ad-paragraph-<?php echo $count ?>" data-ad-paragraph="<?php echo $paragraph ?>" type="number" disabled="disabled" value="<?php echo $paragraph ?>" >
+		   		 <br />
 
-		   		echo ' <label for="ad-paragraph-' . $count . '"> Paragraph Position:</label>
-		   		<input class="small-text" id="ad-paragraph-' . $count . '" data-ad-paragraph="' . $paragraph . '" type="number" disabled="disabled" value="' . $paragraph . '" >
-		   		 <br />';
+		   		<span class='edit-ads'> Edit</span>
+		   		<span class="save-ads" style="display:none"> Save</span>
+		   		<?php
 
-		   		echo "<span class='edit-ads'> Edit</span>";
-		   		echo '<span class="save-ads" style="display:none"> Save</span>';
-			}
-			echo "<br />";
-
-		echo "</div>";
+			echo "</div>";
+		}		
 		$count++;
 	} 
 	wp_reset_postdata();?>
@@ -231,4 +239,3 @@ function adsforwp_change_button_text($translation, $text, $domain) {
     return $translation;
 }
 add_filter('gettext', 'adsforwp_change_button_text', 10, 4);
-
