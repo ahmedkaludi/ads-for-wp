@@ -175,10 +175,11 @@ function adsforwp_ads_shortcode_html( $post ) {
 	<p>
 		<input type="radio" name="adsforwp_ads_position" id="adsforwp_ads_position_global" value="show" <?php echo ( adsforwp_get_meta_post( 'adsforwp_ads_position' ) === 'show' ) ? 'checked' : ''; ?>>
 		<label for="adsforwp_ads_position_global"> Global </label> 
-		<code id="adsforwp_position_global_code"> [ads-for-wp ads-id="<?php echo get_the_ID(); ?>"]</code>  
+		
+		<p><code id="adsforwp_position_global_code"> [ads-for-wp ads-id="<?php echo get_the_ID(); ?>"]</code></p> 
 
 	</p>
-	<p>
+	<div>
 		<input type="radio" name="adsforwp_ads_position" id="adsforwp_ads_position_specific" value="hide" <?php echo ( adsforwp_get_meta_post( 'adsforwp_ads_position' ) === 'hide' ) ? 'checked' : ''; ?>>
 		<label for="adsforwp_ads_position_specific"> Incontent </label> 
 
@@ -192,8 +193,7 @@ function adsforwp_ads_shortcode_html( $post ) {
 					<input type="radio" name="adsforwp_incontent_ads_default" id="adsforwp_incontent_ads_default_hide" value="hide" <?php echo ( adsforwp_get_meta_post( 'adsforwp_incontent_ads_default' ) === 'hide' ) ? 'checked' : ''; ?>>
 					<label for="adsforwp_incontent_ads_default_hide"> Hide </label> 
 				</p>
-			</div>
-			<div>
+ 
 				<p> <label for="adsforwp_incontent_ads_paragraphs">Show ads after </label>
 					<input type="number" max="30" min="1" value="<?php echo adsforwp_get_meta_post( 'adsforwp_incontent_ads_paragraphs' );?>" id="adsforwp_incontent_ads_paragraphs" class="ads-paragraphs small-text"  name="adsforwp_incontent_ads_paragraphs">
 					<label for="adsforwp_incontent_ads_paragraphs">paragraphs. </label>
@@ -202,7 +202,7 @@ function adsforwp_ads_shortcode_html( $post ) {
 			</div>
 		</div>
 
-	</p>
+	</div>
 
 	
 

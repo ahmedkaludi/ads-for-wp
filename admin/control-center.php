@@ -65,20 +65,20 @@ add_action('admin_footer', function(){ ?>
 
 			if ( currentSelectedField == 'show' ) {
 				$(adsforwpGlobalCode).show();
-				$(adsforwpSpecificCode).hide();
+				$(adsforwpSpecificCode).slideUp();
 			} else {
 				$(adsforwpGlobalCode).hide();
-				$(adsforwpSpecificCode).show();
+				$(adsforwpSpecificCode).slideDown();
 			}
 
 			$('#adsforwp_ads_position_global').on('click', function() {
 				$(adsforwpGlobalCode).show();
-				$(adsforwpSpecificCode).hide();
+				$(adsforwpSpecificCode).slideUp();
 			});
 
 			$('#adsforwp_ads_position_specific').on('click', function() {
 				$(adsforwpGlobalCode).hide();
-				$(adsforwpSpecificCode).show();
+				$(adsforwpSpecificCode).slideDown();
 			});
 
 
