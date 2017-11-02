@@ -161,8 +161,8 @@ function adsforwp_generate_ads_shortcode(){
 		esc_html__( 'Ad Code ', 'ads-for-wp' ),
 		'adsforwp_ads_shortcode_html',
 		'ads-for-wp-ads',
-		'normal',
-		'default'
+		'side',
+		'high'
 	);
 }
 
