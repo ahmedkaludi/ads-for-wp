@@ -257,12 +257,11 @@ function adsforwp_save_ads_data() {
 
 	$current_post_meta = get_post_meta($data['post_id'], 'new-data-daala', true);
 
-	$new_post_meta = array_replace_recursive($current_post_meta, $save_data);
+	if (  $current_post_meta  ) {
+		$save_data = array_replace_recursive($current_post_meta, $save_data);
+	}
 
-	// echo json_encode($new_post_meta);
-
-
-	update_post_meta($data['post_id'], 'new-data-daala', $new_post_meta);
+	update_post_meta($data['post_id'], 'new-data-daala', $save_data);
 
     // Don't forget to stop execution afterward.
     wp_die();
