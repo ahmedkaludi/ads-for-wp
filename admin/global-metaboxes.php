@@ -50,7 +50,7 @@ function adsforwp_ads_meta_box() {
 
 add_action( 'add_meta_boxes', 'adsforwp_ads_meta_box' );
 
-function adsforwp_ads_meta_box_html( $post) {
+function adsforwp_ads_meta_box_html( $post ) {
 	$ampforwp_post_types = " ";
 	wp_nonce_field( '_adsforwp_ads_meta_box_nonce', 'adsforwp_ads_meta_box_nonce' ); ?>
 
@@ -79,16 +79,37 @@ function adsforwp_ads_meta_box_html( $post) {
 
 	$selected  	= '';
 
+	wp_reset_postdata();
+	wp_reset_query();
+
 	$query = new WP_Query(array(
 	    'post_type' 	=> 'ads-for-wp-ads',
 	    'post_status' 	=> 'publish',
-	    'post_per_page' => -1,
+	    'posts_per_page' => -1,
 	));
 
+	$post_id = get_the_ID();
 
-	$all_ads_info 	=  adsforwp_get_meta_post( 'new-data-daala', $post_id );
+	$all_ads_info 	= (array) adsforwp_get_meta_post( 'new-data-daala', $post_id );
 
-	var_dump($all_ads_info);
+
+	if ( ! empty( $all_ads_info ) ) {
+	 	$all_ads_info = array_merge($all_ads_info);
+	}
+
+	$all_ads_from_db = array();
+	$updated_ads_array = array();
+
+	foreach ($all_ads_info as $key => $value) {
+
+		if ( ! empty( $value['ads_id'] ) ) {
+			$all_ads_from_db[] 						=  $value['ads_id'];
+			$updated_ads_array[$value['ads_id']] 	= $value;
+		}
+
+	}
+
+	// var_dump($all_ads_from_db);
 
 	$count = 0;
 
@@ -102,13 +123,39 @@ function adsforwp_ads_meta_box_html( $post) {
 	    $visibility =  adsforwp_get_meta_post( 'adsforwp_incontent_ads_default', $post_id );
 	    $paragraph 	=  adsforwp_get_meta_post( 'adsforwp_incontent_ads_paragraphs', $post_id );
 
-		if ( 'hide' === $ad_type ) { 
+
+	 //    if ( $all_ads_info[$count]['ads_id'] == $post_id ) {
+
+		//     if ( ! empty(  $all_ads_info[$count]['visibility'] ) ) {
+		//     	$visibility = $all_ads_info[$count]['visibility'] ;
+		//     }
+		//     if ( ! empty(  $all_ads_info[$count]['paragraph'] ) ) {
+		//     	$paragraph = $all_ads_info[$count]['paragraph'] ;
+		//     }
+		// }
+	    //var_dump($post_id);
+		//var_dump($all_ads_from_db);
+		
+
+		if ( 'hide' === $ad_type ) {
+
+			if ( $all_ads_from_db ) {
+				$ad_found = in_array($post_id, $all_ads_from_db);
+			}
+
+			if( $ad_found ){
+			    if ( ! empty(  $updated_ads_array[$post_id]['visibility'] ) ) {
+			    	$visibility = $updated_ads_array[$post_id]['visibility'] ;
+			    }
+			    if ( ! empty(  $updated_ads_array[$post_id]['paragraph'] ) ) {
+			     	$paragraph = $updated_ads_array[$post_id]['paragraph'] ;
+			    }
+			}
+
 		    echo '<div data-ads-id="'.$post_id.'" id="ad-control-child-'.$count.'">'; ?>
 			   	Ad name: <?php echo get_the_title(); ?> <br />
-			   	Default: <?php echo $visibility ?> 
-			   	<br />  	
 				
-				<select  data-ad-visibility="' . $visibility . '" name="" class="ads-visibility widefat" id="" disabled="disabled">
+				<select  data-ad-visibility="<?php echo $visibility ?>" name="" class="ads-visibility widefat" id="ad-visibility-<?php echo $count ?>" disabled="disabled">
 
 					<option value="show" <?php if ( $visibility == "show" ) echo 'selected="selected"'; ?>>Show</option> 				
 					<option value="hide" <?php if ( $visibility == "hide" ) echo 'selected="selected"'; ?>>Hide</option>
@@ -117,10 +164,11 @@ function adsforwp_ads_meta_box_html( $post) {
 
 		   		<label for="ad-paragraph-<?php echo $count ?>"> Paragraph Position:</label>
 		   		<input class="small-text" id="ad-paragraph-<?php echo $count ?>" data-ad-paragraph="<?php echo $paragraph ?>" type="number" disabled="disabled" value="<?php echo $paragraph ?>" >
-		   		 <br />
 
 		   		<span class='edit-ads'> Edit</span>
 		   		<span class="save-ads" style="display:none"> Save</span>
+		   		<div class="spinner"></div>
+		   		<br /><br />
 		   		<?php
 
 			echo "</div>";

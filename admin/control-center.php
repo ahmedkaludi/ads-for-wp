@@ -146,8 +146,6 @@ add_action('admin_footer', function(){ ?>
 				paragraph  			= paragraphParent[0];
 				saveAds 			= saveAds[0];
 				editAds  			= editAds[0];
-				
-
 
 				// Values of ads sending via ajax
 				adsID 				= $(parentElement).attr('data-ads-id');
@@ -155,7 +153,16 @@ add_action('admin_footer', function(){ ?>
 				paragraph 			= $(paragraph).attr('data-ad-paragraph');
 
 
-				// console.log(adsID + ' '+visibility+' '+paragraph);
+				// Get the new values and update it if it is changed by the user
+				new_visibility_data = $(visibilityParent[0]).val();
+				new_paragraph 		= $(paragraphParent[0]).val();
+
+				if ( paragraph != new_paragraph) {
+					paragraph = new_paragraph;
+				}
+				if ( visibility != new_visibility_data) {
+					visibility = new_visibility_data;
+				}
 				
 				// Edit Button is pressed
 				if ( currentClass == 'edit-ads') {
@@ -177,6 +184,10 @@ add_action('admin_footer', function(){ ?>
 					$(visibilityParent[0]).prop('disabled', 'disabled'); 
 					$(paragraphParent[0]).prop('disabled', 'disabled'); 
 
+					// Start the Spinner
+					var spinnerDiv = $(parentElement).find('.spinner');
+					$( spinnerDiv[0] ).css('visibility','visible');
+
 					// Ajax will run now.
 				      $.ajax({
 				        url : ajaxURL,
@@ -184,23 +195,23 @@ add_action('admin_footer', function(){ ?>
 				        data: { 
 				       		action: "save_ads_data", 	
 				          	adsdata:{
-				          		post_id : currentPostID,
-					          	ads_id: adsID,
-					          	visibility : visibility,
-					          	paragraph : paragraph,
+				          		post_id 	: currentPostID,
+					          	ads_id 		: adsID,
+					          	visibility 	: visibility,
+					          	paragraph 	: paragraph,
 				          	},
 				        },
 				        beforeSend: function(){ 
 				        },
 				        success: function(data){
-				        	console.log( 'Done !!!' + data);
+				        	console.log( 'Done !!!');
+				        	$( spinnerDiv[0] ).css('visibility','hidden');
 				        },
 				        error: function(data){
-				          console.log('Failed Ajax Request');
+				          console.log('Request Failed');
 				          console.log(data);
 				        }
 				      }); // End of Ajax
-
 				}
  
 
@@ -252,7 +263,9 @@ function adsforwp_save_ads_data() {
 
 	//echo json_encode($save_data);
 
-	// var_dump($save_data);
+	
+
+	// var_dump($_POST['adsdata']);
 
 
 	$current_post_meta = get_post_meta($data['post_id'], 'new-data-daala', true);
@@ -263,6 +276,8 @@ function adsforwp_save_ads_data() {
 
 	update_post_meta($data['post_id'], 'new-data-daala', $save_data);
 
+	// Send the updated and final data back to ajax so it can update the view dynamically
+	echo json_encode($save_data);	
     // Don't forget to stop execution afterward.
     wp_die();
 }
