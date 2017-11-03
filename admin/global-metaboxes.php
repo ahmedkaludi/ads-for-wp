@@ -90,7 +90,7 @@ function adsforwp_ads_meta_box_html( $post ) {
 
 	$post_id = get_the_ID();
 
-	$all_ads_info 	= (array) adsforwp_get_meta_post( 'new-data-daala', $post_id );
+	$all_ads_info 	= (array) adsforwp_get_meta_post( 'adsforwp-advert-data', $post_id );
 
 
 	if ( ! empty( $all_ads_info ) ) {

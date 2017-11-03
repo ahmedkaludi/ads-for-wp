@@ -268,13 +268,13 @@ function adsforwp_save_ads_data() {
 	// var_dump($_POST['adsdata']);
 
 
-	$current_post_meta = get_post_meta($data['post_id'], 'new-data-daala', true);
+	$current_post_meta = get_post_meta($data['post_id'], 'adsforwp-advert-data', true);
 
 	if (  $current_post_meta  ) {
 		$save_data = array_replace_recursive($current_post_meta, $save_data);
 	}
 
-	update_post_meta($data['post_id'], 'new-data-daala', $save_data);
+	update_post_meta($data['post_id'], 'adsforwp-advert-data', $save_data);
 
 	// Send the updated and final data back to ajax so it can update the view dynamically
 	echo json_encode($save_data);	
@@ -290,7 +290,7 @@ function add_action_in_header(){
 
 	// echo "$post->ID <br />";
 
-	$post_meta = get_post_meta($post->ID, 'new-data-daala', true);
+	$post_meta = get_post_meta($post->ID, 'adsforwp-advert-data', true);
 
 	var_dump($post_meta);
 
