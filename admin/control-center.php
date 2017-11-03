@@ -5,7 +5,8 @@ function adsforwp_setup_post_type() {
     $args = array(
       'labels' => array(
         'name' 			=> esc_html__( 'Ads', 'ads-for-wp' ),
-        'singular_name' => esc_html__( 'Ad', 'ads-for-wp' )
+        'singular_name' => esc_html__( 'Ad', 'ads-for-wp' ),
+        'add_new' 		=> esc_html__( 'Add New Ad', 'ads-for-wp' )
       ),
       	'public' 		=> true,
       	'has_archive' => false,
@@ -293,67 +294,19 @@ function add_action_in_header(){
 	$post_meta = get_post_meta($post->ID, 'adsforwp-advert-data', true);
 
 	var_dump($post_meta);
+}
 
-	// $clean_array = unserialize( $post_meta[0] );
+function adsforwp_generate_ads_data_to_insert(){
+	
+}
 
-	// var_dump($post_meta);
+add_filter('the_content', 'adsforwp_insert_ads');
+function adsforwp_insert_ads( $content ){
+	global $post;
 
-	// $post_meta_1 =  array(
-	// '2524' => 
-	//     array  (
-	//       'post_id' 	=>  '2474',
-	//       'ads_id' 		=>  '2524',
-	//       'visibility' 	=>  'show',
-	//       'paragraph' 	=>  '2',
-	//   	),
-	// '2663' => 
-	//     array  (
-	//       'post_id' 	=>  '2570',
-	//       'ads_id' 		=>  '2524',
-	//       'visibility' 	=>  'HIDE',
-	//       'paragraph' 	=>  '55',
-	//   	),
+	
 
- //  	);
- //  	$post_meta_2 =  array(
-	// '4444' => 
-	//     array  (
-	//       'post_id' 	=>  '333',
-	//       'ads_id' 		=>  '25424',
-	//       'visibility' 	=>  'HIvfDE',
-	//       'paragraph' 	=>  '5522',
-	//   	),
+	var_dump($content);
 
- //  	);
- //  	$post_meta_3 =  array(
-	// '4444' => 
-	//     array  (
-	//       'post_id' 	=>  '333',
-	//       'ads_id' 		=>  '25424',
-	//       'visibility' 	=>  'HIvfDE',
-	//       'paragraph' 	=>  '5522',
-	//   	),
-
- //  	);
-
-
- 
- // 	$post_meta_5 =  array_replace_recursive($post_meta_1, $post_meta_2, $post_meta_3);
-
- 	 
-
-
-
-
- //  	 $post_meta_3 =  array_merge($post_meta_1, $post_meta_2);
- //  	 $post_meta_4 = array_merge_recursive($post_meta_1, $post_meta_2);
-
-	// var_dump($post_meta_3);
-	// var_dump($post_meta_4);
-	// var_dump($post_meta_5);
-
-
-
-	echo "this";
-
+	return $content; 
 }
