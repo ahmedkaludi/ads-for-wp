@@ -66,7 +66,11 @@ function adsforwp_ads_meta_box_html( $post ) {
 
 	<div id="adsforwp-all-ads" style="display: none">
 		<input hidden type="text" id="current-post-id" value="<?php echo get_the_ID();?>">
-	<?php
+		<?php adsforwp_generate_ad_post_type_data()?>
+	</div> <?php
+}
+
+function adsforwp_generate_ad_post_type_data(){
 
 	$query 		= "";
 	$post_id 	= "";
@@ -75,30 +79,18 @@ function adsforwp_ads_meta_box_html( $post ) {
 	$visibility = "";
 	$paragraph 	= "";
 	$all_ads_info = "";
-	$ad_data 	= array();
-
 	$selected  	= '';
 
-	wp_reset_postdata();
-	wp_reset_query();
+	$ad_data 			= array();
+	$all_ads_from_db 	= array();
+	$updated_ads_array 	= array();
 
-	$query = new WP_Query(array(
-	    'post_type' 	=> 'ads-for-wp-ads',
-	    'post_status' 	=> 'publish',
-	    'posts_per_page' => -1,
-	));
-
-	$post_id = get_the_ID();
-
+	$post_id 		= get_the_ID();
 	$all_ads_info 	= (array) adsforwp_get_meta_post( 'adsforwp-advert-data', $post_id );
-
 
 	if ( ! empty( $all_ads_info ) ) {
 	 	$all_ads_info = array_merge($all_ads_info);
 	}
-
-	$all_ads_from_db = array();
-	$updated_ads_array = array();
 
 	foreach ($all_ads_info as $key => $value) {
 
@@ -106,77 +98,59 @@ function adsforwp_ads_meta_box_html( $post ) {
 			$all_ads_from_db[] 						=  $value['ads_id'];
 			$updated_ads_array[$value['ads_id']] 	= $value;
 		}
-
 	}
-
-	// var_dump($all_ads_from_db);
 
 	$count = 0;
 
+	$get_all_ads = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1, ) );
 
-	while ($query->have_posts()) {
-	    $query->the_post();
+	if ( $get_all_ads ) {
+		foreach ( $get_all_ads as $ad ) :
 
-	    $post_id = get_the_ID();
+		    $ads_post_id = 	$ad->ID;
+		    $ad_type 	 =  adsforwp_get_meta_post( 'adsforwp_ads_position', $ads_post_id );
+		    $visibility  =  adsforwp_get_meta_post( 'adsforwp_incontent_ads_default', $ads_post_id );
+		    $paragraph 	 =  adsforwp_get_meta_post( 'adsforwp_incontent_ads_paragraphs', $ads_post_id );
 
-	    $ad_type 	=  adsforwp_get_meta_post( 'adsforwp_ads_position', $post_id );
-	    $visibility =  adsforwp_get_meta_post( 'adsforwp_incontent_ads_default', $post_id );
-	    $paragraph 	=  adsforwp_get_meta_post( 'adsforwp_incontent_ads_paragraphs', $post_id );
+			if ( 'hide' === $ad_type ) {
 
+				if ( $all_ads_from_db ) {
+					$ad_found = in_array($ads_post_id, $all_ads_from_db);
+				}
 
-	 //    if ( $all_ads_info[$count]['ads_id'] == $post_id ) {
+				if( $ad_found ){
+				    if ( ! empty(  $updated_ads_array[$ads_post_id]['visibility'] ) ) {
+				    	$visibility = $updated_ads_array[$ads_post_id]['visibility'] ;
+				    }
+				    if ( ! empty(  $updated_ads_array[$ads_post_id]['paragraph'] ) ) {
+				     	$paragraph = $updated_ads_array[$ads_post_id]['paragraph'] ;
+				    }
+				}
 
-		//     if ( ! empty(  $all_ads_info[$count]['visibility'] ) ) {
-		//     	$visibility = $all_ads_info[$count]['visibility'] ;
-		//     }
-		//     if ( ! empty(  $all_ads_info[$count]['paragraph'] ) ) {
-		//     	$paragraph = $all_ads_info[$count]['paragraph'] ;
-		//     }
-		// }
-	    //var_dump($post_id);
-		//var_dump($all_ads_from_db);
-		
+			    echo '<div data-ads-id="'.$ads_post_id.'" id="ad-control-child-'.$count.'">'; ?>
+				   	Ad name: <?php echo esc_attr( $ad->post_title ); ?> <br />
+					
+					<select  data-ad-visibility="<?php echo $visibility ?>" name="" class="ads-visibility widefat" id="ad-visibility-<?php echo $count ?>" disabled="disabled">
 
-		if ( 'hide' === $ad_type ) {
+						<option value="show" <?php if ( $visibility == "show" ) echo 'selected="selected"'; ?>>Show</option> 				
+						<option value="hide" <?php if ( $visibility == "hide" ) echo 'selected="selected"'; ?>>Hide</option>
+					</select>
+					
+			   		<label for="ad-paragraph-<?php echo $count ?>"> Paragraph Position:</label>
+			   		<input class="small-text" id="ad-paragraph-<?php echo $count ?>" data-ad-paragraph="<?php echo $paragraph ?>" type="number" disabled="disabled" value="<?php echo $paragraph ?>" >
 
-			if ( $all_ads_from_db ) {
-				$ad_found = in_array($post_id, $all_ads_from_db);
+			   		<span class='edit-ads'> Edit</span>
+			   		<span class="save-ads" style="display:none"> Save</span>
+			   		<div class="spinner"></div>
+			   		<br /><br />
+			   		<?php
+
+				echo "</div>";
 			}
-
-			if( $ad_found ){
-			    if ( ! empty(  $updated_ads_array[$post_id]['visibility'] ) ) {
-			    	$visibility = $updated_ads_array[$post_id]['visibility'] ;
-			    }
-			    if ( ! empty(  $updated_ads_array[$post_id]['paragraph'] ) ) {
-			     	$paragraph = $updated_ads_array[$post_id]['paragraph'] ;
-			    }
-			}
-
-		    echo '<div data-ads-id="'.$post_id.'" id="ad-control-child-'.$count.'">'; ?>
-			   	Ad name: <?php echo get_the_title(); ?> <br />
-				
-				<select  data-ad-visibility="<?php echo $visibility ?>" name="" class="ads-visibility widefat" id="ad-visibility-<?php echo $count ?>" disabled="disabled">
-
-					<option value="show" <?php if ( $visibility == "show" ) echo 'selected="selected"'; ?>>Show</option> 				
-					<option value="hide" <?php if ( $visibility == "hide" ) echo 'selected="selected"'; ?>>Hide</option>
-				</select>
-				
-
-		   		<label for="ad-paragraph-<?php echo $count ?>"> Paragraph Position:</label>
-		   		<input class="small-text" id="ad-paragraph-<?php echo $count ?>" data-ad-paragraph="<?php echo $paragraph ?>" type="number" disabled="disabled" value="<?php echo $paragraph ?>" >
-
-		   		<span class='edit-ads'> Edit</span>
-		   		<span class="save-ads" style="display:none"> Save</span>
-		   		<div class="spinner"></div>
-		   		<br /><br />
-		   		<?php
-
-			echo "</div>";
-		}		
-		$count++;
-	} 
-	wp_reset_postdata();?>
-	</div> <?php
+			$count++;
+		endforeach;  
+		wp_reset_postdata();
+	}
 }
 
 function adsforwp_ads_meta_box_save( $post_id ) {
