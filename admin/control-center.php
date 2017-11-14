@@ -304,9 +304,60 @@ add_filter('the_content', 'adsforwp_insert_ads');
 function adsforwp_insert_ads( $content ){
 	global $post;
 
-	
 
-	var_dump($content);
+	$currentPostId = $post->ID;
+	$postAdsType = get_post_meta($currentPostId, 'adsforwp_ads_meta_box_ads_on_off', true);
+	if($postAdsType!='show'){
+		return false; // Do not show ads on this
+	}
+	$post_meta = get_post_meta($currentPostId, 'adsforwp-advert-data', true);
+	//Get all other adds which are set to inline
+	$args = array(
+				'post_type'=>'ads-for-wp-ads',
+				'post_status'=>'publish',
+				'posts_per_page' => -1,
+				'meta_query'=>array(
+					'adsforwp_ads_position'=>'hide'
+					)
+			);
+	$query = new WP_Query( $args );
+	while ($query->have_posts()) {
+	    $query->the_post();
+	    $adsPostId = get_the_ID();
+	    $adsType = get_post_field('adsforwp_ads_position', $adsPostId);
+	    if($adsType!='hide'){
+	    	continue;
+	    }
+	    if(!isset($post_meta[$adsPostId])){
+	    	$adsVisiblityType = get_post_field('adsforwp_incontent_ads_default', $post_id);
+		    $adsparagraphs = get_post_field('adsforwp_incontent_ads_paragraphs', $post_id);
+		    $adsContent = get_post_field('post_content', $adsPostId);
+		    $post_meta[$adsPostId] = array(				
+							            'post_id' => $currentPostId,
+							            'ads_id' => $adsPostId,
+							            'visibility' => $adsVisiblityType,
+							            'paragraph' => $adsparagraphs,
+							            'content'=>$adsContent,
+	    							);
+	    }else{
+	    	$adsContent = get_post_field('post_content', $adsPostId);
+	    	$post_meta[$adsPostId]['content'] = $adsContent;
+	    }
+	    
+	}
+	wp_reset_query();
+
+	$content = preg_split("/\\r\\n|\\r|\\n/", $content);
+	//print_r($content);die;
+	if(count($post_meta)>0){
+		foreach ($post_meta as $key => $adsValue) {
+			if($adsValue['visibility']!="show"){
+				continue;
+			}
+			array_splice( $content, $adsValue['paragraph'], 0, $adsValue['content'] );
+		}
+		$content = implode(' ', $content);
+	}
 
 	return $content; 
 }
