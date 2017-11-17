@@ -1,0 +1,129 @@
+jQuery( document ).ready(function($) {
+	/* ADS CPT */
+	var currentSelectedField 	= $('#adsforwp-current-ad-type').val();
+	var adsforwpGlobalCode 		= $('#adsforwp_position_global_code');		
+	var adsforwpSpecificCode 	= $('#adsforwp_ads_position_specific_controls');
+
+	if ( currentSelectedField == 'show' ) {
+		$(adsforwpGlobalCode).show();
+		$(adsforwpSpecificCode).slideUp();
+	} else {
+		$(adsforwpGlobalCode).hide();
+		$(adsforwpSpecificCode).slideDown();
+	}
+
+	$('#adsforwp_ads_position_global').on('click', function() {
+		$(adsforwpGlobalCode).show();
+		$(adsforwpSpecificCode).slideUp();
+	});
+
+	$('#adsforwp_ads_position_specific').on('click', function() {
+		$(adsforwpGlobalCode).hide();
+		$(adsforwpSpecificCode).slideDown();
+	});
+
+
+	/* Global */
+	var singleAdsStatus = $('#adsforwp-current-ad-status').val(); 
+	if ( singleAdsStatus == 'show') {
+		$('#adsforwp-all-ads').show();
+	} else {
+		$('#adsforwp-all-ads').hide();
+	}
+
+	$('.adsforwp-ads-controls').on('change', '#adsforwp_ads_meta_box_radio_show', function(){
+		$('#adsforwp-all-ads').show();
+	} );
+
+	$('.adsforwp-ads-controls').on('change', '#adsforwp_ads_meta_box_radio_hide', function(){
+		$('#adsforwp-all-ads').hide();
+	} );
+
+	ajaxURL 		= adsforwp_localize_data.ajax_url;
+	currentPostID 	= $("#current-post-id").val();
+
+	$("#adsforwp-all-ads").on('click','span', function() {
+		var adsID, visibility,paragraph, currentClass, parentElement, saveAds, editAds ;
+
+		currentClass 		= $(this).attr("class");
+		parentElement 		= $(this).parent();
+
+		// Get parents of all the elements
+		saveAds 			= $(parentElement[0]).children('.save-ads');
+		editAds  			= $(parentElement[0]).children('.edit-ads');
+		visibilityParent 	= $(parentElement).find('select');
+		paragraphParent 	= $(parentElement).find('input');
+		
+		// Get proper value
+		parentElement		= parentElement[0];
+		visibility 			= visibilityParent[0];
+		paragraph  			= paragraphParent[0];
+		saveAds 			= saveAds[0];
+		editAds  			= editAds[0];
+
+		// Values of ads sending via ajax
+		adsID 				= $(parentElement).attr('data-ads-id');
+		visibility 			= $(visibility).attr('data-ad-visibility');
+		paragraph 			= $(paragraph).attr('data-ad-paragraph');
+
+		// Get the new values and update it if it is changed by the user
+		new_visibility_data = $(visibilityParent[0]).val();
+		new_paragraph 		= $(paragraphParent[0]).val();
+
+		if ( paragraph != new_paragraph) {
+			paragraph = new_paragraph;
+		}
+		if ( visibility != new_visibility_data) {
+			visibility = new_visibility_data;
+		}
+		
+		// Edit Button is pressed
+		if ( currentClass == 'edit-ads') {
+			$(saveAds).show();
+			$(editAds).hide();
+
+			// Enable Fields to edit 
+			$(visibilityParent[0]).prop('disabled', false); 
+			$(paragraphParent[0]).prop('disabled', false);
+		}
+
+		// Save Button is pressed and values will be updated via AJAX
+		if ( currentClass == 'save-ads') {
+			$(saveAds).hide();
+			$(editAds).show();
+
+        	// Disable the fields back
+			$(visibilityParent[0]).prop('disabled', 'disabled'); 
+			$(paragraphParent[0]).prop('disabled', 'disabled'); 
+
+			// Start the Spinner
+			var spinnerDiv = $(parentElement).find('.spinner');
+			$( spinnerDiv[0] ).css('visibility','visible');
+
+			// Ajax will run now.
+		      $.ajax({
+		        url : ajaxURL,
+		        method : "POST",			        
+		        data: { 
+		       		action: "save_ads_data", 	
+		          	adsdata:{
+		          		post_id 	: currentPostID,
+			          	ads_id 		: adsID,
+			          	visibility 	: visibility,
+			          	paragraph 	: paragraph,
+		          	},
+		        },
+		        beforeSend: function(){ 
+		        },
+		        success: function(data){
+		        	console.log( 'Done !!!');
+		        	$( spinnerDiv[0] ).css('visibility','hidden');
+		        },
+		        error: function(data){
+		          console.log('Request Failed');
+		          console.log(data);
+		        }
+		      }); // End of Ajax
+		}
+	});
+});

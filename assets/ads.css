@@ -1,0 +1,12 @@
+.edit-ads:hover,
+.save-ads:hover {
+	cursor: pointer;
+}
+
+.edit-ads,
+.save-ads {
+	background: #006799;
+	color: #fff;
+	margin: 5px;
+	padding: 0 5px;
+}
