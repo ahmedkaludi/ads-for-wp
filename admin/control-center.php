@@ -249,25 +249,8 @@ function adsforwp_save_ads_data() {
 	$save_data 	= array();
 
 	$data 		= $_POST['adsdata'];
-	
-	//echo $data['post_id'];
-	//echo $data['adsid'];
-	// echo $data['visibility'];
-	// echo $data['paragraph'];
 
- 
-	//$save_data[] = '';
-
-	//if ( ! array_key_exists($data['adsid'], $data) ) {
 	$save_data[ $data['ads_id'] ] = $data;
-	//}
-
-	//echo json_encode($save_data);
-
-	
-
-	// var_dump($_POST['adsdata']);
-
 
 	$current_post_meta = get_post_meta($data['post_id'], 'adsforwp-advert-data', true);
 
@@ -283,42 +266,33 @@ function adsforwp_save_ads_data() {
     wp_die();
 }
 
-
-add_action('wp_head', 'add_action_in_header');
-function add_action_in_header(){
-
-	 global $post;
-
-	// echo "$post->ID <br />";
-
-	$post_meta = get_post_meta($post->ID, 'adsforwp-advert-data', true);
-
-	var_dump($post_meta);
-}
-
-function adsforwp_generate_ads_data_to_insert(){
-	
-}
-
 add_filter('the_content', 'adsforwp_insert_ads');
 function adsforwp_insert_ads( $content ){
 	global $post;
 
 
 	$currentPostId = $post->ID;
-	$postAdsType = get_post_meta($currentPostId, 'adsforwp_ads_meta_box_ads_on_off', true);
-	if($postAdsType!='show'){
-		return false; // Do not show ads on this
+
+	$show_ads 	= '';
+
+	$show_ads = 'yes';		
+	$show_ads = apply_filters('adsforwp_advert_on_off', $show_ads);
+
+	var_dump($show_ads);
+
+	if ( $show_ads != 'yes' ) {
+		return $content ; // Do not show ads and return the content as it is
 	}
+
 	$post_meta = get_post_meta($currentPostId, 'adsforwp-advert-data', true);
 	//Get all other adds which are set to inline
 	$args = array(
-				'post_type'=>'ads-for-wp-ads',
-				'post_status'=>'publish',
-				'posts_per_page' => -1,
-				'meta_query'=>array(
+				'post_type'		=>'ads-for-wp-ads',
+				'post_status'	=>'publish',
+				'posts_per_page'=> -1,
+				'meta_query'	=>array(
 					'adsforwp_ads_position'=>'hide'
-					)
+				)
 			);
 	$query = new WP_Query( $args );
 	while ($query->have_posts()) {
@@ -348,7 +322,6 @@ function adsforwp_insert_ads( $content ){
 	wp_reset_query();
 
 	$content = preg_split("/\\r\\n|\\r|\\n/", $content);
-	//print_r($content);die;
 	if(count($post_meta)>0){
 		foreach ($post_meta as $key => $adsValue) {
 			if($adsValue['visibility']!="show"){
