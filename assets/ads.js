@@ -1,8 +1,17 @@
 jQuery( document ).ready(function($) {
 	/* ADS CPT */
+	var currentGlobalAdsField 	= $('#adsforwp-current-ad-default').val();
 	var currentSelectedField 	= $('#adsforwp-current-ad-type').val();
 	var adsforwpGlobalCode 		= $('#adsforwp_position_global_code');		
 	var adsforwpSpecificCode 	= $('#adsforwp_ads_position_specific_controls');
+	var adsWrapper 				= $('#adsforwp-ads-control-wrapper');
+
+
+	if ( currentGlobalAdsField == 'show' ) {
+		$(adsWrapper).show();
+	} else {
+		$(adsWrapper).hide();
+	}
 
 	if ( currentSelectedField == 'show' ) {
 		$(adsforwpGlobalCode).show();
@@ -11,6 +20,14 @@ jQuery( document ).ready(function($) {
 		$(adsforwpGlobalCode).hide();
 		$(adsforwpSpecificCode).slideDown();
 	}
+
+	$('#adsforwp_ads_controller_default_show').on('click', function() {
+		$(adsWrapper).slideDown();
+	});
+
+	$('#adsforwp_ads_controller_default_hide').on('click', function() {
+		$(adsWrapper).slideUp();
+	});
 
 	$('#adsforwp_ads_position_global').on('click', function() {
 		$(adsforwpGlobalCode).show();

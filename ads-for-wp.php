@@ -39,7 +39,6 @@ function adsforwp_hide_ads_controller($show) {
 	return $show;
 }
 
-
 // Get all the post types and add metaboxs of the ads in this post types
 add_action('admin_init', 'adsforwp_generate_postype');
 function adsforwp_generate_postype(){
