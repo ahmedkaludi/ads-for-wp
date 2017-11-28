@@ -26,10 +26,25 @@ require ( ADSFORWP_PLUGIN_DIR.'/widget/ads-widget.php' );
 require ( ADSFORWP_PLUGIN_DIR.'/admin/control-center.php' );
 require ( ADSFORWP_PLUGIN_DIR.'/admin/global-metaboxes.php' );
 
-
+/*
+ * Advertisement Controller
+ * 
+ * Want to hide add the ads in the current page?
+ * Pass 'no' adsforwp_advert_on_off filter 
+*/
 add_filter('adsforwp_advert_on_off', 'adsforwp_hide_ads_controller');
 function adsforwp_hide_ads_controller($show) {
 	global $post;
+
+	if ( is_singular()  ) { 
+		$content 		= get_post_field('post_content', $post->ID );
+		$content_count 	= str_word_count($content);
+	}
+
+	// Hide ads on the page where content is less then 150 words
+ 	if ( $content_count && $content_count < 150 ) {
+ 		return $show = 'no';
+ 	}
 
 	$current = adsforwp_get_meta_post( 'adsforwp_ads_meta_box_ads_on_off' );
 
