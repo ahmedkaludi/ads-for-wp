@@ -102,7 +102,14 @@ function adsforwp_generate_ad_post_type_data(){
 
 	$count = 0;
 
-	$get_all_ads = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1, ) );
+	$get_all_ads = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1, 
+		'meta_query' => array(
+			array(
+				'key' 	=> 'adsforwp_ads_controller_default',
+				'value' => 'show',
+			)
+		)
+	) );
 
 	if ( $get_all_ads ) {
 		foreach ( $get_all_ads as $ad ) :

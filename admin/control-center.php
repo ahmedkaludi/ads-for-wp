@@ -100,7 +100,12 @@ function adsforwp_insert_ads( $content ){
 				'post_status'	=>'publish',
 				'posts_per_page'=> -1,
 				'meta_query'	=>array(
-					'adsforwp_ads_position'=>'hide'
+					'adsforwp_ads_position'=>'hide',
+				array(
+					'key' 	=> 'adsforwp_ads_controller_default',
+					'value' => 'show',
+				)
+		
 				)
 			);
 	$query = new WP_Query( $args );
