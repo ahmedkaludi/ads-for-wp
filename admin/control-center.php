@@ -78,6 +78,7 @@ function adsforwp_save_ads_data() {
  * Insert the ad in the Content
 */
 add_filter('the_content', 'adsforwp_insert_ads');
+//var_dump($content);
 function adsforwp_insert_ads( $content ){
 	global $post;
 

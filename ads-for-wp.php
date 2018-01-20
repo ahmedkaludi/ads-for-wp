@@ -25,6 +25,9 @@ require ( ADSFORWP_PLUGIN_DIR.'/widget/ads-widget.php' );
 // Options panel
 require ( ADSFORWP_PLUGIN_DIR.'/admin/control-center.php' );
 require ( ADSFORWP_PLUGIN_DIR.'/admin/global-metaboxes.php' );
+require_once  ADSFORWP_PLUGIN_DIR . '/includes/options.php';
+// Adding CMB2
+require_once  ADSFORWP_PLUGIN_DIR . '/includes/cmb2/init.php';
 
 /*
  * Advertisement Controller

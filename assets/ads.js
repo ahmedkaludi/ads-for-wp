@@ -7,6 +7,31 @@ jQuery( document ).ready(function($) {
 	var adsWrapper 				= $('#adsforwp-ads-control-wrapper');
 
 
+ $("#ad_type_format").change(function(){
+      $(this).find("option:selected").each(function(){
+          var optionValue = $(this).attr("value");
+          if(optionValue){
+              $(".ad-type").hide();
+              $(".ad-type.ad-type-" + optionValue).show();
+          } else{
+              $(".ad-type").hide();
+          }         
+      });
+    }).change();
+
+  $("#ad_vendor").change(function(){
+      $(this).find("option:selected").each(function(){
+          var optionValue = $(this).attr("value");
+          var optionHtml = $(this).html().toLowerCase();
+          if(optionValue){
+              $(".vendor-fields").hide();
+              $(".vendor-fields."+optionHtml+"-data-" + optionValue).show();
+          } else{
+              $(".vendor-data").hide();
+          }         
+      });
+    }).change();
+
 	if ( currentGlobalAdsField == 'show' ) {
 		$(adsWrapper).show();
 	} else {
@@ -144,3 +169,4 @@ jQuery( document ).ready(function($) {
 		}
 	});
 });
+
