@@ -66,22 +66,22 @@ function adsforwp_generate_postype(){
 function adsforwp_post_types(){
 	$args 			= "";
 	$get_post_types = "";
-	$post_types 	= "";
+	$post_types 	= array();
 
 	$args = array(
 	   'public'   => true,
 	);
 
-	$get_post_types = get_post_types( $args, 'objects');
+	$get_post_types = get_post_types($args);
 
 	// Remove the unwanted post types 
 	unset($get_post_types['attachment']);
 	unset($get_post_types['ads-for-wp-ads']);
-
-	foreach ( $get_post_types  as $post_type ) {
-		$post_types[$post_type->name] = $post_type->label;
+	 
+	foreach ( $get_post_types  as $post_type  ) {
+	
+		$post_types[] = $post_type;
 	}
-
 	$post_types = apply_filters( 'adsforwp_modify_post_types', $post_types );
 
 	return $post_types;
