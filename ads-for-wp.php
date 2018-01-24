@@ -86,3 +86,198 @@ function adsforwp_post_types(){
 
 	return $post_types;
 }
+// Let's start displaying Ads On AMP
+
+// Funtion to get the ad's id which are custom post types
+
+function get_ad_id(){
+	$meta_details = get_metadata('post',get_the_ID(),'adsforwp-advert-data');
+	$post_ad_data = $meta_details[0];
+	$post_id = get_the_ID();
+	
+	foreach ($post_ad_data as $key => $ad_config) {
+		$post_ad_id = $ad_config['ads_id'];
+		$post_ad_id = (int)$post_ad_id;
+	}
+	return $post_ad_id;
+}
+
+add_action('pre_amp_render_post','ampforwp_display_amp_ads');
+function ampforwp_display_amp_ads(){
+
+	$post_ad_id = get_ad_id();
+	$ad_type 	= get_post_meta($post_ad_id,'ad_type_format',true);
+	$ad_vendor	= get_post_meta($post_ad_id,'ad_vendor',true);
+	// Normal Ads
+	if('1' === $ad_type){
+		$ad_position = get_post_meta($post_ad_id,'normal_ad_type',true);
+		switch ($ad_position) {
+
+			case '1':
+				//  "Above Header";
+				 if('1' === $ad_vendor){
+						 add_action('ampforwp_header_top_design2','ampforwp_adsense_ads');
+					}
+					else if('2' === $ad_vendor){
+						add_action('ampforwp_header_top_design2','ampforwp_dfp_ads');
+					}
+					else if('3' === $ad_vendor){
+						add_action('ampforwp_header_top_design2','ampforwp_custom_ads');
+					}
+				break;
+			case '2':
+				//  "Below Header";
+					if('1' === $ad_vendor){
+						 add_action('ampforwp_after_header','ampforwp_adsense_ads');
+					}
+					else if('2' === $ad_vendor){
+						add_action('ampforwp_after_header','ampforwp_dfp_ads');
+					}
+					else if('3' === $ad_vendor){
+						add_action('ampforwp_after_header','ampforwp_custom_ads');
+					}
+				break;
+			case '3':
+				//  "Before Title";
+					//  Adsense Ad
+					if('1' === $ad_vendor){
+						 add_action('ampforwp_above_the_title','ampforwp_adsense_ads');
+					}
+					// DFP Ad
+					else if('2' === $ad_vendor){
+						add_action('ampforwp_above_the_title','ampforwp_dfp_ads');
+					}
+					// Custom Ad
+					else if('3' === $ad_vendor){
+						add_action('ampforwp_above_the_title','ampforwp_custom_ads');
+					}
+				break;
+			case '4':
+				//  "After Title";
+				 	if('1' === $ad_vendor){
+						 add_action('ampforwp_below_the_title','ampforwp_adsense_ads');
+					}
+					// DFP Ad
+					else if('2' === $ad_vendor){
+						add_action('ampforwp_below_the_title','ampforwp_dfp_ads');
+					}
+					// Custom Ad
+					else if('3' === $ad_vendor){
+						add_action('ampforwp_below_the_title','ampforwp_custom_ads');
+					}
+				break;
+			case '5':
+				//  "Before Content";
+					if('1' === $ad_vendor){
+						 add_action('ampforwp_before_post_content','ampforwp_adsense_ads');
+					} 
+					// DFP Ad
+					else if('2' === $ad_vendor){
+						add_action('ampforwp_before_post_content','ampforwp_dfp_ads');
+					}
+					// Custom Ad
+					else if('3' === $ad_vendor){
+						add_action('ampforwp_before_post_content','ampforwp_custom_ads');
+					}
+				break;
+			case '6':
+				//  "After Content";
+				 	if('1' === $ad_vendor){
+						 add_action('ampforwp_after_post_content','ampforwp_adsense_ads');
+					}
+					// DFP Ad
+					else if('2' === $ad_vendor){
+						add_action('ampforwp_after_post_content','ampforwp_dfp_ads');
+					}
+					// Custom Ad
+					else if('3' === $ad_vendor){
+						add_action('ampforwp_after_post_content','ampforwp_custom_ads');
+					}
+				break;
+			case '7':
+				//  "Before Footer";
+				 	if('1' === $ad_vendor){
+						 add_action('amp_post_template_above_footer','ampforwp_adsense_ads');
+					}
+					// DFP Ad
+					else if('2' === $ad_vendor){
+						add_action('amp_post_template_above_footer','ampforwp_dfp_ads');
+					}
+					// Custom Ad
+					else if('3' === $ad_vendor){
+						add_action('amp_post_template_above_footer','ampforwp_custom_ads');
+					}
+				break;
+			case '8':
+				//  "After Footer";
+				 	if('1' === $ad_vendor){
+						 add_action('ampforwp_global_after_footer','ampforwp_adsense_ads');
+					}
+					// DFP Ad
+					else if('2' === $ad_vendor){
+						 add_action('ampforwp_global_after_footer','ampforwp_dfp_ads');
+					}
+					// Custom Ad
+					else if('3' === $ad_vendor){
+						 add_action('ampforwp_global_after_footer','ampforwp_custom_ads');
+					}
+				break;
+			default:
+				//  "please select the postion to display";
+				break;
+		}
+
+	}
+
+	// InContent Ads
+	// else if('2' === $ad_type){
+		
+	// }
+}
+
+// Adsense Ad code generator 
+
+function ampforwp_adsense_ads(){
+	$post_adsense_ad_id = get_ad_id();
+	$width				= get_post_meta($post_adsense_ad_id,'adsense_width',true);
+	$height				= get_post_meta($post_adsense_ad_id,'adsense_height',true);
+	$ad_client			= get_post_meta($post_adsense_ad_id,'adsense_ad_client',true);
+	$ad_slot			= get_post_meta($post_ad_id,'adsense_ad_slot',true);
+	$ad_parallax		= get_post_meta($post_adsense_ad_id,'adsense_parallax',true);
+	$ad_code 			= '<amp-ad class="ampforwp_adsense_ads"
+								type="adsense"
+								width="'. $width .'"
+								height="'. $height .'"
+								data-ad-client="'. $ad_client .'"
+								data-ad-slot="'. $ad_slot .'"
+							></amp-ad>';
+	echo $ad_code;	
+}
+
+// DoubleClick Ad Code generator
+
+function ampforwp_dfp_ads(){
+	$post_dfp_ad_id = get_ad_id();
+	$width			= get_post_meta($post_dfp_ad_id,'dfp_width',true);
+	$height			= get_post_meta($post_dfp_ad_id,'dfp_height',true);
+	$ad_slot		= get_post_meta($post_dfp_ad_id,'dfp_ad_slot',true);
+	$ad_parallax	= get_post_meta($post_dfp_ad_id,'dfp_parallax',true);
+	$ad_code		= '<amp-ad class="ampforwp_dfp_ads"
+							type="doubleclick"
+							width="'. $width .'"
+							height="'. $height .'"
+							data-slot="'. $data_slot .'"
+						></amp-ad>';
+	echo $ad_code;
+}
+
+// Custom Ad Code generator
+
+function ampforwp_custom_ads(){
+	$post_custom_ad_id = get_ad_id();
+	$custom_ad_code	   = get_post_meta($post_custom_ad_id,'custom_ad',true);
+	$ad_code 		   = '<div class="ampforwp_custom_ads">
+							'.$custom_ad_code.'
+							</div>';
+	echo $ad_code;
+}

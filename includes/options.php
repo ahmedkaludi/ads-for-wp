@@ -90,10 +90,12 @@ function advanced_amp_ads_options() {
 					'options'          => array(
 						'1' 		 	=> esc_html__( 'Above Header', 'ampforwp_adsforwp' ),
 						'2'  	 		=> esc_html__( 'Below Header', 'ampforwp_adsforwp' ),
-						'3'    			=> esc_html__( 'After Title', 'ampforwp_adsforwp' ),
-						'4'    			=> esc_html__( 'Before Content', 'ampforwp_adsforwp' ),
-						'5'   			=> esc_html__( 'After Content', 'ampforwp_adsforwp' ),
-						'6'     		=> esc_html__( 'Before Footer', 'ampforwp_adsforwp' ),
+						'3'    			=> esc_html__( 'Before Title', 'ampforwp_adsforwp' ),
+						'4'    			=> esc_html__( 'After Title', 'ampforwp_adsforwp' ),
+						'5'    			=> esc_html__( 'Before Content', 'ampforwp_adsforwp' ),
+						'6'   			=> esc_html__( 'After Content', 'ampforwp_adsforwp' ),
+						'7'     		=> esc_html__( 'Before Footer', 'ampforwp_adsforwp' ),
+						'8'     		=> esc_html__( 'After Footer', 'ampforwp_adsforwp' ),
 					),
 					'classes' => 'ad-type ad-type-1'
 				) );
@@ -210,7 +212,7 @@ function advanced_amp_ads_options() {
 				) );
 			$ads_option->add_field( array(
 					'name' => 'Parallax Effect',
-					'desc' => 'AMP Flying Carpet Ad',
+					'desc' => 'AMP Flying Carpet Ad works only for the incontent Ads',
 					'id'   => 'adsense_parallax',
 					'type' => 'checkbox',
 					'classes'		   => 'vendor-fields adsense-data-1'
@@ -240,7 +242,7 @@ function advanced_amp_ads_options() {
 				) );
 			$ads_option->add_field( array(
 					'name' => 'Parallax Effect',
-					'desc' => 'AMP Flying Carpet Ad',
+					'desc' => 'AMP Flying Carpet Ad works only for the incontent Ads',
 					'id'   => 'dfp_parallax',
 					'type' => 'checkbox',
 					'classes'		   => 'vendor-fields doubleclick-data-2'
