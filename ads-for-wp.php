@@ -90,11 +90,11 @@ function adsforwp_post_types(){
 
 // Funtion to get the ad's id which are custom post types
 
-function get_ad_id(){
-	$meta_details = get_metadata('post',get_the_ID(),'adsforwp-advert-data');
+function get_ad_id($id){
+	$meta_details = get_metadata('post',$id,'adsforwp-advert-data');
 	$post_ad_data = $meta_details[0];
-	$post_id = get_the_ID();
-	
+	$post_id = $id;
+
 	foreach ($post_ad_data as $key => $ad_config) {
 		$post_ad_id = $ad_config['ads_id'];
 		$post_ad_id = (int)$post_ad_id;
@@ -104,8 +104,8 @@ function get_ad_id(){
 
 add_action('pre_amp_render_post','ampforwp_display_amp_ads');
 function ampforwp_display_amp_ads(){
-
-	$post_ad_id = get_ad_id();
+	$id 		= get_the_ID();
+	$post_ad_id = get_ad_id($id);
 	$ad_type 	= get_post_meta($post_ad_id,'ad_type_format',true);
 	$ad_vendor	= get_post_meta($post_ad_id,'ad_vendor',true);
 	// Normal Ads
@@ -116,6 +116,7 @@ function ampforwp_display_amp_ads(){
 			case '1':
 				//  "Above Header";
 				 if('1' === $ad_vendor){
+				 		// $id = get_ad_id(get_the_ID());
 						 add_action('ampforwp_header_top_design2','ampforwp_adsense_ads');
 					}
 					else if('2' === $ad_vendor){
@@ -230,15 +231,17 @@ function ampforwp_display_amp_ads(){
 	}
 
 	// InContent Ads
-	// else if('2' === $ad_type){
-		
-	// }
+	else if('2' === $ad_type){
+		$ad_position = get_post_meta($post_ad_id,'incontent_ad_type',true);
+		add_filter('the_content', 'adsforwp_insert_ads');		
+	}
 }
 
 // Adsense Ad code generator 
 
 function ampforwp_adsense_ads(){
-	$post_adsense_ad_id = get_ad_id();
+
+	$post_adsense_ad_id = get_ad_id(get_the_ID());
 	$width				= get_post_meta($post_adsense_ad_id,'adsense_width',true);
 	$height				= get_post_meta($post_adsense_ad_id,'adsense_height',true);
 	$ad_client			= get_post_meta($post_adsense_ad_id,'adsense_ad_client',true);
@@ -251,13 +254,40 @@ function ampforwp_adsense_ads(){
 								data-ad-client="'. $ad_client .'"
 								data-ad-slot="'. $ad_slot .'"
 							></amp-ad>';
-	echo $ad_code;	
+	
+		echo $ad_code;	
+	
+}
+
+function ampforwp_incontent_adsense_ads($id){
+	$post_adsense_ad_id = $id;
+	if(NULL != $post_adsense_ad_id){
+		// do nothing
+	}
+	else{
+		$post_adsense_ad_id = get_ad_id(get_the_ID());
+	}
+	$width				= get_post_meta($post_adsense_ad_id,'adsense_width',true);
+	$height				= get_post_meta($post_adsense_ad_id,'adsense_height',true);
+	$ad_client			= get_post_meta($post_adsense_ad_id,'adsense_ad_client',true);
+	$ad_slot			= get_post_meta($post_ad_id,'adsense_ad_slot',true);
+	$ad_parallax		= get_post_meta($post_adsense_ad_id,'adsense_parallax',true);
+	$ad_code 			= '<amp-ad class="ampforwp_incontent_adsense_ads"
+								type="adsense"
+								width="'. $width .'"
+								height="'. $height .'"
+								data-ad-client="'. $ad_client .'"
+								data-ad-slot="'. $ad_slot .'"
+							></amp-ad>';
+	
+	return $ad_code;	
 }
 
 // DoubleClick Ad Code generator
 
 function ampforwp_dfp_ads(){
-	$post_dfp_ad_id = get_ad_id();
+
+	$post_dfp_ad_id = get_ad_id(get_the_ID());
 	$width			= get_post_meta($post_dfp_ad_id,'dfp_width',true);
 	$height			= get_post_meta($post_dfp_ad_id,'dfp_height',true);
 	$ad_slot		= get_post_meta($post_dfp_ad_id,'dfp_ad_slot',true);
@@ -271,13 +301,50 @@ function ampforwp_dfp_ads(){
 	echo $ad_code;
 }
 
+function ampforwp_incontent_dfp_ads($id){
+	$post_dfp_ad_id = $id;
+	if(NULL != $post_dfp_ad_id){
+		// do nothing
+	}
+	else{
+		$post_dfp_ad_id = get_ad_id(get_the_ID());
+	}
+	$width			= get_post_meta($post_dfp_ad_id,'dfp_width',true);
+	$height			= get_post_meta($post_dfp_ad_id,'dfp_height',true);
+	$ad_slot		= get_post_meta($post_dfp_ad_id,'dfp_ad_slot',true);
+	$ad_parallax	= get_post_meta($post_dfp_ad_id,'dfp_parallax',true);
+	$ad_code		= '<amp-ad class="ampforwp_incontent_dfp_ads"
+							type="doubleclick"
+							width="'. $width .'"
+							height="'. $height .'"
+							data-slot="'. $data_slot .'"
+						></amp-ad>';
+	return $ad_code;
+}
+
 // Custom Ad Code generator
 
 function ampforwp_custom_ads(){
-	$post_custom_ad_id = get_ad_id();
+
+	$post_custom_ad_id = get_ad_id(get_the_ID());
 	$custom_ad_code	   = get_post_meta($post_custom_ad_id,'custom_ad',true);
 	$ad_code 		   = '<div class="ampforwp_custom_ads">
 							'.$custom_ad_code.'
 							</div>';
 	echo $ad_code;
+}
+
+function ampforwp_incontent_custom_ads($id){
+	$post_custom_ad_id = $id;
+	if(NULL != $post_custom_ad_id){
+		// do nothing
+	}
+	else{
+		$post_custom_ad_id = get_ad_id(get_the_ID());
+	}
+	$custom_ad_code	   = get_post_meta($post_custom_ad_id,'custom_ad',true);
+	$ad_code 		   = '<div class="ampforwp_incontent_custom_ads">
+							'.$custom_ad_code.'
+							</div>';
+	return $ad_code;
 }

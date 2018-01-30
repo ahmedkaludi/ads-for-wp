@@ -285,4 +285,4 @@ function adsforwp_change_button_text($translation, $text, $domain) {
     }
     return $translation;
 }
-add_filter('gettext', 'adsforwp_change_button_text', 10, 4);
+// add_filter('gettext', 'adsforwp_change_button_text', 10, 4);
