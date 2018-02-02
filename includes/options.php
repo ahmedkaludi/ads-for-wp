@@ -8,7 +8,12 @@ add_action( 'cmb2_admin_init', 'advanced_amp_ads_options' );
 //  * Define the metabox and field configurations.
 //  */
 function advanced_amp_ads_options() {
+	$args = array( 'post_type' => 'ads-for-wp-ads');
 
+	$loop = new WP_Query( $args );
+	while ( $loop->have_posts() ) : $loop->the_post();
+	    $ads_shortcode = get_the_ID();
+	endwhile; 
 	$prefix = 'ampforwp_adsforwp_';
 
 	$ads_option = new_cmb2_box( array(
@@ -125,7 +130,7 @@ function advanced_amp_ads_options() {
 					'desc' => 'place anywhere this shortcode',
 					'id'   => 'manual_ad_type',
 					'type' => 'text',
-					'default' => 'this is the shortcode',
+					'default' => '[ads-for-wp ads-id="'.$ads_shortcode.'"]',
 					'classes' => 'ad-type ad-type-3',
 					'save_field'  => false, // Otherwise CMB2 will end up removing the value.
 					'attributes'  => array(

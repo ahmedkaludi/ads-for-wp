@@ -348,3 +348,4 @@ function ampforwp_incontent_custom_ads($id){
 							</div>';
 	return $ad_code;
 }
+
