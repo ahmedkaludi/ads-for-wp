@@ -283,6 +283,15 @@ function ampforwp_incontent_adsense_ads($id){
 	return $ad_code;	
 }
 
+function ampforwp_sticky_adsense_ads(){
+
+	$sticky_adsense_ad_id = get_ad_id(get_the_ID());
+	$ad_code = ampforwp_incontent_adsense_ads($sticky_adsense_ad_id);
+	$amp_sticky = '<amp-sticky-ad layout="nodisplay">'.$ad_code.'</amp-sticky-ad>';
+	echo $amp_sticky;
+	
+}
+
 // DoubleClick Ad Code generator
 
 function ampforwp_dfp_ads(){
@@ -322,6 +331,14 @@ function ampforwp_incontent_dfp_ads($id){
 	return $ad_code;
 }
 
+function ampforwp_dfp_sticky_ads(){
+
+	$sticky_dfp_ad_id = get_ad_id(get_the_ID());
+	$ad_code = ampforwp_incontent_dfp_ads($sticky_dfp_ad_id);
+	$amp_sticky = '<amp-sticky-ad layout="nodisplay">'.$ad_code.'</amp-sticky-ad>';
+	echo $amp_sticky;
+}
+
 // Custom Ad Code generator
 
 function ampforwp_custom_ads(){
@@ -349,3 +366,65 @@ function ampforwp_incontent_custom_ads($id){
 	return $ad_code;
 }
 
+function ampforwp_custom_sticky_ads(){
+	$ad_id 				= get_ad_id(get_the_ID());
+	$custom_ad_code	    = get_post_meta($ad_id,'custom_ad',true);
+	$sticky_ad_code 	= '<div class="ampforwp-sticky-custom-ad amp-sticky-ads">'.$custom_ad_code.'</div>';
+	echo $sticky_ad_code; 
+}
+
+// AMP Sticky Add
+
+add_action('ampforwp_body_beginning','ampforwp_amp_sticky_ad');
+
+function ampforwp_amp_sticky_ad(){
+	$ad_id 		= get_ad_id(get_the_ID());
+	$ad_type 	= get_post_meta($ad_id,'ad_type_format',true);
+	$ad_vendor	= get_post_meta($ad_id,'ad_vendor',true);
+	if('4' === $ad_type){
+		if('1' === $ad_vendor){
+		 ampforwp_adsense_sticky_ads();
+		}
+		elseif('2' === $ad_vendor){
+			ampforwp_dfp_sticky_ads();
+		}
+		else{
+			ampforwp_custom_sticky_ads();
+		}
+	}
+}
+
+// added extra css to improve user experiance for sticky ads
+add_action( 'amp_post_template_css', 'ampforwp_extra_sticky_css_styles' );
+function ampforwp_extra_sticky_css_styles( $amp_template ) {
+ ?>
+	amp-sticky-ad {
+		z-index: 9999
+	}
+
+<?php $ad_id 		= get_ad_id(get_the_ID());
+	$ad_type 	= get_post_meta($ad_id,'ad_type_format',true);
+	$ad_vendor	= get_post_meta($ad_id,'ad_vendor',true);
+	if('4' === $ad_type){
+	 if('3' === $ad_vendor){?>
+	.ampforwp-sticky-custom-ad{
+		position: fixed;
+		bottom:0;
+		text-align: center;
+		left: 0;
+		width: 100%;
+		z-index: 11;
+		max-height: 100px;
+		box-sizing: border-box;
+		opacity: 1;
+		background-image: none;
+		background-color: #fff;
+		box-shadow: 0 0 5px 0 rgba(0,0,0,.2);
+		margin-bottom: 0;
+		 }
+	body{
+		padding-bottom: 40px;
+	}	
+<?php }
+}
+}

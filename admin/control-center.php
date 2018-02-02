@@ -38,6 +38,7 @@ add_shortcode('ads-for-wp', 'adsforwp_shortcode_generator');
 function adsforwp_shortcode_generator( $atts ){
 	$adsPostId = get_ad_id(get_the_ID());
 	$ad_vendor = get_post_meta($adsPostId,'ad_vendor',true);
+	$ad_type   = get_post_meta($adsPostId,'ad_type_format',true);
 	$content = '';
 	$show_ads 	= '';
 
@@ -46,17 +47,19 @@ function adsforwp_shortcode_generator( $atts ){
 	
 	if ( $show_ads == 'yes' ) {
 		if(function_exists('ampforwp_is_amp_endpoint') && ampforwp_is_amp_endpoint()){
-			if('1' === $ad_vendor){
+			if('1' === $ad_vendor && '3' === $ad_type){
 				    $content = ampforwp_incontent_adsense_ads($adsPostId);
 				}
-				elseif('2' === $ad_vendor){
+				elseif('2' === $ad_vendor && '3' === $ad_type){
 					$content = ampforwp_incontent_dfp_ads($adsPostId);
 				}
-				elseif('3' === $ad_vendor){
+				elseif('3' === $ad_vendor && '3' === $ad_type){
 					$content = ampforwp_incontent_custom_ads($adsPostId);
 				}
 			else{
-				$content = get_post_field('post_content', $atts['ads-id']);
+				if('3' === $ad_type){
+					$content = get_post_field('post_content', $atts['ads-id']);
+				}
 			}
 		}
 	}
@@ -151,7 +154,7 @@ function adsforwp_insert_ads( $content ){
 		    	$adsVisiblityType 	= get_post_field('adsforwp_incontent_ads_default', $post_id);
 			    $adsparagraphs 		= $cmb2_incontent_options[0];
 			    $ad_vendor 			= get_post_meta($adsPostId,'ad_vendor',true);
-			    $ad_type 			= get_post_meta($adsPostId,'ad_type',true);
+			    $ad_type 			= get_post_meta($adsPostId,'ad_type_format',true);
 		    	if('1' === $ad_vendor && '2' === $ad_type){
 				    $adsContent = ampforwp_incontent_adsense_ads($adsPostId);
 				    $post_meta[$adsPostId] = array(				
