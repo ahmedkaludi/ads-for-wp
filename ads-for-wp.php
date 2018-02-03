@@ -394,6 +394,20 @@ function ampforwp_amp_sticky_ad(){
 	}
 }
 
+// AMP Auto Ads Support
+
+add_action('ampforwp_body_beginning','ampforwp_adv_amp_auto_ads');
+
+function ampforwp_adv_amp_auto_ads(){
+	$ad_id 		= get_ad_id(get_the_ID());
+	$ad_type 	= get_post_meta($ad_id,'ad_type_format',true);
+
+	if('5' === $ad_type){
+		$ampauto_ad_code	    = get_post_meta($ad_id,'amp_auto_ad_type',true);
+		echo $ampauto_ad_code;
+	}
+}
+
 // added extra css to improve user experiance for sticky ads
 add_action( 'amp_post_template_css', 'ampforwp_extra_sticky_css_styles' );
 function ampforwp_extra_sticky_css_styles( $amp_template ) {
