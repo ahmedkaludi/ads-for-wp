@@ -442,3 +442,60 @@ function ampforwp_extra_sticky_css_styles( $amp_template ) {
 <?php }
 }
 }
+
+// Adding the required scripts
+
+add_filter( 'amp_post_template_data', 'ampforwp_adsforwp_scripts', 30 );
+function ampforwp_adsforwp_scripts( $data ) {
+	$post_ad_id = get_ad_id(get_the_ID());
+	$show_ads 	= '';
+	$show_ads = 'yes';		
+	$show_ads = apply_filters('adsforwp_advert_on_off', $show_ads);
+
+	if ( $show_ads != 'yes' ) {
+		return $data ; // Do not show ads and return the data as it is
+	}
+
+	$ad_type 	= get_post_meta($post_ad_id,'ad_type_format',true);
+	$ad_vendor	= get_post_meta($post_ad_id,'ad_vendor',true);
+
+	$adsense_parallax 	= get_post_meta($post_ad_id,'adsense_parallax',true);
+	$dfp_parallax 		= get_post_meta($post_ad_id,'dfp_parallax',true);
+	$custom_parallax 	= get_post_meta($post_ad_id,'custom_parallax',true);
+
+	if('1' === $ad_type || '2' === $ad_type || '3' === $ad_type || '4' === $ad_type || '5' === $ad_type ) {
+
+			if('1' === $ad_vendor || '2' === $ad_vendor){
+				if ( empty( $data['amp_component_scripts']['amp-ad'] ) ) {
+					$data['amp_component_scripts']['amp-ad'] = 'https://cdn.ampproject.org/v0/amp-ad-0.1.js';
+				}
+			}
+		}
+
+		if( '4' === $ad_type ){
+
+			if('1' === $ad_vendor || '2' === $ad_vendor){
+				if ( empty( $data['amp_component_scripts']['amp-sticky-ad'] ) ) {
+					$data['amp_component_scripts']['amp-auto-ads'] = 'https://cdn.ampproject.org/v0/amp-sticky-ad-1.0.js';
+				}
+			}
+		}
+
+		if(	'5' === $ad_type ) {
+						
+			if ( empty( $data['amp_component_scripts']['amp-auto-ads'] ) ) {
+				$data['amp_component_scripts']['amp-auto-ads'] = 'https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js';
+			}
+		}
+
+
+		if(	'on' === $adsense_parallax || 'on' === $dfp_parallax || 'on' === $custom_parallax ) {
+						
+			if ( empty( $data['amp_component_scripts']['amp-fx-flying-carpet'] ) ) {
+				$data['amp_component_scripts']['amp-fx-flying-carpet'] = 'https://cdn.ampproject.org/v0/amp-fx-flying-carpet-0.1.js';
+			}
+		}
+
+
+	return $data;
+}
