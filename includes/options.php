@@ -41,7 +41,6 @@ function advanced_amp_ads_options() {
 				'3'    			=> esc_html__( 'Manual', 'ampforwp_adsforwp' ),
 				'4'    			=> esc_html__( 'Sticky', 'ampforwp_adsforwp' ),
 				'5'   			=> esc_html__( 'AMP Auto Ads', 'ampforwp_adsforwp' ),
-				'6'     		=> esc_html__( 'Link Ads', 'ampforwp_adsforwp' ),
 			),
 		) );
 	 $ads_option->add_field( array(
@@ -157,14 +156,6 @@ function advanced_amp_ads_options() {
 					'classes' => 'ad-type ad-type-5'
 				) );
 
-			// 6. Link Ads       
-			    $ads_option->add_field( array(
-					'name' => esc_html__( 'Link Ads', 'ampforwp_adsforwp' ),
-					'desc' => 'place anywhere this shortcode',
-					'id'   => 'link_ad_type',
-					'type' => 'title',
-					'classes' => 'ad-type ad-type-6'
-				) );
 
 	// Vendor
 	$ads_option->add_field( array(
@@ -187,6 +178,31 @@ function advanced_amp_ads_options() {
 
 
 		// Adsense Options
+			$ads_option->add_field( array(
+					'name'             => esc_html__( 'Link Ads', 'ampforwp_adsforwp' ),
+					'desc'			   => 'Check this if the ad is link ads',
+					'id'               => 'adsense_link',
+					'type'             => 'checkbox',
+					'classes'		   => 'vendor-fields adsense-data-1'
+				) );
+			$ads_option->add_field( array(
+					'name'             => esc_html__( 'Width', 'ampforwp_adsforwp' ),
+					'desc'			   => 'Enter the width',
+					'id'               => 'adsense_dimensions',
+					'type'             => 'select',
+					'show_option_none' => false,
+					'options'          => array(
+						'1' 		 	=> esc_html__( '300x250', 'ampforwp_adsforwp' ),
+						'2'  	 		=> esc_html__( '336x280', 'ampforwp_adsforwp' ),
+						'3'    			=> esc_html__( '728x90', 'ampforwp_adsforwp' ),
+						'4'    			=> esc_html__( '300x600', 'ampforwp_adsforwp' ),
+						'5'    			=> esc_html__( '320x100', 'ampforwp_adsforwp' ),
+						'6'    			=> esc_html__( '200x50', 'ampforwp_adsforwp' ),
+						'7'    			=> esc_html__( '320x50', 'ampforwp_adsforwp' ),
+						'8'				=> esc_html__( 'Custom', 'ampforwp_adsforwp' ),
+					),
+					'classes'		   => 'vendor-fields adsense-data-1'
+				) );
 			$ads_option->add_field( array(
 					'name'             => esc_html__( 'Width', 'ampforwp_adsforwp' ),
 					'desc'			   => 'Enter the width',
