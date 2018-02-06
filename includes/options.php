@@ -108,17 +108,9 @@ function advanced_amp_ads_options() {
 			// 2. Incontent type        
 			    $ads_option->add_field( array(
 					'name' => esc_html__( 'Ad Positions', 'ampforwp_adsforwp' ),
+					'desc' => 'display Ad after the nth paragraph',
 					'id'   => 'incontent_ad_type',
-					'type'             => 'select',
-					'show_option_none' => false,
-					'options'          => array(
-						'1' 		 	=> esc_html__( 'Paragraph 1', 'ampforwp_adsforwp' ),
-						'2'  	 		=> esc_html__( 'Paragraph 2', 'ampforwp_adsforwp' ),
-						'3'    			=> esc_html__( 'Paragraph 3', 'ampforwp_adsforwp' ),
-						'4'    			=> esc_html__( 'Paragraph 4', 'ampforwp_adsforwp' ),
-						'5'   			=> esc_html__( 'Paragraph 5', 'ampforwp_adsforwp' ),
-						'6'     		=> esc_html__( 'Paragraph 6', 'ampforwp_adsforwp' ),
-					),
+					'type'             => 'text_small',
 					'classes' => 'ad-type ad-type-2'
 				) );
 
