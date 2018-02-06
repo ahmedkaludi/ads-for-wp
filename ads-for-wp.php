@@ -242,8 +242,9 @@ function ampforwp_display_amp_ads(){
 function ampforwp_adsense_ads(){
 
 	$post_adsense_ad_id = get_ad_id(get_the_ID());
-	$width				= get_post_meta($post_adsense_ad_id,'adsense_width',true);
-	$height				= get_post_meta($post_adsense_ad_id,'adsense_height',true);
+	$dimensions 		= get_adsense_dimensions($post_adsense_ad_id);
+	$width				= $dimensions['width'];
+	$height				= $dimensions['height'];
 	$ad_client			= get_post_meta($post_adsense_ad_id,'adsense_ad_client',true);
 	$ad_slot			= get_post_meta($post_ad_id,'adsense_ad_slot',true);
 	$ad_parallax		= get_post_meta($post_adsense_ad_id,'adsense_parallax',true);
@@ -267,8 +268,9 @@ function ampforwp_incontent_adsense_ads($id){
 	else{
 		$post_adsense_ad_id = get_ad_id(get_the_ID());
 	}
-	$width				= get_post_meta($post_adsense_ad_id,'adsense_width',true);
-	$height				= get_post_meta($post_adsense_ad_id,'adsense_height',true);
+	$dimensions 		= get_adsense_dimensions($post_adsense_ad_id);
+	$width				= $dimensions['width'];
+	$height				= $dimensions['height'];
 	$ad_client			= get_post_meta($post_adsense_ad_id,'adsense_ad_client',true);
 	$ad_slot			= get_post_meta($post_ad_id,'adsense_ad_slot',true);
 	$ad_parallax		= get_post_meta($post_adsense_ad_id,'adsense_parallax',true);
@@ -292,13 +294,84 @@ function ampforwp_sticky_adsense_ads(){
 	
 }
 
+// adsense dimensions 
+
+function get_adsense_dimensions($id){
+	$dimensions = get_post_meta($id,'adsense_dimensions',true);
+	switch ($dimensions) {
+		case '1':
+			$dimension = array('width' => '300',
+								'height' => '250'
+								 );
+			return $dimension;
+			break;
+
+		case '2':
+			$dimension = array('width' => '336',
+								'height' => '280'
+								 );
+			return $dimension;
+			break;
+
+		case '3':
+			$dimension = array('width' => '728',
+								'height' => '90'
+								 );
+			return $dimension;
+			break;
+
+		case '4':
+			$dimension = array('width' => '300',
+								'height' => '600'
+								 );
+			return $dimension;
+			break;
+
+		case '5':
+			$dimension = array('width' => '320',
+								'height' => '100'
+								 );
+			return $dimension;
+			break;
+		
+		case '6':
+			$dimension = array('width' => '200',
+								'height' => '50'
+								 );
+			return $dimension;
+			break;
+
+		case '7':
+			$dimension = array('width' => '320',
+								'height' => '50'
+								 );
+			return $dimension;
+			break;
+
+		case '8':
+			$dimension = array();
+			$dimension['width'] = get_post_meta($id,'adsense_custom_width',true);
+			$dimension['height'] = get_post_meta($id,'adsense_custom_height',true);
+			return $dimension;
+			break;
+
+		default:
+			$dimension = array('width' => '300',
+								'height' => '200'
+								 );
+			break;
+	}
+}
+
+
 // DoubleClick Ad Code generator
 
 function ampforwp_dfp_ads(){
 
 	$post_dfp_ad_id = get_ad_id(get_the_ID());
-	$width			= get_post_meta($post_dfp_ad_id,'dfp_width',true);
-	$height			= get_post_meta($post_dfp_ad_id,'dfp_height',true);
+	$dimensions 		= get_dfp_dimensions($post_dfp_ad_id);
+	$width				= $dimensions['width'];
+	$height				= $dimensions['height'];
 	$ad_slot		= get_post_meta($post_dfp_ad_id,'dfp_ad_slot',true);
 	$ad_parallax	= get_post_meta($post_dfp_ad_id,'dfp_parallax',true);
 	$ad_code		= '<amp-ad class="ampforwp_dfp_ads"
@@ -318,8 +391,9 @@ function ampforwp_incontent_dfp_ads($id){
 	else{
 		$post_dfp_ad_id = get_ad_id(get_the_ID());
 	}
-	$width			= get_post_meta($post_dfp_ad_id,'dfp_width',true);
-	$height			= get_post_meta($post_dfp_ad_id,'dfp_height',true);
+	$dimensions 		= get_dfp_dimensions($post_dfp_ad_id);
+	$width				= $dimensions['width'];
+	$height				= $dimensions['height'];
 	$ad_slot		= get_post_meta($post_dfp_ad_id,'dfp_ad_slot',true);
 	$ad_parallax	= get_post_meta($post_dfp_ad_id,'dfp_parallax',true);
 	$ad_code		= '<amp-ad class="ampforwp_incontent_dfp_ads"
@@ -338,6 +412,77 @@ function ampforwp_dfp_sticky_ads(){
 	$amp_sticky = '<amp-sticky-ad layout="nodisplay">'.$ad_code.'</amp-sticky-ad>';
 	echo $amp_sticky;
 }
+
+// DoubleClick dimensions 
+
+function get_dfp_dimensions($id){
+	$dimensions = get_post_meta($id,'dfp_dimensions',true);
+	switch ($dimensions) {
+		case '1':
+			$dimension = array('width' => '300',
+								'height' => '250'
+								 );
+			return $dimension;
+			break;
+
+		case '2':
+			$dimension = array('width' => '336',
+								'height' => '280'
+								 );
+			return $dimension;
+			break;
+
+		case '3':
+			$dimension = array('width' => '728',
+								'height' => '90'
+								 );
+			return $dimension;
+			break;
+
+		case '4':
+			$dimension = array('width' => '300',
+								'height' => '600'
+								 );
+			return $dimension;
+			break;
+
+		case '5':
+			$dimension = array('width' => '320',
+								'height' => '100'
+								 );
+			return $dimension;
+			break;
+		
+		case '6':
+			$dimension = array('width' => '200',
+								'height' => '50'
+								 );
+			return $dimension;
+			break;
+
+		case '7':
+			$dimension = array('width' => '320',
+								'height' => '50'
+								 );
+			return $dimension;
+			break;
+
+		case '8':
+			$dimension = array();
+			$dimension['width'] = get_post_meta($id,'dfp_custom_width',true);
+			$dimension['height'] = get_post_meta($id,'dfp_custom_height',true);
+			return $dimension;
+			break;
+
+		default:
+			$dimension = array('width' => '300',
+								'height' => '200'
+								 );
+			return $dimension;
+			break;
+	}
+}
+
 
 // Custom Ad Code generator
 

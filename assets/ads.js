@@ -32,6 +32,32 @@ jQuery( document ).ready(function($) {
       });
     }).change();
 
+  $("#adsense_dimensions").change(function(){
+  	$(this).find("option:selected").each(function(){
+  		var optionValue = $(this).attr("value");
+  		if(optionValue){
+  			$(".custom-dimensions").hide();
+  			if('8' === optionValue){
+  				$(".custom-dimensions.adsense-custom-data-1").show();
+  			}
+  			
+  		}
+  	});
+  }).change();
+
+    $("#dfp_dimensions").change(function(){
+  	$(this).find("option:selected").each(function(){
+  		var optionValue = $(this).attr("value");
+  		if(optionValue){
+  			$(".custom-dimensions").hide();
+  			if('8' === optionValue){
+  				$(".custom-dimensions.dfp-custom-data-2").show();
+  			}
+  			
+  		}
+  	});
+  }).change();
+
 	if ( currentGlobalAdsField == 'show' ) {
 		$(adsWrapper).show();
 	} else {

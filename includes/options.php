@@ -186,8 +186,8 @@ function advanced_amp_ads_options() {
 					'classes'		   => 'vendor-fields adsense-data-1'
 				) );
 			$ads_option->add_field( array(
-					'name'             => esc_html__( 'Width', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Enter the width',
+					'name'             => esc_html__( 'Dimensions', 'ampforwp_adsforwp' ),
+					'desc'			   => 'Select the preferred dimensions for your ad',
 					'id'               => 'adsense_dimensions',
 					'type'             => 'select',
 					'show_option_none' => false,
@@ -206,16 +206,16 @@ function advanced_amp_ads_options() {
 			$ads_option->add_field( array(
 					'name'             => esc_html__( 'Width', 'ampforwp_adsforwp' ),
 					'desc'			   => 'Enter the width',
-					'id'               => 'adsense_width',
+					'id'               => 'adsense_custom_width',
 					'type'             => 'text_small',
-					'classes'		   => 'vendor-fields adsense-data-1'
+					'classes'		   => 'custom-dimensions adsense-custom-data-1'
 				) );
 			$ads_option->add_field( array(
 					'name'             => esc_html__( 'Height', 'ampforwp_adsforwp' ),
 					'desc'			   => 'Enter the height',
-					'id'               => 'adsense_height',
+					'id'               => 'adsense_custom_height',
 					'type'             => 'text_small',
-					'classes'		   => 'vendor-fields adsense-data-1'
+					'classes'		   => 'custom-dimensions adsense-custom-data-1'
 				) );
 			$ads_option->add_field( array(
 					'name'             => esc_html__( 'Data Ad Client', 'ampforwp_adsforwp' ),
@@ -240,19 +240,38 @@ function advanced_amp_ads_options() {
 				) );
 
 		// DFP Options
+			
+			$ads_option->add_field( array(
+					'name'             => esc_html__( 'Dimensions', 'ampforwp_adsforwp' ),
+					'desc'			   => 'Select the preferred dimensions for your ad',
+					'id'               => 'dfp_dimensions',
+					'type'             => 'select',
+					'show_option_none' => false,
+					'options'          => array(
+						'1' 		 	=> esc_html__( '300x250', 'ampforwp_adsforwp' ),
+						'2'  	 		=> esc_html__( '336x280', 'ampforwp_adsforwp' ),
+						'3'    			=> esc_html__( '728x90', 'ampforwp_adsforwp' ),
+						'4'    			=> esc_html__( '300x600', 'ampforwp_adsforwp' ),
+						'5'    			=> esc_html__( '320x100', 'ampforwp_adsforwp' ),
+						'6'    			=> esc_html__( '200x50', 'ampforwp_adsforwp' ),
+						'7'    			=> esc_html__( '320x50', 'ampforwp_adsforwp' ),
+						'8'				=> esc_html__( 'Custom', 'ampforwp_adsforwp' ),
+					),
+					'classes'		   => 'vendor-fields doubleclick-data-2'
+				) );
 			$ads_option->add_field( array(
 					'name'             => esc_html__( 'Width', 'ampforwp_adsforwp' ),
 					'desc'			   => 'Enter the width',
-					'id'               => 'dfp_width',
+					'id'               => 'dfp_custom_width',
 					'type'             => 'text_small',
-					'classes'		   => 'vendor-fields doubleclick-data-2'
+					'classes'		   => 'custom-dimensions dfp-custom-data-2'
 				) );
 			$ads_option->add_field( array(
 					'name'             => esc_html__( 'Height', 'ampforwp_adsforwp' ),
 					'desc'			   => 'Enter the height',
-					'id'               => 'dfp_height',
+					'id'               => 'dfp_custom_height',
 					'type'             => 'text_small',
-					'classes'		   => 'vendor-fields doubleclick-data-2'
+					'classes'		   => 'custom-dimensions dfp-custom-data-2'
 				) );
 			$ads_option->add_field( array(
 					'name'             => esc_html__( 'Data Ad Slot', 'ampforwp_adsforwp' ),
