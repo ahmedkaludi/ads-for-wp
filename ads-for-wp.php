@@ -182,6 +182,20 @@ function ampforwp_display_amp_ads(){
 					}
 				break;
 			case '6':
+				//  "After Featured Image";
+				 	if('1' === $ad_vendor){
+						 add_action('ampforwp_after_featured_image_hook','ampforwp_adsense_ads');
+					}
+					// DFP Ad
+					else if('2' === $ad_vendor){
+						add_action('ampforwp_after_featured_image_hook','ampforwp_dfp_ads');
+					}
+					// Custom Ad
+					else if('3' === $ad_vendor){
+						add_action('ampforwp_after_featured_image_hook','ampforwp_custom_ads');
+					}
+				break;
+			case '7':
 				//  "After Content";
 				 	if('1' === $ad_vendor){
 						 add_action('ampforwp_after_post_content','ampforwp_adsense_ads');
@@ -195,7 +209,35 @@ function ampforwp_display_amp_ads(){
 						add_action('ampforwp_after_post_content','ampforwp_custom_ads');
 					}
 				break;
-			case '7':
+			case '8':
+				//  "Above Related Posts";
+				 	if('1' === $ad_vendor){
+						 add_action('ampforwp_above_related_post','ampforwp_adsense_ads');
+					}
+					// DFP Ad
+					else if('2' === $ad_vendor){
+						add_action('ampforwp_above_related_post','ampforwp_dfp_ads');
+					}
+					// Custom Ad
+					else if('3' === $ad_vendor){
+						add_action('ampforwp_above_related_post','ampforwp_custom_ads');
+					}
+				break;
+			case '9':
+				//  "Below Related Posts";
+				 	if('1' === $ad_vendor){
+						 add_action('ampforwp_below_related_post','ampforwp_adsense_ads');
+					}
+					// DFP Ad
+					else if('2' === $ad_vendor){
+						add_action('ampforwp_below_related_post','ampforwp_dfp_ads');
+					}
+					// Custom Ad
+					else if('3' === $ad_vendor){
+						add_action('ampforwp_below_related_post','ampforwp_custom_ads');
+					}
+				break;
+			case '10':
 				//  "Before Footer";
 				 	if('1' === $ad_vendor){
 						 add_action('amp_post_template_above_footer','ampforwp_adsense_ads');
@@ -209,7 +251,7 @@ function ampforwp_display_amp_ads(){
 						add_action('amp_post_template_above_footer','ampforwp_custom_ads');
 					}
 				break;
-			case '8':
+			case '11':
 				//  "After Footer";
 				 	if('1' === $ad_vendor){
 						 add_action('ampforwp_global_after_footer','ampforwp_adsense_ads');
