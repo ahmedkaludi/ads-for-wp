@@ -32,26 +32,43 @@ require ( ADSFORWP_PLUGIN_DIR.'/admin/global-metaboxes.php' );
  * Want to hide add the ads in the current page?
  * Pass 'no' adsforwp_advert_on_off filter 
 */
-add_filter('adsforwp_advert_on_off', 'adsforwp_hide_ads_controller');
-function adsforwp_hide_ads_controller($show) {
-	global $post;
+add_filter('adsforwp_advert_on_off', 'adsforwp_hide_ads_controller',10,2);
+function adsforwp_hide_ads_controller($show,$id) {
+  global $post;
 
-	if ( is_singular()  ) { 
-		$content 		= get_post_field('post_content', $post->ID );
-		$content_count 	= str_word_count($content);
-	}
+  if ( is_singular()  ) { 
+    $content     = get_post_field('post_content', $post->ID );
+    $content_count   = str_word_count($content);
+  }
 
-	// Hide ads on the page where content is less then 150 words
- 	if ( $content_count && $content_count < 150 ) {
- 		return $show = 'no';
- 	}
+  // Hide ads on the page where content is less then 150 words
+   if ( $content_count && $content_count < 150 ) {
+     return $show = 'no';
+   }
 
-	$current = adsforwp_get_meta_post( 'adsforwp_ads_meta_box_ads_on_off' );
+  $current = adsforwp_get_meta_post( 'adsforwp_ads_meta_box_ads_on_off' );
 
-	if ( $current === 'hide' ) {
-		$show = 'no';
-	}
-	return $show;
+  if ( $current === 'hide' ) {
+    $show = 'no';
+  }
+
+       $post_meta         = array();
+    $current_ads_status = '';
+
+    $post_meta[] = get_post_meta($id, 'adsforwp_ads_controller_default', true);
+     
+    foreach ($post_meta as $current_ads_status ) {
+      if ( 'hide' === $current_ads_status ) {
+        $show = 'no';
+        return $show;
+      }
+      elseif('show' === $current_ads_status){
+        $show = 'yes';
+        return $show;
+      }
+
+    }
+  return $show;
 }
 
 // Get all the post types and add metaboxs of the ads in this post types
@@ -82,4 +99,14 @@ function adsforwp_post_types(){
 	$post_types = apply_filters( 'adsforwp_modify_post_types', $post_types );
 
 	return $post_types;
+}
+
+function adsforwp_global_checker($id){
+	$atts['ads-id']= $id;
+	$current_stat = adsforwp_shortcode_generator($atts);
+	if ( empty($current_stat) ) {
+		return false;
+	}
+
+	return true;
 }

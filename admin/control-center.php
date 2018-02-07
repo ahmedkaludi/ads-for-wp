@@ -36,18 +36,18 @@ function adsforwp_hide_visual_editor($content) {
 
 add_shortcode('ads-for-wp', 'adsforwp_shortcode_generator');
 function adsforwp_shortcode_generator( $atts ){
+  $content = '';
+  $show_ads   = '';
 
-	$content = '';
-	$show_ads 	= '';
+  $ad_id = $atts['ads-id'];
+  $show_ads = 'yes';    
+  $show_ads = apply_filters('adsforwp_advert_on_off', $show_ads, $ad_id);
 
-	$show_ads = 'yes';		
-	$show_ads = apply_filters('adsforwp_advert_on_off', $show_ads);
+  if ( $show_ads == 'yes' ) {
+    $content = get_post_field('post_content', $atts['ads-id']);
+  }
 
-	if ( $show_ads == 'yes' ) {
-		$content = get_post_field('post_content', $atts['ads-id']);
-	}
-
-	return $content ;
+  return $content ;
 }
 
 add_action( 'wp_ajax_save_ads_data', 'adsforwp_save_ads_data' );
@@ -87,7 +87,7 @@ function adsforwp_insert_ads( $content ){
 	$show_ads 	= '';
 
 	$show_ads = 'yes';		
-	$show_ads = apply_filters('adsforwp_advert_on_off', $show_ads);
+	$show_ads = apply_filters('adsforwp_advert_on_off',  $show_ads, $currentPostId);
 
 	if ( $show_ads != 'yes' ) {
 		return $content ; // Do not show ads and return the content as it is
