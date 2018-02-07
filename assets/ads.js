@@ -58,6 +58,17 @@ jQuery( document ).ready(function($) {
   	});
   }).change();
 
+$("#adsense_link").change(function(){
+	$(".link-ads-dimensions").hide();
+	$(".cmb2-id-adsense-dimensions").show();
+ var checkbox =  $('#adsense_link').is(":checked");
+	if(checkbox){
+		$(".link-ads-dimensions").show();
+		$(".cmb2-id-adsense-dimensions").hide();
+	}
+ 
+}).change();
+
 	if ( currentGlobalAdsField == 'show' ) {
 		$(adsWrapper).show();
 	} else {

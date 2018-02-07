@@ -339,6 +339,59 @@ function ampforwp_sticky_adsense_ads(){
 // adsense dimensions 
 
 function get_adsense_dimensions($id){
+
+	$is_link			= get_post_meta($id,'adsense_link',true);
+	if('on' == $is_link){
+		$dimensions = get_post_meta($id,'link_ads_dimensions',true);
+		switch ($dimensions) {
+			case '1':
+			$dimension = array('width' => '120',
+								'height' => '90'
+								 );
+			return $dimension;
+			break;
+
+		case '2':
+			$dimension = array('width' => '160',
+								'height' => '90'
+								 );
+			return $dimension;
+			break;
+
+		case '3':
+			$dimension = array('width' => '180',
+								'height' => '90'
+								 );
+			return $dimension;
+			break;
+
+		case '4':
+			$dimension = array('width' => '200',
+								'height' => '90'
+								 );
+			return $dimension;
+			break;
+
+		case '5':
+			$dimension = array('width' => '468',
+								'height' => '15'
+								 );
+			return $dimension;
+			break;
+		
+		case '6':
+			$dimension = array('width' => '728',
+								'height' => '15'
+								 );
+			return $dimension;
+			break;
+		default:
+		$dimension = array('width' => '120',
+							'height' => '90'
+							 );
+		break;
+		}
+	}
 	$dimensions = get_post_meta($id,'adsense_dimensions',true);
 	switch ($dimensions) {
 		case '1':
