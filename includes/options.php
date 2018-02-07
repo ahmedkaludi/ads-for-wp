@@ -74,12 +74,6 @@ function advanced_amp_ads_options() {
 					'classes' => 'ad-type ad-type-5' 
 				) );
 	 $ads_option->add_field( array(
-					'desc' => 'Tutorial: <a href="http://ampforwp.com/tutorials/">What are Link Ads and where does it appear?</a>',
-					'type' => 'title',
-					'id'   => 'link_ads_tutorial',
-					'classes' => 'ad-type ad-type-6' 
-				) );
-	 $ads_option->add_field( array(
 			'name'             => esc_html__( 'Positions', 'ampforwp_adsforwp' ),
 			'id'               => 'ad_type_position',
 			'type'             => 'title',
@@ -176,6 +170,12 @@ function advanced_amp_ads_options() {
 					'id'               => 'adsense_link',
 					'type'             => 'checkbox',
 					'classes'		   => 'vendor-fields adsense-data-1'
+				) );
+	 		$ads_option->add_field( array(
+					'desc' => 'Tutorial: <a href="http://ampforwp.com/tutorials/">What are Link Ads and where does it appear?</a>',
+					'type' => 'title',
+					'id'   => 'link_ads_tutorial',
+					'classes' => 'vendor-fields adsense-data-1' 
 				) );
 			$ads_option->add_field( array(
 					'name'             => esc_html__( 'Link Ads Dimensions', 'ampforwp_adsforwp' ),

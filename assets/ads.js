@@ -6,6 +6,7 @@ jQuery( document ).ready(function($) {
 	var adsforwpSpecificCode 	= $('#adsforwp_ads_position_specific_controls');
 	var adsWrapper 				= $('#adsforwp-ads-control-wrapper');
 
+// Advanced AMP Ads Options
 
  $("#ad_type_format").change(function(){
       $(this).find("option:selected").each(function(){
