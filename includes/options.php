@@ -561,7 +561,7 @@ $amp_ads_option->add_field( array(
 			$amp_ads_option->add_field( array(
 					'name' => 'Parallax Effect',
 					'desc' => 'AMP Flying Carpet Ad works only for the incontent Ads',
-					'id'   => 'adsense_parallax',
+					'id'   => '_amp_adsense_parallax',
 					'type' => 'checkbox',
 					'classes'		   => 'amp-vendor-fields amp-adsense-data-1'
 				) );

@@ -104,178 +104,237 @@ function get_ad_id($id){
 
 add_action('pre_amp_render_post','ampforwp_display_amp_ads');
 function ampforwp_display_amp_ads(){
-	$id 		= get_the_ID();
-	$post_ad_id = get_ad_id($id);
-	$ad_type 	= get_post_meta($post_ad_id,'ad_type_format',true);
-	$ad_vendor	= get_post_meta($post_ad_id,'ad_vendor',true);
-	// Normal Ads
-	if('1' === $ad_type){
-		$ad_position = get_post_meta($post_ad_id,'normal_ad_type',true);
-		switch ($ad_position) {
+	$id 				= get_the_ID();
+	$post_ad_id 		= get_ad_id($id);
+	$selected_ads_for 	= get_post_meta($post_ad_id,'select_ads_for',true);
+	$ad_type 			= get_post_meta($post_ad_id,'ad_type_format',true);
+	$ad_vendor			= get_post_meta($post_ad_id,'ad_vendor',true);
+	if('1' === $selected_ads_for){
+		// Normal Ads
+		if('1' === $ad_type){
+			$ad_position = get_post_meta($post_ad_id,'normal_ad_type',true);
+			switch ($ad_position) {
 
-			case '1':
-				//  "Above Header";
-				 if('1' === $ad_vendor){
-				 		// $id = get_ad_id(get_the_ID());
-						 add_action('ampforwp_header_top_design2','ampforwp_adsense_ads');
-					}
-					else if('2' === $ad_vendor){
-						add_action('ampforwp_header_top_design2','ampforwp_dfp_ads');
-					}
-					else if('3' === $ad_vendor){
-						add_action('ampforwp_header_top_design2','ampforwp_custom_ads');
-					}
-				break;
-			case '2':
-				//  "Below Header";
-					if('1' === $ad_vendor){
-						 add_action('ampforwp_after_header','ampforwp_adsense_ads');
-					}
-					else if('2' === $ad_vendor){
-						add_action('ampforwp_after_header','ampforwp_dfp_ads');
-					}
-					else if('3' === $ad_vendor){
-						add_action('ampforwp_after_header','ampforwp_custom_ads');
-					}
-				break;
-			case '3':
-				//  "Before Title";
-					//  Adsense Ad
-					if('1' === $ad_vendor){
-						 add_action('ampforwp_above_the_title','ampforwp_adsense_ads');
-					}
-					// DFP Ad
-					else if('2' === $ad_vendor){
-						add_action('ampforwp_above_the_title','ampforwp_dfp_ads');
-					}
-					// Custom Ad
-					else if('3' === $ad_vendor){
-						add_action('ampforwp_above_the_title','ampforwp_custom_ads');
-					}
-				break;
-			case '4':
-				//  "After Title";
-				 	if('1' === $ad_vendor){
-						 add_action('ampforwp_below_the_title','ampforwp_adsense_ads');
-					}
-					// DFP Ad
-					else if('2' === $ad_vendor){
-						add_action('ampforwp_below_the_title','ampforwp_dfp_ads');
-					}
-					// Custom Ad
-					else if('3' === $ad_vendor){
-						add_action('ampforwp_below_the_title','ampforwp_custom_ads');
-					}
-				break;
-			case '5':
-				//  "Before Content";
-					if('1' === $ad_vendor){
-						 add_action('ampforwp_before_post_content','ampforwp_adsense_ads');
-					} 
-					// DFP Ad
-					else if('2' === $ad_vendor){
-						add_action('ampforwp_before_post_content','ampforwp_dfp_ads');
-					}
-					// Custom Ad
-					else if('3' === $ad_vendor){
-						add_action('ampforwp_before_post_content','ampforwp_custom_ads');
-					}
-				break;
-			case '6':
-				//  "After Featured Image";
-				 	if('1' === $ad_vendor){
-						 add_action('ampforwp_after_featured_image_hook','ampforwp_adsense_ads');
-					}
-					// DFP Ad
-					else if('2' === $ad_vendor){
-						add_action('ampforwp_after_featured_image_hook','ampforwp_dfp_ads');
-					}
-					// Custom Ad
-					else if('3' === $ad_vendor){
-						add_action('ampforwp_after_featured_image_hook','ampforwp_custom_ads');
-					}
-				break;
-			case '7':
-				//  "After Content";
-				 	if('1' === $ad_vendor){
-						 add_action('ampforwp_after_post_content','ampforwp_adsense_ads');
-					}
-					// DFP Ad
-					else if('2' === $ad_vendor){
-						add_action('ampforwp_after_post_content','ampforwp_dfp_ads');
-					}
-					// Custom Ad
-					else if('3' === $ad_vendor){
-						add_action('ampforwp_after_post_content','ampforwp_custom_ads');
-					}
-				break;
-			case '8':
-				//  "Above Related Posts";
-				 	if('1' === $ad_vendor){
-						 add_action('ampforwp_above_related_post','ampforwp_adsense_ads');
-					}
-					// DFP Ad
-					else if('2' === $ad_vendor){
-						add_action('ampforwp_above_related_post','ampforwp_dfp_ads');
-					}
-					// Custom Ad
-					else if('3' === $ad_vendor){
-						add_action('ampforwp_above_related_post','ampforwp_custom_ads');
-					}
-				break;
-			case '9':
-				//  "Below Related Posts";
-				 	if('1' === $ad_vendor){
-						 add_action('ampforwp_below_related_post','ampforwp_adsense_ads');
-					}
-					// DFP Ad
-					else if('2' === $ad_vendor){
-						add_action('ampforwp_below_related_post','ampforwp_dfp_ads');
-					}
-					// Custom Ad
-					else if('3' === $ad_vendor){
-						add_action('ampforwp_below_related_post','ampforwp_custom_ads');
-					}
-				break;
-			case '10':
-				//  "Before Footer";
-				 	if('1' === $ad_vendor){
-						 add_action('amp_post_template_above_footer','ampforwp_adsense_ads');
-					}
-					// DFP Ad
-					else if('2' === $ad_vendor){
-						add_action('amp_post_template_above_footer','ampforwp_dfp_ads');
-					}
-					// Custom Ad
-					else if('3' === $ad_vendor){
-						add_action('amp_post_template_above_footer','ampforwp_custom_ads');
-					}
-				break;
-			case '11':
-				//  "After Footer";
-				 	if('1' === $ad_vendor){
-						 add_action('ampforwp_global_after_footer','ampforwp_adsense_ads');
-					}
-					// DFP Ad
-					else if('2' === $ad_vendor){
-						 add_action('ampforwp_global_after_footer','ampforwp_dfp_ads');
-					}
-					// Custom Ad
-					else if('3' === $ad_vendor){
-						 add_action('ampforwp_global_after_footer','ampforwp_custom_ads');
-					}
-				break;
-			default:
-				//  "please select the postion to display";
-				break;
+				case '1':
+					//  "Above Header";
+					 if('1' === $ad_vendor){
+					 		// $id = get_ad_id(get_the_ID());
+							 add_action('ampforwp_header_top_design2','ampforwp_adsense_ads');
+						}
+						else if('2' === $ad_vendor){
+							add_action('ampforwp_header_top_design2','ampforwp_dfp_ads');
+						}
+						else if('3' === $ad_vendor){
+							add_action('ampforwp_header_top_design2','ampforwp_custom_ads');
+						}
+					break;
+				case '2':
+					//  "Below Header";
+						if('1' === $ad_vendor){
+							 add_action('ampforwp_after_header','ampforwp_adsense_ads');
+						}
+						else if('2' === $ad_vendor){
+							add_action('ampforwp_after_header','ampforwp_dfp_ads');
+						}
+						else if('3' === $ad_vendor){
+							add_action('ampforwp_after_header','ampforwp_custom_ads');
+						}
+					break;
+				case '3':
+					//  "Before Title";
+						//  Adsense Ad
+						if('1' === $ad_vendor){
+							 add_action('ampforwp_above_the_title','ampforwp_adsense_ads');
+						}
+						// DFP Ad
+						else if('2' === $ad_vendor){
+							add_action('ampforwp_above_the_title','ampforwp_dfp_ads');
+						}
+						// Custom Ad
+						else if('3' === $ad_vendor){
+							add_action('ampforwp_above_the_title','ampforwp_custom_ads');
+						}
+					break;
+				case '4':
+					//  "After Title";
+					 	if('1' === $ad_vendor){
+							 add_action('ampforwp_below_the_title','ampforwp_adsense_ads');
+						}
+						// DFP Ad
+						else if('2' === $ad_vendor){
+							add_action('ampforwp_below_the_title','ampforwp_dfp_ads');
+						}
+						// Custom Ad
+						else if('3' === $ad_vendor){
+							add_action('ampforwp_below_the_title','ampforwp_custom_ads');
+						}
+					break;
+				case '5':
+					//  "Before Content";
+						if('1' === $ad_vendor){
+							 add_action('ampforwp_before_post_content','ampforwp_adsense_ads');
+						} 
+						// DFP Ad
+						else if('2' === $ad_vendor){
+							add_action('ampforwp_before_post_content','ampforwp_dfp_ads');
+						}
+						// Custom Ad
+						else if('3' === $ad_vendor){
+							add_action('ampforwp_before_post_content','ampforwp_custom_ads');
+						}
+					break;
+				case '6':
+					//  "After Featured Image";
+					 	if('1' === $ad_vendor){
+							 add_action('ampforwp_after_featured_image_hook','ampforwp_adsense_ads');
+						}
+						// DFP Ad
+						else if('2' === $ad_vendor){
+							add_action('ampforwp_after_featured_image_hook','ampforwp_dfp_ads');
+						}
+						// Custom Ad
+						else if('3' === $ad_vendor){
+							add_action('ampforwp_after_featured_image_hook','ampforwp_custom_ads');
+						}
+					break;
+				case '7':
+					//  "After Content";
+					 	if('1' === $ad_vendor){
+							 add_action('ampforwp_after_post_content','ampforwp_adsense_ads');
+						}
+						// DFP Ad
+						else if('2' === $ad_vendor){
+							add_action('ampforwp_after_post_content','ampforwp_dfp_ads');
+						}
+						// Custom Ad
+						else if('3' === $ad_vendor){
+							add_action('ampforwp_after_post_content','ampforwp_custom_ads');
+						}
+					break;
+				case '8':
+					//  "Above Related Posts";
+					 	if('1' === $ad_vendor){
+							 add_action('ampforwp_above_related_post','ampforwp_adsense_ads');
+						}
+						// DFP Ad
+						else if('2' === $ad_vendor){
+							add_action('ampforwp_above_related_post','ampforwp_dfp_ads');
+						}
+						// Custom Ad
+						else if('3' === $ad_vendor){
+							add_action('ampforwp_above_related_post','ampforwp_custom_ads');
+						}
+					break;
+				case '9':
+					//  "Below Related Posts";
+					 	if('1' === $ad_vendor){
+							 add_action('ampforwp_below_related_post','ampforwp_adsense_ads');
+						}
+						// DFP Ad
+						else if('2' === $ad_vendor){
+							add_action('ampforwp_below_related_post','ampforwp_dfp_ads');
+						}
+						// Custom Ad
+						else if('3' === $ad_vendor){
+							add_action('ampforwp_below_related_post','ampforwp_custom_ads');
+						}
+					break;
+				case '10':
+					//  "Before Footer";
+					 	if('1' === $ad_vendor){
+							 add_action('amp_post_template_above_footer','ampforwp_adsense_ads');
+						}
+						// DFP Ad
+						else if('2' === $ad_vendor){
+							add_action('amp_post_template_above_footer','ampforwp_dfp_ads');
+						}
+						// Custom Ad
+						else if('3' === $ad_vendor){
+							add_action('amp_post_template_above_footer','ampforwp_custom_ads');
+						}
+					break;
+				case '11':
+					//  "After Footer";
+					 	if('1' === $ad_vendor){
+							 add_action('ampforwp_global_after_footer','ampforwp_adsense_ads');
+						}
+						// DFP Ad
+						else if('2' === $ad_vendor){
+							 add_action('ampforwp_global_after_footer','ampforwp_dfp_ads');
+						}
+						// Custom Ad
+						else if('3' === $ad_vendor){
+							 add_action('ampforwp_global_after_footer','ampforwp_custom_ads');
+						}
+					break;
+				default:
+					//  "please select the postion to display";
+					break;
+			}
+
 		}
+	
 
+		// InContent Ads
+		else if('2' === $ad_type){
+			$ad_position = get_post_meta($post_ad_id,'incontent_ad_type',true);
+			switch ($ad_vendor) {
+				case '1':
+					add_filter('the_content', 'ampforwp_incontent_adsense_ads');;
+					break;
+				case '2':
+					add_filter('the_content','ampforwp_incontent_dfp_ads');
+					break;
+				case '3':
+					add_filter('the_content','ampforwp_incontent_custom_ads');
+					break;
+				default:
+					add_filter('the_content','ampforwp_incontent_adsense_ads');
+					break;
+			};		
+		}
 	}
-
-	// InContent Ads
-	else if('2' === $ad_type){
-		$ad_position = get_post_meta($post_ad_id,'incontent_ad_type',true);
-		add_filter('the_content', 'adsforwp_insert_ads');		
+// FOR AMP BY AUTOMATTIC Normal And Incontent Ads
+	elseif('2' === $selected_ads_for){
+		$amp_ad_type 			= get_post_meta($post_ad_id,'_amp_ad_type_format',true);
+		$amp_ad_vendor			= get_post_meta($post_ad_id,'_amp_ad_vendor',true);
+		// Normal
+		if('1' === $amp_ad_type){
+			switch ($amp_ad_vendor) {
+				case '1':
+					add_action('amp_post_template_footer','ampforwp_adsense_ads');
+					break;
+				case '2':
+					add_action('amp_post_template_footer','ampforwp_dfp_ads');
+					break;
+				case '3':
+					add_action('amp_post_template_footer','ampforwp_custom_ads');
+					break;
+				default:
+					add_action('amp_post_template_footer','ampforwp_adsense_ads');
+					break;
+			}
+			
+		}
+		// InContent
+		elseif ('2' === $amp_ad_type) {
+			$ad_position = get_post_meta($post_ad_id,'_amp_incontent_ad_type',true);
+			switch ($amp_ad_vendor) {
+				case '1':
+					add_filter('the_content', 'ampforwp_incontent_adsense_ads');;
+					break;
+				case '2':
+					add_filter('the_content','ampforwp_incontent_dfp_ads');
+					break;
+				case '3':
+					add_filter('the_content','ampforwp_incontent_custom_ads');
+					break;
+				default:
+					add_filter('the_content','ampforwp_incontent_adsense_ads');
+					break;
+			}
+				
+		}
 	}
 }
 
@@ -284,12 +343,20 @@ function ampforwp_display_amp_ads(){
 function ampforwp_adsense_ads(){
 
 	$post_adsense_ad_id = get_ad_id(get_the_ID());
+	$selected_ads_for 	= get_post_meta($post_adsense_ad_id,'select_ads_for',true);
 	$dimensions 		= get_adsense_dimensions($post_adsense_ad_id);
 	$width				= $dimensions['width'];
 	$height				= $dimensions['height'];
-	$ad_client			= get_post_meta($post_adsense_ad_id,'adsense_ad_client',true);
-	$ad_slot			= get_post_meta($post_ad_id,'adsense_ad_slot',true);
-	$ad_parallax		= get_post_meta($post_adsense_ad_id,'adsense_parallax',true);
+	if('1' === $selected_ads_for){
+		$ad_client			= get_post_meta($post_adsense_ad_id,'adsense_ad_client',true);
+		$ad_slot			= get_post_meta($post_adsense_ad_id,'adsense_ad_slot',true);
+		$ad_parallax		= get_post_meta($post_adsense_ad_id,'adsense_parallax',true);
+	}
+	elseif('2' === $selected_ads_for){
+		$ad_client			= get_post_meta($post_adsense_ad_id,'_amp_adsense_ad_client',true);
+		$ad_slot			= get_post_meta($post_adsense_ad_id,'_amp_adsense_ad_slot',true);
+		$ad_parallax		= get_post_meta($post_adsense_ad_id,'_amp_adsense_parallax',true);
+	}
 	$ad_code 			= '<amp-ad class="ampforwp_adsense_ads"
 								type="adsense"
 								width="'. $width .'"
@@ -310,12 +377,21 @@ function ampforwp_incontent_adsense_ads($id){
 	else{
 		$post_adsense_ad_id = get_ad_id(get_the_ID());
 	}
+	$selected_ads_for 	= get_post_meta($post_adsense_ad_id,'select_ads_for',true);
 	$dimensions 		= get_adsense_dimensions($post_adsense_ad_id);
 	$width				= $dimensions['width'];
 	$height				= $dimensions['height'];
-	$ad_client			= get_post_meta($post_adsense_ad_id,'adsense_ad_client',true);
-	$ad_slot			= get_post_meta($post_ad_id,'adsense_ad_slot',true);
-	$ad_parallax		= get_post_meta($post_adsense_ad_id,'adsense_parallax',true);
+	if('1' === $selected_ads_for){
+		$ad_client			= get_post_meta($post_adsense_ad_id,'adsense_ad_client',true);
+		$ad_slot			= get_post_meta($post_ad_id,'adsense_ad_slot',true);
+		$ad_parallax		= get_post_meta($post_adsense_ad_id,'adsense_parallax',true);
+	}
+	elseif('2' === $selected_ads_for){
+		$ad_client			= get_post_meta($post_adsense_ad_id,'_amp_adsense_ad_client',true);
+		$ad_slot			= get_post_meta($post_adsense_ad_id,'_amp_adsense_ad_slot',true);
+		$ad_parallax		= get_post_meta($post_adsense_ad_id,'_amp_adsense_parallax',true);
+	}
+	
 	$ad_code 			= '<amp-ad class="ampforwp_incontent_adsense_ads"
 								type="adsense"
 								width="'. $width .'"
@@ -340,121 +416,243 @@ function ampforwp_sticky_adsense_ads(){
 
 function get_adsense_dimensions($id){
 
-	$is_link			= get_post_meta($id,'adsense_link',true);
-	if('on' == $is_link){
-		$dimensions = get_post_meta($id,'link_ads_dimensions',true);
-		switch ($dimensions) {
-			case '1':
+$selected_ads_for 	= get_post_meta($id,'select_ads_for',true);
+	if('1' === $selected_ads_for){
+		$is_link			= get_post_meta($id,'adsense_link',true);
+		if('on' == $is_link){
+			$dimensions = get_post_meta($id,'link_ads_dimensions',true);
+			switch ($dimensions) {
+				case '1':
+				$dimension = array('width' => '120',
+									'height' => '90'
+									 );
+				return $dimension;
+				break;
+
+			case '2':
+				$dimension = array('width' => '160',
+									'height' => '90'
+									 );
+				return $dimension;
+				break;
+
+			case '3':
+				$dimension = array('width' => '180',
+									'height' => '90'
+									 );
+				return $dimension;
+				break;
+
+			case '4':
+				$dimension = array('width' => '200',
+									'height' => '90'
+									 );
+				return $dimension;
+				break;
+
+			case '5':
+				$dimension = array('width' => '468',
+									'height' => '15'
+									 );
+				return $dimension;
+				break;
+			
+			case '6':
+				$dimension = array('width' => '728',
+									'height' => '15'
+									 );
+				return $dimension;
+				break;
+			default:
 			$dimension = array('width' => '120',
 								'height' => '90'
 								 );
-			return $dimension;
 			break;
+			}
+		}
+		$dimensions = get_post_meta($id,'adsense_dimensions',true);
+		switch ($dimensions) {
+			case '1':
+				$dimension = array('width' => '300',
+									'height' => '250'
+									 );
+				return $dimension;
+				break;
 
-		case '2':
-			$dimension = array('width' => '160',
-								'height' => '90'
-								 );
-			return $dimension;
-			break;
+			case '2':
+				$dimension = array('width' => '336',
+									'height' => '280'
+									 );
+				return $dimension;
+				break;
 
-		case '3':
-			$dimension = array('width' => '180',
-								'height' => '90'
-								 );
-			return $dimension;
-			break;
+			case '3':
+				$dimension = array('width' => '728',
+									'height' => '90'
+									 );
+				return $dimension;
+				break;
 
-		case '4':
-			$dimension = array('width' => '200',
-								'height' => '90'
-								 );
-			return $dimension;
-			break;
+			case '4':
+				$dimension = array('width' => '300',
+									'height' => '600'
+									 );
+				return $dimension;
+				break;
 
-		case '5':
-			$dimension = array('width' => '468',
-								'height' => '15'
-								 );
-			return $dimension;
-			break;
-		
-		case '6':
-			$dimension = array('width' => '728',
-								'height' => '15'
-								 );
-			return $dimension;
-			break;
-		default:
-		$dimension = array('width' => '120',
-							'height' => '90'
-							 );
-		break;
+			case '5':
+				$dimension = array('width' => '320',
+									'height' => '100'
+									 );
+				return $dimension;
+				break;
+			
+			case '6':
+				$dimension = array('width' => '200',
+									'height' => '50'
+									 );
+				return $dimension;
+				break;
+
+			case '7':
+				$dimension = array('width' => '320',
+									'height' => '50'
+									 );
+				return $dimension;
+				break;
+
+			case '8':
+				$dimension = array();
+				$dimension['width'] = get_post_meta($id,'adsense_custom_width',true);
+				$dimension['height'] = get_post_meta($id,'adsense_custom_height',true);
+				return $dimension;
+				break;
+
+			default:
+				$dimension = array('width' => '300',
+									'height' => '200'
+									 );
+				break;
 		}
 	}
-	$dimensions = get_post_meta($id,'adsense_dimensions',true);
-	switch ($dimensions) {
-		case '1':
-			$dimension = array('width' => '300',
-								'height' => '250'
-								 );
-			return $dimension;
-			break;
 
-		case '2':
-			$dimension = array('width' => '336',
-								'height' => '280'
-								 );
-			return $dimension;
-			break;
+	if('2' === $selected_ads_for){
+		$is_link			= get_post_meta($id,'_amp_adsense_link',true);
+		if('on' == $is_link){
+			$dimensions = get_post_meta($id,'_amp_link_ads_dimensions',true);
+			switch ($dimensions) {
+				case '1':
+				$dimension = array('width' => '120',
+									'height' => '90'
+									 );
+				return $dimension;
+				break;
 
-		case '3':
-			$dimension = array('width' => '728',
+			case '2':
+				$dimension = array('width' => '160',
+									'height' => '90'
+									 );
+				return $dimension;
+				break;
+
+			case '3':
+				$dimension = array('width' => '180',
+									'height' => '90'
+									 );
+				return $dimension;
+				break;
+
+			case '4':
+				$dimension = array('width' => '200',
+									'height' => '90'
+									 );
+				return $dimension;
+				break;
+
+			case '5':
+				$dimension = array('width' => '468',
+									'height' => '15'
+									 );
+				return $dimension;
+				break;
+			
+			case '6':
+				$dimension = array('width' => '728',
+									'height' => '15'
+									 );
+				return $dimension;
+				break;
+			default:
+			$dimension = array('width' => '120',
 								'height' => '90'
 								 );
-			return $dimension;
 			break;
+			}
+		}
+		$dimensions = get_post_meta($id,'_amp_adsense_dimensions',true);
+		switch ($dimensions) {
+			case '1':
+				$dimension = array('width' => '300',
+									'height' => '250'
+									 );
+				return $dimension;
+				break;
 
-		case '4':
-			$dimension = array('width' => '300',
-								'height' => '600'
-								 );
-			return $dimension;
-			break;
+			case '2':
+				$dimension = array('width' => '336',
+									'height' => '280'
+									 );
+				return $dimension;
+				break;
 
-		case '5':
-			$dimension = array('width' => '320',
-								'height' => '100'
-								 );
-			return $dimension;
-			break;
-		
-		case '6':
-			$dimension = array('width' => '200',
-								'height' => '50'
-								 );
-			return $dimension;
-			break;
+			case '3':
+				$dimension = array('width' => '728',
+									'height' => '90'
+									 );
+				return $dimension;
+				break;
 
-		case '7':
-			$dimension = array('width' => '320',
-								'height' => '50'
-								 );
-			return $dimension;
-			break;
+			case '4':
+				$dimension = array('width' => '300',
+									'height' => '600'
+									 );
+				return $dimension;
+				break;
 
-		case '8':
-			$dimension = array();
-			$dimension['width'] = get_post_meta($id,'adsense_custom_width',true);
-			$dimension['height'] = get_post_meta($id,'adsense_custom_height',true);
-			return $dimension;
-			break;
+			case '5':
+				$dimension = array('width' => '320',
+									'height' => '100'
+									 );
+				return $dimension;
+				break;
+			
+			case '6':
+				$dimension = array('width' => '200',
+									'height' => '50'
+									 );
+				return $dimension;
+				break;
 
-		default:
-			$dimension = array('width' => '300',
-								'height' => '200'
-								 );
-			break;
+			case '7':
+				$dimension = array('width' => '320',
+									'height' => '50'
+									 );
+				return $dimension;
+				break;
+
+			case '8':
+				$dimension = array();
+				$dimension['width'] = get_post_meta($id,'_amp_adsense_custom_width',true);
+				$dimension['height'] = get_post_meta($id,'_amp_adsense_custom_height',true);
+				return $dimension;
+				break;
+
+			default:
+				$dimension = array('width' => '300',
+									'height' => '200'
+									 );
+				break;
+		}
 	}
 }
 
@@ -464,11 +662,18 @@ function get_adsense_dimensions($id){
 function ampforwp_dfp_ads(){
 
 	$post_dfp_ad_id = get_ad_id(get_the_ID());
+	$selected_ads_for 	= get_post_meta($post_dfp_ad_id,'select_ads_for',true);
 	$dimensions 		= get_dfp_dimensions($post_dfp_ad_id);
 	$width				= $dimensions['width'];
 	$height				= $dimensions['height'];
-	$ad_slot		= get_post_meta($post_dfp_ad_id,'dfp_ad_slot',true);
-	$ad_parallax	= get_post_meta($post_dfp_ad_id,'dfp_parallax',true);
+	if('1' === $selected_ads_for){
+		$ad_slot			= get_post_meta($post_dfp_ad_id,'dfp_ad_slot',true);
+		$ad_parallax		= get_post_meta($post_dfp_ad_id,'dfp_parallax',true);
+	}
+	elseif('2' === $selected_ads_for){
+		$ad_slot			= get_post_meta($post_dfp_ad_id,'_amp_dfp_parallax',true);
+		$ad_parallax		= get_post_meta($post_dfp_ad_id,'_amp_dfp_parallax',true);
+	}
 	$ad_code		= '<amp-ad class="ampforwp_dfp_ads"
 							type="doubleclick"
 							width="'. $width .'"
@@ -489,8 +694,14 @@ function ampforwp_incontent_dfp_ads($id){
 	$dimensions 		= get_dfp_dimensions($post_dfp_ad_id);
 	$width				= $dimensions['width'];
 	$height				= $dimensions['height'];
-	$ad_slot		= get_post_meta($post_dfp_ad_id,'dfp_ad_slot',true);
-	$ad_parallax	= get_post_meta($post_dfp_ad_id,'dfp_parallax',true);
+	if('1' === $selected_ads_for){
+		$ad_slot			= get_post_meta($post_dfp_ad_id,'dfp_ad_slot',true);
+		$ad_parallax		= get_post_meta($post_dfp_ad_id,'dfp_parallax',true);
+	}
+	elseif('2' === $selected_ads_for){
+		$ad_slot			= get_post_meta($post_dfp_ad_id,'_amp_dfp_parallax',true);
+		$ad_parallax		= get_post_meta($post_dfp_ad_id,'_amp_dfp_parallax',true);
+	}
 	$ad_code		= '<amp-ad class="ampforwp_incontent_dfp_ads"
 							type="doubleclick"
 							width="'. $width .'"
@@ -511,70 +722,141 @@ function ampforwp_dfp_sticky_ads(){
 // DoubleClick dimensions 
 
 function get_dfp_dimensions($id){
-	$dimensions = get_post_meta($id,'dfp_dimensions',true);
-	switch ($dimensions) {
-		case '1':
-			$dimension = array('width' => '300',
-								'height' => '250'
-								 );
-			return $dimension;
-			break;
+	$selected_ads_for 	= get_post_meta($id,'select_ads_for',true);
+	if('1' === $selected_ads_for){
+		$dimensions = get_post_meta($id,'dfp_dimensions',true);
+		switch ($dimensions) {
+			case '1':
+				$dimension = array('width' => '300',
+									'height' => '250'
+									 );
+				return $dimension;
+				break;
 
-		case '2':
-			$dimension = array('width' => '336',
-								'height' => '280'
-								 );
-			return $dimension;
-			break;
+			case '2':
+				$dimension = array('width' => '336',
+									'height' => '280'
+									 );
+				return $dimension;
+				break;
 
-		case '3':
-			$dimension = array('width' => '728',
-								'height' => '90'
-								 );
-			return $dimension;
-			break;
+			case '3':
+				$dimension = array('width' => '728',
+									'height' => '90'
+									 );
+				return $dimension;
+				break;
 
-		case '4':
-			$dimension = array('width' => '300',
-								'height' => '600'
-								 );
-			return $dimension;
-			break;
+			case '4':
+				$dimension = array('width' => '300',
+									'height' => '600'
+									 );
+				return $dimension;
+				break;
 
-		case '5':
-			$dimension = array('width' => '320',
-								'height' => '100'
-								 );
-			return $dimension;
-			break;
-		
-		case '6':
-			$dimension = array('width' => '200',
-								'height' => '50'
-								 );
-			return $dimension;
-			break;
+			case '5':
+				$dimension = array('width' => '320',
+									'height' => '100'
+									 );
+				return $dimension;
+				break;
+			
+			case '6':
+				$dimension = array('width' => '200',
+									'height' => '50'
+									 );
+				return $dimension;
+				break;
 
-		case '7':
-			$dimension = array('width' => '320',
-								'height' => '50'
-								 );
-			return $dimension;
-			break;
+			case '7':
+				$dimension = array('width' => '320',
+									'height' => '50'
+									 );
+				return $dimension;
+				break;
 
-		case '8':
-			$dimension = array();
-			$dimension['width'] = get_post_meta($id,'dfp_custom_width',true);
-			$dimension['height'] = get_post_meta($id,'dfp_custom_height',true);
-			return $dimension;
-			break;
+			case '8':
+				$dimension = array();
+				$dimension['width'] = get_post_meta($id,'dfp_custom_width',true);
+				$dimension['height'] = get_post_meta($id,'dfp_custom_height',true);
+				return $dimension;
+				break;
 
-		default:
-			$dimension = array('width' => '300',
-								'height' => '200'
-								 );
-			return $dimension;
-			break;
+			default:
+				$dimension = array('width' => '300',
+									'height' => '200'
+									 );
+				return $dimension;
+				break;
+		}
+	}
+
+	if('2' === $selected_ads_for){
+		$dimensions = get_post_meta($id,'_amp_dfp_dimensions',true);
+		switch ($dimensions) {
+			case '1':
+				$dimension = array('width' => '300',
+									'height' => '250'
+									 );
+				return $dimension;
+				break;
+
+			case '2':
+				$dimension = array('width' => '336',
+									'height' => '280'
+									 );
+				return $dimension;
+				break;
+
+			case '3':
+				$dimension = array('width' => '728',
+									'height' => '90'
+									 );
+				return $dimension;
+				break;
+
+			case '4':
+				$dimension = array('width' => '300',
+									'height' => '600'
+									 );
+				return $dimension;
+				break;
+
+			case '5':
+				$dimension = array('width' => '320',
+									'height' => '100'
+									 );
+				return $dimension;
+				break;
+			
+			case '6':
+				$dimension = array('width' => '200',
+									'height' => '50'
+									 );
+				return $dimension;
+				break;
+
+			case '7':
+				$dimension = array('width' => '320',
+									'height' => '50'
+									 );
+				return $dimension;
+				break;
+
+			case '8':
+				$dimension = array();
+				$dimension['width'] = get_post_meta($id,'_amp_dfp_custom_width',true);
+				$dimension['height'] = get_post_meta($id,'_amp_dfp_custom_height',true);
+				return $dimension;
+				break;
+
+			default:
+				$dimension = array('width' => '300',
+									'height' => '200'
+									 );
+				return $dimension;
+				break;
+		}
 	}
 }
 
@@ -623,7 +905,7 @@ function ampforwp_amp_sticky_ad(){
 	$ad_vendor	= get_post_meta($ad_id,'ad_vendor',true);
 	if('4' === $ad_type){
 		if('1' === $ad_vendor){
-		 ampforwp_adsense_sticky_ads();
+		 ampforwp_sticky_adsense_ads();
 		}
 		elseif('2' === $ad_vendor){
 			ampforwp_dfp_sticky_ads();

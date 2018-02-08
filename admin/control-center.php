@@ -37,8 +37,16 @@ function adsforwp_hide_visual_editor($content) {
 add_shortcode('ads-for-wp', 'adsforwp_shortcode_generator');
 function adsforwp_shortcode_generator( $atts ){
 	$adsPostId = get_ad_id(get_the_ID());
-	$ad_vendor = get_post_meta($adsPostId,'ad_vendor',true);
-	$ad_type   = get_post_meta($adsPostId,'ad_type_format',true);
+	$selected_ads_for 	= get_post_meta($adsPostId,'select_ads_for',true);
+	if('1' === $selected_ads_for){
+		$ad_vendor = get_post_meta($adsPostId,'ad_vendor',true);
+		$ad_type   = get_post_meta($adsPostId,'ad_type_format',true);
+	}
+	elseif('2' === $selected_ads_for){
+		$ad_vendor = get_post_meta($adsPostId,'_amp_ad_vendor',true);
+		$ad_type   = get_post_meta($adsPostId,'_amp_ad_type_format',true);
+	}
+	
 	$content = '';
 	$show_ads 	= '';
 
@@ -95,7 +103,7 @@ function adsforwp_save_ads_data() {
  * Insert the ad in the Content
 */
 add_filter('the_content', 'adsforwp_insert_ads');
-//var_dump($content);
+
 function adsforwp_insert_ads( $content ){
 	global $post;
 
@@ -112,7 +120,13 @@ function adsforwp_insert_ads( $content ){
 	}
 
 	$post_meta = get_post_meta($currentPostId, 'adsforwp-advert-data', true);
-	$cmb2_incontent_options = get_metadata('post',get_ad_id(get_the_ID()), 'incontent_ad_type');
+	$selected_ads_for 	= get_post_meta(get_ad_id(get_the_ID()),'select_ads_for',true);
+	if('1' === $selected_ads_for){
+		$cmb2_incontent_options = get_metadata('post',get_ad_id(get_the_ID()), 'incontent_ad_type');
+	}
+	elseif('2' === $selected_ads_for){
+		$cmb2_incontent_options = get_metadata('post',get_ad_id(get_the_ID()), '_amp_incontent_ad_type');
+	}
 	
 	//Get all other adds which are set to inline
 	$args = array(
@@ -150,41 +164,81 @@ function adsforwp_insert_ads( $content ){
 	    }
 
 	    elseif(isset($cmb2_incontent_options)){
-	    	if(function_exists('ampforwp_is_amp_endpoint') && ampforwp_is_amp_endpoint()){
-		    	$adsVisiblityType 	= get_post_field('adsforwp_incontent_ads_default', $post_id);
-			    $adsparagraphs 		= $cmb2_incontent_options[0];
-			    $ad_vendor 			= get_post_meta($adsPostId,'ad_vendor',true);
-			    $ad_type 			= get_post_meta($adsPostId,'ad_type_format',true);
-		    	if('1' === $ad_vendor && '2' === $ad_type){
-				    $adsContent = ampforwp_incontent_adsense_ads($adsPostId);
-				    $post_meta[$adsPostId] = array(				
-									            'post_id' => $currentPostId,
-									            'ads_id' => $adsPostId,
-									            'visibility' => $adsVisiblityType,
-									            'paragraph' => $adsparagraphs,
-									            'content'=>$adsContent,
-			    							);
+	    	if('1' === $selected_ads_for){
+		    	if(function_exists('ampforwp_is_amp_endpoint') && ampforwp_is_amp_endpoint()){
+			    	$adsVisiblityType 	= get_post_field('adsforwp_incontent_ads_default', $post_id);
+				    $adsparagraphs 		= $cmb2_incontent_options[0];
+				    $ad_vendor 			= get_post_meta($adsPostId,'ad_vendor',true);
+				    $ad_type 			= get_post_meta($adsPostId,'ad_type_format',true);
+			    	if('1' === $ad_vendor && '2' === $ad_type){
+					    $adsContent = ampforwp_incontent_adsense_ads($adsPostId);
+					    $post_meta[$adsPostId] = array(				
+										            'post_id' => $currentPostId,
+										            'ads_id' => $adsPostId,
+										            'visibility' => $adsVisiblityType,
+										            'paragraph' => $adsparagraphs,
+										            'content'=>$adsContent,
+				    							);
+					}
+					elseif('2' === $ad_vendor && '2' === $ad_type){
+						$adsContent = ampforwp_incontent_dfp_ads($adsPostId);
+					    $post_meta[$adsPostId] = array(				
+										            'post_id' => $currentPostId,
+										            'ads_id' => $adsPostId,
+										            'visibility' => $adsVisiblityType,
+										            'paragraph' => $adsparagraphs,
+										            'content'=>$adsContent,
+				    							);
+					}
+					elseif('3' === $ad_vendor && '2' === $ad_type){
+						$adsContent = ampforwp_incontent_custom_ads($adsPostId);
+					    $post_meta[$adsPostId] = array(				
+										            'post_id' => $currentPostId,
+										            'ads_id' => $adsPostId,
+										            'visibility' => $adsVisiblityType,
+										            'paragraph' => $adsparagraphs,
+										            'content'=>$adsContent,
+				    							);
+					}
 				}
-				elseif('2' === $ad_vendor && '2' === $ad_type){
-					$adsContent = ampforwp_incontent_dfp_ads($adsPostId);
-				    $post_meta[$adsPostId] = array(				
-									            'post_id' => $currentPostId,
-									            'ads_id' => $adsPostId,
-									            'visibility' => $adsVisiblityType,
-									            'paragraph' => $adsparagraphs,
-									            'content'=>$adsContent,
-			    							);
-				}
-				elseif('3' === $ad_vendor && '2' === $ad_type){
-					$adsContent = ampforwp_incontent_custom_ads($adsPostId);
-				    $post_meta[$adsPostId] = array(				
-									            'post_id' => $currentPostId,
-									            'ads_id' => $adsPostId,
-									            'visibility' => $adsVisiblityType,
-									            'paragraph' => $adsparagraphs,
-									            'content'=>$adsContent,
-			    							);
-				}
+			}
+			if('2' === $selected_ads_for){
+			    	$adsVisiblityType 	= get_post_field('adsforwp_incontent_ads_default', $post_id);
+				    $adsparagraphs 		= $cmb2_incontent_options[0];
+				    $ad_vendor 			= get_post_meta($adsPostId,'_amp_ad_vendor',true);
+				    $ad_type 			= get_post_meta($adsPostId,'_amp_ad_type_format',true);
+			    	if('1' === $ad_vendor && '2' === $ad_type){
+					    $adsContent = ampforwp_incontent_adsense_ads($adsPostId);
+					    $post_meta[$adsPostId] = array(				
+										            'post_id' => $currentPostId,
+										            'ads_id' => $adsPostId,
+										            'visibility' => $adsVisiblityType,
+										            'paragraph' => $adsparagraphs,
+										            'content'=>$adsContent,
+				    							);
+
+					}
+					elseif('2' === $ad_vendor && '2' === $ad_type){
+						$adsContent = ampforwp_incontent_dfp_ads($adsPostId);
+					    $post_meta[$adsPostId] = array(				
+										            'post_id' => $currentPostId,
+										            'ads_id' => $adsPostId,
+										            'visibility' => $adsVisiblityType,
+										            'paragraph' => $adsparagraphs,
+										            'content'=>$adsContent,
+				    							);
+					}
+					elseif('3' === $ad_vendor && '2' === $ad_type){
+						$adsContent = ampforwp_incontent_custom_ads($adsPostId);
+					    $post_meta[$adsPostId] = array(				
+										            'post_id' => $currentPostId,
+										            'ads_id' => $adsPostId,
+										            'visibility' => $adsVisiblityType,
+										            'paragraph' => $adsparagraphs,
+										            'content'=>$adsContent,
+				    							);
+					}
+				
 			}
 	    }
 
