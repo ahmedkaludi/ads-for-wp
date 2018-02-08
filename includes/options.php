@@ -111,9 +111,12 @@ function advanced_amp_ampforwp_ads_options() {
 						'3'    			=> esc_html__( 'Before Title', 'ampforwp_adsforwp' ),
 						'4'    			=> esc_html__( 'After Title', 'ampforwp_adsforwp' ),
 						'5'    			=> esc_html__( 'Before Content', 'ampforwp_adsforwp' ),
-						'6'   			=> esc_html__( 'After Content', 'ampforwp_adsforwp' ),
-						'7'     		=> esc_html__( 'Before Footer', 'ampforwp_adsforwp' ),
-						'8'     		=> esc_html__( 'After Footer', 'ampforwp_adsforwp' ),
+						'6'   			=> esc_html__( 'After Featured Image', 'ampforwp_adsforwp' ),
+						'7'     		=> esc_html__( 'After Content', 'ampforwp_adsforwp' ),
+						'8'     		=> esc_html__( 'Above Related Post', 'ampforwp_adsforwp' ),
+						'9'     		=> esc_html__( 'Below Related Post', 'ampforwp_adsforwp' ),
+						'10'     		=> esc_html__( 'Before Footer', 'ampforwp_adsforwp' ),
+						'11'     		=> esc_html__( 'After Footer', 'ampforwp_adsforwp' ),
 					),
 					'classes' => 'ad-type ad-type-1'
 				) );
