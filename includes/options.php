@@ -422,14 +422,7 @@ $amp_ads_option->add_field( array(
 					'type'             => 'select',
 					'show_option_none' => false,
 					'options'          => array(
-						'1' 		 	=> esc_html__( 'Above Header', 'ampforwp_adsforwp' ),
-						'2'  	 		=> esc_html__( 'Below Header', 'ampforwp_adsforwp' ),
-						'3'    			=> esc_html__( 'Before Title', 'ampforwp_adsforwp' ),
-						'4'    			=> esc_html__( 'After Title', 'ampforwp_adsforwp' ),
-						'5'    			=> esc_html__( 'Before Content', 'ampforwp_adsforwp' ),
-						'6'   			=> esc_html__( 'After Content', 'ampforwp_adsforwp' ),
-						'7'     		=> esc_html__( 'Before Footer', 'ampforwp_adsforwp' ),
-						'8'     		=> esc_html__( 'After Footer', 'ampforwp_adsforwp' ),
+						'1'     		=> esc_html__( 'Below Footer', 'ampforwp_adsforwp' ),
 					),
 					'classes' => 'amp-ad-type amp-ad-type-1'
 				) );
@@ -468,16 +461,6 @@ $amp_ads_option->add_field( array(
 					'type' => 'title',
 					'classes' => 'amp-ad-type amp-ad-type-4'
 				) );
-
-			// 5. AMP Auto Ads        
-			    $amp_ads_option->add_field( array(
-					'name' => esc_html__( 'AMP Auto Ads', 'ampforwp_adsforwp' ),
-					'desc' => 'Enter your AMP Auto Ad Code',
-					'id'   => '_amp_amp_auto_ad_type',
-					'type' => 'textarea_code',
-					'classes' => 'amp-ad-type amp-ad-type-5'
-				) );
-
 
 	// Vendor
 	$amp_ads_option->add_field( array(
