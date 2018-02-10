@@ -316,25 +316,6 @@ function ampforwp_display_amp_ads(){
 			}
 			
 		}
-		// InContent
-		elseif ('2' === $amp_ad_type) {
-			$ad_position = get_post_meta($post_ad_id,'_amp_incontent_ad_type',true);
-			switch ($amp_ad_vendor) {
-				case '1':
-					add_filter('the_content', 'ampforwp_incontent_adsense_ads');;
-					break;
-				case '2':
-					add_filter('the_content','ampforwp_incontent_dfp_ads');
-					break;
-				case '3':
-					add_filter('the_content','ampforwp_incontent_custom_ads');
-					break;
-				default:
-					add_filter('the_content','ampforwp_incontent_adsense_ads');
-					break;
-			}
-				
-		}
 	}
 }
 
