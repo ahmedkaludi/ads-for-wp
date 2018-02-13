@@ -291,7 +291,7 @@ function ampforwp_display_amp_ads(){
 				default:
 					add_filter('the_content','ampforwp_incontent_adsense_ads');
 					break;
-			};		
+			}		
 		}
 	}
 // FOR AMP BY AUTOMATTIC Normal And Incontent Ads
@@ -652,19 +652,20 @@ function ampforwp_dfp_ads(){
 		$ad_parallax		= get_post_meta($post_dfp_ad_id,'dfp_parallax',true);
 	}
 	elseif('2' === $selected_ads_for){
-		$ad_slot			= get_post_meta($post_dfp_ad_id,'_amp_dfp_parallax',true);
+		$ad_slot			= get_post_meta($post_dfp_ad_id,'_amp_dfp_ad_slot',true);
 		$ad_parallax		= get_post_meta($post_dfp_ad_id,'_amp_dfp_parallax',true);
 	}
 	$ad_code		= '<amp-ad class="ampforwp_dfp_ads"
 							type="doubleclick"
 							width="'. $width .'"
 							height="'. $height .'"
-							data-slot="'. $data_slot .'"
+							data-slot="'. $ad_slot .'"
 						></amp-ad>';
 	echo $ad_code;
 }
 
 function ampforwp_incontent_dfp_ads($id){
+	$selected_ads_for 	= get_post_meta($id,'select_ads_for',true);
 	$post_dfp_ad_id = $id;
 	if(NULL != $post_dfp_ad_id){
 		// do nothing
@@ -680,14 +681,14 @@ function ampforwp_incontent_dfp_ads($id){
 		$ad_parallax		= get_post_meta($post_dfp_ad_id,'dfp_parallax',true);
 	}
 	elseif('2' === $selected_ads_for){
-		$ad_slot			= get_post_meta($post_dfp_ad_id,'_amp_dfp_parallax',true);
+		$ad_slot			= get_post_meta($post_dfp_ad_id,'_amp_dfp_ad_slot',true);
 		$ad_parallax		= get_post_meta($post_dfp_ad_id,'_amp_dfp_parallax',true);
 	}
 	$ad_code		= '<amp-ad class="ampforwp_incontent_dfp_ads"
 							type="doubleclick"
 							width="'. $width .'"
 							height="'. $height .'"
-							data-slot="'. $data_slot .'"
+							data-slot="'. $ad_slot .'"
 						></amp-ad>';
 	return $ad_code;
 }

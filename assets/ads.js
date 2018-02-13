@@ -109,7 +109,7 @@ $("#_amp_ad_type_format").change(function(){
               $(".amp-vendor-fields").hide();
               $(".amp-vendor-fields.amp-"+optionHtml+"-data-" + optionValue).show();
           } else{
-              $(".amp-vendor-data").hide();
+              $(".amp-vendor-fields").hide();
           }         
       });
     }).change();
