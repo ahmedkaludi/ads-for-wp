@@ -30,7 +30,15 @@ $("#select_ads_for").change(function(){
           var optionValue = $(this).attr("value");
           if(optionValue){
               $(".ad-type").hide();
+              $("[id=adsense_parallax]").hide();
+              $("[id=dfp_parallax]").hide();
+              $("[id=custom_parallax]").hide();	
               $(".ad-type.ad-type-" + optionValue).show();
+              if('2' == optionValue){
+              	 $("[id=adsense_parallax]").show();
+              	 $("[id=dfp_parallax]").show();
+              	  $("[id=custom_parallax]").show();
+              }
           } else{
               $(".ad-type").hide();
           }         
@@ -94,7 +102,15 @@ $("#_amp_ad_type_format").change(function(){
           var optionValue = $(this).attr("value");
           if(optionValue){
               $(".amp-ad-type").hide();
+              $("[id=_amp_adsense_parallax]").hide();
+              $("[id=_amp_dfp_parallax]").hide();
+              $("[id=_amp_custom_parallax]").hide();
               $(".amp-ad-type.amp-ad-type-" + optionValue).show();
+              if('2' == optionValue){
+              	 $("[id=_amp_adsense_parallax]").show();
+              	 $("[id=_amp_dfp_parallax]").show();
+              	  $("[id=_amp_custom_parallax]").show();
+              }
           } else{
               $(".amp-ad-type").hide();
           }         

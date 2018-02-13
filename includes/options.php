@@ -329,10 +329,17 @@ function advanced_amp_ampforwp_ads_options() {
 				) );
 			$ampforwp_ads_option->add_field( array(
 					'name' => 'Parallax Effect',
-					'desc' => 'AMP Flying Carpet Ad',
+					'desc' => 'AMP Flying Carpet Ad works only for the incontent Ads',
 					'id'   => 'custom_parallax',
 					'type' => 'checkbox',
 					'classes'		   => 'vendor-fields custom-data-3'
+				) );
+	// Optimize Ads
+	$ampforwp_ads_option->add_field( array(
+					'name' => 'Optimize Ads',
+					'desc' => 'Optimize data through data-loading-strategy',
+					'id'   => 'optimize_ads',
+					'type' => 'checkbox',
 				) );
 }
 
@@ -623,9 +630,17 @@ $amp_ads_option->add_field( array(
 				) );
 			$amp_ads_option->add_field( array(
 					'name' => 'Parallax Effect',
-					'desc' => 'AMP Flying Carpet Ad',
+					'desc' => 'AMP Flying Carpet Ad works only for the incontent Ads',
 					'id'   => '_amp_custom_parallax',
 					'type' => 'checkbox',
 					'classes'		   => 'amp-vendor-fields amp-custom-data-3'
+				) );
+
+	// Optimize Ads
+	$amp_ads_option->add_field( array(
+					'name' => 'Optimize Ads',
+					'desc' => 'Optimize data through data-loading-strategy',
+					'id'   => '_amp_optimize_ads',
+					'type' => 'checkbox',
 				) );
 }
