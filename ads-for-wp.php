@@ -1043,13 +1043,24 @@ function ampforwp_adsforwp_scripts( $data ) {
 	if ( $show_ads != 'yes' ) {
 		return $data ; // Do not show ads and return the data as it is
 	}
+	$selected_ads_for 	= get_post_meta($post_ad_id,'select_ads_for',true);
+	if('1' === $select_ads_for){
+		$ad_type 	= get_post_meta($post_ad_id,'ad_type_format',true);
+		$ad_vendor	= get_post_meta($post_ad_id,'ad_vendor',true);
 
-	$ad_type 	= get_post_meta($post_ad_id,'ad_type_format',true);
-	$ad_vendor	= get_post_meta($post_ad_id,'ad_vendor',true);
+		$adsense_parallax 	= get_post_meta($post_ad_id,'adsense_parallax',true);
+		$dfp_parallax 		= get_post_meta($post_ad_id,'dfp_parallax',true);
+		$custom_parallax 	= get_post_meta($post_ad_id,'custom_parallax',true);
+	}
+	elseif('2' === $select_ads_for){
+		$ad_type 	= get_post_meta($post_ad_id,'_amp_ad_type_format',true);
+		$ad_vendor	= get_post_meta($post_ad_id,'_amp_ad_vendor',true);
 
-	$adsense_parallax 	= get_post_meta($post_ad_id,'adsense_parallax',true);
-	$dfp_parallax 		= get_post_meta($post_ad_id,'dfp_parallax',true);
-	$custom_parallax 	= get_post_meta($post_ad_id,'custom_parallax',true);
+		$adsense_parallax 	= get_post_meta($post_ad_id,'_amp_adsense_parallax',true);
+		$dfp_parallax 		= get_post_meta($post_ad_id,'_amp_dfp_parallax',true);
+		$custom_parallax 	= get_post_meta($post_ad_id,'_amp_custom_parallax',true);
+	}
+	
 
 	if('1' === $ad_type || '2' === $ad_type || '3' === $ad_type || '4' === $ad_type || '5' === $ad_type ) {
 
