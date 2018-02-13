@@ -376,7 +376,6 @@ $amp_ads_option->add_field( array(
 				'2'  	 		=> esc_html__( 'InContent', 'ampforwp_adsforwp' ),
 				'3'    			=> esc_html__( 'Manual', 'ampforwp_adsforwp' ),
 				'4'    			=> esc_html__( 'Sticky', 'ampforwp_adsforwp' ),
-				'5'   			=> esc_html__( 'AMP Auto Ads', 'ampforwp_adsforwp' ),
 			),
 		) );
 	$amp_ads_option->add_field( array(

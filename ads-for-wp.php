@@ -848,7 +848,13 @@ function get_dfp_dimensions($id){
 function ampforwp_custom_ads(){
 
 	$post_custom_ad_id = get_ad_id(get_the_ID());
-	$custom_ad_code	   = get_post_meta($post_custom_ad_id,'custom_ad',true);
+	$selected_ads_for 	= get_post_meta($post_custom_ad_id,'select_ads_for',true);
+	if('1' === $selected_ads_for){
+		$custom_ad_code	   = get_post_meta($post_custom_ad_id,'custom_ad',true);
+	}
+	elseif('2' === $selected_ads_for){
+		$custom_ad_code	   = get_post_meta($post_custom_ad_id,'_amp_custom_ad',true);
+	}
 	$ad_code 		   = '<div class="ampforwp_custom_ads">
 							'.$custom_ad_code.'
 							</div>';
@@ -863,7 +869,13 @@ function ampforwp_incontent_custom_ads($id){
 	else{
 		$post_custom_ad_id = get_ad_id(get_the_ID());
 	}
-	$custom_ad_code	   = get_post_meta($post_custom_ad_id,'custom_ad',true);
+	$selected_ads_for 	= get_post_meta($post_custom_ad_id,'select_ads_for',true);
+	if('1' === $selected_ads_for){
+		$custom_ad_code	   = get_post_meta($post_custom_ad_id,'custom_ad',true);
+	}
+	elseif('2' === $selected_ads_for){
+		$custom_ad_code	   = get_post_meta($post_custom_ad_id,'_amp_custom_ad',true);
+	}
 	$ad_code 		   = '<div class="ampforwp_incontent_custom_ads">
 							'.$custom_ad_code.'
 							</div>';
@@ -872,7 +884,13 @@ function ampforwp_incontent_custom_ads($id){
 
 function ampforwp_custom_sticky_ads(){
 	$ad_id 				= get_ad_id(get_the_ID());
-	$custom_ad_code	    = get_post_meta($ad_id,'custom_ad',true);
+	$selected_ads_for 	= get_post_meta($ad_id,'select_ads_for',true);
+	if('1' === $selected_ads_for){
+		$custom_ad_code	   = get_post_meta($ad_id,'custom_ad',true);
+	}
+	elseif('2' === $selected_ads_for){
+		$custom_ad_code	   = get_post_meta($ad_id,'_amp_custom_ad',true);
+	}
 	$sticky_ad_code 	= '<div class="ampforwp-sticky-custom-ad amp-sticky-ads">'.$custom_ad_code.'</div>';
 	echo $sticky_ad_code; 
 }
