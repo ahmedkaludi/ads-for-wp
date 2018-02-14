@@ -996,6 +996,33 @@ function ampforwp_adv_amp_auto_ads(){
 	}
 }
 
+// InBetween Loops Ads
+add_action('pre_amp_render_post','ampforwp_adsforwp_between_loop');
+function ampforwp_adsforwp_between_loop(){
+
+ add_action('ampforwp_between_loop','ampforwp_inbetween_loop_ads',10,1);
+}
+function ampforwp_inbetween_loop_ads($count){
+	Global $post;
+	$displayed_posts = get_option('posts_per_page');
+	$in_between = round(abs($displayed_posts / 2));
+	$ID = $post->ID;
+	if(intval($in_between) === $count){
+		$ad_position = get_post_meta(get_ad_id($ID),'normal_ad_type',true);
+		if('12' === $ad_position){
+			$ad_vendor			= get_post_meta(get_ad_id($ID),'ad_vendor',true);
+			if('1' === $ad_vendor){
+				ampforwp_adsense_ads();
+			}elseif('2' === $ad_vendor){
+				ampforwp_dfp_ads();
+			}elseif('3' === $ad_vendor){
+				ampforwp_custom_ads();
+			}
+		}
+			
+	}
+}
+
 // added extra css to improve user experiance for sticky ads
 add_action( 'amp_post_template_css', 'ampforwp_extra_sticky_css_styles' );
 function ampforwp_extra_sticky_css_styles( $amp_template ) {
@@ -1035,16 +1062,18 @@ function ampforwp_extra_sticky_css_styles( $amp_template ) {
 
 add_filter( 'amp_post_template_data', 'ampforwp_adsforwp_scripts', 30 );
 function ampforwp_adsforwp_scripts( $data ) {
+	Global $post;
+	$id = $post->ID;
 	$post_ad_id = get_ad_id(get_the_ID());
 	$show_ads 	= '';
 	$show_ads = 'yes';		
 	$show_ads = apply_filters('adsforwp_advert_on_off', $show_ads);
 
-	if ( $show_ads != 'yes' ) {
-		return $data ; // Do not show ads and return the data as it is
-	}
+	// if ( $show_ads != 'yes' ) {
+	// 	return $data ; // Do not show ads and return the data as it is
+	// }
 	$selected_ads_for 	= get_post_meta($post_ad_id,'select_ads_for',true);
-	if('1' === $select_ads_for){
+	if('1' === $selected_ads_for){
 		$ad_type 	= get_post_meta($post_ad_id,'ad_type_format',true);
 		$ad_vendor	= get_post_meta($post_ad_id,'ad_vendor',true);
 
@@ -1052,7 +1081,7 @@ function ampforwp_adsforwp_scripts( $data ) {
 		$dfp_parallax 		= get_post_meta($post_ad_id,'dfp_parallax',true);
 		$custom_parallax 	= get_post_meta($post_ad_id,'custom_parallax',true);
 	}
-	elseif('2' === $select_ads_for){
+	elseif('2' === $selected_ads_for){
 		$ad_type 	= get_post_meta($post_ad_id,'_amp_ad_type_format',true);
 		$ad_vendor	= get_post_meta($post_ad_id,'_amp_ad_vendor',true);
 
@@ -1061,7 +1090,7 @@ function ampforwp_adsforwp_scripts( $data ) {
 		$custom_parallax 	= get_post_meta($post_ad_id,'_amp_custom_parallax',true);
 	}
 	
-
+	
 	if('1' === $ad_type || '2' === $ad_type || '3' === $ad_type || '4' === $ad_type || '5' === $ad_type ) {
 
 			if('1' === $ad_vendor || '2' === $ad_vendor){
