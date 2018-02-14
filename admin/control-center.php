@@ -105,9 +105,9 @@ function adsforwp_save_ads_data() {
 add_filter('the_content', 'adsforwp_insert_ads');
 
 function adsforwp_insert_ads( $content ){
-	global $post;
-
-
+	global $post,$post_id;
+	// $post_id = $post->ID;
+	// $cmb2_incontent_options = '';
 	$currentPostId = $post->ID;
 
 	$show_ads 	= '';
@@ -123,6 +123,7 @@ function adsforwp_insert_ads( $content ){
 	$selected_ads_for 	= get_post_meta(get_ad_id(get_the_ID()),'select_ads_for',true);
 	if('1' === $selected_ads_for){
 		$cmb2_incontent_options = get_metadata('post',get_ad_id(get_the_ID()), 'incontent_ad_type');
+		
 	}
 	elseif('2' === $selected_ads_for){
 		$cmb2_incontent_options = get_metadata('post',get_ad_id(get_the_ID()), '_amp_incontent_ad_type');
@@ -270,7 +271,9 @@ function adsforwp_insert_ads( $content ){
 			if($adsValue['visibility']!="show"){
 				continue;
 			}
-			array_splice( $content, $adsValue['paragraph'], 0, $adsValue['content'] );
+			if(isset($adsValue['paragraph']) && isset($adsValue['content'])){
+				array_splice( $content, $adsValue['paragraph'], 0, $adsValue['content'] );
+			}
 		}
 		$content = implode(' ', $content);
 	}

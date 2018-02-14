@@ -125,7 +125,7 @@ function adsforwp_generate_ad_post_type_data(){
 					$ad_found = in_array($ads_post_id, $all_ads_from_db);
 				}
 
-				if( $ad_found ){
+				if( isset($ad_found )){
 				    if ( ! empty(  $updated_ads_array[$ads_post_id]['visibility'] ) ) {
 				    	$visibility = $updated_ads_array[$ads_post_id]['visibility'] ;
 				    }

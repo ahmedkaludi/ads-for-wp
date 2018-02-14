@@ -275,24 +275,6 @@ function ampforwp_display_amp_ads(){
 		}
 	
 
-		// InContent Ads
-		else if('2' === $ad_type){
-			$ad_position = get_post_meta($post_ad_id,'incontent_ad_type',true);
-			switch ($ad_vendor) {
-				case '1':
-					add_filter('the_content', 'ampforwp_incontent_adsense_ads');;
-					break;
-				case '2':
-					add_filter('the_content','ampforwp_incontent_dfp_ads');
-					break;
-				case '3':
-					add_filter('the_content','ampforwp_incontent_custom_ads');
-					break;
-				default:
-					add_filter('the_content','ampforwp_incontent_adsense_ads');
-					break;
-			}		
-		}
 	}
 // FOR AMP BY AUTOMATTIC Normal And Incontent Ads
 	elseif('2' === $selected_ads_for){
@@ -366,13 +348,17 @@ function ampforwp_incontent_adsense_ads($id){
 	else{
 		$post_adsense_ad_id = get_ad_id(get_the_ID());
 	}
+	$ad_client			= '';
+	$ad_slot			= '';
+	$ad_parallax		= '';
+	$is_optimize		= '';
 	$selected_ads_for 	= get_post_meta($post_adsense_ad_id,'select_ads_for',true);
 	$dimensions 		= get_adsense_dimensions($post_adsense_ad_id);
 	$width				= $dimensions['width'];
 	$height				= $dimensions['height'];
 	if('1' === $selected_ads_for){
 		$ad_client			= get_post_meta($post_adsense_ad_id,'adsense_ad_client',true);
-		$ad_slot			= get_post_meta($post_ad_id,'adsense_ad_slot',true);
+		$ad_slot			= get_post_meta($post_adsense_ad_id,'adsense_ad_slot',true);
 		$ad_parallax		= get_post_meta($post_adsense_ad_id,'adsense_parallax',true);
 		$is_optimize		= get_post_meta($post_adsense_ad_id,'optimize_ads',true);
 	}
@@ -963,7 +949,7 @@ function ampforwp_custom_sticky_ads(){
 
 // AMP Sticky Add
 
-add_action('ampforwp_body_beginning','ampforwp_amp_sticky_ad');
+add_action('amp_post_template_footer','ampforwp_amp_sticky_ad');
 
 function ampforwp_amp_sticky_ad(){
 	$ad_id 		= get_ad_id(get_the_ID());
@@ -1104,7 +1090,7 @@ function ampforwp_adsforwp_scripts( $data ) {
 
 			if('1' === $ad_vendor || '2' === $ad_vendor){
 				if ( empty( $data['amp_component_scripts']['amp-sticky-ad'] ) ) {
-					$data['amp_component_scripts']['amp-auto-ads'] = 'https://cdn.ampproject.org/v0/amp-sticky-ad-1.0.js';
+					$data['amp_component_scripts']['amp-sticky-ad'] = 'https://cdn.ampproject.org/v0/amp-sticky-ad-1.0.js';
 				}
 			}
 		}
