@@ -53,6 +53,7 @@ function advanced_amp_ampforwp_ads_options() {
 	$ampforwp_ads_option->add_field( array(
 			'name'             => esc_html__( 'Ad Type', 'ampforwp_adsforwp' ),
 			'id'               => 'ad_type_format',
+			'desc' => 'Tutorial: <a href="http://ampforwp.com/tutorials/">Check all the different types of Ads?</a>',
 			'type'             => 'select',
 			'show_option_none' => false,
 			'options'          => array(
@@ -63,36 +64,6 @@ function advanced_amp_ampforwp_ads_options() {
 				'5'   			=> esc_html__( 'AMP Auto Ads', 'ampforwp_adsforwp' ),
 			),
 		) );
-	 $ampforwp_ads_option->add_field( array(
-					'desc' => 'Tutorial: <a href="http://ampforwp.com/tutorials/">What are Normal Ads and where does it appear?</a>',
-					'type' => 'title',
-					'id'   => 'normal_ads_tutorial',
-					'classes' => 'ad-type ad-type-1' 
-				) );
-	 $ampforwp_ads_option->add_field( array(
-					'desc' => 'Tutorial: <a href="http://ampforwp.com/tutorials/">What are Incontent Ads and where does it appear?</a>',
-					'type' => 'title',
-					'id'   => 'incontent_ads_tutorial',
-					'classes' => 'ad-type ad-type-2' 
-				) );
-	 $ampforwp_ads_option->add_field( array(
-					'desc' => 'Tutorial: <a href="http://ampforwp.com/tutorials/">What are Manual Ads and where does it appear?</a>',
-					'type' => 'title',
-					'id'   => 'manual_ads_tutorial',
-					'classes' => 'ad-type ad-type-3' 
-				) );
-	 $ampforwp_ads_option->add_field( array(
-					'desc' => 'Tutorial: <a href="http://ampforwp.com/tutorials/">What are Sticky Ads and where does it appear?</a>',
-					'type' => 'title',
-					'id'   => 'sticky_ads_tutorial',
-					'classes' => 'ad-type ad-type-4' 
-				) );
-	 $ampforwp_ads_option->add_field( array(
-					'desc' => 'Tutorial: <a href="http://ampforwp.com/tutorials/">What are Auto AMP Ads and where does it appear?</a>',
-					'type' => 'title',
-					'id'   => 'auto_amp_ads_tutorial',
-					'classes' => 'ad-type ad-type-5' 
-				) );
 	 $ampforwp_ads_option->add_field( array(
 			'name'             => esc_html__( 'Positions', 'ampforwp_adsforwp' ),
 			'id'               => 'ad_type_position',
@@ -190,16 +161,10 @@ function advanced_amp_ampforwp_ads_options() {
 		// Adsense Options
 			$ampforwp_ads_option->add_field( array(
 					'name'             => esc_html__( 'Link Ads', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Check this if the ad is link ads',
+					'desc'			   => 'Check this if the ad is link ads, Tutorial: <a href="http://ampforwp.com/tutorials/">What are Link Ads and where does it appear?</a>',
 					'id'               => 'adsense_link',
 					'type'             => 'checkbox',
 					'classes'		   => 'vendor-fields adsense-data-1'
-				) );
-	 		$ampforwp_ads_option->add_field( array(
-					'desc' => 'Tutorial: <a href="http://ampforwp.com/tutorials/">What are Link Ads and where does it appear?</a>',
-					'type' => 'title',
-					'id'   => 'link_ads_tutorial',
-					'classes' => 'vendor-fields adsense-data-1' 
 				) );
 			$ampforwp_ads_option->add_field( array(
 					'name'             => esc_html__( 'Link Ads Dimensions', 'ampforwp_adsforwp' ),
@@ -377,6 +342,7 @@ $amp_ads_option->add_field( array(
 	$amp_ads_option->add_field( array(
 			'name'             => esc_html__( 'Ad Type', 'ampforwp_adsforwp' ),
 			'id'               => '_amp_ad_type_format',
+			'desc' => 'Tutorial: <a href="http://ampforwp.com/tutorials/">Check all the different types of Ads?</a>',
 			'type'             => 'select',
 			'show_option_none' => false,
 			'options'          => array(
@@ -386,36 +352,6 @@ $amp_ads_option->add_field( array(
 				'4'    			=> esc_html__( 'Sticky', 'ampforwp_adsforwp' ),
 			),
 		) );
-	$amp_ads_option->add_field( array(
-					'desc' => 'Tutorial: <a href="http://ampforwp.com/tutorials/">What are Normal Ads and where does it appear?</a>',
-					'type' => 'title',
-					'id'   => '_amp_normal_ads_tutorial',
-					'classes' => 'ad-type ad-type-1' 
-				) );
-	 $amp_ads_option->add_field( array(
-					'desc' => 'Tutorial: <a href="http://ampforwp.com/tutorials/">What are Incontent Ads and where does it appear?</a>',
-					'type' => 'title',
-					'id'   => '_amp_incontent_ads_tutorial',
-					'classes' => 'ad-type ad-type-2' 
-				) );
-	 $amp_ads_option->add_field( array(
-					'desc' => 'Tutorial: <a href="http://ampforwp.com/tutorials/">What are Manual Ads and where does it appear?</a>',
-					'type' => 'title',
-					'id'   => '_amp_manual_ads_tutorial',
-					'classes' => 'ad-type ad-type-3' 
-				) );
-	 $amp_ads_option->add_field( array(
-					'desc' => 'Tutorial: <a href="http://ampforwp.com/tutorials/">What are Sticky Ads and where does it appear?</a>',
-					'type' => 'title',
-					'id'   => '_amp_sticky_ads_tutorial',
-					'classes' => 'ad-type ad-type-4' 
-				) );
-	 $amp_ads_option->add_field( array(
-					'desc' => 'Tutorial: <a href="http://ampforwp.com/tutorials/">What are Auto AMP Ads and where does it appear?</a>',
-					'type' => 'title',
-					'id'   => '_amp_auto_amp_ads_tutorial',
-					'classes' => 'ad-type ad-type-5' 
-				) );
 	 $amp_ads_option->add_field( array(
 			'name'             => esc_html__( 'Positions', 'ampforwp_adsforwp' ),
 			'id'               => '_amp_ad_type_position',
@@ -492,16 +428,10 @@ $amp_ads_option->add_field( array(
 		// Adsense Options
 			$amp_ads_option->add_field( array(
 					'name'             => esc_html__( 'Link Ads', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Check this if the ad is link ads',
+					'desc'			   => 'Check this if the ad is link ads, Tutorial: <a href="http://ampforwp.com/tutorials/">What are Link Ads and where does it appear?</a>',
 					'id'               => '_amp_adsense_link',
 					'type'             => 'checkbox',
 					'classes'		   => 'amp-vendor-fields amp-adsense-data-1'
-				) );
-	 		$amp_ads_option->add_field( array(
-					'desc' => 'Tutorial: <a href="http://ampforwp.com/tutorials/">What are Link Ads and where does it appear?</a>',
-					'type' => 'title',
-					'id'   => '_amp_link_ads_tutorial',
-					'classes' => 'amp-vendor-fields amp-adsense-data-1' 
 				) );
 			$amp_ads_option->add_field( array(
 					'name'             => esc_html__( 'Link Ads Dimensions', 'ampforwp_adsforwp' ),

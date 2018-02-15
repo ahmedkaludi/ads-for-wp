@@ -25,6 +25,9 @@ $("#select_ads_for").change(function(){
 
 // AMPforWP Ads Options
 
+
+
+
  $("#ad_type_format").change(function(){
       $(this).find("option:selected").each(function(){
           var optionValue = $(this).attr("value");
@@ -34,16 +37,37 @@ $("#select_ads_for").change(function(){
               $("[id=dfp_parallax]").hide();
               $("[id=custom_parallax]").hide();	
               $(".ad-type.ad-type-" + optionValue).show();
+              
               if('2' == optionValue){
               	 $("[id=adsense_parallax]").show();
               	 $("[id=dfp_parallax]").show();
               	  $("[id=custom_parallax]").show();
               }
+              if('5' == optionValue){
+          	 $("[id=amp_auto_ad_type]").show();
+                $(".cmb2-id-ad-company").hide();
+                $(".cmb2-id-ad-vendor").hide();
+                $(".cmb2-id-adsense-link").hide();
+                $(".cmb2-id-link-ads-tutorial").hide();
+                $(".cmb2-id-link-ads-dimensions").hide();
+                $(".cmb2-id-adsense-dimensions").hide();
+                $(".cmb2-id-adsense-custom-width").hide();
+                $(".cmb2-id-adsense-custom-height").hide();
+                $(".cmb2-id-adsense-ad-client").hide();
+                $(".cmb2-id-ad-type-position").hide();
+                $(".cmb2-id-adsense-ad-slot").hide();
+                $(".cmb2-id-adsense-parallax").hide();
+                $(".cmb2-id-optimize-ads").hide();
+          	} 
+          	
           } else{
               $(".ad-type").hide();
-          }         
+          }
+
       });
     }).change();
+
+
 
   $("#ad_vendor").change(function(){
       $(this).find("option:selected").each(function(){
@@ -94,6 +118,8 @@ $("#adsense_link").change(function(){
 	}
  
 }).change();
+
+
 
 // AMP By AUTOMATTIC Ads Options
 
