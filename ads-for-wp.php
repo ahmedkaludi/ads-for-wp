@@ -44,10 +44,10 @@ function adsforwp_hide_ads_controller($show) {
 		$content_count 	= str_word_count($content);
 	}
 
-	// Hide ads on the page where content is less then 150 words
- 	if ( $content_count && $content_count < 150 ) {
- 		return $show = 'no';
- 	}
+	// // Hide ads on the page where content is less then 150 words
+ // 	if ( $content_count && $content_count < 150 ) {
+ // 		return $show = 'no';
+ // 	}
 
 	$current = adsforwp_get_meta_post( 'adsforwp_ads_meta_box_ads_on_off' );
 
@@ -85,6 +85,13 @@ function adsforwp_post_types(){
 	$post_types = apply_filters( 'adsforwp_modify_post_types', $post_types );
 
 	return $post_types;
+}
+
+// Remove the ADS on this Meta from the Adsforwp CPT
+add_action('do_meta_boxes', 'remove_ads_on_this_meta_from_adsforwp');
+function remove_ads_on_this_meta_from_adsforwp(){
+	remove_meta_box( 'adsforwp_ads_meta_box', 'ads-for-wp-ads', 'side' );
+
 }
 // Let's start displaying Ads On AMP
 
