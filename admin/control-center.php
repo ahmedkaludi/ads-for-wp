@@ -20,14 +20,28 @@ function adsforwp_setup_post_type() {
 /*
  * Hiding Visaul Editor part, as there is no need for Visual Editor to add Advert Code 
 */
-add_filter( 'user_can_richedit', 'adsforwp_hide_visual_editor');
 
-function adsforwp_hide_visual_editor($content) {
-    global $post_type;
+/*
+	Not Needed Anymore
+ */
 
-    if ('ads-for-wp-ads' == $post_type)
-        return false;
-    return $content;
+// add_filter( 'user_can_richedit', 'adsforwp_hide_visual_editor');
+
+// function adsforwp_hide_visual_editor($content) {
+//     global $post_type;
+
+//     if ('ads-for-wp-ads' == $post_type)
+//         return false;
+//     return $content;
+// }
+
+/*
+ * Hiding WYSIWYG For AMPforWP Ads 2.0, as there is no need for it 
+*/
+add_action( 'init', 'removing_wysiwig_adsforwp' );
+
+function removing_wysiwig_adsforwp() {
+    remove_post_type_support( 'ads-for-wp-ads', 'editor' );
 }
 
 /*
