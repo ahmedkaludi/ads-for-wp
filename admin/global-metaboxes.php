@@ -194,7 +194,7 @@ add_action( 'save_post', 'adsforwp_ads_meta_box_save' );
 /*
  * Creating ShortCode meta box for the users to get the ad code.
  */
-// add_action( 'add_meta_boxes', 'adsforwp_generate_ads_shortcode' );
+add_action( 'add_meta_boxes', 'adsforwp_generate_ads_shortcode' );
 function adsforwp_generate_ads_shortcode(){
 
 	add_meta_box(
