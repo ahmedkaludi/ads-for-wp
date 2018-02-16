@@ -54,6 +54,20 @@ function adsforwp_hide_ads_controller($show) {
 	if ( $current === 'hide' ) {
 		$show = 'no';
 	}
+
+	$selected_ads_for 	= get_post_meta(get_ad_id(get_the_ID()),'select_ads_for',true);
+	if('1' === $selected_ads_for){
+		$ads_visibility = get_post_meta(get_ad_id(get_the_ID()),'ad_visibility_status',true);
+		
+	}
+	elseif('2' === $selected_ads_for){
+		$ads_visibility = get_post_meta(get_ad_id(get_the_ID()),'_amp_ad_visibility_status',true);
+	}
+
+	if ( $ads_visibility === 'hide' ) {
+		$show = 'no';
+	}
+	
 	return $show;
 }
 

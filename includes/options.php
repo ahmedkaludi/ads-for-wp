@@ -65,10 +65,20 @@ function advanced_amp_ampforwp_ads_options() {
 			),
 		) );
 	 $ampforwp_ads_option->add_field( array(
-			'name'             => esc_html__( 'Positions', 'ampforwp_adsforwp' ),
+			'name'             => esc_html__( 'Placement', 'ampforwp_adsforwp' ),
 			'id'               => 'ad_type_position',
 			'type'             => 'title',
 			'desc' => 'Select the Position for the selected Ad',
+		) );
+	 $ampforwp_ads_option->add_field( array(
+			'name'    			=> 'Ads Visibility',
+			'id'      			=> 'ad_visibility_status',
+			'type'    			=> 'radio_inline',
+			'options'			 => array(
+					'show' => __( 'Show', 'ampforwp_adsforwp' ),
+					'hide'   => __( 'Hide', 'ampforwp_adsforwp' ),
+				),
+			'default' => 'show',
 		) );
 			 // 1. Normal    
 			    $ampforwp_ads_option->add_field( array(
@@ -96,10 +106,11 @@ function advanced_amp_ampforwp_ads_options() {
 
 			// 2. Incontent type        
 			    $ampforwp_ads_option->add_field( array(
-					'name' => esc_html__( 'Ad Positions', 'ampforwp_adsforwp' ),
-					'desc' => 'display Ad after the nth paragraph',
-					'id'   => 'incontent_ad_type',
-					'type'             => 'text_small',
+					'name' 	  => esc_html__( 'Show Ad After', 'ampforwp_adsforwp' ),
+					'desc' 	  => 'Paragraphs',
+					'id'      => 'incontent_ad_type',
+					'type'    => 'text_small',
+					'default' => '2',
 					'classes' => 'ad-type ad-type-2'
 				) );
 
@@ -353,10 +364,20 @@ $amp_ads_option->add_field( array(
 			),
 		) );
 	 $amp_ads_option->add_field( array(
-			'name'             => esc_html__( 'Positions', 'ampforwp_adsforwp' ),
+			'name'             => esc_html__( 'Placement', 'ampforwp_adsforwp' ),
 			'id'               => '_amp_ad_type_position',
 			'type'             => 'title',
 			'desc' => 'Select the Position for the selected Ad',
+		) );
+	  $amp_ads_option->add_field( array(
+			'name'    			=> 'Ads Visibility',
+			'id'      			=> '_amp_ad_visibility_status',
+			'type'    			=> 'radio_inline',
+			'options'			 => array(
+					'show' => __( 'Show', 'ampforwp_adsforwp' ),
+					'hide'   => __( 'Hide', 'ampforwp_adsforwp' ),
+				),
+			'default' => 'show',
 		) );
 	 		// 1. Normal    
 			    $amp_ads_option->add_field( array(
@@ -373,10 +394,11 @@ $amp_ads_option->add_field( array(
 
 			// 2. Incontent type        
 			    $amp_ads_option->add_field( array(
-					'name' => esc_html__( 'Ad Positions', 'ampforwp_adsforwp' ),
-					'desc' => 'display Ad after the nth paragraph',
-					'id'   => '_amp_incontent_ad_type',
-					'type'             => 'text_small',
+					'name' 	  => esc_html__( 'Show Ad After', 'ampforwp_adsforwp' ),
+					'desc' 	  => 'Paragraphs',
+					'id'   	  => '_amp_incontent_ad_type',
+					'type'    => 'text_small',
+					'default' => '2',
 					'classes' => 'amp-ad-type amp-ad-type-2'
 				) );
 
