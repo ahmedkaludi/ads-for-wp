@@ -115,14 +115,14 @@ function get_ad_id($id){
 	$meta_details = get_metadata('post',$id,'adsforwp-advert-data');
 	$post_ad_data = $meta_details[0];
 	$post_id = $id;
-	// $all_ads_post  = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1));
-	// foreach ($all_ads_post as $ads) {
-	// 	$post_ad_id = $ads->ID;
-	// }
-	foreach ($post_ad_data as $key => $ad_config) {
-		$post_ad_id = $ad_config['ads_id'];
-		$post_ad_id = (int)$post_ad_id;
+	$all_ads_post  = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1));
+	foreach ($all_ads_post as $ads) {
+		$post_ad_id = $ads->ID;
 	}
+	// foreach ($post_ad_data as $key => $ad_config) {
+	// 	$post_ad_id = $ad_config['ads_id'];
+	// 	$post_ad_id = (int)$post_ad_id;
+	// }
 	return $post_ad_id;
 }
 

@@ -16,10 +16,60 @@ function adsforwp_get_meta_post( $value, $post_id = '' ) {
 	$default 	= "show"; 
 	
 	if ( $value === 'adsforwp_incontent_ads_paragraphs') {
-		$default 	= "2"; 
+		$selected_ads_for   = get_post_meta(get_ad_id(get_the_ID()),'select_ads_for',true);
+		    if('1' === $selected_ads_for){
+		      $doint   = get_post_meta(get_ad_id(get_the_ID()),'incontent_ad_type',true);
+		      $default = $doint;
+		    }
+		    elseif('2' === $selected_ads_for){
+		      $default   = get_post_meta(get_ad_id(get_the_ID()),'_amp_incontent_ad_type',true);
+		      
+		    }
 	}
 
-	$field = get_post_meta( $post_id, $value, true );
+	$field = get_metadata('post',$post_id, $value, true );
+
+	if('adsforwp-advert-data' === $value){
+		$selected_ads_for 	= get_post_meta(get_ad_id(get_the_ID()),'select_ads_for',true);
+		if('1' === $selected_ads_for){
+			
+			foreach ($field as $key => $value ) {
+				$cpt_paragraph = get_post_meta($key,'incontent_ad_type',true);
+				$cpt_paragraph = $cpt_paragraph[0];
+				$value['post_id'] = get_the_ID();
+				$value['ads_id']  = $key;
+				$visi = get_post_meta(get_ad_id(get_the_ID()),'ad_visibility_status',true);
+				if('show' === $visi){
+				$value['visibility'] = 'show';
+				}
+				else{
+					$value['visibility'] = 'hide';
+				} 
+				$value['paragraph'] = $cpt_paragraph;
+				$field[$key] = $value;
+			}
+		}
+		elseif('2' === $selected_ads_for){
+			$cpt_paragraph = get_post_meta(get_ad_id(get_the_ID()),'_amp_incontent_ad_type',true);
+			$cpt_paragraph = $cpt_paragraph[0];
+			foreach ($field as $key => $value ) {
+				
+				$value['post_id'] = get_the_ID();
+				$value['ads_id']  = get_ad_id(get_the_ID());
+				$visi = get_post_meta(get_ad_id(get_the_ID()),'ad_visibility_status',true);
+				if('show' === $visi){
+				$value['visibility'] = 'show';
+				}
+				else{
+					$value['visibility'] = 'hide';
+				} 
+				$value['paragraph'] = $cpt_paragraph;
+				$field[$key] = $value;
+			}		
+			
+		}
+	}
+
 
 	if ( ! empty( $field ) ) {
 		return is_array( $field ) ? stripslashes_deep( $field ) : stripslashes( wp_kses_decode_entities( $field ) );
@@ -87,7 +137,7 @@ function adsforwp_generate_ad_post_type_data(){
 
 	$post_id 		= get_the_ID();
 	$all_ads_info 	= (array) adsforwp_get_meta_post( 'adsforwp-advert-data', $post_id );
-
+	var_dump($all_ads_info);die;
 	if ( ! empty( $all_ads_info ) ) {
 	 	$all_ads_info = array_merge($all_ads_info);
 	}
@@ -118,7 +168,7 @@ function adsforwp_generate_ad_post_type_data(){
 		    $ad_type 	 =  adsforwp_get_meta_post( 'adsforwp_ads_position', $ads_post_id );
 		    $visibility  =  adsforwp_get_meta_post( 'adsforwp_incontent_ads_default', $ads_post_id );
 		    $paragraph 	 =  adsforwp_get_meta_post( 'adsforwp_incontent_ads_paragraphs', $ads_post_id );
-
+			
 			if ( 'hide' === $ad_type ) {
 
 				if ( $all_ads_from_db ) {
@@ -155,7 +205,7 @@ function adsforwp_generate_ad_post_type_data(){
 				echo "</div>";
 			}
 			$count++;
-		endforeach;  
+		endforeach; 
 		wp_reset_postdata();
 	}
 }
