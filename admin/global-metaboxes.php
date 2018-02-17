@@ -137,7 +137,7 @@ function adsforwp_generate_ad_post_type_data(){
 
 	$post_id 		= get_the_ID();
 	$all_ads_info 	= (array) adsforwp_get_meta_post( 'adsforwp-advert-data', $post_id );
-	var_dump($all_ads_info);die;
+	
 	if ( ! empty( $all_ads_info ) ) {
 	 	$all_ads_info = array_merge($all_ads_info);
 	}
