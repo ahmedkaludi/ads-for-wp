@@ -352,7 +352,7 @@ function ampforwp_adsense_ads(){
 	else{
 		$optimize = '';
 	}
-	$ad_code 			= '<amp-ad class="ampforwp_adsense_ads"
+	$ad_code 			= '<amp-ad class="ampforwp_adsense_ads ad-ID-'.$post_adsense_ad_id.'"
 								type="adsense"'.$optimize.'
 								width="'. $width .'"
 								height="'. $height .'"
@@ -407,7 +407,7 @@ function ampforwp_incontent_adsense_ads($id){
 		$parallax_container_end = ''; 
 	}
 	$ad_code 			= $parallax_container;
-	$ad_code 			.= '<amp-ad class="ampforwp_incontent_adsense_ads"
+	$ad_code 			.= '<amp-ad class="ampforwp_incontent_adsense_ads ad-ID-'.$post_adsense_ad_id.'"
 								type="adsense"'.$optimize.'
 								width="'. $width .'"
 								height="'. $height .'"
@@ -699,7 +699,7 @@ function ampforwp_dfp_ads(){
 	else{
 		$optimize = '';
 	}
-	$ad_code		= '<amp-ad class="ampforwp_dfp_ads"
+	$ad_code		= '<amp-ad class="ampforwp_dfp_ads ad-ID-'.$post_dfp_ad_id.'"
 							type="doubleclick"'.$optimize.'
 							width="'. $width .'"
 							height="'. $height .'"
@@ -746,7 +746,7 @@ function ampforwp_incontent_dfp_ads($id){
 	}
 
 	$ad_code 			= $parallax_container;
-	$ad_code			.= '<amp-ad class="ampforwp_incontent_dfp_ads"
+	$ad_code			.= '<amp-ad class="ampforwp_incontent_dfp_ads ad-ID-'.$post_dfp_ad_id.'"
 							type="doubleclick"'.$optimize.'
 							width="'. $width .'"
 							height="'. $height .'"
@@ -918,7 +918,7 @@ function ampforwp_custom_ads(){
 	elseif('2' === $selected_ads_for){
 		$custom_ad_code	   = get_post_meta($post_custom_ad_id,'_amp_custom_ad',true);
 	}
-	$ad_code 		   = '<div class="ampforwp_custom_ads">
+	$ad_code 		   = '<div class="ampforwp_custom_ads ad-ID-'.$post_custom_ad_id.'">
 							'.$custom_ad_code.'
 							</div>';
 	echo $ad_code;
@@ -951,7 +951,7 @@ function ampforwp_incontent_custom_ads($id){
 	}
 
 	$ad_code 			= $parallax_container;
-	$ad_code 		   .= '<div class="ampforwp_incontent_custom_ads">
+	$ad_code 		   .= '<div class="ampforwp_incontent_custom_ads ad-ID-'.$post_custom_ad_id.'">
 							'.$custom_ad_code.'
 							</div>';
 	$ad_code 			.= $parallax_container_end;
@@ -967,7 +967,7 @@ function ampforwp_custom_sticky_ads(){
 	elseif('2' === $selected_ads_for){
 		$custom_ad_code	   = get_post_meta($ad_id,'_amp_custom_ad',true);
 	}
-	$sticky_ad_code 	= '<div class="ampforwp-sticky-custom-ad amp-sticky-ads">'.$custom_ad_code.'</div>';
+	$sticky_ad_code 	= '<div class="ampforwp-sticky-custom-ad amp-sticky-ads ad-ID-'.$ad_id.'">'.$custom_ad_code.'</div>';
 	echo $sticky_ad_code; 
 }
 
