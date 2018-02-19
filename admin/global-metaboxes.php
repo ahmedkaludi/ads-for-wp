@@ -30,6 +30,7 @@ function adsforwp_get_meta_post( $value, $post_id = '' ) {
 		      $default   = get_post_meta(get_ad_id(get_the_ID()),'_amp_incontent_ad_type',true);
 		      
 		    }
+
 	}
 
 	$field = get_metadata('post',$post_id, $value, true );
@@ -139,7 +140,7 @@ function adsforwp_generate_ad_post_type_data(){
 			$updated_ads_array[$value['ads_id']] 	= $value;
 		}
 	}
-
+	
 	$count = 0;
 
 	$get_all_ads = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1, 
@@ -152,6 +153,8 @@ function adsforwp_generate_ad_post_type_data(){
 	) );
 
 	if ( $get_all_ads ) {
+		
+	$check = get_post_meta($post_id,'adsforwp-advert-data',true);
 		foreach ( $get_all_ads as $ad ) :
 
 		    $ads_post_id = 	$ad->ID;
@@ -173,6 +176,10 @@ function adsforwp_generate_ad_post_type_data(){
 				     	$paragraph = $updated_ads_array[$ads_post_id]['paragraph'] ;
 				    }
 				}
+				
+					if(!empty($check) && isset($check[$ads_post_id]['paragraph'])){
+						 $paragraph = $check[$ads_post_id]['paragraph'];
+					}
 
 			    echo '<div data-ads-id="'.$ads_post_id.'" id="ad-control-child-'.$count.'">'; ?>
 				   	Ad name: <?php echo esc_attr( $ad->post_title ); ?> <br />
@@ -184,7 +191,7 @@ function adsforwp_generate_ad_post_type_data(){
 					</select>
 					
 			   		<label for="ad-paragraph-<?php echo $count ?>"> Paragraph Position:</label>
-			   		<input class="small-text" id="ad-paragraph-<?php echo $count ?>" data-ad-paragraph="<?php echo $paragraph ?>" type="number" disabled="disabled" value="<?php echo $paragraph ?>" >
+			   		<input class="small-text" id="ad-paragraph-<?php echo $count ?>" data-ad-paragraph=" <?php echo $paragraph ?>" type="number" disabled="disabled" value="<?php echo $paragraph ?>" >
 
 			   		<span class='edit-ads'> Edit</span>
 			   		<span class="save-ads" style="display:none"> Save</span>
@@ -195,7 +202,7 @@ function adsforwp_generate_ad_post_type_data(){
 				echo "</div>";
 			}
 			$count++;
-		endforeach; 
+		endforeach;
 		wp_reset_postdata();
 	}
 }
