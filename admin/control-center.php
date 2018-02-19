@@ -137,10 +137,14 @@ function adsforwp_insert_ads( $content ){
 	$selected_ads_for 	= get_post_meta(get_ad_id(get_the_ID()),'select_ads_for',true);
 	if('1' === $selected_ads_for){
 		$cmb2_incontent_options = get_metadata('post',get_ad_id(get_the_ID()), 'incontent_ad_type');
+		$incontent_visibility = 'ad_visibility_status';
+		$amp_ad_type 			= 'ad_type_format';
 		
 	}
 	elseif('2' === $selected_ads_for){
 		$cmb2_incontent_options = get_metadata('post',get_ad_id(get_the_ID()), '_amp_incontent_ad_type');
+		$incontent_visibility 	= '_amp_ad_visibility_status';
+		$amp_ad_type 			= '_amp_ad_type_format';
 	}
 	
 	//Get all other adds which are set to inline
@@ -161,8 +165,13 @@ function adsforwp_insert_ads( $content ){
 	while ($query->have_posts()) {
 	    $query->the_post();
 	    $adsPostId = get_the_ID();
-	    $adsType = get_post_field('adsforwp_ads_position', $adsPostId);
-	    if($adsType!='hide'){
+	    $adsType = get_post_meta($adsPostId, $incontent_visibility,true);
+	    $ads_format = get_post_meta($adsPostId, $amp_ad_type,true);
+	    
+	    if($adsType =='hide' ){
+	    	continue;
+	    }
+	    if($ads_format != '2'){
 	    	continue;
 	    }
 	    if(!isset($post_meta[$adsPostId])){

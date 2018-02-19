@@ -165,11 +165,13 @@ function adsforwp_generate_ad_post_type_data(){
 	
 
 	if ( $get_all_ads ) {
-		
+
 	$check = get_post_meta($post_id,'adsforwp-advert-data',true);
+	
 		foreach ( $get_all_ads as $ad ) :
 
-			$selected_ads_for   = get_post_meta($ad->ID,'select_ads_for',true);/*var_dump($selected_ads_for);die;*/
+			$selected_ads_for   = get_post_meta($ad->ID,'select_ads_for',true);
+
 		    if('1' === $selected_ads_for){
 		    	  $is_inContent = false;
 		    	  // check if it's InContent
@@ -177,6 +179,7 @@ function adsforwp_generate_ad_post_type_data(){
 			    if('2' === $cmb2_ad_type){
 			    	$is_inContent = true;
 			    }
+			    $ad_type  =  get_post_meta($ad->ID, 'ad_visibility_status', true );
 			    
 		    }
 		    elseif('1' === $selected_ads_for){
@@ -186,7 +189,7 @@ function adsforwp_generate_ad_post_type_data(){
 			    if('2' === $cmb2_ad_type){
 			    	$is_inContent = true;
 			    }
-			    
+			    $ad_type  =  get_post_meta($ad->ID, '_amp_ad_visibility_status', true );
 		    }
 		    if($is_inContent){
 			    $ads_post_id = 	$ad->ID;
@@ -194,7 +197,7 @@ function adsforwp_generate_ad_post_type_data(){
 			    $visibility  =  adsforwp_get_meta_post( 'adsforwp_incontent_ads_default', $ads_post_id );
 			    $paragraph 	 =  adsforwp_get_meta_post( 'adsforwp_incontent_ads_paragraphs', $ads_post_id );
 					
-				// if ( 'hide' === $ad_type ) {
+				if ( 'show' === $ad_type ) {
 
 					if ( $all_ads_from_db ) {
 						$ad_found = in_array($ads_post_id, $all_ads_from_db);
@@ -232,7 +235,7 @@ function adsforwp_generate_ad_post_type_data(){
 				   		<?php
 
 					echo "</div>";
-				// }
+				}
 				$count++;
 			}
 		endforeach;
