@@ -138,26 +138,27 @@ function adsforwp_generate_ad_post_type_data(){
 	
 	$count = 0;
 
-	$selected_ads_for   = get_post_meta($post_id,'select_ads_for',true);
+	$selected_ads_for   = get_post_meta(get_ad_id($post_id),'select_ads_for',true);
     if('1' === $selected_ads_for){
-      $get_all_ads = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1, 
-		'meta_query' => array(
-			array(
-				'key' 	=> 'ad_visibility_status',
-				'value' => 'show',
+	      $get_all_ads = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1, 
+			'meta_query' => array(
+				array(
+					'key' 	=> 'ad_visibility_status',
+					'value' => 'show',
+				)
 			)
-		)
-	) );
+		) );
     }
     elseif('2' === $selected_ads_for){
-      $get_all_ads = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1, 
-		'meta_query' => array(
-			array(
-				'key' 	=> '_amp_ad_visibility_status',
-				'value' => 'show',
+	      $get_all_ads = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1, 
+			'meta_query' => array(
+				array(
+					'key' 	=> '_amp_ad_visibility_status',
+					'value' => 'show',
+				)
 			)
-		)
-	) );
+		) );
+	      
       
     }
 
@@ -168,51 +169,72 @@ function adsforwp_generate_ad_post_type_data(){
 	$check = get_post_meta($post_id,'adsforwp-advert-data',true);
 		foreach ( $get_all_ads as $ad ) :
 
-		    $ads_post_id = 	$ad->ID;
-		    $ad_type 	 =  adsforwp_get_meta_post( 'adsforwp_ads_position', $ads_post_id );
-		    $visibility  =  adsforwp_get_meta_post( 'adsforwp_incontent_ads_default', $ads_post_id );
-		    $paragraph 	 =  adsforwp_get_meta_post( 'adsforwp_incontent_ads_paragraphs', $ads_post_id );
-				
-			if ( 'hide' === $ad_type ) {
+			$selected_ads_for   = get_post_meta($ad->ID,'select_ads_for',true);/*var_dump($selected_ads_for);die;*/
+		    if('1' === $selected_ads_for){
+		    	  $is_inContent = false;
+		    	  // check if it's InContent
+			    $cmb2_ad_type = get_post_meta($ad->ID,'ad_type_format',true);
+			    if('2' === $cmb2_ad_type){
+			    	$is_inContent = true;
+			    }
+			    
+		    }
+		    elseif('1' === $selected_ads_for){
+		    	  $is_inContent = false;
+		    	  // check if it's InContent
+			    $cmb2_ad_type = get_post_meta($ad->ID,'_amp_ad_type_format',true);
+			    if('2' === $cmb2_ad_type){
+			    	$is_inContent = true;
+			    }
+			    
+		    }
+		    if($is_inContent){
+			    $ads_post_id = 	$ad->ID;
+			    $ad_type 	 =  adsforwp_get_meta_post( 'adsforwp_ads_position', $ads_post_id );
+			    $visibility  =  adsforwp_get_meta_post( 'adsforwp_incontent_ads_default', $ads_post_id );
+			    $paragraph 	 =  adsforwp_get_meta_post( 'adsforwp_incontent_ads_paragraphs', $ads_post_id );
+					
+				// if ( 'hide' === $ad_type ) {
 
-				if ( $all_ads_from_db ) {
-					$ad_found = in_array($ads_post_id, $all_ads_from_db);
-				}
-
-				if( isset($ad_found )){
-				    if ( ! empty(  $updated_ads_array[$ads_post_id]['visibility'] ) ) {
-				    	$visibility = $updated_ads_array[$ads_post_id]['visibility'] ;
-				    }
-				    if ( ! empty(  $updated_ads_array[$ads_post_id]['paragraph'] ) ) {
-				     	$paragraph = $updated_ads_array[$ads_post_id]['paragraph'] ;
-				    }
-				}
-				
-					if(!empty($check) && isset($check[$ads_post_id]['paragraph'])){
-						 $paragraph = $check[$ads_post_id]['paragraph'];
+					if ( $all_ads_from_db ) {
+						$ad_found = in_array($ads_post_id, $all_ads_from_db);
 					}
 
-			    echo '<div data-ads-id="'.$ads_post_id.'" id="ad-control-child-'.$count.'">'; ?>
-				   	Ad name: <?php echo esc_attr( $ad->post_title ); ?> <br />
+					if( isset($ad_found )){
+					    if ( ! empty(  $updated_ads_array[$ads_post_id]['visibility'] ) ) {
+					    	$visibility = $updated_ads_array[$ads_post_id]['visibility'] ;
+					    }
+					    if ( ! empty(  $updated_ads_array[$ads_post_id]['paragraph'] ) ) {
+					     	$paragraph = $updated_ads_array[$ads_post_id]['paragraph'] ;
+					    }
+					}
 					
-					<select  data-ad-visibility="<?php echo $visibility ?>" name="" class="ads-visibility widefat" id="ad-visibility-<?php echo $count ?>" disabled="disabled">
+						if(!empty($check) && isset($check[$ads_post_id]['paragraph'])){
+							 $paragraph = $check[$ads_post_id]['paragraph'];
+						}
 
-						<option value="show" <?php if ( $visibility == "show" ) echo 'selected="selected"'; ?>>Show</option> 				
-						<option value="hide" <?php if ( $visibility == "hide" ) echo 'selected="selected"'; ?>>Hide</option>
-					</select>
-					
-			   		<label for="ad-paragraph-<?php echo $count ?>"> Paragraph Position:</label>
-			   		<input class="small-text" id="ad-paragraph-<?php echo $count ?>" data-ad-paragraph=" <?php echo $paragraph ?>" type="number" disabled="disabled" value="<?php echo $paragraph ?>" >
+				    echo '<div data-ads-id="'.$ads_post_id.'" id="ad-control-child-'.$count.'">'; ?>
+					   	Ad name: <?php echo esc_attr( $ad->post_title ); ?> <br />
+						
+						<select  data-ad-visibility="<?php echo $visibility ?>" name="" class="ads-visibility widefat" id="ad-visibility-<?php echo $count ?>" disabled="disabled">
 
-			   		<span class='edit-ads'> Edit</span>
-			   		<span class="save-ads" style="display:none"> Save</span>
-			   		<div class="spinner"></div>
-			   		<br /><br />
-			   		<?php
+							<option value="show" <?php if ( $visibility == "show" ) echo 'selected="selected"'; ?>>Show</option> 				
+							<option value="hide" <?php if ( $visibility == "hide" ) echo 'selected="selected"'; ?>>Hide</option>
+						</select>
+						
+				   		<label for="ad-paragraph-<?php echo $count ?>"> Paragraph Position:</label>
+				   		<input class="small-text" id="ad-paragraph-<?php echo $count ?>" data-ad-paragraph=" <?php echo $paragraph ?>" type="number" disabled="disabled" value="<?php echo $paragraph ?>" >
 
-				echo "</div>";
+				   		<span class='edit-ads'> Edit</span>
+				   		<span class="save-ads" style="display:none"> Save</span>
+				   		<div class="spinner"></div>
+				   		<br /><br />
+				   		<?php
+
+					echo "</div>";
+				// }
+				$count++;
 			}
-			$count++;
 		endforeach;
 		wp_reset_postdata();
 	}
