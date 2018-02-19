@@ -20,11 +20,6 @@ function adsforwp_get_meta_post( $value, $post_id = '' ) {
 		    if('1' === $selected_ads_for){
 		      $doint   = get_post_meta(get_ad_id(get_the_ID()),'incontent_ad_type',true);
 		      $default = $doint;
-		      // $is_associate = get_post_meta($post_id,'adsforwp_incontent_ads_paragraphs',true);
-		      // if(isset($is_associate)){
-		      // 	echo"is_associate";var_dump($is_associate);die;
-		      // 	$default = $is_associate;
-		      // }
 		    }
 		    elseif('2' === $selected_ads_for){
 		      $default   = get_post_meta(get_ad_id(get_the_ID()),'_amp_incontent_ad_type',true);
@@ -143,14 +138,30 @@ function adsforwp_generate_ad_post_type_data(){
 	
 	$count = 0;
 
-	$get_all_ads = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1, 
+	$selected_ads_for   = get_post_meta($post_id,'select_ads_for',true);
+    if('1' === $selected_ads_for){
+      $get_all_ads = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1, 
 		'meta_query' => array(
 			array(
-				'key' 	=> 'adsforwp_ads_controller_default',
+				'key' 	=> 'ad_visibility_status',
 				'value' => 'show',
 			)
 		)
 	) );
+    }
+    elseif('2' === $selected_ads_for){
+      $get_all_ads = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1, 
+		'meta_query' => array(
+			array(
+				'key' 	=> '_amp_ad_visibility_status',
+				'value' => 'show',
+			)
+		)
+	) );
+      
+    }
+
+	
 
 	if ( $get_all_ads ) {
 		
