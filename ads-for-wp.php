@@ -55,18 +55,7 @@ function adsforwp_hide_ads_controller($show) {
 		$show = 'no';
 	}
 
-	$selected_ads_for 	= get_post_meta(get_ad_id(get_the_ID()),'select_ads_for',true);
-	if('1' === $selected_ads_for){
-		$ads_visibility = get_post_meta(get_ad_id(get_the_ID()),'ad_visibility_status',true);
-		
-	}
-	elseif('2' === $selected_ads_for){
-		$ads_visibility = get_post_meta(get_ad_id(get_the_ID()),'_amp_ad_visibility_status',true);
-	}
-
-	if ( $ads_visibility === 'hide' ) {
-		$show = 'no';
-	}
+	
 	
 	return $show;
 }
@@ -967,7 +956,7 @@ function ampforwp_custom_sticky_ads(){
 	elseif('2' === $selected_ads_for){
 		$custom_ad_code	   = get_post_meta($ad_id,'_amp_custom_ad',true);
 	}
-	$sticky_ad_code 	= '<div class="ampforwp-sticky-custom-ad amp-sticky-ads ad-ID-'.$ad_id.'">'.$custom_ad_code.'</div>';
+	$sticky_ad_code 	= '<div class="ampforwp-sticky-custom-ad amp-sticky-ads ad-ID-'.$get_ad_id.'">'.$custom_ad_code.'</div>';
 	echo $sticky_ad_code; 
 }
 
