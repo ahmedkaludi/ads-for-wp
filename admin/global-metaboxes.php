@@ -143,8 +143,8 @@ function adsforwp_generate_ad_post_type_data(){
 	      $get_all_ads = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1, 
 			'meta_query' => array(
 				array(
-					'key' 	=> 'ad_visibility_status',
-					'value' => 'show',
+					'key' 	=> 'ad_type_format',
+					'value' => '2',
 				)
 			)
 		) );
@@ -153,8 +153,8 @@ function adsforwp_generate_ad_post_type_data(){
 	      $get_all_ads = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1, 
 			'meta_query' => array(
 				array(
-					'key' 	=> '_amp_ad_visibility_status',
-					'value' => 'show',
+					'key' 	=> '_amp_ad_type_format',
+					'value' => '2',
 				)
 			)
 		) );
@@ -173,25 +173,15 @@ function adsforwp_generate_ad_post_type_data(){
 			$selected_ads_for   = get_post_meta($ad->ID,'select_ads_for',true);
 
 		    if('1' === $selected_ads_for){
-		    	  $is_inContent = false;
-		    	  // check if it's InContent
-			    $cmb2_ad_type = get_post_meta($ad->ID,'ad_type_format',true);
-			    if('2' === $cmb2_ad_type){
-			    	$is_inContent = true;
-			    }
+		    	 
 			    $ad_type  =  get_post_meta($ad->ID, 'ad_visibility_status', true );
 			    
 		    }
 		    elseif('1' === $selected_ads_for){
-		    	  $is_inContent = false;
-		    	  // check if it's InContent
-			    $cmb2_ad_type = get_post_meta($ad->ID,'_amp_ad_type_format',true);
-			    if('2' === $cmb2_ad_type){
-			    	$is_inContent = true;
-			    }
+		    	
 			    $ad_type  =  get_post_meta($ad->ID, '_amp_ad_visibility_status', true );
 		    }
-		    if($is_inContent){
+		    
 			    $ads_post_id = 	$ad->ID;
 			    $ad_type 	 =  adsforwp_get_meta_post( 'adsforwp_ads_position', $ads_post_id );
 			    $visibility  =  adsforwp_get_meta_post( 'adsforwp_incontent_ads_default', $ads_post_id );
@@ -237,7 +227,7 @@ function adsforwp_generate_ad_post_type_data(){
 					echo "</div>";
 				}
 				$count++;
-			}
+			
 		endforeach;
 		wp_reset_postdata();
 	}

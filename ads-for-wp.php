@@ -956,7 +956,7 @@ function ampforwp_custom_sticky_ads(){
 	elseif('2' === $selected_ads_for){
 		$custom_ad_code	   = get_post_meta($ad_id,'_amp_custom_ad',true);
 	}
-	$sticky_ad_code 	= '<div class="ampforwp-sticky-custom-ad amp-sticky-ads ad-ID-'.$get_ad_id.'">'.$custom_ad_code.'</div>';
+	$sticky_ad_code 	= '<div class="ampforwp-sticky-custom-ad amp-sticky-ads ad-ID-'.$ad_id.'">'.$custom_ad_code.'</div>';
 	echo $sticky_ad_code; 
 }
 
