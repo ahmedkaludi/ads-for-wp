@@ -201,15 +201,16 @@ function adsforwp_generate_ad_post_type_data(){
 					     	$paragraph = $updated_ads_array[$ads_post_id]['paragraph'] ;
 					    }
 					}
-					
+						
 						if(!empty($check) && isset($check[$ads_post_id]['paragraph'])){
 							 $paragraph = $check[$ads_post_id]['paragraph'];
+							 $visibility = $check[$ads_post_id]['visibility'];
 						}
 
 				    echo '<div data-ads-id="'.$ads_post_id.'" id="ad-control-child-'.$count.'">'; ?>
 					   	Ad name: <?php echo esc_attr( $ad->post_title ); ?> <br />
 						
-						<select  data-ad-visibility="<?php echo $visibility ?>" name="" class="ads-visibility widefat" id="ad-visibility-<?php echo $count ?>" disabled="disabled">
+						<select  data-ad-visibility="<?php echo $visibility ?>" name="post_specific_visi" class="ads-visibility widefat" id="ad-visibility-<?php echo $count ?>" disabled="disabled">
 
 							<option value="show" <?php if ( $visibility == "show" ) echo 'selected="selected"'; ?>>Show</option> 				
 							<option value="hide" <?php if ( $visibility == "hide" ) echo 'selected="selected"'; ?>>Hide</option>

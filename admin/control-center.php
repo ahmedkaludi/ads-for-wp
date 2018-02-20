@@ -190,7 +190,8 @@ function adsforwp_insert_ads( $content ){
 	    elseif(isset($cmb2_incontent_options)){
 	    	if('1' === $selected_ads_for){
 		    	if(function_exists('ampforwp_is_amp_endpoint') && ampforwp_is_amp_endpoint()){
-			    	$adsVisiblityType 	= get_post_field('adsforwp_incontent_ads_default', $post_id);
+			    	$adsVisiblityType 	= get_post_meta($currentPostId,'adsforwp-advert-data',true);
+			    	$adsVisiblityType 	= $adsVisiblityType[$adsPostId]['visibility'];
 				    $adsparagraphs 		= $post_meta[$adsPostId]['paragraph'];
 				    $ad_vendor 			= get_post_meta($adsPostId,'ad_vendor',true);
 				    $ad_type 			= get_post_meta($adsPostId,'ad_type_format',true);
