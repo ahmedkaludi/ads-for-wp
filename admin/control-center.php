@@ -298,6 +298,7 @@ function adsforwp_insert_ads( $content ){
 			if(isset($adsValue['paragraph']) && isset($adsValue['content'])){
 				array_splice( $content, $adsValue['paragraph'], 0, $adsValue['content'] );
 			}
+			
 		}
 		$content = implode(' ', $content);
 	}
@@ -322,7 +323,8 @@ function adsforwp_admin_enqueue() {
 		'ajax_url' => admin_url( 'admin-ajax.php' ),
 	);
 	wp_localize_script( 'adsforwp-admin-js', 'adsforwp_localize_data', $data );
-
+	$current_ad_id = get_the_ID();
+	wp_localize_script( 'adsforwp-admin-js', 'current_ad_id', $current_ad_id );
 	// Enqueued script with localized data.
 	wp_enqueue_script( 'adsforwp-admin-js' );
 
