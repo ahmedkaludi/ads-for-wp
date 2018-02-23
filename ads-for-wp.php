@@ -17,7 +17,21 @@ define('ADSFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('ADSFORWP_PLUGIN_DIR_URI', plugin_dir_url(__FILE__));
 define('ADSFORWP_IMAGE_DIR',plugin_dir_url(__FILE__).'images');
 define('ADSFORWP_PLUGIN_DIR_PATH', plugin_dir_path( __DIR__ ) );
-define('ADSFORWP_VERSION','0.1');
+
+
+if ( ! defined( 'ADSFORWP_VERSION' ) ) {
+	define( 'ADSFORWP_VERSION', '2.0' );
+}
+// this is the URL our updater / license checker pings. This should be the URL of the site with EDD installed
+define( 'ADSFORWP_STORE_URL', 'https://magazine3.com/garage/' ); // you should use your own CONSTANT name, and be sure to replace it throughout this file
+
+// the name of your product. This should match the download name in EDD exactly
+define( 'ADSFORWP_ITEM_NAME', 'ADS for WP' );
+
+// the download ID. This is the ID of your product in EDD and should match the download ID visible in your Downloads list (see example below)
+//define( 'AMPFORWP_ITEM_ID', 2502 );
+// the name of the settings page for the license input to be displayed
+define( 'ADSFORWP_LICENSE_PAGE', 'ads-for-wp-license' );
 
 
 /* Adding Files*/
@@ -1130,3 +1144,37 @@ function ampforwp_adsforwp_scripts( $data ) {
 
 	return $data;
 }
+
+require_once dirname( __FILE__ ) . '/updater/EDD_SL_Plugin_Updater.php';
+
+// Check for updates
+function ads_for_wp_plugin_updater() {
+
+	// retrieve our license key from the DB
+	//$license_key = trim( get_option( 'amp_ads_license_key' ) );
+	$selectedOption = get_option('redux_builder_amp',true);
+    $license_key = '';//trim( get_option( 'amp_ads_license_key' ) );
+    $pluginItemName = '';
+    $pluginItemStoreUrl = '';
+    $pluginstatus = '';
+    if( isset($selectedOption['amp-license']) && "" != $selectedOption['amp-license'] && isset($selectedOption['amp-license']['ads-for-wp'])){
+
+       $pluginsDetail = $selectedOption['amp-license']['ads-for-wp'];
+       $license_key = $pluginsDetail['license'];
+       $pluginItemName = $pluginsDetail['item_name'];
+       $pluginItemStoreUrl = $pluginsDetail['store_url'];
+       $pluginstatus = $pluginsDetail['status'];
+    }
+	
+	// setup the updater
+	$edd_updater = new ADSFORWP_EDD_SL_Plugin_Updater( ADSFORWP_STORE_URL, __FILE__, array(
+			'version' 	=> ADSFORWP_VERSION, 				// current version number
+			'license' 	=> $license_key, 						// license key (used get_option above to retrieve from DB)
+			'license_status'=>$pluginstatus,
+			'item_name' => ADSFORWP_ITEM_NAME, 			// name of this plugin
+			'author' 	=> 'Mohammed Kaludi',  					// author of this plugin
+			'beta'		=> false,
+		)
+	);
+}
+add_action( 'admin_init', 'ads_for_wp_plugin_updater', 0 );
