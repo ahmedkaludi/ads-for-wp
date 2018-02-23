@@ -1157,7 +1157,7 @@ function ads_for_wp_plugin_updater() {
     $pluginItemName = '';
     $pluginItemStoreUrl = '';
     $pluginstatus = '';
-    if( isset($selectedOption['amp-license']) && "" != $selectedOption['amp-license'] && isset($selectedOption['amp-license']['ads-for-wp'])){
+    if( isset($selectedOption['amp-license']) && "" != $selectedOption['amp-license'] ){
 
        $pluginsDetail = $selectedOption['amp-license']['ads-for-wp'];
        $license_key = $pluginsDetail['license'];
