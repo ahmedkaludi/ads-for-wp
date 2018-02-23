@@ -121,7 +121,6 @@ function advanced_amp_ampforwp_ads_options() {
 					'desc' => 'place anywhere this shortcode',
 					'id'   => 'manual_ad_type',
 					'type' => 'text',
-					'default' => '[ads-for-wp ads-id="'.$ads_shortcode.'"]',
 					'classes' => 'ad-type ad-type-3',
 					'save_field'  => false, // Otherwise CMB2 will end up removing the value.
 					'attributes'  => array(
@@ -409,7 +408,6 @@ $amp_ads_option->add_field( array(
 					'desc' => 'place anywhere this shortcode',
 					'id'   => '_amp_manual_ad_type',
 					'type' => 'text',
-					'default' => '[ads-for-wp ads-id="'.$amp_ads_shortcode.'"]',
 					'classes' => 'amp-ad-type amp-ad-type-3',
 					'save_field'  => false, // Otherwise CMB2 will end up removing the value.
 					'attributes'  => array(

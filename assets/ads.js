@@ -5,7 +5,8 @@ jQuery( document ).ready(function($) {
 	var adsforwpGlobalCode 		= $('#adsforwp_position_global_code');		
 	var adsforwpSpecificCode 	= $('#adsforwp_ads_position_specific_controls');
 	var adsWrapper 				= $('#adsforwp-ads-control-wrapper');
-
+	var currentAdID       		= current_ad_id;
+	// alert(currentAdID);
 $("#select_ads_for").change(function(){
       $(this).find("option:selected").each(function(){
           var optionValue = $(this).attr("value");
@@ -211,6 +212,10 @@ $("#_amp_adsense_link").change(function(){
 		$(adsforwpSpecificCode).slideDown();
 	});
 
+	// Correct Shortcode added
+	document.getElementById('manual_ad_type').value = '[ads-for-wp ads-id="'+currentAdID+'"]';
+	document.getElementById('_amp_manual_ad_type').value = '[ads-for-wp ads-id="'+currentAdID+'"]';
+	
 
 	/* Global */
 	var singleAdsStatus = $('#adsforwp-current-ad-status').val(); 
