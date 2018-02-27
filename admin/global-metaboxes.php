@@ -185,8 +185,8 @@ function adsforwp_generate_ad_post_type_data(){
 			    $ads_post_id = 	$ad->ID;
 			    $ad_type 	 =  adsforwp_get_meta_post( 'adsforwp_ads_position', $ads_post_id );
 			    $visibility  =  adsforwp_get_meta_post( 'adsforwp_incontent_ads_default', $ads_post_id );
-			    $paragraph 	 =  adsforwp_get_meta_post( 'adsforwp_incontent_ads_paragraphs', $ads_post_id );
-					
+			    $paragraph 	 =  adsforwp_get_meta_post( 'incontent_ad_type', $ads_post_id );
+
 				if ( 'show' === $ad_type ) {
 
 					if ( $all_ads_from_db ) {
