@@ -320,11 +320,11 @@ function adsforwp_admin_enqueue() {
 
 	// Localize the script with new data
 	$data = array(
-		'ajax_url' => admin_url( 'admin-ajax.php' ),
+		'ajax_url'  => admin_url( 'admin-ajax.php' ),
+		'id'		=> get_the_ID()
 	);
 	wp_localize_script( 'adsforwp-admin-js', 'adsforwp_localize_data', $data );
-	$current_ad_id = get_the_ID();
-	wp_localize_script( 'adsforwp-admin-js', 'current_ad_id', $current_ad_id );
+	
 	// Enqueued script with localized data.
 	wp_enqueue_script( 'adsforwp-admin-js' );
 

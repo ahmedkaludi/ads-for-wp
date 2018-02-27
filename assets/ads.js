@@ -5,7 +5,7 @@ jQuery( document ).ready(function($) {
 	var adsforwpGlobalCode 		= $('#adsforwp_position_global_code');		
 	var adsforwpSpecificCode 	= $('#adsforwp_ads_position_specific_controls');
 	var adsWrapper 				= $('#adsforwp-ads-control-wrapper');
-	var currentAdID       		= current_ad_id;
+	var currentAdID       		= adsforwp_localize_data.id;
 	// alert(currentAdID);
 $("#select_ads_for").change(function(){
       $(this).find("option:selected").each(function(){
