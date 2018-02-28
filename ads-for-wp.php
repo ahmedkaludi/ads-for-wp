@@ -115,8 +115,8 @@ function remove_ads_on_this_meta_from_adsforwp(){
 // Funtion to get the ad's id which are custom post types
 
 function get_ad_id($id){
-	$meta_details = get_metadata('post',$id,'adsforwp-advert-data');
-	$post_ad_data = $meta_details[0];
+	$meta_details = get_metadata('post',$id,'adsforwp-advert-data',true);
+	$post_ad_data = $meta_details;
 	$post_id = $id;
 	$all_ads_post  = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1));
 	foreach ($all_ads_post as $ads) {
@@ -1157,7 +1157,7 @@ function ads_for_wp_plugin_updater() {
     $pluginItemName = '';
     $pluginItemStoreUrl = '';
     $pluginstatus = '';
-    if( isset($selectedOption['amp-license']) && "" != $selectedOption['amp-license'] ){
+    if( isset($selectedOption['amp-license']) && "" != $selectedOption['amp-license'] && isset($selectedOption['amp-license']['ads-for-wp'])){
 
        $pluginsDetail = $selectedOption['amp-license']['ads-for-wp'];
        $license_key = $pluginsDetail['license'];

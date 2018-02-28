@@ -155,7 +155,7 @@ function adsforwp_insert_ads( $content ){
 				'meta_query'	=>array(
 					'adsforwp_ads_position'=>'hide',
 				array(
-					'key' 	=> 'adsforwp_ads_controller_default',
+					'key' 	=> $incontent_visibility,
 					'value' => 'show',
 				)
 		
@@ -174,25 +174,22 @@ function adsforwp_insert_ads( $content ){
 	    if($ads_format != '2'){
 	    	continue;
 	    }
-	    if(!isset($post_meta[$adsPostId])){
-	    	$adsVisiblityType = get_post_field('adsforwp_incontent_ads_default', $post_id);
-		    $adsparagraphs = get_post_field('adsforwp_incontent_ads_paragraphs', $post_id);
-		    $adsContent = ampforwp_incontent_adsense_ads($adsPostId);
-		    $post_meta[$adsPostId] = array(				
-							            'post_id' => $currentPostId,
-							            'ads_id' => $adsPostId,
-							            'visibility' => $adsVisiblityType,
-							            'paragraph' => $adsparagraphs,
-							            'content'=>$adsContent,
-	    							);
-	    }
 
-	    elseif(isset($cmb2_incontent_options)){
+
+	    if(isset($cmb2_incontent_options)){
 	    	if('1' === $selected_ads_for){
 		    	if(function_exists('ampforwp_is_amp_endpoint') && ampforwp_is_amp_endpoint()){
 			    	$adsVisiblityType 	= get_post_meta($currentPostId,'adsforwp-advert-data',true);
-			    	$adsVisiblityType 	= $adsVisiblityType[$adsPostId]['visibility'];
-				    $adsparagraphs 		= $post_meta[$adsPostId]['paragraph'];
+
+			    	$adsVisiblityType 	= (isset($adsVisiblityType[$adsPostId]['visibility'])
+			    		? $adsVisiblityType[$adsPostId]['visibility'] 
+			    		: get_post_meta($adsPostId,'ad_visibility_status',true) 
+			    							);
+			    	$adsparagraphs 		= ( isset($post_meta[$adsPostId]['paragraph'])
+			    		? $post_meta[$adsPostId]['paragraph'] 
+			    		: get_post_meta($adsPostId,'incontent_ad_type',true) );
+
+
 				    $ad_vendor 			= get_post_meta($adsPostId,'ad_vendor',true);
 				    $ad_type 			= get_post_meta($adsPostId,'ad_type_format',true);
 			    	if('1' === $ad_vendor && '2' === $ad_type){
@@ -229,7 +226,13 @@ function adsforwp_insert_ads( $content ){
 			}
 			if('2' === $selected_ads_for){
 			    	$adsVisiblityType 	= get_post_field('adsforwp_incontent_ads_default', $post_id);
-				    $adsparagraphs 		= $post_meta[$adsPostId]['paragraph'];
+				    $adsVisiblityType 	= (isset($adsVisiblityType[$adsPostId]['visibility'])
+			    		? $adsVisiblityType[$adsPostId]['visibility'] 
+			    		: get_post_meta($adsPostId,'_amp_ad_visibility_status',true) 
+			    							);
+			    	$adsparagraphs 		= ( isset($post_meta[$adsPostId]['paragraph'])
+			    		? $post_meta[$adsPostId]['paragraph'] 
+			    		: get_post_meta($adsPostId,'_amp_incontent_ad_type',true) );
 				    $ad_vendor 			= get_post_meta($adsPostId,'_amp_ad_vendor',true);
 				    $ad_type 			= get_post_meta($adsPostId,'_amp_ad_type_format',true);
 			    	if('1' === $ad_vendor && '2' === $ad_type){
@@ -266,7 +269,19 @@ function adsforwp_insert_ads( $content ){
 				
 			}
 	    }
+	    elseif(!isset($post_meta[$adsPostId])){
 
+	    	$adsVisiblityType = get_post_field('adsforwp_incontent_ads_default', $post_id);
+		    $adsparagraphs = get_post_field('adsforwp_incontent_ads_paragraphs', $post_id);
+		    $adsContent = ampforwp_incontent_adsense_ads($adsPostId);
+		    $post_meta[$adsPostId] = array(				
+							            'post_id' => $currentPostId,
+							            'ads_id' => $adsPostId,
+							            'visibility' => $adsVisiblityType,
+							            'paragraph' => $adsparagraphs,
+							            'content'=>$adsContent,
+	    							);
+	    }
 	    else{
 	    	$adsContent = get_post_field('post_content', $adsPostId);
 	    	$ad_vendor = get_post_meta($adsPostId,'ad_vendor',true);
@@ -288,7 +303,7 @@ function adsforwp_insert_ads( $content ){
 	    
 	}
 	wp_reset_query();
-
+	ksort($post_meta);
 	$content = preg_split("/\\r\\n|\\r|\\n/", $content);
 	if(count($post_meta)>0){
 		foreach ($post_meta as $key => $adsValue) {
@@ -296,7 +311,8 @@ function adsforwp_insert_ads( $content ){
 				continue;
 			}
 			if(isset($adsValue['paragraph']) && isset($adsValue['content'])){
-				array_splice( $content, $adsValue['paragraph'], 0, $adsValue['content'] );
+				$content[$adsValue['paragraph']] .= $adsValue['content'];
+				//array_splice( $content, $adsValue['paragraph'], 0, $adsValue['content'] );
 			}
 			
 		}
