@@ -1086,6 +1086,7 @@ function ampforwp_adsforwp_scripts( $data ) {
 	$show_ads = 'yes';		
 	$show_ads = apply_filters('adsforwp_advert_on_off', $show_ads);
 
+
 	// if ( $show_ads != 'yes' ) {
 	// 	return $data ; // Do not show ads and return the data as it is
 	// }
@@ -1107,10 +1108,9 @@ function ampforwp_adsforwp_scripts( $data ) {
 		$custom_parallax 	= get_post_meta($post_ad_id,'_amp_custom_parallax',true);
 	}
 	
-	
-	if('1' === $ad_type || '2' === $ad_type || '3' === $ad_type || '4' === $ad_type || '5' === $ad_type ) {
-
-			if('1' === $ad_vendor || '2' === $ad_vendor){
+		
+	if('1' === $ad_type || '2' === $ad_type || '3' === $ad_type || '4' === $ad_type || '5' === $ad_type ) {	
+			if('1' === $ad_vendor || '2' === $ad_vendor || '3' === $ad_vendor){
 				if ( empty( $data['amp_component_scripts']['amp-ad'] ) ) {
 					$data['amp_component_scripts']['amp-ad'] = 'https://cdn.ampproject.org/v0/amp-ad-0.1.js';
 				}
