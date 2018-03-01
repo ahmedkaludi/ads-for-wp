@@ -66,7 +66,19 @@ function adsforwp_shortcode_generator( $atts ){
 
 	$show_ads = 'yes';		
 	$show_ads = apply_filters('adsforwp_advert_on_off', $show_ads);
-	
+	$selected_ads_for 	= get_post_meta($adsPostId,'select_ads_for',true);
+	if('1' === $selected_ads_for){
+		$global_visibility  = get_post_meta($adsPostId,'ad_visibility_status',true);
+		if($global_visibility != 'show'){
+			$show_ads = 'no';
+		}
+	}
+	elseif('2' === $selected_ads_for){
+		$global_visibility  = get_post_meta($adsPostId,'_amp_ad_visibility_status',true);
+		if($global_visibility != 'show'){
+			$show_ads = 'no';
+		}
+	}	
 	if ( $show_ads == 'yes' ) {
 		if(function_exists('ampforwp_is_amp_endpoint') && ampforwp_is_amp_endpoint()){
 			if('1' === $ad_vendor && '3' === $ad_type){
