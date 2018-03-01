@@ -1018,7 +1018,7 @@ add_action('ampforwp_body_beginning','ampforwp_adv_amp_auto_ads');
 function ampforwp_adv_amp_auto_ads(){
 	$ad_id 		= get_ad_id(get_the_ID());
 	$ad_type 	= get_post_meta($ad_id,'ad_type_format',true);
-	$global_visibility  = get_post_meta($post_ad_id,'ad_visibility_status',true);
+	$global_visibility  = get_post_meta($ad_id,'ad_visibility_status',true);
 	if($global_visibility != 'hide'){
 		if('5' === $ad_type){
 			$ampauto_ad_code	    = get_post_meta($ad_id,'amp_auto_ad_type',true);

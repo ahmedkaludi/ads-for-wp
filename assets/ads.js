@@ -318,9 +318,10 @@ $("#_amp_adsense_link").change(function(){
 		}
 	});
 // Correct Shortcode added
-if(document.getElementById('manual_ad_type').length > 0 || document.getElementById('_amp_manual_ad_type').length > 0){
-	document.getElementById('manual_ad_type').value = '[ads-for-wp ads-id="'+currentAdID+'"]';
-	document.getElementById('_amp_manual_ad_type').value = '[ads-for-wp ads-id="'+currentAdID+'"]';
-}
+if(document.getElementById('manual_ad_type')){
+	document.getElementById('manual_ad_type').value = '[ads-for-wp ads-id="'+currentAdID+'"]';}
+	if(document.getElementById('_amp_manual_ad_type')){
+	document.getElementById('_amp_manual_ad_type').value = '[ads-for-wp ads-id="'+currentAdID+'"]';}
+
 
 });
