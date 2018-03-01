@@ -133,6 +133,10 @@ function adsforwp_insert_ads( $content ){
 		return $content ; // Do not show ads and return the content as it is
 	}
 
+	if(!is_singular()){
+		return $content;
+	}
+
 	$post_meta = get_post_meta($currentPostId, 'adsforwp-advert-data', true);
 	$selected_ads_for 	= get_post_meta(get_ad_id(get_the_ID()),'select_ads_for',true);
 	if('1' === $selected_ads_for){
@@ -311,7 +315,12 @@ function adsforwp_insert_ads( $content ){
 				continue;
 			}
 			if(isset($adsValue['paragraph']) && isset($adsValue['content'])){
-				$content[$adsValue['paragraph']] .= $adsValue['content'];
+			
+				if(count($content) > $adsValue['paragraph']){
+
+					$content[$adsValue['paragraph']] .= $adsValue['content'];
+				}
+
 				//array_splice( $content, $adsValue['paragraph'], 0, $adsValue['content'] );
 			}
 			
