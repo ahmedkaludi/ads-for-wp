@@ -23,10 +23,10 @@ if ( ! defined( 'ADSFORWP_VERSION' ) ) {
 	define( 'ADSFORWP_VERSION', '2.0' );
 }
 // this is the URL our updater / license checker pings. This should be the URL of the site with EDD installed
-define( 'ADSFORWP_STORE_URL', 'https://magazine3.com/garage/' ); // you should use your own CONSTANT name, and be sure to replace it throughout this file
+define( 'ADSFORWP_STORE_URL', 'https://accounts.ampforwp.com/' ); // you should use your own CONSTANT name, and be sure to replace it throughout this file
 
 // the name of your product. This should match the download name in EDD exactly
-define( 'ADSFORWP_ITEM_NAME', 'ADS for WP' );
+define( 'ADSFORWP_ITEM_NAME', 'Advanced AMP Ads 2.0 Beta' );
 
 // the download ID. This is the ID of your product in EDD and should match the download ID visible in your Downloads list (see example below)
 //define( 'AMPFORWP_ITEM_ID', 2502 );
@@ -117,8 +117,9 @@ function remove_ads_on_this_meta_from_adsforwp(){
 function get_ad_id($id){
 	$meta_details = get_metadata('post',$id,'adsforwp-advert-data',true);
 	$post_ad_data = $meta_details;
-	$post_id = $id;
-	$all_ads_post  = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1));
+	$post_id 	  = $id;
+	$post_ad_id   = '';
+	$all_ads_post = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1));
 	foreach ($all_ads_post as $ads) {
 		$post_ad_id = $ads->ID;
 	}
@@ -136,7 +137,10 @@ function ampforwp_display_amp_ads(){
 	$selected_ads_for 	= get_post_meta($post_ad_id,'select_ads_for',true);
 	$ad_type 			= get_post_meta($post_ad_id,'ad_type_format',true);
 	$ad_vendor			= get_post_meta($post_ad_id,'ad_vendor',true);
+	$visibility_status  = get_post_meta($post_ad_id,'ad_vendor',true);
 	if('1' === $selected_ads_for){
+	$global_visibility  = get_post_meta($post_ad_id,'ad_visibility_status',true);
+	if($global_visibility != 'hide'){
 		// Normal Ads
 		if('1' === $ad_type){
 			$ad_position = get_post_meta($post_ad_id,'normal_ad_type',true);
@@ -300,6 +304,7 @@ function ampforwp_display_amp_ads(){
 			}
 
 		}
+	}
 	
 
 	}
@@ -307,23 +312,26 @@ function ampforwp_display_amp_ads(){
 	elseif('2' === $selected_ads_for){
 		$amp_ad_type 			= get_post_meta($post_ad_id,'_amp_ad_type_format',true);
 		$amp_ad_vendor			= get_post_meta($post_ad_id,'_amp_ad_vendor',true);
+		$global_visibility  = get_post_meta($post_ad_id,'_amp_ad_visibility_status',true);
+		if($global_visibility != 'hide'){
 		// Normal
-		if('1' === $amp_ad_type){
-			switch ($amp_ad_vendor) {
-				case '1':
-					add_action('amp_post_template_footer','ampforwp_adsense_ads');
-					break;
-				case '2':
-					add_action('amp_post_template_footer','ampforwp_dfp_ads');
-					break;
-				case '3':
-					add_action('amp_post_template_footer','ampforwp_custom_ads');
-					break;
-				default:
-					add_action('amp_post_template_footer','ampforwp_adsense_ads');
-					break;
+			if('1' === $amp_ad_type){
+				switch ($amp_ad_vendor) {
+					case '1':
+						add_action('amp_post_template_footer','ampforwp_adsense_ads');
+						break;
+					case '2':
+						add_action('amp_post_template_footer','ampforwp_dfp_ads');
+						break;
+					case '3':
+						add_action('amp_post_template_footer','ampforwp_custom_ads');
+						break;
+					default:
+						add_action('amp_post_template_footer','ampforwp_adsense_ads');
+						break;
+				}
+				
 			}
-			
 		}
 	}
 }
@@ -423,11 +431,19 @@ function ampforwp_incontent_adsense_ads($id){
 }
 
 function ampforwp_sticky_adsense_ads(){
-
-	$sticky_adsense_ad_id = get_ad_id(get_the_ID());
-	$ad_code = ampforwp_incontent_adsense_ads($sticky_adsense_ad_id);
-	$amp_sticky = '<amp-sticky-ad layout="nodisplay">'.$ad_code.'</amp-sticky-ad>';
-	echo $amp_sticky;
+	$selected_ads_for 	= get_post_meta($id,'select_ads_for',true);
+	if('1' === $selected_ads_for){
+		$global_visibility  = get_post_meta($post_ad_id,'ad_visibility_status',true);
+	}
+	elseif('2' === $selected_ads_for){
+		$global_visibility  = get_post_meta($post_ad_id,'_amp_ad_visibility_status',true);
+	}
+	if($global_visibility != 'hide'){
+		$sticky_adsense_ad_id = get_ad_id(get_the_ID());
+		$ad_code = ampforwp_incontent_adsense_ads($sticky_adsense_ad_id);
+		$amp_sticky = '<amp-sticky-ad layout="nodisplay">'.$ad_code.'</amp-sticky-ad>';
+		echo $amp_sticky;
+	}
 	
 }
 
@@ -1002,10 +1018,12 @@ add_action('ampforwp_body_beginning','ampforwp_adv_amp_auto_ads');
 function ampforwp_adv_amp_auto_ads(){
 	$ad_id 		= get_ad_id(get_the_ID());
 	$ad_type 	= get_post_meta($ad_id,'ad_type_format',true);
-
-	if('5' === $ad_type){
-		$ampauto_ad_code	    = get_post_meta($ad_id,'amp_auto_ad_type',true);
-		echo $ampauto_ad_code;
+	$global_visibility  = get_post_meta($post_ad_id,'ad_visibility_status',true);
+	if($global_visibility != 'hide'){
+		if('5' === $ad_type){
+			$ampauto_ad_code	    = get_post_meta($ad_id,'amp_auto_ad_type',true);
+			echo $ampauto_ad_code;
+		}
 	}
 }
 

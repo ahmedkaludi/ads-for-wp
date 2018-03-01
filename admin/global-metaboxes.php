@@ -32,7 +32,7 @@ function adsforwp_get_meta_post( $value, $post_id = '' ) {
 
 	if('adsforwp-advert-data' === $value){
 		$selected_ads_for 	= get_post_meta(get_ad_id(get_the_ID()),'select_ads_for',true);
-			
+			$cpt_paragraph = '';
 			foreach ($field as $key => $value ) {
 				$selected_ads_for 	= get_post_meta($key,'select_ads_for',true);
 				if('1' === $selected_ads_for){
