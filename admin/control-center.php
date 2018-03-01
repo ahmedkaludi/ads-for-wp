@@ -66,7 +66,6 @@ function adsforwp_shortcode_generator( $atts ){
 
 	$show_ads = 'yes';		
 	$show_ads = apply_filters('adsforwp_advert_on_off', $show_ads);
-	$selected_ads_for 	= get_post_meta($adsPostId,'select_ads_for',true);
 	if('1' === $selected_ads_for){
 		$global_visibility  = get_post_meta($adsPostId,'ad_visibility_status',true);
 		if($global_visibility != 'show'){
