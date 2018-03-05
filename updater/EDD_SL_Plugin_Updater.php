@@ -60,6 +60,7 @@ class ADSFORWP_EDD_SL_Plugin_Updater {
 		add_filter( 'plugins_api', array( $this, 'plugins_api_filter' ), 10, 3 );
 		remove_action( 'after_plugin_row_' . $this->name, 'wp_plugin_update_row', 10 );
 		add_action( 'after_plugin_row_' . $this->name, array( $this, 'show_update_notification' ), 10, 2 );
+		add_action( 'in_plugin_update_message-' . $this->name, array( $this, 'ampforwp_updatemessage' ), 10, 2 );
 		add_action( 'admin_init', array( $this, 'show_changelog' ) );
 
 	}
@@ -122,6 +123,14 @@ class ADSFORWP_EDD_SL_Plugin_Updater {
 	 * @param string  $file
 	 * @param array   $plugin
 	 */
+	public function ampforwp_updatemessage( $file, $plugin ) {
+		 if(trim($this->api_data['license'])=='' || $this->api_data['license']=="missing"){
+	     	echo "<strong><a href='".esc_url(  self_admin_url( 'admin.php?page=amp_options&tab=2' )  )."'> Enter License Key here</a> to get regular update. you can get license from members area</strong>";
+	     }
+	     elseif( $this->api_data['license_status']=="invalid"){
+	     	echo "<strong><a href='".esc_url(  self_admin_url( 'admin.php?page=amp_options&tab=2' )  )."'> Enter Valid License Key. </a>Current key is invalid.</strong>";
+	     }
+	}
 	public function show_update_notification( $file, $plugin ) {
 
 		if ( is_network_admin() ) {
