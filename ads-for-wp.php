@@ -3,7 +3,7 @@
 Plugin Name: Ads for WP
 Plugin URI: https://wordpress.org/plugins/ads-for-wp/
 Description: Ads for WP - The best Advertisement plugin in WordPress
-Version: 2.0 beta
+Version: 2.0
 Author: Ahmed Kaludi, Mohammed Kaludi
 Author URI: https://ampforwp.com/
 Donate link: https://www.paypal.me/Kaludi/25
@@ -1196,3 +1196,15 @@ function ads_for_wp_plugin_updater() {
 	);
 }
 add_action( 'admin_init', 'ads_for_wp_plugin_updater', 0 );
+
+// Notice to enter license key once activate the plugin
+
+$path = plugin_basename( __FILE__ );
+	add_action("after_plugin_row_{$path}", function( $plugin_file, $plugin_data, $status ) {
+		global $redux_builder_amp;
+		$selectedOption = get_option('redux_builder_amp',true);
+	
+		if(empty($redux_builder_amp['amp-license']['ads-for-wp']['license'])){
+			echo "<tr class='active'><td>&nbsp;</td><td colspan='2'>Please enter the license key to get the <strong>latest features</strong> and <strong>stable updates</strong><strong><a href='".esc_url(  self_admin_url( 'admin.php?page=amp_options&tab=2' )  )."'> here</a></strong></td></tr>";
+			    }
+	}, 10, 3 );
