@@ -360,3 +360,28 @@ function adsforwp_change_button_text($translation, $text, $domain) {
     return $translation;
 }
 // add_filter('gettext', 'adsforwp_change_button_text', 10, 4);
+
+// HELP METABOX
+
+add_action( 'add_meta_boxes', 'adsforwp_help_metabox' );
+function adsforwp_help_metabox(){
+
+	add_meta_box(
+		'adsforwp_help_metabox',
+		esc_html__( 'Help?', 'ads-for-wp' ),
+		'adsforwp_help_links',
+		'ads-for-wp-ads',
+		'side',
+		'low'
+	);
+} 
+
+function adsforwp_help_links(){
+	wp_nonce_field( '_adsforwp_ads_meta_box_nonce', 'adsforwp_ads_meta_box_nonce' ); ?>
+	<div class="ads-for-wp-help">
+		<p><a href="https://ampforwp.com/tutorials/">Documentation</a></p>
+		<p><a href="https://docs.google.com/forms/d/e/1FAIpQLSd2DKLzPQr_UzJiw-jAIrNCGJ7dQviJrg9zxmu5ajsbA1Ix2Q/viewform">Feedback</a></p>
+		<p><a href="https://docs.google.com/forms/d/e/1FAIpQLSd2DKLzPQr_UzJiw-jAIrNCGJ7dQviJrg9zxmu5ajsbA1Ix2Q/viewform">Request a feature</a></p>
+		<p><a href="https://docs.google.com/forms/d/e/1FAIpQLSd2DKLzPQr_UzJiw-jAIrNCGJ7dQviJrg9zxmu5ajsbA1Ix2Q/viewform">Report a bug</a></p>
+	</div>
+<?php }
