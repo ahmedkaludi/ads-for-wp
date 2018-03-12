@@ -6,7 +6,8 @@ function adsforwp_setup_post_type() {
       'labels' => array(
         'name' 			=> esc_html__( 'Ads', 'ads-for-wp' ),
         'singular_name' => esc_html__( 'Ad', 'ads-for-wp' ),
-        'add_new' 		=> esc_html__( 'Add New Ad', 'ads-for-wp' )
+        'add_new' 		=> esc_html__( 'Add New Ad', 'ads-for-wp' ),
+        'add_new_item'  => esc_html__( 'Add New Ad', 'ads-for-wp' )
       ),
       	'public' 		=> true,
       	'has_archive' => false,

@@ -379,7 +379,7 @@ function adsforwp_help_metabox(){
 function adsforwp_help_links(){
 	wp_nonce_field( '_adsforwp_ads_meta_box_nonce', 'adsforwp_ads_meta_box_nonce' ); ?>
 	<div class="ads-for-wp-help">
-		<p><a href="https://ampforwp.com/tutorials/">Documentation</a></p>
+		<p><a href="https://ampforwp.com/tutorials/article/work-ads-for-wp/">Documentation</a></p>
 		<p><a href="https://docs.google.com/forms/d/e/1FAIpQLSd2DKLzPQr_UzJiw-jAIrNCGJ7dQviJrg9zxmu5ajsbA1Ix2Q/viewform">Feedback</a></p>
 		<p><a href="https://docs.google.com/forms/d/e/1FAIpQLSd2DKLzPQr_UzJiw-jAIrNCGJ7dQviJrg9zxmu5ajsbA1Ix2Q/viewform">Request a feature</a></p>
 		<p><a href="https://docs.google.com/forms/d/e/1FAIpQLSd2DKLzPQr_UzJiw-jAIrNCGJ7dQviJrg9zxmu5ajsbA1Ix2Q/viewform">Report a bug</a></p>
