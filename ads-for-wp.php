@@ -3,7 +3,7 @@
 Plugin Name: Ads for WP
 Plugin URI: https://wordpress.org/plugins/ads-for-wp/
 Description: Ads for WP - The best Advertisement plugin in WordPress
-Version: 1.0
+Version: 1.0.2
 Author: Ahmed Kaludi, Mohammed Kaludi
 Author URI: https://ampforwp.com/
 Donate link: https://www.paypal.me/Kaludi/25
@@ -20,7 +20,7 @@ define('ADSFORWP_PLUGIN_DIR_PATH', plugin_dir_path( __DIR__ ) );
 
 
 if ( ! defined( 'ADSFORWP_VERSION' ) ) {
-	define( 'ADSFORWP_VERSION', '2.0' );
+	define( 'ADSFORWP_VERSION', '1.0.2' );
 }
 // this is the URL our updater / license checker pings. This should be the URL of the site with EDD installed
 define( 'ADSFORWP_STORE_URL', 'https://accounts.ampforwp.com/' ); // you should use your own CONSTANT name, and be sure to replace it throughout this file
@@ -1246,6 +1246,6 @@ $path = plugin_basename( __FILE__ );
 		$selectedOption = get_option('redux_builder_amp',true);
 	
 		if(empty($redux_builder_amp['amp-license']['ads-for-wp']['license'])){
-			echo "<tr class='active'><td>&nbsp;</td><td colspan='2'>Please enter the license key to get the <strong>latest features</strong> and <strong>stable updates</strong><strong><a href='".esc_url(  self_admin_url( 'admin.php?page=amp_options&tab=2' )  )."'> here</a></strong></td></tr>";
+			echo "<tr class='active'><td>&nbsp;</td><td colspan='2'><a href='".esc_url(  self_admin_url( 'admin.php?page=amp_options&tab=2' )  )."'>Please enter the license key</a> to get the <strong>latest features</strong> and <strong>stable updates</strong></td></tr>";
 			    }
 	}, 10, 3 );
