@@ -122,6 +122,11 @@ function get_ad_id($id){
 	$all_ads_post = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1));
 	foreach ($all_ads_post as $ads) {
 		$post_ad_id = $ads->ID;
+		$ad_position = get_post_meta($post_ad_id,'normal_ad_type',true);
+		if('12' === $ad_position){
+			$inbetween_id = $post_ad_id;
+			return $inbetween_id;
+		}
 	}
 	// foreach ($post_ad_data as $key => $ad_config) {
 	// 	$post_ad_id = $ad_config['ads_id'];
