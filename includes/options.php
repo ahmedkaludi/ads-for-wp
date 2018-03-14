@@ -170,17 +170,17 @@ function advanced_amp_ampforwp_ads_options() {
 
 		// Adsense Options
 			$ampforwp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Link Ads', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Check this if the ad is link ads, Tutorial: <a href="http://ampforwp.com/tutorials/">What are Link Ads and where does it appear?</a>',
-					'id'               => 'adsense_link',
-					'type'             => 'checkbox',
-					'classes'		   => 'vendor-fields adsense-data-1'
-				) );
-			$ampforwp_ads_option->add_field( array(
 					'name' => 'Responsive Ad',
 					'desc' => 'This will make your Ad responsive',
 					'id'   => 'adsense_responsive',
 					'type' => 'checkbox',
+					'classes'		   => 'vendor-fields adsense-data-1'
+				) );
+			$ampforwp_ads_option->add_field( array(
+					'name'             => esc_html__( 'Link Ads', 'ampforwp_adsforwp' ),
+					'desc'			   => 'Check this if the ad is link ads, Tutorial: <a href="http://ampforwp.com/tutorials/">What are Link Ads and where does it appear?</a>',
+					'id'               => 'adsense_link',
+					'type'             => 'checkbox',
 					'classes'		   => 'vendor-fields adsense-data-1'
 				) );
 			$ampforwp_ads_option->add_field( array(
@@ -453,13 +453,7 @@ $amp_ads_option->add_field( array(
 
 
 		// Adsense Options
-			$amp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Link Ads', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Check this if the ad is link ads, Tutorial: <a href="http://ampforwp.com/tutorials/">What are Link Ads and where does it appear?</a>',
-					'id'               => '_amp_adsense_link',
-					'type'             => 'checkbox',
-					'classes'		   => 'amp-vendor-fields amp-adsense-data-1'
-				) );
+			
 			$amp_ads_option->add_field( array(
 					'name' => 'Responsive Ad',
 					'desc' => 'This will make your Ad responsive',
@@ -467,6 +461,15 @@ $amp_ads_option->add_field( array(
 					'type' => 'checkbox',
 					'classes'		   => 'amp-vendor-fields amp-adsense-data-1'
 				) );
+
+			$amp_ads_option->add_field( array(
+					'name'             => esc_html__( 'Link Ads', 'ampforwp_adsforwp' ),
+					'desc'			   => 'Check this if the ad is link ads, Tutorial: <a href="http://ampforwp.com/tutorials/">What are Link Ads and where does it appear?</a>',
+					'id'               => '_amp_adsense_link',
+					'type'             => 'checkbox',
+					'classes'		   => 'amp-vendor-fields amp-adsense-data-1'
+				) );
+
 			$amp_ads_option->add_field( array(
 					'name'             => esc_html__( 'Link Ads Dimensions', 'ampforwp_adsforwp' ),
 					'desc'			   => 'Select the preferred dimensions for your ad',
