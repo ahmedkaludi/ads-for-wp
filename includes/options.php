@@ -177,6 +177,13 @@ function advanced_amp_ampforwp_ads_options() {
 					'classes'		   => 'vendor-fields adsense-data-1'
 				) );
 			$ampforwp_ads_option->add_field( array(
+					'name' => 'Responsive Ad',
+					'desc' => 'This will make your Ad responsive',
+					'id'   => 'adsense_responsive',
+					'type' => 'checkbox',
+					'classes'		   => 'vendor-fields adsense-data-1'
+				) );
+			$ampforwp_ads_option->add_field( array(
 					'name'             => esc_html__( 'Link Ads Dimensions', 'ampforwp_adsforwp' ),
 					'desc'			   => 'Select the preferred dimensions for your ad',
 					'id'               => 'link_ads_dimensions',
@@ -451,6 +458,13 @@ $amp_ads_option->add_field( array(
 					'desc'			   => 'Check this if the ad is link ads, Tutorial: <a href="http://ampforwp.com/tutorials/">What are Link Ads and where does it appear?</a>',
 					'id'               => '_amp_adsense_link',
 					'type'             => 'checkbox',
+					'classes'		   => 'amp-vendor-fields amp-adsense-data-1'
+				) );
+			$amp_ads_option->add_field( array(
+					'name' => 'Responsive Ad',
+					'desc' => 'This will make your Ad responsive',
+					'id'   => '_amp_adsense_responsive',
+					'type' => 'checkbox',
 					'classes'		   => 'amp-vendor-fields amp-adsense-data-1'
 				) );
 			$amp_ads_option->add_field( array(

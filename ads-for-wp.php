@@ -345,17 +345,20 @@ function ampforwp_adsense_ads(){
 	$dimensions 		= get_adsense_dimensions($post_adsense_ad_id);
 	$width				= $dimensions['width'];
 	$height				= $dimensions['height'];
+	$is_responsive		= '';
 	if('1' === $selected_ads_for){
 		$ad_client			= get_post_meta($post_adsense_ad_id,'adsense_ad_client',true);
 		$ad_slot			= get_post_meta($post_adsense_ad_id,'adsense_ad_slot',true);
 		$ad_parallax		= get_post_meta($post_adsense_ad_id,'adsense_parallax',true);
 		$is_optimize		= get_post_meta($post_adsense_ad_id,'optimize_ads',true);
+		$is_responsive		= get_post_meta($post_adsense_ad_id,'adsense_responsive',true);
 	}
 	elseif('2' === $selected_ads_for){
 		$ad_client			= get_post_meta($post_adsense_ad_id,'_amp_adsense_ad_client',true);
 		$ad_slot			= get_post_meta($post_adsense_ad_id,'_amp_adsense_ad_slot',true);
 		$ad_parallax		= get_post_meta($post_adsense_ad_id,'_amp_adsense_parallax',true);
 		$is_optimize		= get_post_meta($post_adsense_ad_id,'_amp_optimize_ads',true);
+		$is_responsive		= get_post_meta($post_adsense_ad_id,'_amp_adsense_responsive',true);
 	}
 	if('on' === $is_optimize){
 		$optimize =  'data-loading-strategy="prefer-viewability-over-views"';
@@ -363,15 +366,30 @@ function ampforwp_adsense_ads(){
 	else{
 		$optimize = '';
 	}
-	$ad_code 			= '<amp-ad class="aa_wrp aa_adsense aa_'.$post_adsense_ad_id.'"
+
+	if('on' === $is_responsive){
+		$ad_code 			= '<amp-ad class="aa_wrp aa_adsense aa_'.$post_adsense_ad_id.'"
+								width="100vw" height=320
+								  type="adsense"
+								  data-ad-client="'. $ad_client .'"
+								  data-ad-slot="'. $ad_slot .'"
+								  data-auto-format="rspv"
+								  data-full-width>
+							    <div overflow></div>
+							></amp-ad>';
+	}
+	else{
+
+		$ad_code 			= '<amp-ad class="aa_wrp aa_adsense aa_'.$post_adsense_ad_id.'"
 								type="adsense"'.$optimize.'
 								width="'. $width .'"
 								height="'. $height .'"
 								data-ad-client="'. $ad_client .'"
 								data-ad-slot="'. $ad_slot .'"
 							></amp-ad>';
+	}
 	
-		echo $ad_code;	
+	echo $ad_code;	
 	
 }
 
@@ -387,6 +405,7 @@ function ampforwp_incontent_adsense_ads($id){
 	$ad_slot			= '';
 	$ad_parallax		= '';
 	$is_optimize		= '';
+	$is_responsive		= '';
 	$selected_ads_for 	= get_post_meta($post_adsense_ad_id,'select_ads_for',true);
 	$dimensions 		= get_adsense_dimensions($post_adsense_ad_id);
 	$width				= $dimensions['width'];
@@ -396,12 +415,14 @@ function ampforwp_incontent_adsense_ads($id){
 		$ad_slot			= get_post_meta($post_adsense_ad_id,'adsense_ad_slot',true);
 		$ad_parallax		= get_post_meta($post_adsense_ad_id,'adsense_parallax',true);
 		$is_optimize		= get_post_meta($post_adsense_ad_id,'optimize_ads',true);
+		$is_responsive		= get_post_meta($post_adsense_ad_id,'adsense_responsive',true);
 	}
 	elseif('2' === $selected_ads_for){
 		$ad_client			= get_post_meta($post_adsense_ad_id,'_amp_adsense_ad_client',true);
 		$ad_slot			= get_post_meta($post_adsense_ad_id,'_amp_adsense_ad_slot',true);
 		$ad_parallax		= get_post_meta($post_adsense_ad_id,'_amp_adsense_parallax',true);
 		$is_optimize		= get_post_meta($post_adsense_ad_id,'_amp_optimize_ads',true);
+		$is_responsive		= get_post_meta($post_adsense_ad_id,'_amp_adsense_responsive',true);
 	}
 	if('on' === $is_optimize){
 		$optimize =  'data-loading-strategy="prefer-viewability-over-views"';
@@ -417,15 +438,28 @@ function ampforwp_incontent_adsense_ads($id){
 		$parallax_container = '';
 		$parallax_container_end = ''; 
 	}
-	$ad_code 			= $parallax_container;
-	$ad_code 			.= '<amp-ad class="aa_wrp aa_incontent_adsense aa_'.$post_adsense_ad_id.'"
-								type="adsense"'.$optimize.'
-								width="'. $width .'"
-								height="'. $height .'"
-								data-ad-client="'. $ad_client .'"
-								data-ad-slot="'. $ad_slot .'"
-							></amp-ad>';
-	$ad_code 			.= $parallax_container_end;
+
+	if('on' === $is_responsive){
+		$ad_code 			= '<amp-ad class="aa_wrp aa_incontent_adsense aa_'.$post_adsense_ad_id.'"width="100vw" height=320
+			  type="adsense"
+			  data-ad-client="'. $ad_client .'"
+			  data-ad-slot="'. $ad_slot .'"
+			  data-auto-format="rspv"
+			  data-full-width>
+		    <div overflow></div>
+		></amp-ad>';
+	}
+	else{
+		$ad_code 			= $parallax_container;
+		$ad_code 			.= '<amp-ad class="aa_wrp aa_incontent_adsense aa_'.$post_adsense_ad_id.'"
+				type="adsense"'.$optimize.'
+				width="'. $width .'"
+				height="'. $height .'"
+				data-ad-client="'. $ad_client .'"
+				data-ad-slot="'. $ad_slot .'"
+			></amp-ad>';
+		$ad_code 			.= $parallax_container_end;
+	}
 	
 	return $ad_code;	
 }
@@ -1130,8 +1164,8 @@ function ampforwp_adsforwp_scripts( $data ) {
 		$ad_visibility_status = get_post_meta($post_ad_id,'_amp_ad_visibility_status',true);
 	}
 	
-	if('show' === $ad_visibility_status){
-
+	
+		
 
 		if('1' === $ad_type || '2' === $ad_type || '3' === $ad_type || '4' === $ad_type || '5' === $ad_type ) {	
 				if('1' === $ad_vendor || '2' === $ad_vendor || '3' === $ad_vendor){
@@ -1149,11 +1183,12 @@ function ampforwp_adsforwp_scripts( $data ) {
 					}
 				}
 			}
-
-			if(	'5' === $ad_type ) {
-							
-				if ( empty( $data['amp_component_scripts']['amp-auto-ads'] ) ) {
-					$data['amp_component_scripts']['amp-auto-ads'] = 'https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js';
+			if('show' == $ad_visibility_status){
+				if(	'5' === $ad_type ) {
+								
+					if ( empty( $data['amp_component_scripts']['amp-auto-ads'] ) ) {
+						$data['amp_component_scripts']['amp-auto-ads'] = 'https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js';
+					}
 				}
 			}
 
@@ -1164,7 +1199,7 @@ function ampforwp_adsforwp_scripts( $data ) {
 					$data['amp_component_scripts']['amp-fx-flying-carpet'] = 'https://cdn.ampproject.org/v0/amp-fx-flying-carpet-0.1.js';
 				}
 		}
-	}
+	
 
 	return $data;
 }
