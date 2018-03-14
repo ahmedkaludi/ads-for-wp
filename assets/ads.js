@@ -105,7 +105,22 @@ $("#adsense_link").change(function(){
  
 }).change();
 
-
+$("#adsense_responsive").change(function(){
+  
+ var checkbox =  $('#adsense_responsive').is(":checked");
+  if(checkbox){
+    $("#adsense_link").hide();
+    $("#adsense_dimensions").hide();
+    $("#optimize_ads").hide();
+    
+  }
+  else{
+    $("#adsense_link").show();
+     $("#adsense_dimensions").show();
+     $("#optimize_ads").show();
+  }
+ 
+}).change();
 
 // AMP By AUTOMATTIC Ads Options
 
@@ -179,6 +194,22 @@ $("#_amp_adsense_link").change(function(){
  
 }).change();
 
+$("#_amp_adsense_responsive").change(function(){
+  
+ var checkbox =  $('#adsense_responsive').is(":checked");
+  if(checkbox){
+    $("#_amp_adsense_link").hide();
+    $("#_amp_adsense_dimensions").hide();
+    $("#_amp_optimize_ads").hide();
+    
+  }
+  else{
+    $("#_amp_adsense_link").show();
+     $("#_amp_adsense_dimensions").show();
+     $("#_amp_optimize_ads").show();
+  }
+ 
+}).change();
 
 	if ( currentGlobalAdsField == 'show' ) {
 		$(adsWrapper).show();
