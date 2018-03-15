@@ -127,6 +127,10 @@ function get_ad_id($id){
 			$inbetween_id = $post_ad_id;
 			return $inbetween_id;
 		}
+		if('13' === $ad_position){
+			$inbetween_id = $post_ad_id;
+			return $inbetween_id;
+		}
 	}
 	// foreach ($post_ad_data as $key => $ad_config) {
 	// 	$post_ad_id = $ad_config['ads_id'];
@@ -1071,11 +1075,9 @@ function ampforwp_adv_amp_auto_ads(){
 }
 
 // InBetween Loops Ads
-add_action('pre_amp_render_post','ampforwp_adsforwp_between_loop');
-function ampforwp_adsforwp_between_loop(){
 
- add_action('ampforwp_between_loop','ampforwp_inbetween_loop_ads',10,1);
-}
+add_action('ampforwp_between_loop','ampforwp_inbetween_loop_ads');
+
 function ampforwp_inbetween_loop_ads($count){
 	Global $post;
 	$displayed_posts = get_option('posts_per_page');
@@ -1258,3 +1260,28 @@ $path = plugin_basename( __FILE__ );
 			echo "<tr class='active'><td>&nbsp;</td><td colspan='2'><a href='".esc_url(  self_admin_url( 'admin.php?page=amp_options&tab=2' )  )."'>Please enter the license key</a> to get the <strong>latest features</strong> and <strong>stable updates</strong></td></tr>";
 			    }
 	}, 10, 3 );
+
+
+// Ads Between Related Post
+
+add_action('ampforwp_between_related_post', 'adsforwp_ads_between_related_posts');
+function adsforwp_ads_between_related_posts($r_count){
+	global $redux_builder_amp;
+	$ID = get_the_ID();
+	$number_of_RP = $redux_builder_amp['ampforwp-number-of-related-posts'];
+	$in_between = round(abs($number_of_RP / 2));
+	if(intval($in_between) === $r_count){
+		$ad_position = get_post_meta(get_ad_id($ID),'normal_ad_type',true);
+		if('13' === $ad_position){
+			$ad_vendor			= get_post_meta(get_ad_id($ID),'ad_vendor',true);
+			if('1' === $ad_vendor){
+				ampforwp_adsense_ads();
+			}elseif('2' === $ad_vendor){
+				ampforwp_dfp_ads();
+			}elseif('3' === $ad_vendor){
+				ampforwp_custom_ads();
+			}
+		}
+			
+	}
+}

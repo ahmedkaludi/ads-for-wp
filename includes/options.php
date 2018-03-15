@@ -99,6 +99,7 @@ function advanced_amp_ampforwp_ads_options() {
 						'10'     		=> esc_html__( 'Before Footer', 'ampforwp_adsforwp' ),
 						'11'     		=> esc_html__( 'After Footer', 'ampforwp_adsforwp' ),
 						'12'     		=> esc_html__( 'InBetween Loop', 'ampforwp_adsforwp' ),
+						'13'     		=> esc_html__( 'InBetween Related Posts', 'ampforwp_adsforwp' ),
 					),
 					'classes' => 'ad-type ad-type-1'
 				) );
