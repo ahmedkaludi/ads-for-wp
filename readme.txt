@@ -31,8 +31,19 @@ ADS for WP is the Successor of the ADVANCED AMP ADS plugin with all goodness of 
 * Optimized Ads
 
 == Changelog ==
-* Adsense Responsive AMP Ad Support Added
+
+= 1.0.3 (14 March 2018) =
 * Noral Ads added for Custom Front Page
 * Inbetween Loops Ads on Archive not working Fixed
 * Normal Ads are not working on pages Fixed
 
+
+= 1.0.2 (14 March 2018) =
+* UI improvement
+
+
+= 1.0.1 (14 March 2018) =
+* Adsense Responsive AMP Ad Support Added
+
+= 1.0 (13 March 2018) =
+* Initial Release
