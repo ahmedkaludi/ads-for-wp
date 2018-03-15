@@ -150,6 +150,14 @@ function adsforwp_insert_ads( $content ){
 	}
 
 	$post_meta = get_post_meta($currentPostId, 'adsforwp-advert-data', true);
+	if(empty($post_meta)){
+		$post_meta = array('post_id' => '',
+				            'ads_id' => '',
+				            'visibility' => '',
+				            'paragraph' => '',
+				            'content'=>'',);
+
+	}
 	$selected_ads_for 	= get_post_meta(get_ad_id(get_the_ID()),'select_ads_for',true);
 	if('1' === $selected_ads_for){
 		$cmb2_incontent_options = get_metadata('post',get_ad_id(get_the_ID()), 'incontent_ad_type');
