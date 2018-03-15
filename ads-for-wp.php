@@ -1262,7 +1262,7 @@ $path = plugin_basename( __FILE__ );
 	}, 10, 3 );
 
 
-// Ads Between Related Post
+// #12 Ads Between Related Post [#2 from issue repo]
 
 add_action('ampforwp_between_related_post', 'adsforwp_ads_between_related_posts');
 function adsforwp_ads_between_related_posts($r_count){
