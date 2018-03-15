@@ -144,9 +144,10 @@ function adsforwp_insert_ads( $content ){
 	if ( $show_ads != 'yes' ) {
 		return $content ; // Do not show ads and return the content as it is
 	}
-
-	if(!is_singular() && !ampforwp_is_front_page()){
-		return $content;
+	if(function_exists(ampforwp_is_front_page())){
+		if(!is_singular() && !ampforwp_is_front_page()){
+			return $content;
+		}
 	}
 
 	$post_meta = get_post_meta($currentPostId, 'adsforwp-advert-data', true);
