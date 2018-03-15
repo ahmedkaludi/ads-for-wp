@@ -145,7 +145,7 @@ function adsforwp_insert_ads( $content ){
 		return $content ; // Do not show ads and return the content as it is
 	}
 
-	if(!is_singular()){
+	if(!is_singular() && !ampforwp_is_front_page()){
 		return $content;
 	}
 
