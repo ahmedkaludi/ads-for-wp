@@ -137,8 +137,9 @@ function get_ad_id($id){
 
 add_action('pre_amp_render_post','ampforwp_display_amp_ads');
 function ampforwp_display_amp_ads(){
-	$id 				= get_the_ID();
-	$post_ad_id 		= get_ad_id($id);
+	$all_ads_post = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1));
+foreach ($all_ads_post as $ads) {
+	$post_ad_id = $ads->ID;
 	$selected_ads_for 	= get_post_meta($post_ad_id,'select_ads_for',true);
 	$ad_type 			= get_post_meta($post_ad_id,'ad_type_format',true);
 	$ad_vendor			= get_post_meta($post_ad_id,'ad_vendor',true);
@@ -313,6 +314,8 @@ function ampforwp_display_amp_ads(){
 	
 
 	}
+
+
 // FOR AMP BY AUTOMATTIC Normal And Incontent Ads
 	elseif('2' === $selected_ads_for){
 		$amp_ad_type 			= get_post_meta($post_ad_id,'_amp_ad_type_format',true);
@@ -339,6 +342,7 @@ function ampforwp_display_amp_ads(){
 			}
 		}
 	}
+}
 }
 
 // Adsense Ad code generator 
@@ -465,7 +469,7 @@ function ampforwp_incontent_adsense_ads($id){
 			></amp-ad>';
 		$ad_code 			.= $parallax_container_end;
 	}
-	
+
 	return $ad_code;	
 }
 
