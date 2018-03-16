@@ -3,7 +3,7 @@
 Plugin Name: Ads for WP
 Plugin URI: https://wordpress.org/plugins/ads-for-wp/
 Description: Ads for WP - The best Advertisement plugin in WordPress
-Version: 1.0.4
+Version: 1.0.5
 Author: Ahmed Kaludi, Mohammed Kaludi
 Author URI: https://ampforwp.com/
 Donate link: https://www.paypal.me/Kaludi/25
@@ -20,7 +20,7 @@ define('ADSFORWP_PLUGIN_DIR_PATH', plugin_dir_path( __DIR__ ) );
 
 
 if ( ! defined( 'ADSFORWP_VERSION' ) ) {
-	define( 'ADSFORWP_VERSION', '1.0.4' );
+	define( 'ADSFORWP_VERSION', '1.0.5' );
 }
 // this is the URL our updater / license checker pings. This should be the URL of the site with EDD installed
 define( 'ADSFORWP_STORE_URL', 'https://accounts.ampforwp.com/' ); // you should use your own CONSTANT name, and be sure to replace it throughout this file
@@ -1286,7 +1286,7 @@ function adsforwp_ads_between_related_posts($r_count){
 	}
 }
 
-// # Removing Yoast Meta Box [## issue repo]
+// Removing Yoast Meta Box [##4 issue repo]
 
 function adsforwp_wp_seo_meta_box() {
 	remove_meta_box('wpseo_meta', 'ads-for-wp-ads', 'normal');

@@ -32,11 +32,14 @@ ADS for WP is the Successor of the ADVANCED AMP ADS plugin with all goodness of 
 
 == Changelog ==
 
-= 1.0.4 (14 March 2018) =
+= 1.0.5 (16 March 2018) =
+* Yoast SEO meta box removed
+
+= 1.0.4 (15 March 2018) =
 * Ads InBetween Related Posts Added
 * InContent Ads for Custom Front Page Added
 
-= 1.0.3 (14 March 2018) =
+= 1.0.3 (15 March 2018) =
 * Noral Ads added for Custom Front Page
 * Inbetween Loops Ads on Archive not working Fixed
 * Normal Ads are not working on pages Fixed
