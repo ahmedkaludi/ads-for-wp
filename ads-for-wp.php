@@ -389,7 +389,7 @@ function ampforwp_adsense_ads(){
 								  data-auto-format="rspv"
 								  data-full-width>
 							    <div overflow></div>
-							></amp-ad>';
+							</amp-ad>';
 	}
 	else{
 
@@ -460,7 +460,7 @@ function ampforwp_incontent_adsense_ads($id){
 			  data-auto-format="rspv"
 			  data-full-width>
 		    <div overflow></div>
-		></amp-ad>';
+		</amp-ad>';
 	}
 	else{
 		$ad_code 			= $parallax_container;
