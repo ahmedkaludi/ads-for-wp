@@ -1285,3 +1285,10 @@ function adsforwp_ads_between_related_posts($r_count){
 			
 	}
 }
+
+// # Removing Yoast Meta Box [## issue repo]
+
+function adsforwp_wp_seo_meta_box() {
+	remove_meta_box('wpseo_meta', 'ads-for-wp-ads', 'normal');
+}
+add_action('add_meta_boxes', 'adsforwp_wp_seo_meta_box', 100);
