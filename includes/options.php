@@ -165,6 +165,7 @@ function advanced_amp_ampforwp_ads_options() {
 				'1' 		 	=> esc_html__( 'Adsense', 'ampforwp_adsforwp' ),
 				'2'  	 		=> esc_html__( 'DoubleClick', 'ampforwp_adsforwp' ),
 				'3'    			=> esc_html__( 'Custom', 'ampforwp_adsforwp' ),
+				'4'    			=> esc_html__( 'Medianet', 'ampforwp_adsforwp' ),
 			),
 		) );
 
@@ -318,6 +319,61 @@ function advanced_amp_ampforwp_ads_options() {
 					'type' => 'checkbox',
 					'classes'		   => 'vendor-fields custom-data-3'
 				) );
+
+		// Media.net Options
+			$ampforwp_ads_option->add_field( array(
+					'name'             => esc_html__( 'Dimensions', 'ampforwp_adsforwp' ),
+					'desc'			   => 'Select the preferred dimensions for your ad',
+					'id'               => 'medianet_dimensions',
+					'type'             => 'select',
+					'show_option_none' => false,
+					'options'          => array(
+						'1' 		 	=> esc_html__( '300x250', 'ampforwp_adsforwp' ),
+						'2'  	 		=> esc_html__( '336x280', 'ampforwp_adsforwp' ),
+						'3'    			=> esc_html__( '728x90', 'ampforwp_adsforwp' ),
+						'4'    			=> esc_html__( '300x600', 'ampforwp_adsforwp' ),
+						'5'    			=> esc_html__( '320x100', 'ampforwp_adsforwp' ),
+						'6'    			=> esc_html__( '200x50', 'ampforwp_adsforwp' ),
+						'7'    			=> esc_html__( '320x50', 'ampforwp_adsforwp' ),
+						'8'				=> esc_html__( 'Custom', 'ampforwp_adsforwp' ),
+					),
+					'classes'		   => 'vendor-fields medianet-data-4'
+				) );
+			$ampforwp_ads_option->add_field( array(
+					'name'             => esc_html__( 'Width', 'ampforwp_adsforwp' ),
+					'desc'			   => 'Enter the width',
+					'id'               => 'medianet_custom_width',
+					'type'             => 'text_small',
+					'classes'		   => 'custom-dimensions medianet-custom-data-4'
+				) );
+			$ampforwp_ads_option->add_field( array(
+					'name'             => esc_html__( 'Height', 'ampforwp_adsforwp' ),
+					'desc'			   => 'Enter the height',
+					'id'               => 'medianet_custom_height',
+					'type'             => 'text_small',
+					'classes'		   => 'custom-dimensions medianet-custom-data-4'
+				) );
+			$ampforwp_ads_option->add_field( array(
+					'name'             => esc_html__( 'Customer Identifier', 'ampforwp_adsforwp' ),
+					'desc'			   => 'Enter the unique customer identifier (data-cid) from the media.net ad code. e.g. 8CUS8O7EX',
+					'id'               => 'medianet_ad_client',
+					'type'             => 'text_medium',
+					'classes'		   => 'vendor-fields medianet-data-4'
+				) );
+			$ampforwp_ads_option->add_field( array(
+					'name'             => esc_html__( 'Media.net Ad unit', 'ampforwp_adsforwp' ),
+					'desc'			   => 'Enter the Media.net Ad unit (data-cridt) from the media.net ad code. e.g. 112682482',
+					'id'               => 'medianet_ad_slot',
+					'type'             => 'text_medium',
+					'classes'		   => 'vendor-fields medianet-data-4'
+				) );
+			$ampforwp_ads_option->add_field( array(
+					'name' => 'Parallax Effect',
+					'desc' => 'AMP Flying Carpet Ad works only for the incontent Ads',
+					'id'   => 'medianet_parallax',
+					'type' => 'checkbox',
+					'classes'		   => 'vendor-fields medianet-data-4'
+				) );
 	// Optimize Ads
 	$ampforwp_ads_option->add_field( array(
 					'name' => 'Optimize Ads',
@@ -449,6 +505,7 @@ $amp_ads_option->add_field( array(
 				'1' 		 	=> esc_html__( 'Adsense', 'ampforwp_adsforwp' ),
 				'2'  	 		=> esc_html__( 'DoubleClick', 'ampforwp_adsforwp' ),
 				'3'    			=> esc_html__( 'Custom', 'ampforwp_adsforwp' ),
+				'4'				=> esc_html__( 'Medianet', 'ampforwp_adsforwp'),
 			),
 		) );
 
@@ -603,6 +660,61 @@ $amp_ads_option->add_field( array(
 					'id'   => '_amp_custom_parallax',
 					'type' => 'checkbox',
 					'classes'		   => 'amp-vendor-fields amp-custom-data-3'
+				) );
+
+		// Media.net Options
+			$amp_ads_option->add_field( array(
+					'name'             => esc_html__( 'Dimensions', 'ampforwp_adsforwp' ),
+					'desc'			   => 'Select the preferred dimensions for your ad',
+					'id'               => '_amp_medianet_dimensions',
+					'type'             => 'select',
+					'show_option_none' => false,
+					'options'          => array(
+						'1' 		 	=> esc_html__( '300x250', 'ampforwp_adsforwp' ),
+						'2'  	 		=> esc_html__( '336x280', 'ampforwp_adsforwp' ),
+						'3'    			=> esc_html__( '728x90', 'ampforwp_adsforwp' ),
+						'4'    			=> esc_html__( '300x600', 'ampforwp_adsforwp' ),
+						'5'    			=> esc_html__( '320x100', 'ampforwp_adsforwp' ),
+						'6'    			=> esc_html__( '200x50', 'ampforwp_adsforwp' ),
+						'7'    			=> esc_html__( '320x50', 'ampforwp_adsforwp' ),
+						'8'				=> esc_html__( 'Custom', 'ampforwp_adsforwp' ),
+					),
+					'classes'		   => 'amp-vendor-fields amp-medianet-data-4'
+				) );
+			$amp_ads_option->add_field( array(
+					'name'             => esc_html__( 'Width', 'ampforwp_adsforwp' ),
+					'desc'			   => 'Enter the width',
+					'id'               => '_amp_medianet_custom_width',
+					'type'             => 'text_small',
+					'classes'		   => 'amp-custom-dimensions amp-medianet-custom-data-4'
+				) );
+			$amp_ads_option->add_field( array(
+					'name'             => esc_html__( 'Height', 'ampforwp_adsforwp' ),
+					'desc'			   => 'Enter the height',
+					'id'               => '_amp_medianet_custom_height',
+					'type'             => 'text_small',
+					'classes'		   => 'amp-custom-dimensions amp-medianet-custom-data-4'
+				) );
+			$amp_ads_option->add_field( array(
+					'name'             => esc_html__( 'Customer Identifier', 'ampforwp_adsforwp' ),
+					'desc'			   => 'Enter the unique customer identifier (data-cid) from the media.net ad code. e.g. 8CUS8O7EX',
+					'id'               => '_amp_medianet_ad_client',
+					'type'             => 'text_medium',
+					'classes'		   => 'amp-vendor-fields amp-medianet-data-4'
+				) );
+			$amp_ads_option->add_field( array(
+					'name'             => esc_html__( 'Media.net Ad unit', 'ampforwp_adsforwp' ),
+					'desc'			   => 'Enter the Media.net Ad unit (data-cridt) from the media.net ad code. e.g. 112682482',
+					'id'               => '_amp_medianet_ad_slot',
+					'type'             => 'text_medium',
+					'classes'		   => 'amp-vendor-fields amp-medianet-data-4'
+				) );
+			$amp_ads_option->add_field( array(
+					'name' => 'Parallax Effect',
+					'desc' => 'AMP Flying Carpet Ad works only for the incontent Ads',
+					'id'   => '_amp_medianet_parallax',
+					'type' => 'checkbox',
+					'classes'		   => 'amp-vendor-fields amp-medianet-data-4'
 				) );
 
 	// Optimize Ads

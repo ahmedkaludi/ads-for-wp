@@ -37,12 +37,14 @@ $("#select_ads_for").change(function(){
               $("[id=adsense_parallax]").hide();
               $("[id=dfp_parallax]").hide();
               $("[id=custom_parallax]").hide();	
+              $("[id=medianet_parallax]").hide();
               $(".ad-type.ad-type-" + optionValue).show();
               
               if('2' == optionValue){
               	 $("[id=adsense_parallax]").show();
               	 $("[id=dfp_parallax]").show();
               	  $("[id=custom_parallax]").show();
+                  $("[id=medianet_parallax]").show();
               }
               
 
@@ -94,6 +96,19 @@ $("#select_ads_for").change(function(){
   	});
   }).change();
 
+  $("#medianet_dimensions").change(function(){
+    $(this).find("option:selected").each(function(){
+      var optionValue = $(this).attr("value");
+      if(optionValue){
+        $(".custom-dimensions").hide();
+        if('8' === optionValue){
+          $(".custom-dimensions.medianet-custom-data-4").show();
+        }
+        
+      }
+    });
+  }).change();
+
 $("#adsense_link").change(function(){
 	$(".link-ads-dimensions").hide();
 	$(".cmb2-id-adsense-dimensions").show();
@@ -132,11 +147,13 @@ $("#_amp_ad_type_format").change(function(){
               $("[id=_amp_adsense_parallax]").hide();
               $("[id=_amp_dfp_parallax]").hide();
               $("[id=_amp_custom_parallax]").hide();
+               $("[id=_amp_medianet_parallax]").hide();
               $(".amp-ad-type.amp-ad-type-" + optionValue).show();
               if('2' == optionValue){
               	 $("[id=_amp_adsense_parallax]").show();
               	 $("[id=_amp_dfp_parallax]").show();
               	  $("[id=_amp_custom_parallax]").show();
+                   $("[id=_amp_medianet_parallax]").show();
               }
           } else{
               $(".amp-ad-type").hide();
@@ -181,6 +198,19 @@ $("#_amp_ad_type_format").change(function(){
   			
   		}
   	});
+  }).change();
+
+  $("#_amp_medianet_dimensions").change(function(){
+    $(this).find("option:selected").each(function(){
+      var optionValue = $(this).attr("value");
+      if(optionValue){
+        $(".amp-custom-dimensions").hide();
+        if('8' === optionValue){
+          $(".amp-custom-dimensions.amp-medianet-custom-data-4").show();
+        }
+        
+      }
+    });
   }).change();
 
 $("#_amp_adsense_link").change(function(){
