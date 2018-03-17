@@ -32,8 +32,10 @@ ADS for WP is the Successor of the ADVANCED AMP ADS plugin with all goodness of 
 
 == Changelog ==
 
-= 1.0.5 (16 March 2018) =
+= 1.0.5 (17 March 2018) =
+* Media.net Support Added in Vendors section
 * Yoast SEO meta box removed
+* some small bugs fixed
 
 = 1.0.4 (15 March 2018) =
 * Ads InBetween Related Posts Added
