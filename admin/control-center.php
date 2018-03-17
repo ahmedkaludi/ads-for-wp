@@ -90,6 +90,9 @@ function adsforwp_shortcode_generator( $atts ){
 				elseif('3' === $ad_vendor && '3' === $ad_type){
 					$content = ampforwp_incontent_custom_ads($adsPostId);
 				}
+				elseif('4' === $ad_vendor && '3' === $ad_type){
+					$content = 	adsforwp_incontent_media_net_ads($adsPostId);
+				}
 			else{
 				if('3' === $ad_type){
 					$content = get_post_field('post_content', $atts['ads-id']);

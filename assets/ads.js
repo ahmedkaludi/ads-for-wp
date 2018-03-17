@@ -126,13 +126,13 @@ $("#adsense_responsive").change(function(){
   if(checkbox){
     $("#adsense_link").hide();
     $("#adsense_dimensions").hide();
-    $("#optimize_ads").hide();
+   /* $("#optimize_ads").hide();*/
     
   }
   else{
     $("#adsense_link").show();
      $("#adsense_dimensions").show();
-     $("#optimize_ads").show();
+    /* $("#optimize_ads").show();*/
   }
  
 }).change();
@@ -230,13 +230,13 @@ $("#_amp_adsense_responsive").change(function(){
   if(checkbox){
     $("#_amp_adsense_link").hide();
     $("#_amp_adsense_dimensions").hide();
-    $("#_amp_optimize_ads").hide();
+   /* $("#_amp_optimize_ads").hide();*/
     
   }
   else{
     $("#_amp_adsense_link").show();
      $("#_amp_adsense_dimensions").show();
-     $("#_amp_optimize_ads").show();
+     /*$("#_amp_optimize_ads").show();*/
   }
  
 }).change();
