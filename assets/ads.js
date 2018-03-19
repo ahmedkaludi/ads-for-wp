@@ -5,7 +5,241 @@ jQuery( document ).ready(function($) {
 	var adsforwpGlobalCode 		= $('#adsforwp_position_global_code');		
 	var adsforwpSpecificCode 	= $('#adsforwp_ads_position_specific_controls');
 	var adsWrapper 				= $('#adsforwp-ads-control-wrapper');
+	var currentAdID       		= adsforwp_localize_data.id;
+	// alert(currentAdID);
+$("#select_ads_for").change(function(){
+      $(this).find("option:selected").each(function(){
+          var optionValue = $(this).attr("value");
+          var optionHtml = $(this).html().toLowerCase();
+          if(optionValue){
+          		$("[id=ampforwp_adsforwp_metabox]").hide();
+          		$("[id=ampforwp_adsforwp_for_amp_metabox]").hide();
+              if('ampforwp' == optionHtml){
+          		$("[id=ampforwp_adsforwp_metabox]").show();
+              }
+              if('amp by automattic' == optionHtml){
+              	$("[id=ampforwp_adsforwp_for_amp_metabox]").show();
+              }
+          }      
+      });
+    }).change();
 
+// AMPforWP Ads Options
+
+
+
+
+ $("#ad_type_format").change(function(){
+      $(this).find("option:selected").each(function(){
+          var optionValue = $(this).attr("value");
+          if(optionValue){
+              $(".ad-type").hide();
+              $("[id=adsense_parallax]").hide();
+              $("[id=dfp_parallax]").hide();
+              $("[id=custom_parallax]").hide();	
+              $("[id=medianet_parallax]").hide();
+              $(".ad-type.ad-type-" + optionValue).show();
+              
+              if('2' == optionValue){
+              	 $("[id=adsense_parallax]").show();
+              	 $("[id=dfp_parallax]").show();
+              	  $("[id=custom_parallax]").show();
+                  $("[id=medianet_parallax]").show();
+              }
+              
+
+          } else{
+              $(".ad-type").hide();
+          }
+
+      });
+    }).change();
+
+
+
+  $("#ad_vendor").change(function(){
+      $(this).find("option:selected").each(function(){
+          var optionValue = $(this).attr("value");
+          var optionHtml = $(this).html().toLowerCase();
+          if(optionValue){
+              $(".vendor-fields").hide();
+              $(".vendor-fields."+optionHtml+"-data-" + optionValue).show();
+          } else{
+              $(".vendor-data").hide();
+          }         
+      });
+    }).change();
+
+  $("#adsense_dimensions").change(function(){
+  	$(this).find("option:selected").each(function(){
+  		var optionValue = $(this).attr("value");
+  		if(optionValue){
+  			$(".custom-dimensions").hide();
+  			if('8' === optionValue){
+  				$(".custom-dimensions.adsense-custom-data-1").show();
+  			}
+  			
+  		}
+  	});
+  }).change();
+
+    $("#dfp_dimensions").change(function(){
+  	$(this).find("option:selected").each(function(){
+  		var optionValue = $(this).attr("value");
+  		if(optionValue){
+  			$(".custom-dimensions").hide();
+  			if('8' === optionValue){
+  				$(".custom-dimensions.dfp-custom-data-2").show();
+  			}
+  			
+  		}
+  	});
+  }).change();
+
+  $("#medianet_dimensions").change(function(){
+    $(this).find("option:selected").each(function(){
+      var optionValue = $(this).attr("value");
+      if(optionValue){
+        $(".custom-dimensions").hide();
+        if('8' === optionValue){
+          $(".custom-dimensions.medianet-custom-data-4").show();
+        }
+        
+      }
+    });
+  }).change();
+
+$("#adsense_link").change(function(){
+	$(".link-ads-dimensions").hide();
+	$(".cmb2-id-adsense-dimensions").show();
+ var checkbox =  $('#adsense_link').is(":checked");
+	if(checkbox){
+		$(".link-ads-dimensions").show();
+		$(".cmb2-id-adsense-dimensions").hide();
+	}
+ 
+}).change();
+
+$("#adsense_responsive").change(function(){
+  
+ var checkbox =  $('#adsense_responsive').is(":checked");
+  if(checkbox){
+    $("#adsense_link").hide();
+    $("#adsense_dimensions").hide();
+   /* $("#optimize_ads").hide();*/
+    
+  }
+  else{
+    $("#adsense_link").show();
+     $("#adsense_dimensions").show();
+    /* $("#optimize_ads").show();*/
+  }
+ 
+}).change();
+
+// AMP By AUTOMATTIC Ads Options
+
+$("#_amp_ad_type_format").change(function(){
+      $(this).find("option:selected").each(function(){
+          var optionValue = $(this).attr("value");
+          if(optionValue){
+              $(".amp-ad-type").hide();
+              $("[id=_amp_adsense_parallax]").hide();
+              $("[id=_amp_dfp_parallax]").hide();
+              $("[id=_amp_custom_parallax]").hide();
+               $("[id=_amp_medianet_parallax]").hide();
+              $(".amp-ad-type.amp-ad-type-" + optionValue).show();
+              if('2' == optionValue){
+              	 $("[id=_amp_adsense_parallax]").show();
+              	 $("[id=_amp_dfp_parallax]").show();
+              	  $("[id=_amp_custom_parallax]").show();
+                   $("[id=_amp_medianet_parallax]").show();
+              }
+          } else{
+              $(".amp-ad-type").hide();
+          }         
+      });
+    }).change();
+
+  $("#_amp_ad_vendor").change(function(){
+      $(this).find("option:selected").each(function(){
+          var optionValue = $(this).attr("value");
+          var optionHtml = $(this).html().toLowerCase();
+          if(optionValue){
+              $(".amp-vendor-fields").hide();
+              $(".amp-vendor-fields.amp-"+optionHtml+"-data-" + optionValue).show();
+          } else{
+              $(".amp-vendor-fields").hide();
+          }         
+      });
+    }).change();
+
+  $("#_amp_adsense_dimensions").change(function(){
+  	$(this).find("option:selected").each(function(){
+  		var optionValue = $(this).attr("value");
+  		if(optionValue){
+  			$(".amp-custom-dimensions").hide();
+  			if('8' === optionValue){
+  				$(".amp-custom-dimensions.amp-adsense-custom-data-1").show();
+  			}
+  			
+  		}
+  	});
+  }).change();
+
+    $("#_amp_dfp_dimensions").change(function(){
+  	$(this).find("option:selected").each(function(){
+  		var optionValue = $(this).attr("value");
+  		if(optionValue){
+  			$(".amp-custom-dimensions").hide();
+  			if('8' === optionValue){
+  				$(".amp-custom-dimensions.amp-dfp-custom-data-2").show();
+  			}
+  			
+  		}
+  	});
+  }).change();
+
+  $("#_amp_medianet_dimensions").change(function(){
+    $(this).find("option:selected").each(function(){
+      var optionValue = $(this).attr("value");
+      if(optionValue){
+        $(".amp-custom-dimensions").hide();
+        if('8' === optionValue){
+          $(".amp-custom-dimensions.amp-medianet-custom-data-4").show();
+        }
+        
+      }
+    });
+  }).change();
+
+$("#_amp_adsense_link").change(function(){
+	$(".amp-link-ads-dimensions").hide();
+	$(".cmb2-id--amp-adsense-dimensions").show();
+ var checkbox =  $('#_amp_adsense_link').is(":checked");
+	if(checkbox){
+		$(".amp-link-ads-dimensions").show();
+		$(".cmb2-id--amp-adsense-dimensions").hide();
+	}
+ 
+}).change();
+
+$("#_amp_adsense_responsive").change(function(){
+  
+ var checkbox =  $('#adsense_responsive').is(":checked");
+  if(checkbox){
+    $("#_amp_adsense_link").hide();
+    $("#_amp_adsense_dimensions").hide();
+   /* $("#_amp_optimize_ads").hide();*/
+    
+  }
+  else{
+    $("#_amp_adsense_link").show();
+     $("#_amp_adsense_dimensions").show();
+     /*$("#_amp_optimize_ads").show();*/
+  }
+ 
+}).change();
 
 	if ( currentGlobalAdsField == 'show' ) {
 		$(adsWrapper).show();
@@ -39,6 +273,7 @@ jQuery( document ).ready(function($) {
 		$(adsforwpSpecificCode).slideDown();
 	});
 
+	
 
 	/* Global */
 	var singleAdsStatus = $('#adsforwp-current-ad-status').val(); 
@@ -143,4 +378,11 @@ jQuery( document ).ready(function($) {
 		      }); // End of Ajax
 		}
 	});
+// Correct Shortcode added
+if(document.getElementById('manual_ad_type')){
+	document.getElementById('manual_ad_type').value = '[ads-for-wp ads-id="'+currentAdID+'"]';}
+	if(document.getElementById('_amp_manual_ad_type')){
+	document.getElementById('_amp_manual_ad_type').value = '[ads-for-wp ads-id="'+currentAdID+'"]';}
+
+
 });
