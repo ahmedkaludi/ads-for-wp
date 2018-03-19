@@ -263,7 +263,7 @@ foreach ($all_ads_post as $ads) {
 						}
 						else if('4' === $ad_vendor){
 							add_action('ampforwp_after_featured_image_hook',function() use ( $args ) { 
-               adsforwp_media_net_ads( $args ); }););
+               adsforwp_media_net_ads( $args ); });
 						}
 					break;
 				case '7':
