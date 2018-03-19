@@ -100,8 +100,18 @@ function adsforwp_shortcode_generator( $atts ){
 			}
 		}
 	}
+ /* $content = '';
+  $show_ads   = '';
 
-	return $content ;
+  $ad_id = $atts['ads-id'];
+  $show_ads = 'yes';    
+  $show_ads = apply_filters('adsforwp_advert_on_off', $show_ads, $ad_id);
+
+  if ( $show_ads == 'yes' ) {
+    $content = get_post_field('post_content', $atts['ads-id']);
+  }*/
+
+  return $content ;
 }
 
 add_action( 'wp_ajax_save_ads_data', 'adsforwp_save_ads_data' );
@@ -142,7 +152,7 @@ function adsforwp_insert_ads( $content ){
 	$show_ads 	= '';
 
 	$show_ads = 'yes';		
-	$show_ads = apply_filters('adsforwp_advert_on_off', $show_ads);
+	$show_ads = apply_filters('adsforwp_advert_on_off',  $show_ads, $currentPostId);
 
 	if ( $show_ads != 'yes' ) {
 		return $content ; // Do not show ads and return the content as it is
