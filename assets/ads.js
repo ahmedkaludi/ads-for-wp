@@ -70,6 +70,19 @@ $("#select_ads_for").change(function(){
       });
     }).change();
 
+  $("#link_ads_dimensions").change(function(){
+    $(this).find("option:selected").each(function(){
+      var optionValue = $(this).attr("value");
+      if(optionValue){
+        $(".link-custom-dimensions").hide();
+        if('7' === optionValue){
+          $(".link-custom-dimensions.link-custom-data-1").show();
+        }
+        
+      }
+    });
+  }).change();
+
   $("#adsense_dimensions").change(function(){
   	$(this).find("option:selected").each(function(){
   		var optionValue = $(this).attr("value");
@@ -173,6 +186,19 @@ $("#_amp_ad_type_format").change(function(){
           }         
       });
     }).change();
+
+  $("#_amp_link_ads_dimensions").change(function(){
+    $(this).find("option:selected").each(function(){
+      var optionValue = $(this).attr("value");
+      if(optionValue){
+        $(".amp-link-custom-dimensions").hide();
+        if('7' === optionValue){
+          $(".amp-link-custom-dimensions.amp-link-custom-data-1").show();
+        }
+        
+      }
+    });
+  }).change();
 
   $("#_amp_adsense_dimensions").change(function(){
   	$(this).find("option:selected").each(function(){

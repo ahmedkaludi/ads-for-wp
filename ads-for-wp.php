@@ -307,19 +307,27 @@ foreach ($all_ads_post as $ads) {
 				case '7':
 					//  "After Content";
 					 	if('1' === $ad_vendor){
+					 		if(is_single()){
 							 add_action('ampforwp_after_post_content','ampforwp_adsense_ads');
+					 		}
 						}
 						// DFP Ad
 						else if('2' === $ad_vendor){
-							add_action('ampforwp_after_post_content','ampforwp_dfp_ads');
+							if(is_single()){
+								add_action('ampforwp_after_post_content','ampforwp_dfp_ads');
+							}
 						}
 						// Custom Ad
 						else if('3' === $ad_vendor){
-							add_action('ampforwp_after_post_content','ampforwp_custom_ads');
+							if(is_single()){
+								add_action('ampforwp_after_post_content','ampforwp_custom_ads');
+							}
 						}
 						else if('4' === $ad_vendor){
-							add_action('ampforwp_after_post_content',function() use ( $args ) { 
-               adsforwp_media_net_ads( $args ); });
+							if(is_single()){
+								add_action('ampforwp_after_post_content',function() use ( $args ) { 
+              						 adsforwp_media_net_ads( $args ); });
+							}
 						}
 					break;
 				case '8':
@@ -634,6 +642,13 @@ $selected_ads_for 	= get_post_meta($id,'select_ads_for',true);
 									 );
 				return $dimension;
 				break;
+
+			case '7':
+				$dimension = array();
+				$dimension['width'] = get_post_meta($id,'link_custom_width',true);
+				$dimension['height'] = get_post_meta($id,'link_custom_height',true);
+				return $dimension;
+				break;
 			default:
 			$dimension = array('width' => '120',
 								'height' => '90'
@@ -751,6 +766,13 @@ $selected_ads_for 	= get_post_meta($id,'select_ads_for',true);
 				$dimension = array('width' => '728',
 									'height' => '15'
 									 );
+				return $dimension;
+				break;
+
+			case '7':
+				$dimension = array();
+				$dimension['width'] = get_post_meta($id,'_amp_link_custom_width',true);
+				$dimension['height'] = get_post_meta($id,'_amp_link_custom_height',true);
 				return $dimension;
 				break;
 			default:

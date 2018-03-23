@@ -198,8 +198,23 @@ function advanced_amp_ampforwp_ads_options() {
 						'4'    			=> esc_html__( '200×90', 'ampforwp_adsforwp' ),
 						'5'    			=> esc_html__( '468×15', 'ampforwp_adsforwp' ),
 						'6'    			=> esc_html__( '728×15', 'ampforwp_adsforwp' ),
+						'7'    			=> esc_html__( 'Custom', 'ampforwp_adsforwp' ),
 					),
 					'classes'		   => 'link-ads-dimensions'
+				) );
+			$ampforwp_ads_option->add_field( array(
+					'name'             => esc_html__( 'Width', 'ampforwp_adsforwp' ),
+					'desc'			   => 'Enter the width',
+					'id'               => 'link_custom_width',
+					'type'             => 'text_small',
+					'classes'		   => 'link-custom-dimensions link-custom-data-1'
+				) );
+			$ampforwp_ads_option->add_field( array(
+					'name'             => esc_html__( 'Height', 'ampforwp_adsforwp' ),
+					'desc'			   => 'Enter the height',
+					'id'               => 'link_custom_height',
+					'type'             => 'text_small',
+					'classes'		   => 'link-custom-dimensions link-custom-data-1'
 				) );
 			$ampforwp_ads_option->add_field( array(
 					'name'             => esc_html__( 'Dimensions', 'ampforwp_adsforwp' ),
@@ -541,8 +556,23 @@ $amp_ads_option->add_field( array(
 						'4'    			=> esc_html__( '200×90', 'ampforwp_adsforwp' ),
 						'5'    			=> esc_html__( '468×15', 'ampforwp_adsforwp' ),
 						'6'    			=> esc_html__( '728×15', 'ampforwp_adsforwp' ),
+						'7'    			=> esc_html__( 'Custom', 'ampforwp_adsforwp' ),
 					),
 					'classes'		   => 'amp-link-ads-dimensions'
+				) );
+			$amp_ads_option->add_field( array(
+					'name'             => esc_html__( 'Width', 'ampforwp_adsforwp' ),
+					'desc'			   => 'Enter the width',
+					'id'               => '_amp_link_custom_width',
+					'type'             => 'text_small',
+					'classes'		   => 'amp-link-custom-dimensions amp-link-custom-data-1'
+				) );
+			$amp_ads_option->add_field( array(
+					'name'             => esc_html__( 'Height', 'ampforwp_adsforwp' ),
+					'desc'			   => 'Enter the height',
+					'id'               => '_amp_link_custom_height',
+					'type'             => 'text_small',
+					'classes'		   => 'amp-link-custom-dimensions amp-link-custom-data-1'
 				) );
 			$amp_ads_option->add_field( array(
 					'name'             => esc_html__( 'Dimensions', 'ampforwp_adsforwp' ),
