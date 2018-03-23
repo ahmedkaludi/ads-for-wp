@@ -345,7 +345,7 @@ function adsforwp_insert_ads( $content ){
 	$content = preg_split("/\\r\\n|\\r|\\n/", $content);
 	if(count($post_meta)>0){
 		foreach ($post_meta as $key => $adsValue) {
-			if($adsValue['visibility']!="show"){
+			if(!empty($adsValue) && $adsValue['visibility']!="show"){
 				continue;
 			}
 			if(isset($adsValue['paragraph']) && isset($adsValue['content'])){
