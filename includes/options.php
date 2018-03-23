@@ -13,7 +13,14 @@ function ads_for_options(){
 	) );
 
 	$ads_for_option->add_field( array(
-		'name'    => 'Select Ads for',
+		'name'    => 'Ads For Non-AMP',
+		'id'      => 'non_amp_ads',
+		'type'    => 'checkbox',
+		'desc' => 'Currently only support Adsense',
+	) );
+
+	$ads_for_option->add_field( array(
+		'name'    => 'AMP Compatibility With',
 		'id'      => 'select_ads_for',
 		'type'    => 'select',
 		'options' => array(

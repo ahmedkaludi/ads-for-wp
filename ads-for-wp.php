@@ -456,6 +456,7 @@ function ampforwp_adsense_ads(){
 	$width				= $dimensions['width'];
 	$height				= $dimensions['height'];
 	$is_responsive		= '';
+	$non_amp_ads 		= get_post_meta($post_adsense_ad_id,'non_amp_ads',true);
 	if('1' === $selected_ads_for){
 		$ad_client			= get_post_meta($post_adsense_ad_id,'adsense_ad_client',true);
 		$ad_slot			= get_post_meta($post_adsense_ad_id,'adsense_ad_slot',true);
@@ -520,6 +521,7 @@ function ampforwp_incontent_adsense_ads($id){
 	$dimensions 		= get_adsense_dimensions($post_adsense_ad_id);
 	$width				= $dimensions['width'];
 	$height				= $dimensions['height'];
+	$non_amp_ads 		= get_post_meta($post_adsense_ad_id,'non_amp_ads',true);
 	if('1' === $selected_ads_for){
 		$ad_client			= get_post_meta($post_adsense_ad_id,'adsense_ad_client',true);
 		$ad_slot			= get_post_meta($post_adsense_ad_id,'adsense_ad_slot',true);
@@ -570,8 +572,24 @@ function ampforwp_incontent_adsense_ads($id){
 			></amp-ad>';
 		$ad_code 			.= $parallax_container_end;
 	}
-
-	return $ad_code;	
+	if(function_exists('ampforwp_is_amp_endpoint') && ampforwp_is_amp_endpoint() || function_exists('is_amp_endpoint') && is_amp_endpoint()){
+		return $ad_code;
+	}
+	else{
+		if('on' === $non_amp_ads){
+		$ad_code = '	<div class="add-wrapper" style="text-align:center;">
+							<script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
+							</script>
+							<ins class="adsbygoogle" style="display:inline-block;width:'.$width.';height:'.$height.'" data-ad-client="'.$ad_client.'" data-ad-slot="'.$ad_slot.'">
+							</ins>
+							<script>
+								(adsbygoogle = window.adsbygoogle || []).push({});
+							</script>
+						</div>';
+		}
+		return $ad_code;
+	}
+	
 }
 
 function ampforwp_sticky_adsense_ads(){
