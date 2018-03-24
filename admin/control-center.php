@@ -261,6 +261,16 @@ function adsforwp_insert_ads( $content ){
 										            'content'=>$adsContent,
 				    							);
 					}
+					elseif('4' === $ad_vendor && '3' === $ad_type){
+					$adsContent = 	adsforwp_incontent_media_net_ads($adsPostId);
+					$post_meta[$adsPostId] = array(				
+										            'post_id' => $currentPostId,
+										            'ads_id' => $adsPostId,
+										            'visibility' => $adsVisiblityType,
+										            'paragraph' => $adsparagraphs,
+										            'content'=>$adsContent,
+				    							);
+					}
 				
 			  }
 			}
@@ -307,9 +317,19 @@ function adsforwp_insert_ads( $content ){
 										            'content'=>$adsContent,
 				    							);
 					}
+					elseif('4' === $ad_vendor && '3' === $ad_type){
+					$adsContent = 	adsforwp_incontent_media_net_ads($adsPostId);
+					$post_meta[$adsPostId] = array(				
+										            'post_id' => $currentPostId,
+										            'ads_id' => $adsPostId,
+										            'visibility' => $adsVisiblityType,
+										            'paragraph' => $adsparagraphs,
+										            'content'=>$adsContent,
+				    							);
+					}
 				}
 			}
-		  
+
 	    }
 	    elseif(!isset($post_meta[$adsPostId])){
 
