@@ -32,7 +32,7 @@ ADS for WP is the Successor of the ADVANCED AMP ADS plugin with all goodness of 
 
 == Changelog ==
 
-= 1.0.8 (19 March 2018) =
+= 1.0.8 (24 March 2018) =
 * Ads For Non-AMP Added (for Adsense & Custom Ads)
 * Custom Dimension Feature for Link Ads Added
 * Some Minor bugs fixed
