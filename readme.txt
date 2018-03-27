@@ -32,6 +32,11 @@ ADS for WP is the Successor of the ADVANCED AMP ADS plugin with all goodness of 
 
 == Changelog ==
 
+= 1.0.9 (27 March 2018) =
+* DoubleClick & Media.net Ads For Non-AMP Added (Currently works for InContent Ads only)
+* Shortcode Ads Not showing Correct Ads [Fixed]
+* Some Minor bugs fixed
+
 = 1.0.8 (24 March 2018) =
 * Ads For Non-AMP Added (for Adsense & Custom Ads)
 * Custom Dimension Feature for Link Ads Added
