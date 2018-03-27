@@ -915,6 +915,7 @@ function ampforwp_incontent_dfp_ads($id){
 	$dimensions 		= get_dfp_dimensions($post_dfp_ad_id);
 	$width				= $dimensions['width'];
 	$height				= $dimensions['height'];
+	$non_amp_ads 		= get_post_meta($post_dfp_ad_id,'non_amp_ads',true);
 	if('1' === $selected_ads_for){
 		$ad_slot			= get_post_meta($post_dfp_ad_id,'dfp_ad_slot',true);
 		$ad_parallax		= get_post_meta($post_dfp_ad_id,'dfp_parallax',true);
@@ -948,7 +949,69 @@ function ampforwp_incontent_dfp_ads($id){
 							data-slot="'. $ad_slot .'"
 						></amp-ad>';
 	$ad_code 			.= $parallax_container_end;
-	return $ad_code;
+
+	if(function_exists('ampforwp_is_amp_endpoint') && ampforwp_is_amp_endpoint() || function_exists('is_amp_endpoint') && is_amp_endpoint()){
+		return $ad_code;
+	}
+	else{
+		if('on' === $non_amp_ads){ 
+		$ad_code = "<!-- Async AdSlot 1 for Ad unit '".$ad_slot."' ### Size: [[".$width.",".$height."]] -->
+					<!-- Adslot's refresh function: googletag.pubads().refresh([gptadslots[0]]) -->
+					<div id='div-gpt-ad-".$post_dfp_ad_id."'>
+					  <script>
+					    googletag.cmd.push(function() { googletag.display('div-gpt-ad-".$post_dfp_ad_id."'); });
+					  </script>
+					</div>
+					<!-- End AdSlot -->";
+			
+		}
+		return $ad_code;
+	}
+	
+}
+add_action('wp_head','adsforwp_non_amp_dfp_scripts');
+function adsforwp_non_amp_dfp_scripts(){ 
+	$args = array(
+				'post_type'		=>'ads-for-wp-ads',
+				'post_status'	=>'publish',
+				'posts_per_page'=> -1,
+			);
+	$query = new WP_Query( $args );
+	while ($query->have_posts()) {
+	    $query->the_post();
+	    $post_dfp_ad_id = get_the_ID();
+		$selected_ads_for 	= get_post_meta($post_dfp_ad_id,'select_ads_for',true);
+		$dimensions 		= get_dfp_dimensions($post_dfp_ad_id);
+		$width				= $dimensions['width'];
+		$height				= $dimensions['height'];
+		$non_amp_ads 		= get_post_meta($post_dfp_ad_id,'non_amp_ads',true);
+		if('1' === $selected_ads_for){
+			$ad_slot			= get_post_meta($post_dfp_ad_id,'dfp_ad_slot',true);
+		}
+		elseif('2' === $selected_ads_for){
+			$ad_slot			= get_post_meta($post_dfp_ad_id,'_amp_dfp_ad_slot',true);
+		}
+			if('on' === $non_amp_ads){ 
+				$dfp_wp_script = "<!-- Start GPT Async Tag -->
+									<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+									<script>
+									  var gptadslots = [];
+									  var googletag = googletag || {cmd:[]};
+									</script>
+									<script>
+									  googletag.cmd.push(function() {
+									    //Adslot declaration
+									    gptadslots.push(googletag.defineSlot('".$ad_slot."', [['".$width."','".$height."']], 'div-gpt-ad-".$post_dfp_ad_id."')
+									                             .addService(googletag.pubads()));
+
+									    googletag.pubads().enableSingleRequest();
+									    googletag.enableServices();
+									  });
+									</script>
+									<!-- End GPT Async Tag -->";
+				echo $dfp_wp_script;
+			}
+	}
 }
 
 function ampforwp_dfp_sticky_ads(){
