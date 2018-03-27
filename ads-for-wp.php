@@ -955,7 +955,7 @@ function ampforwp_incontent_dfp_ads($id){
 	}
 	else{
 		if('on' === $non_amp_ads){ 
-		$ad_code = "<!-- Async AdSlot 1 for Ad unit '".$ad_slot."' ### Size: [[".$width.",".$height."]] -->
+		$ad_code = "<!-- Async AdSlot for Ad unit '".$ad_slot."' ### Size: [[".$width.",".$height."]] -->
 					<!-- Adslot's refresh function: googletag.pubads().refresh([gptadslots[0]]) -->
 					<div id='div-gpt-ad-".$post_dfp_ad_id."'>
 					  <script>
@@ -1284,6 +1284,8 @@ function adsforwp_incontent_media_net_ads($id){
 	$dimensions 		= get_medianet_dimensions($post_medianet_ad_id);
 	$width				= $dimensions['width'];
 	$height				= $dimensions['height'];
+	$size 				= $width.'x'.$height;
+	$non_amp_ads 		= get_post_meta($post_medianet_ad_id,'non_amp_ads',true);
 	if('1' === $selected_ads_for){
 		$ad_client			= get_post_meta($post_medianet_ad_id,'medianet_ad_client',true);
 		$ad_slot			= get_post_meta($post_medianet_ad_id,'medianet_ad_slot',true);
@@ -1321,7 +1323,29 @@ function adsforwp_incontent_media_net_ads($id){
 			></amp-ad>';
 		$ad_code 			.= $parallax_container_end;
 	
-	return $ad_code;	
+	if(function_exists('ampforwp_is_amp_endpoint') && ampforwp_is_amp_endpoint() || function_exists('is_amp_endpoint') && is_amp_endpoint()){
+		return $ad_code;
+	}
+	else{
+		if('on' === $non_amp_ads){
+
+		$ad_code = '<div class="aa_media_net" style="text-align:center; margin:10px 0">
+				<div id="'.$post_medianet_ad_id.'">
+		  	<script type="text/javascript">
+			  try {
+				   window._mNHandle.queue.push(function () {
+				   	window._mNDetails.loadTag("'.$post_medianet_ad_id.'", "'.$size.'", "'. $ad_slot .'");
+				  	});
+				  }
+			  catch (error) {}
+			</script>
+		  </div>
+		</div>';
+			
+		}
+		return $ad_code;
+	}
+
 }
 
 function adsforwp_medianet_sticky_ads(){

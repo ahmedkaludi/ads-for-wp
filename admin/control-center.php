@@ -262,8 +262,8 @@ function adsforwp_insert_ads( $content ){
 										            'content'=>$adsContent,
 				    							);
 					}
-					elseif('4' === $ad_vendor && '3' === $ad_type){
-					$adsContent = 	adsforwp_incontent_media_net_ads($adsPostId);
+					elseif('4' === $ad_vendor && '2' === $ad_type){
+					$adsContent = 	adsforwp_incontent_media_net_ads($adsPostId);/*var_dump($adsContent);die;*/
 					$post_meta[$adsPostId] = array(				
 										            'post_id' => $currentPostId,
 										            'ads_id' => $adsPostId,

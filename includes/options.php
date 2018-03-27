@@ -16,7 +16,7 @@ function ads_for_options(){
 		'name'    => 'Ads For Non-AMP',
 		'id'      => 'non_amp_ads',
 		'type'    => 'checkbox',
-		'desc' => 'Currently only support Adsense',
+		'desc' => 'Currently only support for InContent Ads',
 	) );
 
 	$ads_for_option->add_field( array(
@@ -384,7 +384,7 @@ function advanced_amp_ampforwp_ads_options() {
 				) );
 			$ampforwp_ads_option->add_field( array(
 					'name'             => esc_html__( 'Media.net Ad unit', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Enter the Media.net Ad unit (data-cridt) from the media.net ad code. e.g. 112682482',
+					'desc'			   => 'Enter the Media.net Ad unit (data-crid) from the media.net ad code. e.g. 112682482',
 					'id'               => 'medianet_ad_slot',
 					'type'             => 'text_medium',
 					'classes'		   => 'vendor-fields medianet-data-4'
@@ -741,7 +741,7 @@ $amp_ads_option->add_field( array(
 				) );
 			$amp_ads_option->add_field( array(
 					'name'             => esc_html__( 'Media.net Ad unit', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Enter the Media.net Ad unit (data-cridt) from the media.net ad code. e.g. 112682482',
+					'desc'			   => 'Enter the Media.net Ad unit (data-crid) from the media.net ad code. e.g. 112682482',
 					'id'               => '_amp_medianet_ad_slot',
 					'type'             => 'text_medium',
 					'classes'		   => 'amp-vendor-fields amp-medianet-data-4'
