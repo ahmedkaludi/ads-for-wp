@@ -51,7 +51,8 @@ function removing_wysiwig_adsforwp() {
 
 add_shortcode('ads-for-wp', 'adsforwp_shortcode_generator');
 function adsforwp_shortcode_generator( $atts ){
-	$adsPostId = get_ad_id(get_the_ID());
+	
+	$adsPostId = $atts["ads-id"];
 	$selected_ads_for 	= get_post_meta($adsPostId,'select_ads_for',true);
 	if('1' === $selected_ads_for){
 		$ad_vendor = get_post_meta($adsPostId,'ad_vendor',true);
