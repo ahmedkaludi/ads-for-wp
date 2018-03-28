@@ -33,25 +33,35 @@ function adsforwp_get_meta_post( $value, $post_id = '' ) {
 	if('adsforwp-advert-data' === $value){
 		$selected_ads_for 	= get_post_meta(get_ad_id(get_the_ID()),'select_ads_for',true);
 			$cpt_paragraph = '';
-			foreach ($field as $key => $value ) {
-				$selected_ads_for 	= get_post_meta($key,'select_ads_for',true);
-				if('1' === $selected_ads_for){
-					$cpt_paragraph = get_post_meta($key,'incontent_ad_type',true);
-				}elseif('2' === $selected_ads_for){
-					$cpt_paragraph = get_post_meta($key,'_amp_incontent_ad_type',true);
-				}
-					$cpt_paragraph = $cpt_paragraph[0];
-					$value['post_id'] = get_the_ID();
-					$value['ads_id']  = $key;
-					$visi = get_post_meta($key,'ad_visibility_status',true);
-					if('show' === $visi){
-					$value['visibility'] = 'show';
+			if(is_array($field)){
+				foreach ($field as $key => $value ) {
+					if(empty($value)){
+			              $value = array(
+			                      'post_id' => '',
+			                      'ads_id' => '',
+			                      'visibility' => '',
+			                      'paragraph' => '',
+			                      );
+			            }
+					$selected_ads_for 	= get_post_meta($key,'select_ads_for',true);
+					if('1' === $selected_ads_for){
+						$cpt_paragraph = get_post_meta($key,'incontent_ad_type',true);
+					}elseif('2' === $selected_ads_for){
+						$cpt_paragraph = get_post_meta($key,'_amp_incontent_ad_type',true);
 					}
-					else{
-						$value['visibility'] = 'hide';
-					} 
-					$value['paragraph'] = $cpt_paragraph;
-					$field[$key] = $value;
+						$cpt_paragraph = $cpt_paragraph[0];
+						$value['post_id'] = get_the_ID();
+						$value['ads_id']  = $key;
+						$visi = get_post_meta($key,'ad_visibility_status',true);
+						if('show' === $visi){
+						$value['visibility'] = 'show';
+						}
+						else{
+							$value['visibility'] = 'hide';
+						} 
+						$value['paragraph'] = $cpt_paragraph;
+						$field[$key] = $value;
+				}
 			}
 		
 	}
