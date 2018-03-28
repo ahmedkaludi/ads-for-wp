@@ -1270,7 +1270,7 @@ function adsforwp_media_net_ads($args){
 }
 function adsforwp_incontent_media_net_ads($id){
 	$post_medianet_ad_id = $id;
-	if(NULL != $post_adsense_ad_id){
+	if(NULL != $post_medianet_ad_id){
 		// do nothing
 	}
 	else{
