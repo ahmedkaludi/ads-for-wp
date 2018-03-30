@@ -51,7 +51,8 @@ function removing_wysiwig_adsforwp() {
 
 add_shortcode('ads-for-wp', 'adsforwp_shortcode_generator');
 function adsforwp_shortcode_generator( $atts ){
-	$adsPostId = get_ad_id(get_the_ID());
+	
+	$adsPostId = $atts["ads-id"];
 	$selected_ads_for 	= get_post_meta($adsPostId,'select_ads_for',true);
 	if('1' === $selected_ads_for){
 		$ad_vendor = get_post_meta($adsPostId,'ad_vendor',true);
@@ -205,18 +206,19 @@ function adsforwp_insert_ads( $content ){
 	    $adsPostId = get_the_ID();
 	    $adsType = get_post_meta($adsPostId, $incontent_visibility,true);
 	    $ads_format = get_post_meta($adsPostId, $amp_ad_type,true);
-	    
+	    $non_amp_ads 		= get_post_meta($adsPostId,'non_amp_ads',true);
 	    if($adsType =='hide' ){
 	    	continue;
 	    }
 	    if($ads_format != '2'){
 	    	continue;
 	    }
-
+ 
 
 	    if(isset($cmb2_incontent_options)){
 	    	if('1' === $selected_ads_for){
-		    	if(function_exists('ampforwp_is_amp_endpoint') && ampforwp_is_amp_endpoint()){
+	    	  if('on' === $non_amp_ads || function_exists('ampforwp_is_amp_endpoint') && ampforwp_is_amp_endpoint()){	
+		    	
 			    	$adsVisiblityType 	= get_post_meta($currentPostId,'adsforwp-advert-data',true);
 
 			    	$adsVisiblityType 	= (isset($adsVisiblityType[$adsPostId]['visibility'])
@@ -260,9 +262,21 @@ function adsforwp_insert_ads( $content ){
 										            'content'=>$adsContent,
 				    							);
 					}
-				}
+					elseif('4' === $ad_vendor && '2' === $ad_type){
+					$adsContent = 	adsforwp_incontent_media_net_ads($adsPostId);/*var_dump($adsContent);die;*/
+					$post_meta[$adsPostId] = array(				
+										            'post_id' => $currentPostId,
+										            'ads_id' => $adsPostId,
+										            'visibility' => $adsVisiblityType,
+										            'paragraph' => $adsparagraphs,
+										            'content'=>$adsContent,
+				    							);
+					}
+				
+			  }
 			}
 			if('2' === $selected_ads_for){
+				if('on' === $non_amp_ads || function_exists('is_amp_endpoint') && is_amp_endpoint()){	
 			    	$adsVisiblityType 	= get_post_field('adsforwp_incontent_ads_default', $post_id);
 				    $adsVisiblityType 	= (isset($adsVisiblityType[$adsPostId]['visibility'])
 			    		? $adsVisiblityType[$adsPostId]['visibility'] 
@@ -304,8 +318,19 @@ function adsforwp_insert_ads( $content ){
 										            'content'=>$adsContent,
 				    							);
 					}
-				
+					elseif('4' === $ad_vendor && '3' === $ad_type){
+					$adsContent = 	adsforwp_incontent_media_net_ads($adsPostId);
+					$post_meta[$adsPostId] = array(				
+										            'post_id' => $currentPostId,
+										            'ads_id' => $adsPostId,
+										            'visibility' => $adsVisiblityType,
+										            'paragraph' => $adsparagraphs,
+										            'content'=>$adsContent,
+				    							);
+					}
+				}
 			}
+
 	    }
 	    elseif(!isset($post_meta[$adsPostId])){
 
@@ -345,12 +370,12 @@ function adsforwp_insert_ads( $content ){
 	$content = preg_split("/\\r\\n|\\r|\\n/", $content);
 	if(count($post_meta)>0){
 		foreach ($post_meta as $key => $adsValue) {
-			if($adsValue['visibility']!="show"){
+			if(!empty($adsValue) && $adsValue['visibility']!="show"){
 				continue;
 			}
 			if(isset($adsValue['paragraph']) && isset($adsValue['content'])){
-			
-				if(count($content) > $adsValue['paragraph']){
+				// var_dump(count($content));var_dump($adsValue['paragraph']);
+				if(count($content) > intval($adsValue['paragraph'])){
 
 					$content[$adsValue['paragraph']] .= $adsValue['content'];
 				}

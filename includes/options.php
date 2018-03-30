@@ -13,7 +13,14 @@ function ads_for_options(){
 	) );
 
 	$ads_for_option->add_field( array(
-		'name'    => 'Select Ads for',
+		'name'    => 'Ads For Non-AMP',
+		'id'      => 'non_amp_ads',
+		'type'    => 'checkbox',
+		'desc' => 'Currently only support for InContent Ads',
+	) );
+
+	$ads_for_option->add_field( array(
+		'name'    => 'AMP Compatibility With',
 		'id'      => 'select_ads_for',
 		'type'    => 'select',
 		'options' => array(
@@ -198,8 +205,23 @@ function advanced_amp_ampforwp_ads_options() {
 						'4'    			=> esc_html__( '200×90', 'ampforwp_adsforwp' ),
 						'5'    			=> esc_html__( '468×15', 'ampforwp_adsforwp' ),
 						'6'    			=> esc_html__( '728×15', 'ampforwp_adsforwp' ),
+						'7'    			=> esc_html__( 'Custom', 'ampforwp_adsforwp' ),
 					),
 					'classes'		   => 'link-ads-dimensions'
+				) );
+			$ampforwp_ads_option->add_field( array(
+					'name'             => esc_html__( 'Width', 'ampforwp_adsforwp' ),
+					'desc'			   => 'Enter the width',
+					'id'               => 'link_custom_width',
+					'type'             => 'text_small',
+					'classes'		   => 'link-custom-dimensions link-custom-data-1'
+				) );
+			$ampforwp_ads_option->add_field( array(
+					'name'             => esc_html__( 'Height', 'ampforwp_adsforwp' ),
+					'desc'			   => 'Enter the height',
+					'id'               => 'link_custom_height',
+					'type'             => 'text_small',
+					'classes'		   => 'link-custom-dimensions link-custom-data-1'
 				) );
 			$ampforwp_ads_option->add_field( array(
 					'name'             => esc_html__( 'Dimensions', 'ampforwp_adsforwp' ),
@@ -362,7 +384,7 @@ function advanced_amp_ampforwp_ads_options() {
 				) );
 			$ampforwp_ads_option->add_field( array(
 					'name'             => esc_html__( 'Media.net Ad unit', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Enter the Media.net Ad unit (data-cridt) from the media.net ad code. e.g. 112682482',
+					'desc'			   => 'Enter the Media.net Ad unit (data-crid) from the media.net ad code. e.g. 112682482',
 					'id'               => 'medianet_ad_slot',
 					'type'             => 'text_medium',
 					'classes'		   => 'vendor-fields medianet-data-4'
@@ -541,8 +563,23 @@ $amp_ads_option->add_field( array(
 						'4'    			=> esc_html__( '200×90', 'ampforwp_adsforwp' ),
 						'5'    			=> esc_html__( '468×15', 'ampforwp_adsforwp' ),
 						'6'    			=> esc_html__( '728×15', 'ampforwp_adsforwp' ),
+						'7'    			=> esc_html__( 'Custom', 'ampforwp_adsforwp' ),
 					),
 					'classes'		   => 'amp-link-ads-dimensions'
+				) );
+			$amp_ads_option->add_field( array(
+					'name'             => esc_html__( 'Width', 'ampforwp_adsforwp' ),
+					'desc'			   => 'Enter the width',
+					'id'               => '_amp_link_custom_width',
+					'type'             => 'text_small',
+					'classes'		   => 'amp-link-custom-dimensions amp-link-custom-data-1'
+				) );
+			$amp_ads_option->add_field( array(
+					'name'             => esc_html__( 'Height', 'ampforwp_adsforwp' ),
+					'desc'			   => 'Enter the height',
+					'id'               => '_amp_link_custom_height',
+					'type'             => 'text_small',
+					'classes'		   => 'amp-link-custom-dimensions amp-link-custom-data-1'
 				) );
 			$amp_ads_option->add_field( array(
 					'name'             => esc_html__( 'Dimensions', 'ampforwp_adsforwp' ),
@@ -704,7 +741,7 @@ $amp_ads_option->add_field( array(
 				) );
 			$amp_ads_option->add_field( array(
 					'name'             => esc_html__( 'Media.net Ad unit', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Enter the Media.net Ad unit (data-cridt) from the media.net ad code. e.g. 112682482',
+					'desc'			   => 'Enter the Media.net Ad unit (data-crid) from the media.net ad code. e.g. 112682482',
 					'id'               => '_amp_medianet_ad_slot',
 					'type'             => 'text_medium',
 					'classes'		   => 'amp-vendor-fields amp-medianet-data-4'
