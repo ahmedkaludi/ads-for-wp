@@ -142,12 +142,7 @@ function adsforwp_post_types(){
 	return $post_types;
 }
 
-// Remove the ADS on this Meta from the Adsforwp CPT
-add_action('do_meta_boxes', 'remove_ads_on_this_meta_from_adsforwp');
-function remove_ads_on_this_meta_from_adsforwp(){
-	remove_meta_box( 'adsforwp_ads_meta_box', 'ads-for-wp-ads', 'side' );
 
-}
 // Let's start displaying Ads On AMP
 
 // Funtion to get the ad's id which are custom post types
@@ -180,270 +175,269 @@ function get_ad_id($id){
 add_action('pre_amp_render_post','ampforwp_display_amp_ads');
 function ampforwp_display_amp_ads(){
 	$all_ads_post = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1));
-foreach ($all_ads_post as $ads) {
-	$post_ad_id = $ads->ID;
-	$args = array (
-    'id'        =>  $post_ad_id, // id
-    );
-
-	$selected_ads_for 	= get_post_meta($post_ad_id,'select_ads_for',true);
-	$ad_type 			= get_post_meta($post_ad_id,'ad_type_format',true);
-	$ad_vendor			= get_post_meta($post_ad_id,'ad_vendor',true);
-	$visibility_status  = get_post_meta($post_ad_id,'ad_vendor',true);
-	if('1' === $selected_ads_for){
-	$global_visibility  = get_post_meta($post_ad_id,'ad_visibility_status',true);
-	if($global_visibility != 'hide'){
-		// Normal Ads
-		if('1' === $ad_type){
-			$ad_position = get_post_meta($post_ad_id,'normal_ad_type',true);
-			switch ($ad_position) {
-
-				case '1':
-					//  "Above Header";
-					 if('1' === $ad_vendor){
-					 		// $id = get_ad_id(get_the_ID());
-							 add_action('ampforwp_header_top_design2','ampforwp_adsense_ads');
-						}
-						else if('2' === $ad_vendor){
-							add_action('ampforwp_header_top_design2','ampforwp_dfp_ads');
-						}
-						else if('3' === $ad_vendor){
-							add_action('ampforwp_header_top_design2','ampforwp_custom_ads');
-						}
-						else if('4' === $ad_vendor){
-							add_action('ampforwp_header_top_design2',function() use ( $args ) { 
-               adsforwp_media_net_ads( $args ); });
-						}
-					break;
-				case '2':
-					//  "Below Header";
-						if('1' === $ad_vendor){
-							 add_action('ampforwp_after_header','ampforwp_adsense_ads');
-						}
-						else if('2' === $ad_vendor){
-							add_action('ampforwp_after_header','ampforwp_dfp_ads');
-						}
-						else if('3' === $ad_vendor){
-							add_action('ampforwp_after_header','ampforwp_custom_ads');
-						}
-						else if('4' === $ad_vendor){
-							add_action('ampforwp_after_header',function() use ( $args ) { 
-               adsforwp_media_net_ads( $args ); });
-						}
-					break;
-				case '3':
-					//  "Before Title";
-						//  Adsense Ad
-						if('1' === $ad_vendor){
-							 add_action('ampforwp_above_the_title','ampforwp_adsense_ads');
-						}
-						// DFP Ad
-						else if('2' === $ad_vendor){
-							add_action('ampforwp_above_the_title','ampforwp_dfp_ads');
-						}
-						// Custom Ad
-						else if('3' === $ad_vendor){
-							add_action('ampforwp_above_the_title','ampforwp_custom_ads');
-						}
-						else if('4' === $ad_vendor){
-							add_action('ampforwp_above_the_title',function() use ( $args ) { 
-               adsforwp_media_net_ads( $args ); });
-						}
-					break;
-				case '4':
-					//  "After Title";
-					 	if('1' === $ad_vendor){
-							 add_action('ampforwp_below_the_title','ampforwp_adsense_ads');
-						}
-						// DFP Ad
-						else if('2' === $ad_vendor){
-							add_action('ampforwp_below_the_title','ampforwp_dfp_ads');
-						}
-						// Custom Ad
-						else if('3' === $ad_vendor){
-							add_action('ampforwp_below_the_title','ampforwp_custom_ads');
-						}
-						else if('4' === $ad_vendor){
-							add_action('ampforwp_below_the_title',function() use ( $args ) { 
-               adsforwp_media_net_ads( $args ); });
-						}
-					break;
-				case '5':
-					//  "Before Content";
-						if('1' === $ad_vendor){
-							 add_action('ampforwp_before_post_content','ampforwp_adsense_ads');
-						} 
-						// DFP Ad
-						else if('2' === $ad_vendor){
-							add_action('ampforwp_before_post_content','ampforwp_dfp_ads');
-						}
-						// Custom Ad
-						else if('3' === $ad_vendor){
-							add_action('ampforwp_before_post_content','ampforwp_custom_ads');
-						}
-						else if('4' === $ad_vendor){
-							add_action('ampforwp_before_post_content',function() use ( $args ) { 
-               adsforwp_media_net_ads( $args ); });
-						}
-					break;
-				case '6':
-					//  "After Featured Image";
-					 	if('1' === $ad_vendor){
-							 add_action('ampforwp_after_featured_image_hook','ampforwp_adsense_ads');
-						}
-						// DFP Ad
-						else if('2' === $ad_vendor){
-							add_action('ampforwp_after_featured_image_hook','ampforwp_dfp_ads');
-						}
-						// Custom Ad
-						else if('3' === $ad_vendor){
-							add_action('ampforwp_after_featured_image_hook','ampforwp_custom_ads');
-						}
-						else if('4' === $ad_vendor){
-							add_action('ampforwp_after_featured_image_hook',function() use ( $args ) { 
-               adsforwp_media_net_ads( $args ); });
-						}
-					break;
-				case '7':
-					//  "After Content";
-					 	if('1' === $ad_vendor){
-					 		if(is_single()){
-							 add_action('ampforwp_after_post_content','ampforwp_adsense_ads');
-					 		}
-						}
-						// DFP Ad
-						else if('2' === $ad_vendor){
-							if(is_single()){
-								add_action('ampforwp_after_post_content','ampforwp_dfp_ads');
-							}
-						}
-						// Custom Ad
-						else if('3' === $ad_vendor){
-							if(is_single()){
-								add_action('ampforwp_after_post_content','ampforwp_custom_ads');
-							}
-						}
-						else if('4' === $ad_vendor){
-							if(is_single()){
-								add_action('ampforwp_after_post_content',function() use ( $args ) { 
-              						 adsforwp_media_net_ads( $args ); });
-							}
-						}
-					break;
-				case '8':
-					//  "Above Related Posts";
-					 	if('1' === $ad_vendor){
-							 add_action('ampforwp_above_related_post','ampforwp_adsense_ads');
-						}
-						// DFP Ad
-						else if('2' === $ad_vendor){
-							add_action('ampforwp_above_related_post','ampforwp_dfp_ads');
-						}
-						// Custom Ad
-						else if('3' === $ad_vendor){
-							add_action('ampforwp_above_related_post','ampforwp_custom_ads');
-						}
-						else if('4' === $ad_vendor){
-							add_action('ampforwp_above_related_post',function() use ( $args ) { 
-               adsforwp_media_net_ads( $args ); });
-						}
-					break;
-				case '9':
-					//  "Below Related Posts";
-					 	if('1' === $ad_vendor){
-							 add_action('ampforwp_below_related_post','ampforwp_adsense_ads');
-						}
-						// DFP Ad
-						else if('2' === $ad_vendor){
-							add_action('ampforwp_below_related_post','ampforwp_dfp_ads');
-						}
-						// Custom Ad
-						else if('3' === $ad_vendor){
-							add_action('ampforwp_below_related_post','ampforwp_custom_ads');
-						}
-						else if('4' === $ad_vendor){
-							add_action('ampforwp_below_related_post',function() use ( $args ) { 
-               adsforwp_media_net_ads( $args ); });
-						}
-					break;
-				case '10':
-					//  "Before Footer";
-					 	if('1' === $ad_vendor){
-							 add_action('amp_post_template_above_footer','ampforwp_adsense_ads');
-						}
-						// DFP Ad
-						else if('2' === $ad_vendor){
-							add_action('amp_post_template_above_footer','ampforwp_dfp_ads');
-						}
-						// Custom Ad
-						else if('3' === $ad_vendor){
-							add_action('amp_post_template_above_footer','ampforwp_custom_ads');
-						}
-						else if('4' === $ad_vendor){
-							add_action('amp_post_template_above_footer',function() use ( $args ) { 
-               adsforwp_media_net_ads( $args ); });
-						}
-					break;
-				case '11':
-					//  "After Footer";
-					 	if('1' === $ad_vendor){
-							 add_action('ampforwp_global_after_footer','ampforwp_adsense_ads');
-						}
-						// DFP Ad
-						else if('2' === $ad_vendor){
-							 add_action('ampforwp_global_after_footer','ampforwp_dfp_ads');
-						}
-						// Custom Ad
-						else if('3' === $ad_vendor){
-							 add_action('ampforwp_global_after_footer','ampforwp_custom_ads');
-						}
-						else if('4' === $ad_vendor){
-							add_action('ampforwp_global_after_footer',function() use ( $args ) { 
-               adsforwp_media_net_ads( $args ); });
-						}
-					break;
-				default:
-					//  "please select the postion to display";
-					break;
-			}
-
-		}
-	}
 	
+	foreach ($all_ads_post as $ads) {
+		$post_ad_id = $ads->ID;
+		$args = array (
+	    	'id'        =>  $post_ad_id, // id
+	    );
 
-	}
+		$selected_ads_for 	= get_post_meta($post_ad_id,'select_ads_for',true);
+		$ad_type 			= get_post_meta($post_ad_id,'ad_type_format',true);
+		$ad_vendor			= get_post_meta($post_ad_id,'ad_vendor',true);
+		$visibility_status  = get_post_meta($post_ad_id,'ad_vendor',true);
+		
+		if('1' === $selected_ads_for) {
+				$global_visibility  = get_post_meta($post_ad_id,'ad_visibility_status',true);
+			if($global_visibility != 'hide') {
+				// Normal Ads
+				if('1' === $ad_type){
+					$ad_position = get_post_meta($post_ad_id,'normal_ad_type',true);
+					switch ($ad_position) {
 
+						case '1':
+							//  "Above Header";
+							 if('1' === $ad_vendor){
+							 		// $id = get_ad_id(get_the_ID());
+									 add_action('ampforwp_header_top_design2','ampforwp_adsense_ads');
+								}
+								else if('2' === $ad_vendor){
+									add_action('ampforwp_header_top_design2','ampforwp_dfp_ads');
+								}
+								else if('3' === $ad_vendor){
+									add_action('ampforwp_header_top_design2','ampforwp_custom_ads');
+								}
+								else if('4' === $ad_vendor){
+									add_action('ampforwp_header_top_design2',function() use ( $args ) { 
+		               adsforwp_media_net_ads( $args ); });
+								}
+							break;
+						case '2':
+							//  "Below Header";
+								if('1' === $ad_vendor){
+									 add_action('ampforwp_after_header','ampforwp_adsense_ads');
+								}
+								else if('2' === $ad_vendor){
+									add_action('ampforwp_after_header','ampforwp_dfp_ads');
+								}
+								else if('3' === $ad_vendor){
+									add_action('ampforwp_after_header','ampforwp_custom_ads');
+								}
+								else if('4' === $ad_vendor){
+									add_action('ampforwp_after_header',function() use ( $args ) { 
+		               adsforwp_media_net_ads( $args ); });
+								}
+							break;
+						case '3':
+							//  "Before Title";
+								//  Adsense Ad
+								if('1' === $ad_vendor){
+									 add_action('ampforwp_above_the_title','ampforwp_adsense_ads');
+								}
+								// DFP Ad
+								else if('2' === $ad_vendor){
+									add_action('ampforwp_above_the_title','ampforwp_dfp_ads');
+								}
+								// Custom Ad
+								else if('3' === $ad_vendor){
+									add_action('ampforwp_above_the_title','ampforwp_custom_ads');
+								}
+								else if('4' === $ad_vendor){
+									add_action('ampforwp_above_the_title',function() use ( $args ) { 
+		               adsforwp_media_net_ads( $args ); });
+								}
+							break;
+						case '4':
+							//  "After Title";
+							 	if('1' === $ad_vendor){
+									 add_action('ampforwp_below_the_title','ampforwp_adsense_ads');
+								}
+								// DFP Ad
+								else if('2' === $ad_vendor){
+									add_action('ampforwp_below_the_title','ampforwp_dfp_ads');
+								}
+								// Custom Ad
+								else if('3' === $ad_vendor){
+									add_action('ampforwp_below_the_title','ampforwp_custom_ads');
+								}
+								else if('4' === $ad_vendor){
+									add_action('ampforwp_below_the_title',function() use ( $args ) { 
+		               adsforwp_media_net_ads( $args ); });
+								}
+							break;
+						case '5':
+							//  "Before Content";
+								if('1' === $ad_vendor){
+									 add_action('ampforwp_before_post_content','ampforwp_adsense_ads');
+								} 
+								// DFP Ad
+								else if('2' === $ad_vendor){
+									add_action('ampforwp_before_post_content','ampforwp_dfp_ads');
+								}
+								// Custom Ad
+								else if('3' === $ad_vendor){
+									add_action('ampforwp_before_post_content','ampforwp_custom_ads');
+								}
+								else if('4' === $ad_vendor){
+									add_action('ampforwp_before_post_content',function() use ( $args ) { 
+		               adsforwp_media_net_ads( $args ); });
+								}
+							break;
+						case '6':
+							//  "After Featured Image";
+							 	if('1' === $ad_vendor){
+									 add_action('ampforwp_after_featured_image_hook','ampforwp_adsense_ads');
+								}
+								// DFP Ad
+								else if('2' === $ad_vendor){
+									add_action('ampforwp_after_featured_image_hook','ampforwp_dfp_ads');
+								}
+								// Custom Ad
+								else if('3' === $ad_vendor){
+									add_action('ampforwp_after_featured_image_hook','ampforwp_custom_ads');
+								}
+								else if('4' === $ad_vendor){
+									add_action('ampforwp_after_featured_image_hook',function() use ( $args ) { 
+		               adsforwp_media_net_ads( $args ); });
+								}
+							break;
+						case '7':
+							//  "After Content";
+							 	if('1' === $ad_vendor){
+							 		if(is_single()){
+									 add_action('ampforwp_after_post_content','ampforwp_adsense_ads');
+							 		}
+								}
+								// DFP Ad
+								else if('2' === $ad_vendor){
+									if(is_single()){
+										add_action('ampforwp_after_post_content','ampforwp_dfp_ads');
+									}
+								}
+								// Custom Ad
+								else if('3' === $ad_vendor){
+									if(is_single()){
+										add_action('ampforwp_after_post_content','ampforwp_custom_ads');
+									}
+								}
+								else if('4' === $ad_vendor){
+									if(is_single()){
+										add_action('ampforwp_after_post_content',function() use ( $args ) { 
+		              						 adsforwp_media_net_ads( $args ); });
+									}
+								}
+							break;
+						case '8':
+							//  "Above Related Posts";
+							 	if('1' === $ad_vendor){
+									 add_action('ampforwp_above_related_post','ampforwp_adsense_ads');
+								}
+								// DFP Ad
+								else if('2' === $ad_vendor){
+									add_action('ampforwp_above_related_post','ampforwp_dfp_ads');
+								}
+								// Custom Ad
+								else if('3' === $ad_vendor){
+									add_action('ampforwp_above_related_post','ampforwp_custom_ads');
+								}
+								else if('4' === $ad_vendor){
+									add_action('ampforwp_above_related_post',function() use ( $args ) { 
+		               adsforwp_media_net_ads( $args ); });
+								}
+							break;
+						case '9':
+							//  "Below Related Posts";
+							 	if('1' === $ad_vendor){
+									 add_action('ampforwp_below_related_post','ampforwp_adsense_ads');
+								}
+								// DFP Ad
+								else if('2' === $ad_vendor){
+									add_action('ampforwp_below_related_post','ampforwp_dfp_ads');
+								}
+								// Custom Ad
+								else if('3' === $ad_vendor){
+									add_action('ampforwp_below_related_post','ampforwp_custom_ads');
+								}
+								else if('4' === $ad_vendor){
+									add_action('ampforwp_below_related_post',function() use ( $args ) { 
+		               adsforwp_media_net_ads( $args ); });
+								}
+							break;
+						case '10':
+							//  "Before Footer";
+							 	if('1' === $ad_vendor){
+									 add_action('amp_post_template_above_footer','ampforwp_adsense_ads');
+								}
+								// DFP Ad
+								else if('2' === $ad_vendor){
+									add_action('amp_post_template_above_footer','ampforwp_dfp_ads');
+								}
+								// Custom Ad
+								else if('3' === $ad_vendor){
+									add_action('amp_post_template_above_footer','ampforwp_custom_ads');
+								}
+								else if('4' === $ad_vendor){
+									add_action('amp_post_template_above_footer',function() use ( $args ) { 
+		               adsforwp_media_net_ads( $args ); });
+								}
+							break;
+						case '11':
+							//  "After Footer";
+							 	if('1' === $ad_vendor){
+									 add_action('ampforwp_global_after_footer','ampforwp_adsense_ads');
+								}
+								// DFP Ad
+								else if('2' === $ad_vendor){
+									 add_action('ampforwp_global_after_footer','ampforwp_dfp_ads');
+								}
+								// Custom Ad
+								else if('3' === $ad_vendor){
+									 add_action('ampforwp_global_after_footer','ampforwp_custom_ads');
+								}
+								else if('4' === $ad_vendor){
+									add_action('ampforwp_global_after_footer',function() use ( $args ) { 
+		               adsforwp_media_net_ads( $args ); });
+								}
+							break;
+						default:
+							//  "please select the postion to display";
+							break;
+					}
 
-// FOR AMP BY AUTOMATTIC Normal And Incontent Ads
-	elseif('2' === $selected_ads_for){
-		$amp_ad_type 			= get_post_meta($post_ad_id,'_amp_ad_type_format',true);
-		$amp_ad_vendor			= get_post_meta($post_ad_id,'_amp_ad_vendor',true);
-		$global_visibility  = get_post_meta($post_ad_id,'_amp_ad_visibility_status',true);
-		if($global_visibility != 'hide'){
-		// Normal
-			if('1' === $amp_ad_type){
-				switch ($amp_ad_vendor) {
-					case '1':
-						add_action('amp_post_template_footer','ampforwp_adsense_ads');
-						break;
-					case '2':
-						add_action('amp_post_template_footer','ampforwp_dfp_ads');
-						break;
-					case '3':
-						add_action('amp_post_template_footer','ampforwp_custom_ads');
-						break;
-					case '4':
-						add_action('amp_post_template_footer','adsforwp_media_net_ads');
-						break;
-					default:
-						add_action('amp_post_template_footer','ampforwp_adsense_ads');
-						break;
 				}
-				
+			}
+		}
+
+		// FOR AMP BY AUTOMATTIC Normal And Incontent Ads
+		elseif('2' === $selected_ads_for) {
+			$amp_ad_type 			= get_post_meta($post_ad_id,'_amp_ad_type_format',true);
+			$amp_ad_vendor			= get_post_meta($post_ad_id,'_amp_ad_vendor',true);
+			$global_visibility  = get_post_meta($post_ad_id,'_amp_ad_visibility_status',true);
+			if($global_visibility != 'hide'){
+			// Normal
+				if('1' === $amp_ad_type){
+					switch ($amp_ad_vendor) {
+						case '1':
+							add_action('amp_post_template_footer','ampforwp_adsense_ads');
+							break;
+						case '2':
+							add_action('amp_post_template_footer','ampforwp_dfp_ads');
+							break;
+						case '3':
+							add_action('amp_post_template_footer','ampforwp_custom_ads');
+							break;
+						case '4':
+							add_action('amp_post_template_footer','adsforwp_media_net_ads');
+							break;
+						default:
+							add_action('amp_post_template_footer','ampforwp_adsense_ads');
+							break;
+					}
+					
+				}
 			}
 		}
 	}
-}
 }
 
 // Adsense Ad code generator 
@@ -506,12 +500,11 @@ function ampforwp_adsense_ads(){
 
 function ampforwp_incontent_adsense_ads($id){
 	$post_adsense_ad_id = $id;
-	if(NULL != $post_adsense_ad_id){
-		// do nothing
-	}
-	else{
+
+	if ( empty( $post_adsense_ad_id ) || null == $post_adsense_ad_id ) {
 		$post_adsense_ad_id = get_ad_id(get_the_ID());
 	}
+
 	$ad_client			= '';
 	$ad_slot			= '';
 	$ad_parallax		= '';
@@ -1657,17 +1650,14 @@ function ampforwp_adsforwp_scripts( $data ) {
 					if ( empty( $data['amp_component_scripts']['amp-ad'] ) ) {
 						$data['amp_component_scripts']['amp-ad'] = 'https://cdn.ampproject.org/v0/amp-ad-0.1.js';
 					}
-				}
-			}
-
-			if( '4' === $ad_type ){
-
-				if('1' === $ad_vendor || '2' === $ad_vendor){
-					if ( empty( $data['amp_component_scripts']['amp-sticky-ad'] ) ) {
-						$data['amp_component_scripts']['amp-sticky-ad'] = 'https://cdn.ampproject.org/v0/amp-sticky-ad-1.0.js';
+					if( '3' !== $ad_vendor) {
+						if ( empty( $data['amp_component_scripts']['amp-sticky-ad'] ) ) {
+							$data['amp_component_scripts']['amp-sticky-ad'] = 'https://cdn.ampproject.org/v0/amp-sticky-ad-1.0.js';
+						}
 					}
 				}
 			}
+
 			if('show' == $ad_visibility_status){
 				if(	'5' === $ad_type ) {
 								
@@ -1728,7 +1718,6 @@ add_action( 'admin_init', 'ads_for_wp_plugin_updater', 0 );
 $path = plugin_basename( __FILE__ );
 	add_action("after_plugin_row_{$path}", function( $plugin_file, $plugin_data, $status ) {
 		global $redux_builder_amp;
-		$selectedOption = get_option('redux_builder_amp',true);
 	
 		if(empty($redux_builder_amp['amp-license']['ads-for-wp']['license'])){
 			echo "<tr class='active'><td>&nbsp;</td><td colspan='2'><a href='".esc_url(  self_admin_url( 'admin.php?page=amp_options&tab=2' )  )."'>Please enter the license key</a> to get the <strong>latest features</strong> and <strong>stable updates</strong></td></tr>";
@@ -1761,20 +1750,3 @@ function adsforwp_ads_between_related_posts($r_count){
 			
 	}
 }
-
-// Removing Yoast Meta Box [##4 issue repo]
-
-function adsforwp_wp_seo_meta_box() {
-	remove_meta_box('wpseo_meta', 'ads-for-wp-ads', 'normal');
-}
-add_action('add_meta_boxes', 'adsforwp_wp_seo_meta_box', 100);
-/*
-function adsforwp_global_checker($id){
-	$atts['ads-id']= $id;
-	$current_stat = adsforwp_shortcode_generator($atts);
-	if ( empty($current_stat) ) {
-		return false;
-	}
-
-	return true;
-}*/
