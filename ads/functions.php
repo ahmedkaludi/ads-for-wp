@@ -222,3 +222,303 @@ function ampforwp_adsforwp_scripts( $data ) {
 
 	return $data;
 }
+
+/*
+ * Generate the proper ads id
+ */
+function get_ad_id($id){
+	$meta_details = get_metadata('post',$id,'adsforwp-advert-data',true);
+	$post_ad_data = $meta_details;
+	$post_id 	  = $id;
+	$post_ad_id   = '';
+	$all_ads_post = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1));
+	foreach ($all_ads_post as $ads) {
+		$post_ad_id = $ads->ID;
+		$ad_position = get_post_meta($post_ad_id,'normal_ad_type',true);
+		if('12' === $ad_position){
+			$inbetween_id = $post_ad_id;
+			return $inbetween_id;
+		}
+		if('13' === $ad_position){
+			$inbetween_id = $post_ad_id;
+			return $inbetween_id;
+		}
+	}
+	// foreach ($post_ad_data as $key => $ad_config) {
+	// 	$post_ad_id = $ad_config['ads_id'];
+	// 	$post_ad_id = (int)$post_ad_id;
+	// }
+	return $post_ad_id;
+}
+
+
+/*
+ *  Insert the ads according to the settings
+ */
+add_action('pre_amp_render_post','ampforwp_display_amp_ads');
+function ampforwp_display_amp_ads(){
+	$all_ads_post = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1));
+	
+	foreach ($all_ads_post as $ads) {
+		$post_ad_id = $ads->ID;
+		$args = array (
+	    	'id'        =>  $post_ad_id, // id
+	    );
+
+		$selected_ads_for 	= get_post_meta($post_ad_id,'select_ads_for',true);
+		$ad_type 			= get_post_meta($post_ad_id,'ad_type_format',true);
+		$ad_vendor			= get_post_meta($post_ad_id,'ad_vendor',true);
+		$visibility_status  = get_post_meta($post_ad_id,'ad_vendor',true);
+		
+		if('1' === $selected_ads_for) {
+				$global_visibility  = get_post_meta($post_ad_id,'ad_visibility_status',true);
+			if($global_visibility != 'hide') {
+				// Normal Ads
+				if('1' === $ad_type){
+					$ad_position = get_post_meta($post_ad_id,'normal_ad_type',true);
+					switch ($ad_position) {
+
+						case '1':
+							//  "Above Header";
+							 if('1' === $ad_vendor){
+							 		// $id = get_ad_id(get_the_ID());
+									 add_action('ampforwp_header_top_design2','ampforwp_adsense_ads');
+								}
+								else if('2' === $ad_vendor){
+									add_action('ampforwp_header_top_design2','ampforwp_dfp_ads');
+								}
+								else if('3' === $ad_vendor){
+									add_action('ampforwp_header_top_design2','ampforwp_custom_ads');
+								}
+								else if('4' === $ad_vendor){
+									add_action('ampforwp_header_top_design2',function() use ( $args ) { 
+		               adsforwp_media_net_ads( $args ); });
+								}
+							break;
+						case '2':
+							//  "Below Header";
+								if('1' === $ad_vendor){
+									 add_action('ampforwp_after_header','ampforwp_adsense_ads');
+								}
+								else if('2' === $ad_vendor){
+									add_action('ampforwp_after_header','ampforwp_dfp_ads');
+								}
+								else if('3' === $ad_vendor){
+									add_action('ampforwp_after_header','ampforwp_custom_ads');
+								}
+								else if('4' === $ad_vendor){
+									add_action('ampforwp_after_header',function() use ( $args ) { 
+		               adsforwp_media_net_ads( $args ); });
+								}
+							break;
+						case '3':
+							//  "Before Title";
+								//  Adsense Ad
+								if('1' === $ad_vendor){
+									 add_action('ampforwp_above_the_title','ampforwp_adsense_ads');
+								}
+								// DFP Ad
+								else if('2' === $ad_vendor){
+									add_action('ampforwp_above_the_title','ampforwp_dfp_ads');
+								}
+								// Custom Ad
+								else if('3' === $ad_vendor){
+									add_action('ampforwp_above_the_title','ampforwp_custom_ads');
+								}
+								else if('4' === $ad_vendor){
+									add_action('ampforwp_above_the_title',function() use ( $args ) { 
+		               adsforwp_media_net_ads( $args ); });
+								}
+							break;
+						case '4':
+							//  "After Title";
+							 	if('1' === $ad_vendor){
+									 add_action('ampforwp_below_the_title','ampforwp_adsense_ads');
+								}
+								// DFP Ad
+								else if('2' === $ad_vendor){
+									add_action('ampforwp_below_the_title','ampforwp_dfp_ads');
+								}
+								// Custom Ad
+								else if('3' === $ad_vendor){
+									add_action('ampforwp_below_the_title','ampforwp_custom_ads');
+								}
+								else if('4' === $ad_vendor){
+									add_action('ampforwp_below_the_title',function() use ( $args ) { 
+		               adsforwp_media_net_ads( $args ); });
+								}
+							break;
+						case '5':
+							//  "Before Content";
+								if('1' === $ad_vendor){
+									 add_action('ampforwp_before_post_content','ampforwp_adsense_ads');
+								} 
+								// DFP Ad
+								else if('2' === $ad_vendor){
+									add_action('ampforwp_before_post_content','ampforwp_dfp_ads');
+								}
+								// Custom Ad
+								else if('3' === $ad_vendor){
+									add_action('ampforwp_before_post_content','ampforwp_custom_ads');
+								}
+								else if('4' === $ad_vendor){
+									add_action('ampforwp_before_post_content',function() use ( $args ) { 
+		               adsforwp_media_net_ads( $args ); });
+								}
+							break;
+						case '6':
+							//  "After Featured Image";
+							 	if('1' === $ad_vendor){
+									 add_action('ampforwp_after_featured_image_hook','ampforwp_adsense_ads');
+								}
+								// DFP Ad
+								else if('2' === $ad_vendor){
+									add_action('ampforwp_after_featured_image_hook','ampforwp_dfp_ads');
+								}
+								// Custom Ad
+								else if('3' === $ad_vendor){
+									add_action('ampforwp_after_featured_image_hook','ampforwp_custom_ads');
+								}
+								else if('4' === $ad_vendor){
+									add_action('ampforwp_after_featured_image_hook',function() use ( $args ) { 
+		               adsforwp_media_net_ads( $args ); });
+								}
+							break;
+						case '7':
+							//  "After Content";
+							 	if('1' === $ad_vendor){
+							 		if(is_single()){
+									 add_action('ampforwp_after_post_content','ampforwp_adsense_ads');
+							 		}
+								}
+								// DFP Ad
+								else if('2' === $ad_vendor){
+									if(is_single()){
+										add_action('ampforwp_after_post_content','ampforwp_dfp_ads');
+									}
+								}
+								// Custom Ad
+								else if('3' === $ad_vendor){
+									if(is_single()){
+										add_action('ampforwp_after_post_content','ampforwp_custom_ads');
+									}
+								}
+								else if('4' === $ad_vendor){
+									if(is_single()){
+										add_action('ampforwp_after_post_content',function() use ( $args ) { 
+		              						 adsforwp_media_net_ads( $args ); });
+									}
+								}
+							break;
+						case '8':
+							//  "Above Related Posts";
+							 	if('1' === $ad_vendor){
+									 add_action('ampforwp_above_related_post','ampforwp_adsense_ads');
+								}
+								// DFP Ad
+								else if('2' === $ad_vendor){
+									add_action('ampforwp_above_related_post','ampforwp_dfp_ads');
+								}
+								// Custom Ad
+								else if('3' === $ad_vendor){
+									add_action('ampforwp_above_related_post','ampforwp_custom_ads');
+								}
+								else if('4' === $ad_vendor){
+									add_action('ampforwp_above_related_post',function() use ( $args ) { 
+		               adsforwp_media_net_ads( $args ); });
+								}
+							break;
+						case '9':
+							//  "Below Related Posts";
+							 	if('1' === $ad_vendor){
+									 add_action('ampforwp_below_related_post','ampforwp_adsense_ads');
+								}
+								// DFP Ad
+								else if('2' === $ad_vendor){
+									add_action('ampforwp_below_related_post','ampforwp_dfp_ads');
+								}
+								// Custom Ad
+								else if('3' === $ad_vendor){
+									add_action('ampforwp_below_related_post','ampforwp_custom_ads');
+								}
+								else if('4' === $ad_vendor){
+									add_action('ampforwp_below_related_post',function() use ( $args ) { 
+		               adsforwp_media_net_ads( $args ); });
+								}
+							break;
+						case '10':
+							//  "Before Footer";
+							 	if('1' === $ad_vendor){
+									 add_action('amp_post_template_above_footer','ampforwp_adsense_ads');
+								}
+								// DFP Ad
+								else if('2' === $ad_vendor){
+									add_action('amp_post_template_above_footer','ampforwp_dfp_ads');
+								}
+								// Custom Ad
+								else if('3' === $ad_vendor){
+									add_action('amp_post_template_above_footer','ampforwp_custom_ads');
+								}
+								else if('4' === $ad_vendor){
+									add_action('amp_post_template_above_footer',function() use ( $args ) { 
+		               adsforwp_media_net_ads( $args ); });
+								}
+							break;
+						case '11':
+							//  "After Footer";
+							 	if('1' === $ad_vendor){
+									 add_action('ampforwp_global_after_footer','ampforwp_adsense_ads');
+								}
+								// DFP Ad
+								else if('2' === $ad_vendor){
+									 add_action('ampforwp_global_after_footer','ampforwp_dfp_ads');
+								}
+								// Custom Ad
+								else if('3' === $ad_vendor){
+									 add_action('ampforwp_global_after_footer','ampforwp_custom_ads');
+								}
+								else if('4' === $ad_vendor){
+									add_action('ampforwp_global_after_footer',function() use ( $args ) { 
+		               adsforwp_media_net_ads( $args ); });
+								}
+							break;
+						default:
+							//  "please select the postion to display";
+							break;
+					}
+
+				}
+			}
+		}
+
+		// FOR AMP BY AUTOMATTIC Normal And Incontent Ads
+		elseif('2' === $selected_ads_for) {
+			$amp_ad_type 			= get_post_meta($post_ad_id,'_amp_ad_type_format',true);
+			$amp_ad_vendor			= get_post_meta($post_ad_id,'_amp_ad_vendor',true);
+			$global_visibility  = get_post_meta($post_ad_id,'_amp_ad_visibility_status',true);
+			if($global_visibility != 'hide'){
+			// Normal
+				if('1' === $amp_ad_type){
+					switch ($amp_ad_vendor) {
+						case '1':
+							add_action('amp_post_template_footer','ampforwp_adsense_ads');
+							break;
+						case '2':
+							add_action('amp_post_template_footer','ampforwp_dfp_ads');
+							break;
+						case '3':
+							add_action('amp_post_template_footer','ampforwp_custom_ads');
+							break;
+						case '4':
+							add_action('amp_post_template_footer','adsforwp_media_net_ads');
+							break;
+						default:
+							add_action('amp_post_template_footer','ampforwp_adsense_ads');
+							break;
+					}
+					
+				}
+			}
+		}
+	}
+}
