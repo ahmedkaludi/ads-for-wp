@@ -1,13 +1,13 @@
 === ADS for WP ===
 Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
-Tags: ADS, adsense, dfp, amp, publish, , google, plugin, SEO
+Tags: ADS, adsense, dfp, amp, publish, google adsense, plugin, SEO, advertisement
 Requires at least: 3.0
-Tested up to: 4.9.4
-Stable tag: 1.0.3
+Tested up to: 4.9.5
+Stable tag: 1.0.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-ADS for WP is a one way stop for integrating Ads on site.
+ADS for WP is a one stop for integrating Ads on site.
 
 == Description ==
 ADS for WP is the Successor of the ADVANCED AMP ADS plugin with all goodness of it but much rich with features.
