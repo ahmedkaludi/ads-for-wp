@@ -43,6 +43,10 @@ require_once  ADSFORWP_PLUGIN_DIR . '/includes/options.php';
 // Adding CMB2
 require_once  ADSFORWP_PLUGIN_DIR . '/includes/cmb2/init.php';
 
+// Adding necessary files
+require_once  ADSFORWP_PLUGIN_DIR . '/ads/functions.php';
+
+
 /*
  * Advertisement Controller
  * 
@@ -1679,6 +1683,12 @@ function ampforwp_adsforwp_scripts( $data ) {
 	return $data;
 }
 
+
+
+/***
+* License Activation code
+***/
+
 require_once dirname( __FILE__ ) . '/updater/EDD_SL_Plugin_Updater.php';
 
 // Check for updates
@@ -1725,28 +1735,3 @@ $path = plugin_basename( __FILE__ );
 	}, 10, 3 );
 
 
-// #12 Ads Between Related Post [#2 from issue repo]
-
-add_action('ampforwp_between_related_post', 'adsforwp_ads_between_related_posts');
-function adsforwp_ads_between_related_posts($r_count){
-	global $redux_builder_amp;
-	$ID = get_the_ID();
-	$number_of_RP = $redux_builder_amp['ampforwp-number-of-related-posts'];
-	$in_between = round(abs($number_of_RP / 2));
-	if(intval($in_between) === $r_count){
-		$ad_position = get_post_meta(get_ad_id($ID),'normal_ad_type',true);
-		if('13' === $ad_position){
-			$ad_vendor			= get_post_meta(get_ad_id($ID),'ad_vendor',true);
-			if('1' === $ad_vendor){
-				ampforwp_adsense_ads();
-			}elseif('2' === $ad_vendor){
-				ampforwp_dfp_ads();
-			}elseif('3' === $ad_vendor){
-				ampforwp_custom_ads();
-			}elseif('4' === $ad_vendor){
-				adsforwp_media_net_ads();
-			}
-		}
-			
-	}
-}
