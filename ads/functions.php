@@ -244,10 +244,7 @@ function get_ad_id($id){
 			return $inbetween_id;
 		}
 	}
-	// foreach ($post_ad_data as $key => $ad_config) {
-	// 	$post_ad_id = $ad_config['ads_id'];
-	// 	$post_ad_id = (int)$post_ad_id;
-	// }
+ 
 	return $post_ad_id;
 }
 
