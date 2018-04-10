@@ -257,27 +257,66 @@ function get_ad_id($id){
  */
 add_action('pre_amp_render_post','ampforwp_display_amp_ads');
 function ampforwp_display_amp_ads(){
-	$all_ads_post = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1));
-	
+	// Declare variables
+	$all_ads_post 		= '';
+	$post_ad_id 		= ''; 
+	$post_data 			= ''; 
+	$selected_ads_for 	= ''; 
+	$ad_type 			= ''; 
+	$ad_vendor 			= ''; 
+	$global_visibility 	= ''; 
+	$ad_position 		= '';
+
+	// Arrays
+	$args = array();
+
+	$all_ads_post = get_posts(
+					array(
+						'post_type' 	 => 'ads-for-wp-ads',
+						'posts_per_page' => -1,
+						'meta_query' 	 => array(
+					        array(
+					            'key'   => 'ad_visibility_status',
+					            'value'	=> 'show'
+					        ),
+					        array(
+					            'key'   => '_amp_ad_visibility_status',
+					            'value'	=> 'show'
+					        )
+					    ) 
+					)
+				);
+
 	foreach ($all_ads_post as $ads) {
 		$post_ad_id = $ads->ID;
 		$args = array (
 	    	'id'        =>  $post_ad_id, // id
 	    );
 
-		$selected_ads_for 	= get_post_meta($post_ad_id,'select_ads_for',true);
-		$ad_type 			= get_post_meta($post_ad_id,'ad_type_format',true);
-		$ad_vendor			= get_post_meta($post_ad_id,'ad_vendor',true);
-		$visibility_status  = get_post_meta($post_ad_id,'ad_vendor',true);
-		
+
+		$post_data = get_post_meta($post_ad_id);
+
+		if ( $post_data['select_ads_for'] ) {
+			$selected_ads_for 	= $post_data['select_ads_for'][0];
+		}
+		if ( $post_data['ad_type_format'] ) {
+			$ad_type 			= $post_data['ad_type_format'][0];
+		}
+		if ( $post_data['ad_vendor'] ) {
+			$ad_vendor 			= $post_data['ad_vendor'][0];
+		}
+		if ( $post_data['ad_visibility_status'] ) {
+			$global_visibility 	= $post_data['ad_visibility_status'][0];
+		}		
+		if ( $post_data['normal_ad_type'] ) {
+			$ad_position = $post_data['normal_ad_type'][0];
+		}
+	
 		if('1' === $selected_ads_for) {
-				$global_visibility  = get_post_meta($post_ad_id,'ad_visibility_status',true);
 			if($global_visibility != 'hide') {
 				// Normal Ads
-				if('1' === $ad_type){
-					$ad_position = get_post_meta($post_ad_id,'normal_ad_type',true);
+				if('1' === $ad_type){					
 					switch ($ad_position) {
-
 						case '1':
 							//  "Above Header";
 							 if('1' === $ad_vendor){
@@ -491,11 +530,19 @@ function ampforwp_display_amp_ads(){
 			}
 		}
 
+
 		// FOR AMP BY AUTOMATTIC Normal And Incontent Ads
+		if ( $post_data['_amp_ad_type_format'] ) {
+			$amp_ad_type = $post_data['_amp_ad_type_format'][0];
+		}		
+		if ( $post_data['_amp_ad_vendor'] ) {
+			$amp_ad_vendor = $post_data['_amp_ad_vendor'][0];
+		}		
+		if ( $post_data['_amp_ad_visibility_status'] ) {
+			$global_visibility = $post_data['_amp_ad_visibility_status'][0];
+		}
+
 		elseif('2' === $selected_ads_for) {
-			$amp_ad_type 			= get_post_meta($post_ad_id,'_amp_ad_type_format',true);
-			$amp_ad_vendor			= get_post_meta($post_ad_id,'_amp_ad_vendor',true);
-			$global_visibility  = get_post_meta($post_ad_id,'_amp_ad_visibility_status',true);
 			if($global_visibility != 'hide'){
 			// Normal
 				if('1' === $amp_ad_type){

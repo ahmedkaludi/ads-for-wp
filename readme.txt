@@ -1,7 +1,7 @@
 === ADS for WP ===
 Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
 Tags: ADS, adsense, dfp, amp, publish, google adsense, plugin, SEO, advertisement
-Requires at least: 3.0
+Requires at least: 3.6
 Tested up to: 4.9.5
 Stable tag: 1.0.9
 License: GPLv2 or later
