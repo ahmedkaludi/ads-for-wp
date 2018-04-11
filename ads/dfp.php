@@ -1,9 +1,9 @@
 <?php
 // DoubleClick Ad Code generator
 
-function ampforwp_dfp_ads(){
+function ampforwp_dfp_ads($args){
 
-	$post_dfp_ad_id = get_ad_id(get_the_ID());
+	$post_dfp_ad_id 	= $args['id'];
 	$selected_ads_for 	= get_post_meta($post_dfp_ad_id,'select_ads_for',true);
 	$dimensions 		= get_dfp_dimensions($post_dfp_ad_id);
 	$width				= $dimensions['width'];

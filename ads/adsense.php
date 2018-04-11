@@ -1,7 +1,7 @@
 <?php
-function ampforwp_adsense_ads(){
+function ampforwp_adsense_ads($args){
 
-	$post_adsense_ad_id = get_ad_id(get_the_ID());
+	$post_adsense_ad_id = $args['id'];
 	$selected_ads_for 	= get_post_meta($post_adsense_ad_id,'select_ads_for',true);
 	$dimensions 		= get_adsense_dimensions($post_adsense_ad_id);
 	$width				= $dimensions['width'];
