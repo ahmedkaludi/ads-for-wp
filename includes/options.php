@@ -32,10 +32,10 @@ function ads_for_options(){
 	) );
 }
 add_action( 'cmb2_admin_init', 'advanced_amp_ampforwp_ads_options' );
-// /**
-//  * Define the metabox and field configurations.
-//  */
 function advanced_amp_ampforwp_ads_options() {
+	/**
+	 * Define the metabox and field configurations.
+	 */
 	$args = array( 'post_type' => 'ads-for-wp-ads');
 
 	$loop = new WP_Query( $args );
@@ -125,7 +125,13 @@ function advanced_amp_ampforwp_ads_options() {
 		'id'      			=> 'incontent_ad_type',
 		'type'    			=> 'text_small',
 		'default' 			=> '2',
-		'classes' 			=> 'ad-type ad-type-2'
+		'classes' 			=> 'ad-type ad-type-2',	
+		'attributes' 		=> array(
+			'type' 			=> 'number',
+			'min'  			=> '1',
+		),
+
+
 	) );
 
 	// 3. Manual Ads        
@@ -521,7 +527,11 @@ function amp_by_automattic_options(){
 		'id'   	  			=> '_amp_incontent_ad_type',
 		'type'    			=> 'text_small',
 		'default' 			=> '2',
-		'classes' 			=> 'amp-ad-type amp-ad-type-2'
+		'classes' 			=> 'amp-ad-type amp-ad-type-2',	
+		'attributes' 		=> array(
+			'type' 			=> 'number',
+			'min'  			=> '1',
+		),
 	) );
 
 
