@@ -1,8 +1,8 @@
 <?php
 // Custom Ad Code generator
-function ampforwp_custom_ads(){
+function ampforwp_custom_ads($args){
 
-	$post_custom_ad_id = get_ad_id(get_the_ID());
+	$post_custom_ad_id = $args['id'];
 	$selected_ads_for 	= get_post_meta($post_custom_ad_id,'select_ads_for',true);
 	if('1' === $selected_ads_for){
 		$custom_ad_code	   = get_post_meta($post_custom_ad_id,'custom_ad',true);

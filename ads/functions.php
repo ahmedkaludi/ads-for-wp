@@ -318,13 +318,16 @@ function ampforwp_display_amp_ads(){
 							//  "Above Header";
 							 if('1' === $ad_vendor){
 							 		// $id = get_ad_id(get_the_ID());
-									 add_action('ampforwp_header_top_design2','ampforwp_adsense_ads');
+									 add_action('ampforwp_header_top_design2',function() use ( $args ) { 
+		               ampforwp_adsense_ads( $args ); });
 								}
 								else if('2' === $ad_vendor){
-									add_action('ampforwp_header_top_design2','ampforwp_dfp_ads');
+									add_action('ampforwp_header_top_design2',function() use ( $args ) { 
+		               ampforwp_dfp_ads( $args ); });
 								}
 								else if('3' === $ad_vendor){
-									add_action('ampforwp_header_top_design2','ampforwp_custom_ads');
+									add_action('ampforwp_header_top_design2',function() use ( $args ) { 
+		               ampforwp_custom_ads( $args ); });
 								}
 								else if('4' === $ad_vendor){
 									add_action('ampforwp_header_top_design2',function() use ( $args ) { 
@@ -334,13 +337,16 @@ function ampforwp_display_amp_ads(){
 						case '2':
 							//  "Below Header";
 								if('1' === $ad_vendor){
-									 add_action('ampforwp_after_header','ampforwp_adsense_ads');
+									 add_action('ampforwp_after_header',function() use ( $args ) { 
+		               ampforwp_adsense_ads( $args ); });
 								}
 								else if('2' === $ad_vendor){
-									add_action('ampforwp_after_header','ampforwp_dfp_ads');
+									add_action('ampforwp_after_header',function() use ( $args ) { 
+		               ampforwp_dfp_ads( $args ); });
 								}
 								else if('3' === $ad_vendor){
-									add_action('ampforwp_after_header','ampforwp_custom_ads');
+									add_action('ampforwp_after_header',function() use ( $args ) { 
+		               ampforwp_custom_ads( $args ); });
 								}
 								else if('4' === $ad_vendor){
 									add_action('ampforwp_after_header',function() use ( $args ) { 
@@ -351,15 +357,18 @@ function ampforwp_display_amp_ads(){
 							//  "Before Title";
 								//  Adsense Ad
 								if('1' === $ad_vendor){
-									 add_action('ampforwp_above_the_title','ampforwp_adsense_ads');
+									 add_action('ampforwp_above_the_title',function() use ( $args ) { 
+		               ampforwp_adsense_ads( $args ); });
 								}
 								// DFP Ad
 								else if('2' === $ad_vendor){
-									add_action('ampforwp_above_the_title','ampforwp_dfp_ads');
+									add_action('ampforwp_above_the_title',function() use ( $args ) { 
+		               ampforwp_dfp_ads( $args ); });
 								}
 								// Custom Ad
 								else if('3' === $ad_vendor){
-									add_action('ampforwp_above_the_title','ampforwp_custom_ads');
+									add_action('ampforwp_above_the_title',function() use ( $args ) { 
+		               ampforwp_custom_ads( $args ); });
 								}
 								else if('4' === $ad_vendor){
 									add_action('ampforwp_above_the_title',function() use ( $args ) { 
@@ -369,15 +378,18 @@ function ampforwp_display_amp_ads(){
 						case '4':
 							//  "After Title";
 							 	if('1' === $ad_vendor){
-									 add_action('ampforwp_below_the_title','ampforwp_adsense_ads');
+									 add_action('ampforwp_below_the_title',function() use ( $args ) { 
+		               ampforwp_adsense_ads( $args ); });
 								}
 								// DFP Ad
 								else if('2' === $ad_vendor){
-									add_action('ampforwp_below_the_title','ampforwp_dfp_ads');
+									add_action('ampforwp_below_the_title',function() use ( $args ) { 
+		               ampforwp_dfp_ads( $args ); });
 								}
 								// Custom Ad
 								else if('3' === $ad_vendor){
-									add_action('ampforwp_below_the_title','ampforwp_custom_ads');
+									add_action('ampforwp_below_the_title',function() use ( $args ) { 
+		               ampforwp_custom_ads( $args ); });
 								}
 								else if('4' === $ad_vendor){
 									add_action('ampforwp_below_the_title',function() use ( $args ) { 
@@ -387,15 +399,18 @@ function ampforwp_display_amp_ads(){
 						case '5':
 							//  "Before Content";
 								if('1' === $ad_vendor){
-									 add_action('ampforwp_before_post_content','ampforwp_adsense_ads');
+									 add_action('ampforwp_before_post_content',function() use ( $args ) { 
+		               ampforwp_adsense_ads( $args ); });
 								} 
 								// DFP Ad
 								else if('2' === $ad_vendor){
-									add_action('ampforwp_before_post_content','ampforwp_dfp_ads');
+									add_action('ampforwp_before_post_content',function() use ( $args ) { 
+		               ampforwp_dfp_ads( $args ); });
 								}
 								// Custom Ad
 								else if('3' === $ad_vendor){
-									add_action('ampforwp_before_post_content','ampforwp_custom_ads');
+									add_action('ampforwp_before_post_content',function() use ( $args ) { 
+		               ampforwp_custom_ads( $args ); });
 								}
 								else if('4' === $ad_vendor){
 									add_action('ampforwp_before_post_content',function() use ( $args ) { 
@@ -405,15 +420,18 @@ function ampforwp_display_amp_ads(){
 						case '6':
 							//  "After Featured Image";
 							 	if('1' === $ad_vendor){
-									 add_action('ampforwp_after_featured_image_hook','ampforwp_adsense_ads');
+									 add_action('ampforwp_after_featured_image_hook',function() use ( $args ) { 
+		               ampforwp_adsense_ads( $args ); });
 								}
 								// DFP Ad
 								else if('2' === $ad_vendor){
-									add_action('ampforwp_after_featured_image_hook','ampforwp_dfp_ads');
+									add_action('ampforwp_after_featured_image_hook',function() use ( $args ) { 
+		               ampforwp_dfp_ads( $args ); });
 								}
 								// Custom Ad
 								else if('3' === $ad_vendor){
-									add_action('ampforwp_after_featured_image_hook','ampforwp_custom_ads');
+									add_action('ampforwp_after_featured_image_hook',function() use ( $args ) { 
+		               ampforwp_custom_ads( $args ); });
 								}
 								else if('4' === $ad_vendor){
 									add_action('ampforwp_after_featured_image_hook',function() use ( $args ) { 
@@ -424,19 +442,22 @@ function ampforwp_display_amp_ads(){
 							//  "After Content";
 							 	if('1' === $ad_vendor){
 							 		if(is_single()){
-									 add_action('ampforwp_after_post_content','ampforwp_adsense_ads');
+									 add_action('ampforwp_after_post_content',function() use ( $args ) { 
+		               					ampforwp_adsense_ads( $args ); });
 							 		}
 								}
 								// DFP Ad
 								else if('2' === $ad_vendor){
 									if(is_single()){
-										add_action('ampforwp_after_post_content','ampforwp_dfp_ads');
+										add_action('ampforwp_after_post_content',function() use ( $args ) { 
+		              						 ampforwp_dfp_ads( $args ); });
 									}
 								}
 								// Custom Ad
 								else if('3' === $ad_vendor){
 									if(is_single()){
-										add_action('ampforwp_after_post_content','ampforwp_custom_ads');
+										add_action('ampforwp_after_post_content',function() use ( $args ) { 
+		             						ampforwp_custom_ads( $args ); });
 									}
 								}
 								else if('4' === $ad_vendor){
@@ -449,15 +470,18 @@ function ampforwp_display_amp_ads(){
 						case '8':
 							//  "Above Related Posts";
 							 	if('1' === $ad_vendor){
-									 add_action('ampforwp_above_related_post','ampforwp_adsense_ads');
+									 add_action('ampforwp_above_related_post',function() use ( $args ) { 
+		              						 ampforwp_adsense_ads( $args ); });
 								}
 								// DFP Ad
 								else if('2' === $ad_vendor){
-									add_action('ampforwp_above_related_post','ampforwp_dfp_ads');
+									add_action('ampforwp_above_related_post',function() use ( $args ) { 
+		              						 ampforwp_dfp_ads( $args ); });
 								}
 								// Custom Ad
 								else if('3' === $ad_vendor){
-									add_action('ampforwp_above_related_post','ampforwp_custom_ads');
+									add_action('ampforwp_above_related_post',function() use ( $args ) { 
+		              						 ampforwp_custom_ads( $args ); });
 								}
 								else if('4' === $ad_vendor){
 									add_action('ampforwp_above_related_post',function() use ( $args ) { 
@@ -467,15 +491,18 @@ function ampforwp_display_amp_ads(){
 						case '9':
 							//  "Below Related Posts";
 							 	if('1' === $ad_vendor){
-									 add_action('ampforwp_below_related_post','ampforwp_adsense_ads');
+									 add_action('ampforwp_below_related_post',function() use ( $args ) { 
+		               ampforwp_adsense_ads( $args ); });
 								}
 								// DFP Ad
 								else if('2' === $ad_vendor){
-									add_action('ampforwp_below_related_post','ampforwp_dfp_ads');
+									add_action('ampforwp_below_related_post',function() use ( $args ) { 
+		               ampforwp_dfp_ads( $args ); });
 								}
 								// Custom Ad
 								else if('3' === $ad_vendor){
-									add_action('ampforwp_below_related_post','ampforwp_custom_ads');
+									add_action('ampforwp_below_related_post',function() use ( $args ) { 
+		               ampforwp_custom_ads( $args ); });
 								}
 								else if('4' === $ad_vendor){
 									add_action('ampforwp_below_related_post',function() use ( $args ) { 
@@ -485,15 +512,18 @@ function ampforwp_display_amp_ads(){
 						case '10':
 							//  "Before Footer";
 							 	if('1' === $ad_vendor){
-									 add_action('amp_post_template_above_footer','ampforwp_adsense_ads');
+									 add_action('amp_post_template_above_footer',function() use ( $args ) { 
+		               ampforwp_adsense_ads( $args ); });
 								}
 								// DFP Ad
 								else if('2' === $ad_vendor){
-									add_action('amp_post_template_above_footer','ampforwp_dfp_ads');
+									add_action('amp_post_template_above_footer',function() use ( $args ) { 
+		               ampforwp_dfp_ads( $args ); });
 								}
 								// Custom Ad
 								else if('3' === $ad_vendor){
-									add_action('amp_post_template_above_footer','ampforwp_custom_ads');
+									add_action('amp_post_template_above_footer',function() use ( $args ) { 
+		               ampforwp_custom_ads( $args ); });
 								}
 								else if('4' === $ad_vendor){
 									add_action('amp_post_template_above_footer',function() use ( $args ) { 
@@ -503,15 +533,18 @@ function ampforwp_display_amp_ads(){
 						case '11':
 							//  "After Footer";
 							 	if('1' === $ad_vendor){
-									 add_action('ampforwp_global_after_footer','ampforwp_adsense_ads');
+									 add_action('ampforwp_global_after_footer',function() use ( $args ) { 
+		               ampforwp_adsense_ads( $args ); });
 								}
 								// DFP Ad
 								else if('2' === $ad_vendor){
-									 add_action('ampforwp_global_after_footer','ampforwp_dfp_ads');
+									 add_action('ampforwp_global_after_footer',function() use ( $args ) { 
+		               ampforwp_dfp_ads( $args ); });
 								}
 								// Custom Ad
 								else if('3' === $ad_vendor){
-									 add_action('ampforwp_global_after_footer','ampforwp_custom_ads');
+									 add_action('ampforwp_global_after_footer',function() use ( $args ) { 
+		               ampforwp_custom_ads( $args ); });
 								}
 								else if('4' === $ad_vendor){
 									add_action('ampforwp_global_after_footer',function() use ( $args ) { 
