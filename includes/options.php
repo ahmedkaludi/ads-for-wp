@@ -44,35 +44,35 @@ function advanced_amp_ampforwp_ads_options() {
 
 	$ampforwp_ads_option = new_cmb2_box( array(
 		'id'            => $prefix . 'metabox',
-		'title'         => esc_html__( 'AMP Ads Settings', 'cmb2' ),
+		'title'         => esc_html__( 'AMP Ads Settings', 'ads-for-wp' ),
 		'object_types'  => array( 'ads-for-wp-ads', ),
 		'classes' => 'ads-for ads-for-ampforwp' 
 	) );
 
 
 	$ampforwp_ads_option->add_field( array(
-			'name'             => esc_html__( 'Ad Type', 'ampforwp_adsforwp' ),
+			'name'             => esc_html__( 'Ad Type', 'ads-for-wp' ),
 			'id'               => 'ad_type_heading',
 			'type'             => 'title',
 			'desc' => 'Select the Ad type to display',
 		) );
 
 	$ampforwp_ads_option->add_field( array(
-			'name'             => esc_html__( 'Ad Type', 'ampforwp_adsforwp' ),
+			'name'             => esc_html__( 'Ad Type', 'ads-for-wp' ),
 			'id'               => 'ad_type_format',
 			'desc' => 'Tutorial: <a href="http://ampforwp.com/tutorials/">Check all the different types of Ads?</a>',
 			'type'             => 'select',
 			'show_option_none' => false,
 			'options'          => array(
-				'1' 		 	=> esc_html__( 'Normal', 'ampforwp_adsforwp' ),
-				'2'  	 		=> esc_html__( 'InContent', 'ampforwp_adsforwp' ),
-				'3'    			=> esc_html__( 'Manual', 'ampforwp_adsforwp' ),
-				'4'    			=> esc_html__( 'Sticky', 'ampforwp_adsforwp' ),
-				'5'   			=> esc_html__( 'AMP Auto Ads', 'ampforwp_adsforwp' ),
+				'1' 		 	=> esc_html__( 'Normal', 'ads-for-wp' ),
+				'2'  	 		=> esc_html__( 'InContent', 'ads-for-wp' ),
+				'3'    			=> esc_html__( 'Manual', 'ads-for-wp' ),
+				'4'    			=> esc_html__( 'Sticky', 'ads-for-wp' ),
+				'5'   			=> esc_html__( 'AMP Auto Ads', 'ads-for-wp' ),
 			),
 		) );
 	 $ampforwp_ads_option->add_field( array(
-			'name'             => esc_html__( 'Placement', 'ampforwp_adsforwp' ),
+			'name'             => esc_html__( 'Placement', 'ads-for-wp' ),
 			'id'               => 'ad_type_position',
 			'type'             => 'title',
 			'desc' => 'Select the Position for the selected Ad',
@@ -82,31 +82,31 @@ function advanced_amp_ampforwp_ads_options() {
 			'id'      			=> 'ad_visibility_status',
 			'type'    			=> 'radio_inline',
 			'options'			 => array(
-					'show' => __( 'Show', 'ampforwp_adsforwp' ),
-					'hide'   => __( 'Hide', 'ampforwp_adsforwp' ),
+					'show' => __( 'Show', 'ads-for-wp' ),
+					'hide'   => __( 'Hide', 'ads-for-wp' ),
 				),
 			'default' => 'show',
 		) );
 			 // 1. Normal    
 			    $ampforwp_ads_option->add_field( array(
-					'name' => esc_html__( 'Ad Positions', 'ampforwp_adsforwp' ),
+					'name' => esc_html__( 'Ad Positions', 'ads-for-wp' ),
 					'id'   => 'normal_ad_type',
 					'type'             => 'select',
 					'show_option_none' => false,
 					'options'          => array(
-						'1' 		 	=> esc_html__( 'Above Header', 'ampforwp_adsforwp' ),
-						'2'  	 		=> esc_html__( 'Below Header', 'ampforwp_adsforwp' ),
-						'3'    			=> esc_html__( 'Before Title', 'ampforwp_adsforwp' ),
-						'4'    			=> esc_html__( 'After Title', 'ampforwp_adsforwp' ),
-						'5'    			=> esc_html__( 'Before Content', 'ampforwp_adsforwp' ),
-						'6'   			=> esc_html__( 'After Featured Image', 'ampforwp_adsforwp' ),
-						'7'     		=> esc_html__( 'After Content', 'ampforwp_adsforwp' ),
-						'8'     		=> esc_html__( 'Above Related Post', 'ampforwp_adsforwp' ),
-						'9'     		=> esc_html__( 'Below Related Post', 'ampforwp_adsforwp' ),
-						'10'     		=> esc_html__( 'Before Footer', 'ampforwp_adsforwp' ),
-						'11'     		=> esc_html__( 'After Footer', 'ampforwp_adsforwp' ),
-						'12'     		=> esc_html__( 'InBetween Loop', 'ampforwp_adsforwp' ),
-						'13'     		=> esc_html__( 'InBetween Related Posts', 'ampforwp_adsforwp' ),
+						'1' 		 	=> esc_html__( 'Above Header', 'ads-for-wp' ),
+						'2'  	 		=> esc_html__( 'Below Header', 'ads-for-wp' ),
+						'3'    			=> esc_html__( 'Before Title', 'ads-for-wp' ),
+						'4'    			=> esc_html__( 'After Title', 'ads-for-wp' ),
+						'5'    			=> esc_html__( 'Before Content', 'ads-for-wp' ),
+						'6'   			=> esc_html__( 'After Featured Image', 'ads-for-wp' ),
+						'7'     		=> esc_html__( 'After Content', 'ads-for-wp' ),
+						'8'     		=> esc_html__( 'Above Related Post', 'ads-for-wp' ),
+						'9'     		=> esc_html__( 'Below Related Post', 'ads-for-wp' ),
+						'10'     		=> esc_html__( 'Before Footer', 'ads-for-wp' ),
+						'11'     		=> esc_html__( 'After Footer', 'ads-for-wp' ),
+						'12'     		=> esc_html__( 'InBetween Loop', 'ads-for-wp' ),
+						'13'     		=> esc_html__( 'InBetween Related Posts', 'ads-for-wp' ),
 					),
 					'classes' => 'ad-type ad-type-1'
 				) );
@@ -114,7 +114,7 @@ function advanced_amp_ampforwp_ads_options() {
 
 			// 2. Incontent type        
 			    $ampforwp_ads_option->add_field( array(
-					'name' 	  => esc_html__( 'Show Ad After', 'ampforwp_adsforwp' ),
+					'name' 	  => esc_html__( 'Show Ad After', 'ads-for-wp' ),
 					'desc' 	  => 'Paragraphs',
 					'id'      => 'incontent_ad_type',
 					'type'    => 'text_small',
@@ -125,7 +125,7 @@ function advanced_amp_ampforwp_ads_options() {
 
 			// 3. Manual Ads        
 			    $ampforwp_ads_option->add_field( array(
-					'name' => esc_html__( 'Manual', 'ampforwp_adsforwp' ),
+					'name' => esc_html__( 'Manual', 'ads-for-wp' ),
 					'desc' => 'place anywhere this shortcode',
 					'id'   => 'manual_ad_type',
 					'type' => 'text',
@@ -139,7 +139,7 @@ function advanced_amp_ampforwp_ads_options() {
 
 			// 4. Sticky Ads       
 			    $ampforwp_ads_option->add_field( array(
-					'name' => esc_html__( 'Sticky Ads', 'ampforwp_adsforwp' ),
+					'name' => esc_html__( 'Sticky Ads', 'ads-for-wp' ),
 					'desc' => 'The sticky Ad will appear at the bottom of the screen.	',
 					'id'   => 'sticky_ad_type',
 					'type' => 'title',
@@ -148,7 +148,7 @@ function advanced_amp_ampforwp_ads_options() {
 
 			// 5. AMP Auto Ads        
 			    $ampforwp_ads_option->add_field( array(
-					'name' => esc_html__( 'AMP Auto Ads', 'ampforwp_adsforwp' ),
+					'name' => esc_html__( 'AMP Auto Ads', 'ads-for-wp' ),
 					'desc' => 'Enter your AMP Auto Ad Code',
 					'id'   => 'amp_auto_ad_type',
 					'type' => 'textarea_code',
@@ -158,21 +158,21 @@ function advanced_amp_ampforwp_ads_options() {
 
 	// Vendor
 	$ampforwp_ads_option->add_field( array(
-			'name'             => esc_html__( 'Company', 'ampforwp_adsforwp' ),
+			'name'             => esc_html__( 'Company', 'ads-for-wp' ),
 			'id'               => 'ad_company',
 			'type'             => 'title',
 			'desc' => 'Select the Company',
 		) );
 	$ampforwp_ads_option->add_field( array(
-			'name'             => esc_html__( 'Ad Vendor', 'ampforwp_adsforwp' ),
+			'name'             => esc_html__( 'Ad Vendor', 'ads-for-wp' ),
 			'id'               => 'ad_vendor',
 			'type'             => 'select',
 			'show_option_none' => false,
 			'options'          => array(
-				'1' 		 	=> esc_html__( 'Adsense', 'ampforwp_adsforwp' ),
-				'2'  	 		=> esc_html__( 'DoubleClick', 'ampforwp_adsforwp' ),
-				'3'    			=> esc_html__( 'Custom', 'ampforwp_adsforwp' ),
-				'4'    			=> esc_html__( 'Medianet', 'ampforwp_adsforwp' ),
+				'1' 		 	=> esc_html__( 'Adsense', 'ads-for-wp' ),
+				'2'  	 		=> esc_html__( 'DoubleClick', 'ads-for-wp' ),
+				'3'    			=> esc_html__( 'Custom', 'ads-for-wp' ),
+				'4'    			=> esc_html__( 'Medianet', 'ads-for-wp' ),
 			),
 		) );
 
@@ -186,84 +186,84 @@ function advanced_amp_ampforwp_ads_options() {
 					'classes'		   => 'vendor-fields adsense-data-1'
 				) );
 			$ampforwp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Link Ads', 'ampforwp_adsforwp' ),
+					'name'             => esc_html__( 'Link Ads', 'ads-for-wp' ),
 					'desc'			   => 'Check this if the ad is link ads, Tutorial: <a href="http://ampforwp.com/tutorials/">What are Link Ads and where does it appear?</a>',
 					'id'               => 'adsense_link',
 					'type'             => 'checkbox',
 					'classes'		   => 'vendor-fields adsense-data-1'
 				) );
 			$ampforwp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Link Ads Dimensions', 'ampforwp_adsforwp' ),
+					'name'             => esc_html__( 'Link Ads Dimensions', 'ads-for-wp' ),
 					'desc'			   => 'Select the preferred dimensions for your ad',
 					'id'               => 'link_ads_dimensions',
 					'type'             => 'select',
 					'show_option_none' => false,
 					'options'          => array(
-						'1' 		 	=> esc_html__( '120×90', 'ampforwp_adsforwp' ),
-						'2'  	 		=> esc_html__( '160×90', 'ampforwp_adsforwp' ),
-						'3'    			=> esc_html__( '180×90', 'ampforwp_adsforwp' ),
-						'4'    			=> esc_html__( '200×90', 'ampforwp_adsforwp' ),
-						'5'    			=> esc_html__( '468×15', 'ampforwp_adsforwp' ),
-						'6'    			=> esc_html__( '728×15', 'ampforwp_adsforwp' ),
-						'7'    			=> esc_html__( 'Custom', 'ampforwp_adsforwp' ),
+						'1' 		 	=> esc_html__( '120×90', 'ads-for-wp' ),
+						'2'  	 		=> esc_html__( '160×90', 'ads-for-wp' ),
+						'3'    			=> esc_html__( '180×90', 'ads-for-wp' ),
+						'4'    			=> esc_html__( '200×90', 'ads-for-wp' ),
+						'5'    			=> esc_html__( '468×15', 'ads-for-wp' ),
+						'6'    			=> esc_html__( '728×15', 'ads-for-wp' ),
+						'7'    			=> esc_html__( 'Custom', 'ads-for-wp' ),
 					),
 					'classes'		   => 'link-ads-dimensions'
 				) );
 			$ampforwp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Width', 'ampforwp_adsforwp' ),
+					'name'             => esc_html__( 'Width', 'ads-for-wp' ),
 					'desc'			   => 'Enter the width',
 					'id'               => 'link_custom_width',
 					'type'             => 'text_small',
 					'classes'		   => 'link-custom-dimensions link-custom-data-1'
 				) );
 			$ampforwp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Height', 'ampforwp_adsforwp' ),
+					'name'             => esc_html__( 'Height', 'ads-for-wp' ),
 					'desc'			   => 'Enter the height',
 					'id'               => 'link_custom_height',
 					'type'             => 'text_small',
 					'classes'		   => 'link-custom-dimensions link-custom-data-1'
 				) );
 			$ampforwp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Dimensions', 'ampforwp_adsforwp' ),
+					'name'             => esc_html__( 'Dimensions', 'ads-for-wp' ),
 					'desc'			   => 'Select the preferred dimensions for your ad',
 					'id'               => 'adsense_dimensions',
 					'type'             => 'select',
 					'show_option_none' => false,
 					'options'          => array(
-						'1' 		 	=> esc_html__( '300x250', 'ampforwp_adsforwp' ),
-						'2'  	 		=> esc_html__( '336x280', 'ampforwp_adsforwp' ),
-						'3'    			=> esc_html__( '728x90', 'ampforwp_adsforwp' ),
-						'4'    			=> esc_html__( '300x600', 'ampforwp_adsforwp' ),
-						'5'    			=> esc_html__( '320x100', 'ampforwp_adsforwp' ),
-						'6'    			=> esc_html__( '200x50', 'ampforwp_adsforwp' ),
-						'7'    			=> esc_html__( '320x50', 'ampforwp_adsforwp' ),
-						'8'				=> esc_html__( 'Custom', 'ampforwp_adsforwp' ),
+						'1' 		 	=> esc_html__( '300x250', 'ads-for-wp' ),
+						'2'  	 		=> esc_html__( '336x280', 'ads-for-wp' ),
+						'3'    			=> esc_html__( '728x90', 'ads-for-wp' ),
+						'4'    			=> esc_html__( '300x600', 'ads-for-wp' ),
+						'5'    			=> esc_html__( '320x100', 'ads-for-wp' ),
+						'6'    			=> esc_html__( '200x50', 'ads-for-wp' ),
+						'7'    			=> esc_html__( '320x50', 'ads-for-wp' ),
+						'8'				=> esc_html__( 'Custom', 'ads-for-wp' ),
 					),
 					'classes'		   => 'vendor-fields adsense-data-1'
 				) );
 			$ampforwp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Width', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Enter the width',
+					'name'             => esc_html__( 'Width', 'ads-for-wp' ),
+					'desc'			   => esc_html__( 'Enter the width', 'ads-for-wp' ),
 					'id'               => 'adsense_custom_width',
 					'type'             => 'text_small',
 					'classes'		   => 'custom-dimensions adsense-custom-data-1'
 				) );
 			$ampforwp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Height', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Enter the height',
+					'name'             => esc_html__( 'Height', 'ads-for-wp' ),
+					'desc'			   => esc_html__( 'Enter the height', 'ads-for-wp' ),
 					'id'               => 'adsense_custom_height',
 					'type'             => 'text_small',
 					'classes'		   => 'custom-dimensions adsense-custom-data-1'
 				) );
 			$ampforwp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Data Ad Client', 'ampforwp_adsforwp' ),
+					'name'             => esc_html__( 'Data Ad Client', 'ads-for-wp' ),
 					'desc'			   => 'Enter the Data Ad Client (data-ad-client) from the adsense ad code. e.g. ca-pub-2005XXXXXXXXX342',
 					'id'               => 'adsense_ad_client',
 					'type'             => 'text_medium',
 					'classes'		   => 'vendor-fields adsense-data-1'
 				) );
 			$ampforwp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Data Ad Slot', 'ampforwp_adsforwp' ),
+					'name'             => esc_html__( 'Data Ad Slot', 'ads-for-wp' ),
 					'desc'			   => 'Enter the Data Ad Slot (data-ad-slot) from the adsense ad code. e.g. 70XXXXXX12',
 					'id'               => 'adsense_ad_slot',
 					'type'             => 'text_medium',
@@ -280,39 +280,39 @@ function advanced_amp_ampforwp_ads_options() {
 		// DFP Options
 			
 			$ampforwp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Dimensions', 'ampforwp_adsforwp' ),
+					'name'             => esc_html__( 'Dimensions', 'ads-for-wp' ),
 					'desc'			   => 'Select the preferred dimensions for your ad',
 					'id'               => 'dfp_dimensions',
 					'type'             => 'select',
 					'show_option_none' => false,
 					'options'          => array(
-						'1' 		 	=> esc_html__( '300x250', 'ampforwp_adsforwp' ),
-						'2'  	 		=> esc_html__( '336x280', 'ampforwp_adsforwp' ),
-						'3'    			=> esc_html__( '728x90', 'ampforwp_adsforwp' ),
-						'4'    			=> esc_html__( '300x600', 'ampforwp_adsforwp' ),
-						'5'    			=> esc_html__( '320x100', 'ampforwp_adsforwp' ),
-						'6'    			=> esc_html__( '200x50', 'ampforwp_adsforwp' ),
-						'7'    			=> esc_html__( '320x50', 'ampforwp_adsforwp' ),
-						'8'				=> esc_html__( 'Custom', 'ampforwp_adsforwp' ),
+						'1' 		 	=> esc_html__( '300x250', 'ads-for-wp' ),
+						'2'  	 		=> esc_html__( '336x280', 'ads-for-wp' ),
+						'3'    			=> esc_html__( '728x90', 'ads-for-wp' ),
+						'4'    			=> esc_html__( '300x600', 'ads-for-wp' ),
+						'5'    			=> esc_html__( '320x100', 'ads-for-wp' ),
+						'6'    			=> esc_html__( '200x50', 'ads-for-wp' ),
+						'7'    			=> esc_html__( '320x50', 'ads-for-wp' ),
+						'8'				=> esc_html__( 'Custom', 'ads-for-wp' ),
 					),
 					'classes'		   => 'vendor-fields doubleclick-data-2'
 				) );
 			$ampforwp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Width', 'ampforwp_adsforwp' ),
+					'name'             => esc_html__( 'Width', 'ads-for-wp' ),
 					'desc'			   => 'Enter the width',
 					'id'               => 'dfp_custom_width',
 					'type'             => 'text_small',
 					'classes'		   => 'custom-dimensions dfp-custom-data-2'
 				) );
 			$ampforwp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Height', 'ampforwp_adsforwp' ),
+					'name'             => esc_html__( 'Height', 'ads-for-wp' ),
 					'desc'			   => 'Enter the height',
 					'id'               => 'dfp_custom_height',
 					'type'             => 'text_small',
 					'classes'		   => 'custom-dimensions dfp-custom-data-2'
 				) );
 			$ampforwp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Data Ad Slot', 'ampforwp_adsforwp' ),
+					'name'             => esc_html__( 'Data Ad Slot', 'ads-for-wp' ),
 					'desc'			   => 'Enter the Data Ad Slot. e.g./41****9/mobile_ad_banner',
 					'id'               => 'dfp_ad_slot',
 					'type'             => 'text_medium',
@@ -328,7 +328,7 @@ function advanced_amp_ampforwp_ads_options() {
 
 		// Custom Options
 			$ampforwp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Custom', 'ampforwp_adsforwp' ),
+					'name'             => esc_html__( 'Custom', 'ads-for-wp' ),
 					'desc'			   => 'Enter the Custom Ad Code',
 					'id'               => 'custom_ad',
 					'type'             => 'textarea_code',
@@ -344,46 +344,46 @@ function advanced_amp_ampforwp_ads_options() {
 
 		// Media.net Options
 			$ampforwp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Dimensions', 'ampforwp_adsforwp' ),
+					'name'             => esc_html__( 'Dimensions', 'ads-for-wp' ),
 					'desc'			   => 'Select the preferred dimensions for your ad',
 					'id'               => 'medianet_dimensions',
 					'type'             => 'select',
 					'show_option_none' => false,
 					'options'          => array(
-						'1' 		 	=> esc_html__( '300x250', 'ampforwp_adsforwp' ),
-						'2'  	 		=> esc_html__( '336x280', 'ampforwp_adsforwp' ),
-						'3'    			=> esc_html__( '728x90', 'ampforwp_adsforwp' ),
-						'4'    			=> esc_html__( '300x600', 'ampforwp_adsforwp' ),
-						'5'    			=> esc_html__( '320x100', 'ampforwp_adsforwp' ),
-						'6'    			=> esc_html__( '200x50', 'ampforwp_adsforwp' ),
-						'7'    			=> esc_html__( '320x50', 'ampforwp_adsforwp' ),
-						'8'				=> esc_html__( 'Custom', 'ampforwp_adsforwp' ),
+						'1' 		 	=> esc_html__( '300x250', 'ads-for-wp' ),
+						'2'  	 		=> esc_html__( '336x280', 'ads-for-wp' ),
+						'3'    			=> esc_html__( '728x90', 'ads-for-wp' ),
+						'4'    			=> esc_html__( '300x600', 'ads-for-wp' ),
+						'5'    			=> esc_html__( '320x100', 'ads-for-wp' ),
+						'6'    			=> esc_html__( '200x50', 'ads-for-wp' ),
+						'7'    			=> esc_html__( '320x50', 'ads-for-wp' ),
+						'8'				=> esc_html__( 'Custom', 'ads-for-wp' ),
 					),
 					'classes'		   => 'vendor-fields medianet-data-4'
 				) );
 			$ampforwp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Width', 'ampforwp_adsforwp' ),
+					'name'             => esc_html__( 'Width', 'ads-for-wp' ),
 					'desc'			   => 'Enter the width',
 					'id'               => 'medianet_custom_width',
 					'type'             => 'text_small',
 					'classes'		   => 'custom-dimensions medianet-custom-data-4'
 				) );
 			$ampforwp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Height', 'ampforwp_adsforwp' ),
+					'name'             => esc_html__( 'Height', 'ads-for-wp' ),
 					'desc'			   => 'Enter the height',
 					'id'               => 'medianet_custom_height',
 					'type'             => 'text_small',
 					'classes'		   => 'custom-dimensions medianet-custom-data-4'
 				) );
 			$ampforwp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Customer Identifier', 'ampforwp_adsforwp' ),
+					'name'             => esc_html__( 'Customer Identifier', 'ads-for-wp' ),
 					'desc'			   => 'Enter the unique customer identifier (data-cid) from the media.net ad code. e.g. 8CUS8O7EX',
 					'id'               => 'medianet_ad_client',
 					'type'             => 'text_medium',
 					'classes'		   => 'vendor-fields medianet-data-4'
 				) );
 			$ampforwp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Media.net Ad unit', 'ampforwp_adsforwp' ),
+					'name'             => esc_html__( 'Media.net Ad unit', 'ads-for-wp' ),
 					'desc'			   => 'Enter the Media.net Ad unit (data-crid) from the media.net ad code. e.g. 112682482',
 					'id'               => 'medianet_ad_slot',
 					'type'             => 'text_medium',
@@ -422,34 +422,34 @@ $args = array( 'post_type' => 'ads-for-wp-ads');
 $prefix2 = 'ampforwp_adsforwp_for_amp_';
 $amp_ads_option = new_cmb2_box( array(
 		'id'            => $prefix2 . 'metabox',
-		'title'         => esc_html__( 'AMP Ads Settings', 'cmb2' ),
+		'title'         => esc_html__( 'AMP Ads Settings', 'ads-for-wp' ),
 		'object_types'  => array( 'ads-for-wp-ads', ),
 		'classes' => 'ads-for ads-for-amp-by-automattic' 
 	) );
 // Options ID's Prefix is _amp_
 
 $amp_ads_option->add_field( array(
-			'name'             => esc_html__( 'Ad Type', 'ampforwp_adsforwp' ),
+			'name'             => esc_html__( 'Ad Type', 'ads-for-wp' ),
 			'id'               => '_amp_ad_type_heading',
 			'type'             => 'title',
 			'desc' => 'Select the Ad type to display',
 		) );
 
 	$amp_ads_option->add_field( array(
-			'name'             => esc_html__( 'Ad Type', 'ampforwp_adsforwp' ),
+			'name'             => esc_html__( 'Ad Type', 'ads-for-wp' ),
 			'id'               => '_amp_ad_type_format',
 			'desc' => 'Tutorial: <a href="http://ampforwp.com/tutorials/">Check all the different types of Ads?</a>',
 			'type'             => 'select',
 			'show_option_none' => false,
 			'options'          => array(
-				'1' 		 	=> esc_html__( 'Normal', 'ampforwp_adsforwp' ),
-				'2'  	 		=> esc_html__( 'InContent', 'ampforwp_adsforwp' ),
-				'3'    			=> esc_html__( 'Manual', 'ampforwp_adsforwp' ),
-				'4'    			=> esc_html__( 'Sticky', 'ampforwp_adsforwp' ),
+				'1' 		 	=> esc_html__( 'Normal', 'ads-for-wp' ),
+				'2'  	 		=> esc_html__( 'InContent', 'ads-for-wp' ),
+				'3'    			=> esc_html__( 'Manual', 'ads-for-wp' ),
+				'4'    			=> esc_html__( 'Sticky', 'ads-for-wp' ),
 			),
 		) );
 	 $amp_ads_option->add_field( array(
-			'name'             => esc_html__( 'Placement', 'ampforwp_adsforwp' ),
+			'name'             => esc_html__( 'Placement', 'ads-for-wp' ),
 			'id'               => '_amp_ad_type_position',
 			'type'             => 'title',
 			'desc' => 'Select the Position for the selected Ad',
@@ -459,19 +459,19 @@ $amp_ads_option->add_field( array(
 			'id'      			=> '_amp_ad_visibility_status',
 			'type'    			=> 'radio_inline',
 			'options'			 => array(
-					'show' => __( 'Show', 'ampforwp_adsforwp' ),
-					'hide'   => __( 'Hide', 'ampforwp_adsforwp' ),
+					'show' => __( 'Show', 'ads-for-wp' ),
+					'hide'   => __( 'Hide', 'ads-for-wp' ),
 				),
 			'default' => 'show',
 		) );
 	 		// 1. Normal    
 			    $amp_ads_option->add_field( array(
-					'name' => esc_html__( 'Ad Positions', 'ampforwp_adsforwp' ),
+					'name' => esc_html__( 'Ad Positions', 'ads-for-wp' ),
 					'id'   => '_amp_normal_ad_type',
 					'type'             => 'select',
 					'show_option_none' => false,
 					'options'          => array(
-						'1'     		=> esc_html__( 'Below Footer', 'ampforwp_adsforwp' ),
+						'1'     		=> esc_html__( 'Below Footer', 'ads-for-wp' ),
 					),
 					'classes' => 'amp-ad-type amp-ad-type-1'
 				) );
@@ -479,7 +479,7 @@ $amp_ads_option->add_field( array(
 
 			// 2. Incontent type        
 			    $amp_ads_option->add_field( array(
-					'name' 	  => esc_html__( 'Show Ad After', 'ampforwp_adsforwp' ),
+					'name' 	  => esc_html__( 'Show Ad After', 'ads-for-wp' ),
 					'desc' 	  => 'Paragraphs',
 					'id'   	  => '_amp_incontent_ad_type',
 					'type'    => 'text_small',
@@ -504,7 +504,7 @@ $amp_ads_option->add_field( array(
 
 			// 4. Sticky Ads       
 			    $amp_ads_option->add_field( array(
-					'name' => esc_html__( 'Sticky Ads', 'ampforwp_adsforwp' ),
+					'name' => esc_html__( 'Sticky Ads', 'ads-for-wp' ),
 					'desc' => 'The sticky Ad will appear at the bottom of the screen.	',
 					'id'   => '_amp_sticky_ad_type',
 					'type' => 'title',
@@ -513,21 +513,21 @@ $amp_ads_option->add_field( array(
 
 	// Vendor
 	$amp_ads_option->add_field( array(
-			'name'             => esc_html__( 'Company', 'ampforwp_adsforwp' ),
+			'name'             => esc_html__( 'Company', 'ads-for-wp' ),
 			'id'               => '_amp_ad_company',
 			'type'             => 'title',
 			'desc' => 'Select the Company',
 		) );
 	$amp_ads_option->add_field( array(
-			'name'             => esc_html__( 'Ad Vendor', 'ampforwp_adsforwp' ),
+			'name'             => esc_html__( 'Ad Vendor', 'ads-for-wp' ),
 			'id'               => '_amp_ad_vendor',
 			'type'             => 'select',
 			'show_option_none' => false,
 			'options'          => array(
-				'1' 		 	=> esc_html__( 'Adsense', 'ampforwp_adsforwp' ),
-				'2'  	 		=> esc_html__( 'DoubleClick', 'ampforwp_adsforwp' ),
-				'3'    			=> esc_html__( 'Custom', 'ampforwp_adsforwp' ),
-				'4'				=> esc_html__( 'Medianet', 'ampforwp_adsforwp'),
+				'1' 		 	=> esc_html__( 'Adsense', 'ads-for-wp' ),
+				'2'  	 		=> esc_html__( 'DoubleClick', 'ads-for-wp' ),
+				'3'    			=> esc_html__( 'Custom', 'ads-for-wp' ),
+				'4'				=> esc_html__( 'Medianet', 'ads-for-wp'),
 			),
 		) );
 
@@ -543,222 +543,222 @@ $amp_ads_option->add_field( array(
 				) );
 
 			$amp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Link Ads', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Check this if the ad is link ads, Tutorial: <a href="http://ampforwp.com/tutorials/">What are Link Ads and where does it appear?</a>',
+					'name'             => esc_html__( 'Link Ads', 'ads-for-wp' ),
+					'desc'			   => printf( __('Check this if the ad is link ads, Tutorial:','ads-for-wp') . '<a href="%s">' . __( 'What are Link Ads and where does it appear?','ads-for-wp' ) . '</a>',  __( 'http://ampforwp.com/tutorials/' ) ),
 					'id'               => '_amp_adsense_link',
 					'type'             => 'checkbox',
 					'classes'		   => 'amp-vendor-fields amp-adsense-data-1'
 				) );
 
 			$amp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Link Ads Dimensions', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Select the preferred dimensions for your ad',
+					'name'             => esc_html__( 'Link Ads Dimensions', 'ads-for-wp' ),
+					'desc'			   => esc_html__( 'Select the preferred dimensions for your ad', 'ads-for-wp' ),
 					'id'               => '_amp_link_ads_dimensions',
 					'type'             => 'select',
 					'show_option_none' => false,
 					'options'          => array(
-						'1' 		 	=> esc_html__( '120×90', 'ampforwp_adsforwp' ),
-						'2'  	 		=> esc_html__( '160×90', 'ampforwp_adsforwp' ),
-						'3'    			=> esc_html__( '180×90', 'ampforwp_adsforwp' ),
-						'4'    			=> esc_html__( '200×90', 'ampforwp_adsforwp' ),
-						'5'    			=> esc_html__( '468×15', 'ampforwp_adsforwp' ),
-						'6'    			=> esc_html__( '728×15', 'ampforwp_adsforwp' ),
-						'7'    			=> esc_html__( 'Custom', 'ampforwp_adsforwp' ),
+						'1' 		 	=> esc_html__( '120×90', 'ads-for-wp' ),
+						'2'  	 		=> esc_html__( '160×90', 'ads-for-wp' ),
+						'3'    			=> esc_html__( '180×90', 'ads-for-wp' ),
+						'4'    			=> esc_html__( '200×90', 'ads-for-wp' ),
+						'5'    			=> esc_html__( '468×15', 'ads-for-wp' ),
+						'6'    			=> esc_html__( '728×15', 'ads-for-wp' ),
+						'7'    			=> esc_html__( 'Custom', 'ads-for-wp' ),
 					),
 					'classes'		   => 'amp-link-ads-dimensions'
 				) );
 			$amp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Width', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Enter the width',
+					'name'             => esc_html__( 'Width', 'ads-for-wp' ),
+					'desc'			   => esc_html__( 'Enter the width', 'ads-for-wp' ),
 					'id'               => '_amp_link_custom_width',
 					'type'             => 'text_small',
 					'classes'		   => 'amp-link-custom-dimensions amp-link-custom-data-1'
 				) );
 			$amp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Height', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Enter the height',
+					'name'             => esc_html__( 'Height', 'ads-for-wp' ),
+					'desc'			   => esc_html__( 'Enter the height', 'ads-for-wp' ),
 					'id'               => '_amp_link_custom_height',
 					'type'             => 'text_small',
 					'classes'		   => 'amp-link-custom-dimensions amp-link-custom-data-1'
 				) );
 			$amp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Dimensions', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Select the preferred dimensions for your ad',
+					'name'             => esc_html__( 'Dimensions', 'ads-for-wp' ),
+					'desc'			   => esc_html__( 'Select the preferred dimensions for your ad', 'ads-for-wp' ),
 					'id'               => '_amp_adsense_dimensions',
 					'type'             => 'select',
 					'show_option_none' => false,
 					'options'          => array(
-						'1' 		 	=> esc_html__( '300x250', 'ampforwp_adsforwp' ),
-						'2'  	 		=> esc_html__( '336x280', 'ampforwp_adsforwp' ),
-						'3'    			=> esc_html__( '728x90', 'ampforwp_adsforwp' ),
-						'4'    			=> esc_html__( '300x600', 'ampforwp_adsforwp' ),
-						'5'    			=> esc_html__( '320x100', 'ampforwp_adsforwp' ),
-						'6'    			=> esc_html__( '200x50', 'ampforwp_adsforwp' ),
-						'7'    			=> esc_html__( '320x50', 'ampforwp_adsforwp' ),
-						'8'				=> esc_html__( 'Custom', 'ampforwp_adsforwp' ),
+						'1' 		 	=> esc_html__( '300x250', 'ads-for-wp' ),
+						'2'  	 		=> esc_html__( '336x280', 'ads-for-wp' ),
+						'3'    			=> esc_html__( '728x90', 'ads-for-wp' ),
+						'4'    			=> esc_html__( '300x600', 'ads-for-wp' ),
+						'5'    			=> esc_html__( '320x100', 'ads-for-wp' ),
+						'6'    			=> esc_html__( '200x50', 'ads-for-wp' ),
+						'7'    			=> esc_html__( '320x50', 'ads-for-wp' ),
+						'8'				=> esc_html__( 'Custom', 'ads-for-wp' ),
 					),
 					'classes'		   => 'amp-vendor-fields amp-adsense-data-1'
 				) );
 			$amp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Width', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Enter the width',
+					'name'             => esc_html__( 'Width', 'ads-for-wp' ),
+					'desc'			   => esc_html__( 'Enter the width', 'ads-for-wp' ),
 					'id'               => '_amp_adsense_custom_width',
 					'type'             => 'text_small',
 					'classes'		   => 'amp-custom-dimensions amp-adsense-custom-data-1'
 				) );
 			$amp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Height', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Enter the height',
+					'name'             => esc_html__( 'Height', 'ads-for-wp' ),
+					'desc'			   => esc_html__( 'Enter the height', 'ads-for-wp' ),
 					'id'               => '_amp_adsense_custom_height',
 					'type'             => 'text_small',
 					'classes'		   => 'amp-custom-dimensions amp-adsense-custom-data-1'
 				) );
 			$amp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Data Ad Client', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Enter the Data Ad Client (data-ad-client) from the adsense ad code. e.g. ca-pub-2005XXXXXXXXX342',
+					'name'             => esc_html__( 'Data Ad Client', 'ads-for-wp' ),
+					'desc'			   => esc_html__( 'Enter the Data Ad Client (data-ad-client) from the adsense ad code. e.g. ca-pub-2005XXXXXXXXX342', 'ads-for-wp' ),
 					'id'               => '_amp_adsense_ad_client',
 					'type'             => 'text_medium',
 					'classes'		   => 'amp-vendor-fields amp-adsense-data-1'
 				) );
 			$amp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Data Ad Slot', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Enter the Data Ad Slot (data-ad-slot) from the adsense ad code. e.g. 70XXXXXX12',
+					'name'             => esc_html__( 'Data Ad Slot', 'ads-for-wp' ),
+					'desc'			   => esc_html__( 'Enter the Data Ad Slot (data-ad-slot) from the adsense ad code. e.g. 70XXXXXX12', 'ads-for-wp' ),
 					'id'               => '_amp_adsense_ad_slot',
 					'type'             => 'text_medium',
 					'classes'		   => 'amp-vendor-fields amp-adsense-data-1'
 				) );
 			$amp_ads_option->add_field( array(
-					'name' => 'Parallax Effect',
-					'desc' => 'AMP Flying Carpet Ad works only for the incontent Ads',
-					'id'   => '_amp_adsense_parallax',
-					'type' => 'checkbox',
-					'classes'		   => 'amp-vendor-fields amp-adsense-data-1'
+					'name' 				=> esc_html__( 'Parallax Effect', 'ads-for-wp' ),
+					'desc' 				=> esc_html__( 'AMP Flying Carpet Ad works only for the incontent Ads', 'ads-for-wp' ),
+					'id'   				=> '_amp_adsense_parallax',
+					'type' 				=> 'checkbox',
+					'classes'		   	=> 'amp-vendor-fields amp-adsense-data-1'
 				) );
 
 		// DFP Options
 			$amp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Dimensions', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Select the preferred dimensions for your ad',
+					'name'             => esc_html__( 'Dimensions', 'ads-for-wp' ),
+					'desc'			   => esc_html__( 'Select the preferred dimensions for your ad', 'ads-for-wp' ),
 					'id'               => '_amp_dfp_dimensions',
 					'type'             => 'select',
 					'show_option_none' => false,
 					'options'          => array(
-						'1' 		 	=> esc_html__( '300x250', 'ampforwp_adsforwp' ),
-						'2'  	 		=> esc_html__( '336x280', 'ampforwp_adsforwp' ),
-						'3'    			=> esc_html__( '728x90', 'ampforwp_adsforwp' ),
-						'4'    			=> esc_html__( '300x600', 'ampforwp_adsforwp' ),
-						'5'    			=> esc_html__( '320x100', 'ampforwp_adsforwp' ),
-						'6'    			=> esc_html__( '200x50', 'ampforwp_adsforwp' ),
-						'7'    			=> esc_html__( '320x50', 'ampforwp_adsforwp' ),
-						'8'				=> esc_html__( 'Custom', 'ampforwp_adsforwp' ),
+						'1' 		 	=> esc_html__( '300x250', 'ads-for-wp' ),
+						'2'  	 		=> esc_html__( '336x280', 'ads-for-wp' ),
+						'3'    			=> esc_html__( '728x90', 'ads-for-wp' ),
+						'4'    			=> esc_html__( '300x600', 'ads-for-wp' ),
+						'5'    			=> esc_html__( '320x100', 'ads-for-wp' ),
+						'6'    			=> esc_html__( '200x50', 'ads-for-wp' ),
+						'7'    			=> esc_html__( '320x50', 'ads-for-wp' ),
+						'8'				=> esc_html__( 'Custom', 'ads-for-wp' ),
 					),
 					'classes'		   => 'amp-vendor-fields amp-doubleclick-data-2'
 				) );
 			$amp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Width', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Enter the width',
+					'name'             => esc_html__( 'Width', 'ads-for-wp' ),
+					'desc'			   => esc_html__( 'Enter the width', 'ads-for-wp' ),
 					'id'               => '_amp_dfp_custom_width',
 					'type'             => 'text_small',
 					'classes'		   => 'amp-custom-dimensions amp-dfp-custom-data-2'
 				) );
 			$amp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Height', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Enter the height',
+					'name'             => esc_html__( 'Height', 'ads-for-wp' ),
+					'desc'			   => esc_html__( 'Enter the height', 'ads-for-wp' ),
 					'id'               => '_amp_dfp_custom_height',
 					'type'             => 'text_small',
 					'classes'		   => 'amp-custom-dimensions amp-dfp-custom-data-2'
 				) );
 			$amp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Data Ad Slot', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Enter the Data Ad Slot. e.g./41****9/mobile_ad_banner',
+					'name'             => esc_html__( 'Data Ad Slot', 'ads-for-wp' ),
+					'desc'			   => esc_html__( 'Enter the Data Ad Slot. e.g./41****9/mobile_ad_banner', 'ads-for-wp' ),
 					'id'               => '_amp_dfp_ad_slot',
 					'type'             => 'text_medium',
 					'classes'		   => 'amp-vendor-fields amp-doubleclick-data-2'
 				) );
 			$amp_ads_option->add_field( array(
-					'name' => 'Parallax Effect',
-					'desc' => 'AMP Flying Carpet Ad works only for the incontent Ads',
-					'id'   => '_amp_dfp_parallax',
-					'type' => 'checkbox',
-					'classes'		   => 'amp-vendor-fields amp-doubleclick-data-2'
+					'name' 				=> esc_html__( 'Parallax Effect', 'ads-for-wp' ),
+					'desc' 				=> esc_html__( 'AMP Flying Carpet Ad works only for the incontent Ads', 'ads-for-wp' ),
+					'id'   				=> '_amp_dfp_parallax',
+					'type' 				=> 'checkbox',
+					'classes'		   	=> 'amp-vendor-fields amp-doubleclick-data-2'
 				) );
 
 		// Custom Options
 			$amp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Custom', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Enter the Custom Ad Code',
+					'name'             => esc_html__( 'Custom', 'ads-for-wp' ),
+					'desc'			   => esc_html__( 'Enter the Custom Ad Code', 'ads-for-wp' ),
 					'id'               => '_amp_custom_ad',
 					'type'             => 'textarea_code',
 					'classes'		   => 'amp-vendor-fields amp-custom-data-3'
 				) );
 			$amp_ads_option->add_field( array(
-					'name' => 'Parallax Effect',
-					'desc' => 'AMP Flying Carpet Ad works only for the incontent Ads',
-					'id'   => '_amp_custom_parallax',
-					'type' => 'checkbox',
-					'classes'		   => 'amp-vendor-fields amp-custom-data-3'
+					'name' 				=> esc_html__( 'Parallax Effect', 'ads-for-wp' ),
+					'desc' 				=> esc_html__( 'AMP Flying Carpet Ad works only for the incontent Ads', 'ads-for-wp' ),
+					'id'   				=> '_amp_custom_parallax',
+					'type' 				=> 'checkbox',
+					'classes'		   	=> 'amp-vendor-fields amp-custom-data-3'
 				) );
 
 		// Media.net Options
 			$amp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Dimensions', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Select the preferred dimensions for your ad',
+					'name'             => esc_html__( 'Dimensions', 'ads-for-wp' ),
+					'desc'			   => esc_html__( 'Select the preferred dimensions for your ad', 'ads-for-wp' ),
 					'id'               => '_amp_medianet_dimensions',
 					'type'             => 'select',
 					'show_option_none' => false,
 					'options'          => array(
-						'1' 		 	=> esc_html__( '300x250', 'ampforwp_adsforwp' ),
-						'2'  	 		=> esc_html__( '336x280', 'ampforwp_adsforwp' ),
-						'3'    			=> esc_html__( '728x90', 'ampforwp_adsforwp' ),
-						'4'    			=> esc_html__( '300x600', 'ampforwp_adsforwp' ),
-						'5'    			=> esc_html__( '320x100', 'ampforwp_adsforwp' ),
-						'6'    			=> esc_html__( '200x50', 'ampforwp_adsforwp' ),
-						'7'    			=> esc_html__( '320x50', 'ampforwp_adsforwp' ),
-						'8'				=> esc_html__( 'Custom', 'ampforwp_adsforwp' ),
+						'1' 		 	=> esc_html__( '300x250', 'ads-for-wp' ),
+						'2'  	 		=> esc_html__( '336x280', 'ads-for-wp' ),
+						'3'    			=> esc_html__( '728x90', 'ads-for-wp' ),
+						'4'    			=> esc_html__( '300x600', 'ads-for-wp' ),
+						'5'    			=> esc_html__( '320x100', 'ads-for-wp' ),
+						'6'    			=> esc_html__( '200x50', 'ads-for-wp' ),
+						'7'    			=> esc_html__( '320x50', 'ads-for-wp' ),
+						'8'				=> esc_html__( 'Custom', 'ads-for-wp' ),
 					),
 					'classes'		   => 'amp-vendor-fields amp-medianet-data-4'
 				) );
 			$amp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Width', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Enter the width',
+					'name'             => esc_html__( 'Width', 'ads-for-wp' ),
+					'desc'			   => esc_html__( 'Enter the width', 'ads-for-wp' ),
 					'id'               => '_amp_medianet_custom_width',
 					'type'             => 'text_small',
 					'classes'		   => 'amp-custom-dimensions amp-medianet-custom-data-4'
 				) );
 			$amp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Height', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Enter the height',
+					'name'             => esc_html__( 'Height', 'ads-for-wp' ),
+					'desc'			   => esc_html__( 'Enter the height', 'ads-for-wp' ),
 					'id'               => '_amp_medianet_custom_height',
 					'type'             => 'text_small',
 					'classes'		   => 'amp-custom-dimensions amp-medianet-custom-data-4'
 				) );
 			$amp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Customer Identifier', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Enter the unique customer identifier (data-cid) from the media.net ad code. e.g. 8CUS8O7EX',
+					'name'             => esc_html__( 'Customer Identifier', 'ads-for-wp' ),
+					'desc'			   => esc_html__( 'Enter the unique customer identifier (data-cid) from the media.net ad code. e.g. 8CUS8O7EX', 'ads-for-wp' ),
 					'id'               => '_amp_medianet_ad_client',
 					'type'             => 'text_medium',
 					'classes'		   => 'amp-vendor-fields amp-medianet-data-4'
 				) );
 			$amp_ads_option->add_field( array(
-					'name'             => esc_html__( 'Media.net Ad unit', 'ampforwp_adsforwp' ),
-					'desc'			   => 'Enter the Media.net Ad unit (data-crid) from the media.net ad code. e.g. 112682482',
+					'name'             => esc_html__( 'Media.net Ad unit', 'ads-for-wp' ),
+					'desc'			   => esc_html__( 'Enter the Media.net Ad unit (data-crid) from the media.net ad code. e.g. 112682482', 'ads-for-wp' ),
 					'id'               => '_amp_medianet_ad_slot',
 					'type'             => 'text_medium',
 					'classes'		   => 'amp-vendor-fields amp-medianet-data-4'
 				) );
 			$amp_ads_option->add_field( array(
-					'name' => 'Parallax Effect',
-					'desc' => 'AMP Flying Carpet Ad works only for the incontent Ads',
-					'id'   => '_amp_medianet_parallax',
-					'type' => 'checkbox',
-					'classes'		   => 'amp-vendor-fields amp-medianet-data-4'
+					'name' 				=> esc_html__( 'Parallax Effect', 'ads-for-wp' ),
+					'desc' 				=> esc_html__( 'AMP Flying Carpet Ad works only for the incontent Ads', 'ads-for-wp' ),
+					'id'   				=> '_amp_medianet_parallax',
+					'type' 				=> 'checkbox',
+					'classes'			=> 'amp-vendor-fields amp-medianet-data-4'
 				) );
 
-	// Optimize Ads
-	$amp_ads_option->add_field( array(
-					'name' => 'Optimize Ads',
-					'desc' => 'Optimize data through data-loading-strategy',
-					'id'   => '_amp_optimize_ads',
-					'type' => 'checkbox',
-				) );
+			// Optimize Ads
+			$amp_ads_option->add_field( array(
+					'name' 		=> esc_html__( 'Optimize Ads', 'ads-for-wp' ),
+					'desc' 		=> esc_html__( 'Optimize data through data-loading-strategy', 'ads-for-wp' ),
+					'id'   		=> '_amp_optimize_ads',
+					'type' 		=> 'checkbox',
+			) );
 }
