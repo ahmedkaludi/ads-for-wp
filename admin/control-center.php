@@ -3,47 +3,29 @@ add_action( 'init', 'adsforwp_setup_post_type' );
 
 function adsforwp_setup_post_type() {
     $args = array(
-      'labels' => array(
-        'name' 			=> esc_html__( 'Ads', 'ads-for-wp' ),
-        'singular_name' => esc_html__( 'Ad', 'ads-for-wp' ),
-        'add_new' 		=> esc_html__( 'Add New Ad', 'ads-for-wp' ),
-        'add_new_item'  => esc_html__( 'Add New Ad', 'ads-for-wp' )
-      ),
-      	'public' 		=> true,
-      	'has_archive' => false,
+	    'labels' => array(
+	        'name' 				=> esc_html__( 'Ads', 'ads-for-wp' ),
+	        'singular_name' 	=> esc_html__( 'Ad', 'ads-for-wp' ),
+	        'add_new' 			=> esc_html__( 'Add New Ad', 'ads-for-wp' ),
+	        'add_new_item'  	=> esc_html__( 'Add New Ad', 'ads-for-wp' )
+	    ),
+      	'public' 				=> true,
+      	'has_archive' 			=> false,
       	'exclude_from_search'	=> true,
     	'publicly_queryable'	=> false
     );
     register_post_type( 'ads-for-wp-ads', $args );
 }
 
-
-/*
- * Hiding Visaul Editor part, as there is no need for Visual Editor to add Advert Code 
-*/
-
-/*
-	Not Needed Anymore
- */
-
-// add_filter( 'user_can_richedit', 'adsforwp_hide_visual_editor');
-
-// function adsforwp_hide_visual_editor($content) {
-//     global $post_type;
-
-//     if ('ads-for-wp-ads' == $post_type)
-//         return false;
-//     return $content;
-// }
-
 /*
  * Hiding WYSIWYG For AMPforWP Ads 2.0, as there is no need for it 
 */
-add_action( 'init', 'removing_wysiwig_adsforwp' );
+add_action( 'admin_init', 'removing_wysiwig_adsforwp' );
 
 function removing_wysiwig_adsforwp() {
     remove_post_type_support( 'ads-for-wp-ads', 'editor' );
 }
+
 
 /*
  * Generating Ad ShortCode
@@ -51,9 +33,19 @@ function removing_wysiwig_adsforwp() {
 
 add_shortcode('ads-for-wp', 'adsforwp_shortcode_generator');
 function adsforwp_shortcode_generator( $atts ){
-	
-	$adsPostId = $atts["ads-id"];
+	$adsPostId 			= '';
+	$selected_ads_for 	= '';
+	$content 			= '';
+	$show_ads 			= '';
+	$ad_vendor 			= '';
+	$ad_type   			= '';
+	$global_visibility 	= '';
+
+	$adsPostId 			= $atts["ads-id"];
 	$selected_ads_for 	= get_post_meta($adsPostId,'select_ads_for',true);
+	$show_ads 			= 'yes';
+	$show_ads 			= apply_filters('adsforwp_advert_on_off', $show_ads);
+
 	if('1' === $selected_ads_for){
 		$ad_vendor = get_post_meta($adsPostId,'ad_vendor',true);
 		$ad_type   = get_post_meta($adsPostId,'ad_type_format',true);
@@ -61,13 +53,8 @@ function adsforwp_shortcode_generator( $atts ){
 	elseif('2' === $selected_ads_for){
 		$ad_vendor = get_post_meta($adsPostId,'_amp_ad_vendor',true);
 		$ad_type   = get_post_meta($adsPostId,'_amp_ad_type_format',true);
-	}
+	}			
 	
-	$content = '';
-	$show_ads 	= '';
-
-	$show_ads = 'yes';		
-	$show_ads = apply_filters('adsforwp_advert_on_off', $show_ads);
 	if('1' === $selected_ads_for){
 		$global_visibility  = get_post_meta($adsPostId,'ad_visibility_status',true);
 		if($global_visibility != 'show'){
@@ -79,7 +66,9 @@ function adsforwp_shortcode_generator( $atts ){
 		if($global_visibility != 'show'){
 			$show_ads = 'no';
 		}
-	}	
+	}
+
+
 	if ( $show_ads == 'yes' ) {
 		if(function_exists('ampforwp_is_amp_endpoint') && ampforwp_is_amp_endpoint()){
 			if('1' === $ad_vendor && '3' === $ad_type){

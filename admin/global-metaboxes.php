@@ -149,7 +149,7 @@ function adsforwp_generate_ad_post_type_data(){
 	$count = 0;
 
 	$selected_ads_for   = get_post_meta(get_ad_id($post_id),'select_ads_for',true);
-    if('1' === $selected_ads_for){
+    if('1' === $selected_ads_for) {
 	      $get_all_ads = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1, 
 			'meta_query' => array(
 				array(
@@ -159,7 +159,7 @@ function adsforwp_generate_ad_post_type_data(){
 			)
 		) );
     }
-    elseif('2' === $selected_ads_for){
+    elseif('2' === $selected_ads_for) {
 	      $get_all_ads = get_posts( array( 'post_type' => 'ads-for-wp-ads','posts_per_page' => -1, 
 			'meta_query' => array(
 				array(
@@ -168,15 +168,13 @@ function adsforwp_generate_ad_post_type_data(){
 				)
 			)
 		) );
-	      
-      
     }
 
 	
 
 	if ( $get_all_ads ) {
 
-	$check = get_post_meta($post_id,'adsforwp-advert-data',true);
+		$check = get_post_meta($post_id,'adsforwp-advert-data',true);
 	
 		foreach ( $get_all_ads as $ad ) :
 
@@ -277,7 +275,7 @@ add_action( 'save_post', 'adsforwp_ads_meta_box_save' );
 
 /*
  * Creating ShortCode meta box for the users to get the ad code.
- */
+ 
 // add_action( 'add_meta_boxes', 'adsforwp_generate_ads_shortcode' );
 function adsforwp_generate_ads_shortcode(){
 
@@ -343,33 +341,9 @@ function adsforwp_ads_shortcode_html( $post ) {
 
 		</div>
 	</div>
-	
-
 	<?php
 }
-
-
-function adsforwp_change_button_text($translation, $text, $domain) {
-        global $post;
-
-    if ($post->post_type == 'ads-for-wp-ads') {
-        $translations = &get_translations_for_domain( 'ads-for-wp' );
-        if ( $text == 'Publish') {
-            return $translations->translate( 'Publish Ad' );
-        }
-        if ( $text == 'Schedule') {
-            return $translations->translate( 'Schedule Ad' );
-        }
-        if ( $text == 'Update') {
-            return $translations->translate( 'Update Ad' );
-        }
-        if ( $text == 'Save Draft') {
-            return $translations->translate( 'Save Ad' );
-        }
-    }
-    return $translation;
-}
-// add_filter('gettext', 'adsforwp_change_button_text', 10, 4);
+*/
 
 // HELP METABOX
 

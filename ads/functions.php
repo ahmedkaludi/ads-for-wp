@@ -526,20 +526,18 @@ function ampforwp_display_amp_ads(){
 				}
 			}
 		}
-
-
 		// FOR AMP BY AUTOMATTIC Normal And Incontent Ads
-		if ( $post_data['_amp_ad_type_format'] ) {
-			$amp_ad_type = $post_data['_amp_ad_type_format'][0];
-		}		
-		if ( $post_data['_amp_ad_vendor'] ) {
-			$amp_ad_vendor = $post_data['_amp_ad_vendor'][0];
-		}		
-		if ( $post_data['_amp_ad_visibility_status'] ) {
-			$global_visibility = $post_data['_amp_ad_visibility_status'][0];
-		}
-
 		elseif('2' === $selected_ads_for) {
+			if ( $post_data['_amp_ad_type_format'] ) {
+				$amp_ad_type = $post_data['_amp_ad_type_format'][0];
+			}		
+			if ( $post_data['_amp_ad_vendor'] ) {
+				$amp_ad_vendor = $post_data['_amp_ad_vendor'][0];
+			}		
+			if ( $post_data['_amp_ad_visibility_status'] ) {
+				$global_visibility = $post_data['_amp_ad_visibility_status'][0];
+			}
+
 			if($global_visibility != 'hide'){
 			// Normal
 				if('1' === $amp_ad_type){
