@@ -149,9 +149,9 @@ add_action( 'admin_init', 'ads_for_wp_plugin_updater', 0 );
 $path = plugin_basename( __FILE__ );
 	add_action("after_plugin_row_{$path}", function( $plugin_file, $plugin_data, $status ) {
 		global $redux_builder_amp;
-	
-		if(empty($redux_builder_amp['amp-license']['ads-for-wp']['license'])){
-			echo "<tr class='active'><td>&nbsp;</td><td colspan='2'><a href='".esc_url(  self_admin_url( 'admin.php?page=amp_options&tab=2' )  )."'>Please enter the license key</a> to get the <strong>latest features</strong> and <strong>stable updates</strong></td></tr>";
+	    $folderName = basename(__DIR__);
+		if(empty($redux_builder_amp['amp-license'][$folderName]['license'])){
+			echo "<tr class='active'><td>&nbsp;</td><td colspan='2'><a href='".esc_url(  self_admin_url( 'admin.php?page=amp_options&tabid=opt-go-premium' )  )."'>Please enter the license key</a> to get the <strong>latest features</strong> and <strong>stable updates</strong></td></tr>";
 			    }
 	}, 10, 3 );
 

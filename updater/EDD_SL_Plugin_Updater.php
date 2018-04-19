@@ -125,10 +125,10 @@ class ADSFORWP_EDD_SL_Plugin_Updater {
 	 */
 	public function ampforwp_updatemessage( $file, $plugin ) {
 		 if(trim($this->api_data['license'])=='' || $this->api_data['license']=="missing"){
-	     	echo "<strong><a href='".esc_url(  self_admin_url( 'admin.php?page=amp_options&tab=2' )  )."'> Enter License Key here</a> to get regular update. you can get license from members area</strong>";
+	     	echo "<strong><a href='".esc_url(  self_admin_url( 'admin.php?page=amp_options&tabid=opt-go-premium' )  )."'> Enter License Key here</a> to get regular update. you can get license from members area</strong>";
 	     }
 	     elseif( $this->api_data['license_status']=="invalid"){
-	     	echo "<strong><a href='".esc_url(  self_admin_url( 'admin.php?page=amp_options&tab=2' )  )."'> Enter Valid License Key. </a>Current key is invalid.</strong>";
+	     	echo "<strong><a href='".esc_url(  self_admin_url( 'admin.php?page=amp_options&tabid=opt-go-premium' )  )."'> Enter Valid License Key. </a>Current key is invalid.</strong>";
 	     }
 	}
 	public function show_update_notification( $file, $plugin ) {
@@ -221,9 +221,9 @@ class ADSFORWP_EDD_SL_Plugin_Updater {
 		        );
 		     }
 		     if($this->api_data['license']==""){
-		     	echo "<strong><a href='".esc_url(  self_admin_url( 'admin.php?page=amp_options&tab=2' )  )."'> Enter License Key here</a>to get regular update</strong>";
+		     	echo "<strong><a href='".esc_url(  self_admin_url( 'admin.php?page=amp_options&tabid=opt-go-premium' )  )."'> Enter License Key here</a>to get regular update</strong>";
 		     }elseif($this->api_data['license_status']!="valid"){
-		     	echo "<strong><a href='".esc_url(  self_admin_url( 'admin.php?page=amp_options&tab=2' )  )."'> Enter Valid License Key. </a>Current key is invalid.</strong>";
+		     	echo "<strong><a href='".esc_url(  self_admin_url( 'admin.php?page=amp_options&tabid=opt-go-premium' )  )."'> Enter Valid License Key. </a>Current key is invalid.</strong>";
 		     }
 		   	
 
