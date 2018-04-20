@@ -32,6 +32,10 @@ define( 'ADSFORWP_ITEM_NAME', 'ADS for WP' );
 //define( 'AMPFORWP_ITEM_ID', 2502 );
 // the name of the settings page for the license input to be displayed
 define( 'ADSFORWP_LICENSE_PAGE', 'ads-for-wp-license' );
+if(! defined('AMP_ADSFORWP_ITEM_FOLDER_NAME')){
+    $folderName = basename(__DIR__);
+    define( 'AMP_ADSFORWP_ITEM_FOLDER_NAME', $folderName );
+}
 
 
 /* Adding Files*/
@@ -122,9 +126,9 @@ function ads_for_wp_plugin_updater() {
     $pluginItemName = '';
     $pluginItemStoreUrl = '';
     $pluginstatus = '';
-    if( isset($selectedOption['amp-license']) && "" != $selectedOption['amp-license'] && isset($selectedOption['amp-license']['ads-for-wp'])){
+    if( isset($selectedOption['amp-license']) && "" != $selectedOption['amp-license'] && isset($selectedOption['amp-license'][AMP_ADSFORWP_ITEM_FOLDER_NAME])){
 
-       $pluginsDetail = $selectedOption['amp-license']['ads-for-wp'];
+       $pluginsDetail = $selectedOption['amp-license'][AMP_ADSFORWP_ITEM_FOLDER_NAME];
        $license_key = $pluginsDetail['license'];
        $pluginItemName = $pluginsDetail['item_name'];
        $pluginItemStoreUrl = $pluginsDetail['store_url'];
@@ -149,10 +153,26 @@ add_action( 'admin_init', 'ads_for_wp_plugin_updater', 0 );
 $path = plugin_basename( __FILE__ );
 	add_action("after_plugin_row_{$path}", function( $plugin_file, $plugin_data, $status ) {
 		global $redux_builder_amp;
+		if(! defined('AMP_ADSFORWP_ITEM_FOLDER_NAME')){
 	    $folderName = basename(__DIR__);
-		if(empty($redux_builder_amp['amp-license'][$folderName]['license'])){
+            define( 'AMP_ADSFORWP_ITEM_FOLDER_NAME', $folderName );
+        }
+        $pluginsDetail = $redux_builder_amp['amp-license'][AMP_ADSFORWP_ITEM_FOLDER_NAME];
+        $pluginstatus = $pluginsDetail['status'];
+
+        if(empty($redux_builder_amp['amp-license'][AMP_ADSFORWP_ITEM_FOLDER_NAME]['license'])){
 			echo "<tr class='active'><td>&nbsp;</td><td colspan='2'><a href='".esc_url(  self_admin_url( 'admin.php?page=amp_options&tabid=opt-go-premium' )  )."'>Please enter the license key</a> to get the <strong>latest features</strong> and <strong>stable updates</strong></td></tr>";
-			    }
-	}, 10, 3 );
+			   }elseif($pluginstatus=="valid"){
+			   	$update_cache = get_site_transient( 'update_plugins' );
+            $update_cache = is_object( $update_cache ) ? $update_cache : new stdClass();
+            if(isset($update_cache->response[ AMP_ADSFORWP_ITEM_FOLDER_NAME ]) 
+                && empty($update_cache->response[ AMP_ADSFORWP_ITEM_FOLDER_NAME ]->download_link) 
+              ){
+               unset($update_cache->response[ AMP_ADSFORWP_ITEM_FOLDER_NAME ]);
+            }
+            set_site_transient( 'update_plugins', $update_cache );
+            
+        }
+    }, 10, 3 );
 
 
