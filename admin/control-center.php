@@ -361,7 +361,7 @@ function adsforwp_insert_ads( $content ){
 		$contents = preg_split("<!--nextpage-->", $content);
 		$isPagesSplits = true;
 	}else{
-		$contents =- array($content);
+		$contents = array($content);
 	}
 	$completeContents = '';
 	foreach ($contents as $pagekey => $content) {
