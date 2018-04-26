@@ -143,6 +143,8 @@ function adsforwp_non_amp_dfp_scripts(){
 				echo $dfp_wp_script;
 			}
 	}
+	wp_reset_query();
+	wp_reset_postdata();
 }
 
 function ampforwp_dfp_sticky_ads(){
