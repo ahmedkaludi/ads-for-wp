@@ -355,28 +355,42 @@ function adsforwp_insert_ads( $content ){
 	    
 	}
 	wp_reset_query();
+	wp_reset_postdata();
 	ksort($post_meta);
-	$content = preg_split("/\\r\\n|\\r|\\n/", $content);
-	if(count($post_meta)>0){
-		foreach ($post_meta as $key => $adsValue) {
-			if(!empty($adsValue) && $adsValue['visibility']!="show"){
-				continue;
-			}
-			if(isset($adsValue['paragraph']) && isset($adsValue['content'])){
-				// var_dump(count($content));var_dump($adsValue['paragraph']);
-				if(count($content) > intval($adsValue['paragraph'])){
-
-					$content[$adsValue['paragraph']] .= $adsValue['content'];
+	$isPagesSplits = false;
+	if(strpos($content, '<!--nextpage-->')!==false){
+		$contents = preg_split("<!--nextpage-->", $content);
+		$isPagesSplits = true;
+	}else{
+		$contents = array($content);
+	}
+	$completeContents = '';
+	foreach ($contents as $pagekey => $content) {
+		
+		$content = preg_split("/\\r\\n|\\r|\\n/", $content);
+		if(count($post_meta)>0){
+			foreach ($post_meta as $key => $adsValue) {
+				if(!empty($adsValue) && $adsValue['visibility']!="show"){
+					continue;
 				}
-
-				//array_splice( $content, $adsValue['paragraph'], 0, $adsValue['content'] );
+				if(isset($adsValue['paragraph']) && isset($adsValue['content'])){
+					// var_dump(count($content));var_dump($adsValue['paragraph']);
+					if(count($content) > intval($adsValue['paragraph'])){
+						$content[$adsValue['paragraph']] .= $adsValue['content'];
+					}
+					//array_splice( $content, $adsValue['paragraph'], 0, $adsValue['content'] );
+				}
+				
 			}
 			
+			$completeContents .= implode(' ', $content);
 		}
-		$content = implode(' ', $content);
+		//Check for page splits
+		if($isPagesSplits){
+			$completeContents .= '!--nextpage--';
+		}
 	}
-
-	return $content; 
+	return $completeContents; 
 }
 
 /*
