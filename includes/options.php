@@ -477,7 +477,7 @@ function amp_by_automattic_options(){
 	$amp_ads_option->add_field( array(
 		'name'             	=> esc_html__( 'Ad Type', 'ads-for-wp' ),
 		'id'               	=> '_amp_ad_type_format',
-		'desc' 				=> sprintf( __('Tutorial: ','ads-for-wp') . '<a href="%s" target="_blank">' . __( 'Check all the different types of Ads?','ads-for-wp' ) . '</a>',  __( 'http://ampforwp.com/tutorials/' ) ),
+		'desc' 				=> sprintf( __('Tutorial: ','ads-for-wp') . '<a href="%s" target="_blank">' . __( 'Check all the different types of Ads?','ads-for-wp' ) . '</a>',  __( 'https://ampforwp.com/tutorials/' ) ),
 		'type'             	=> 'select',
 		'show_option_none' 	=> false,
 		'options'          	=> 
@@ -592,7 +592,7 @@ function amp_by_automattic_options(){
 
 	$amp_ads_option->add_field( array(
 		'name'             	=> esc_html__( 'Link Ads', 'ads-for-wp' ),
-		'desc'			   	=> sprintf( __('Check this if the ad is link ads, Tutorial:','ads-for-wp') . '<a href="%s" target="_blank">' . __( 'What are Link Ads and where does it appear?','ads-for-wp' ) . '</a>',  __( 'http://ampforwp.com/tutorials/' ) ),
+		'desc'			   	=> sprintf( __('Check this if the ad is link ads, Tutorial:','ads-for-wp') . '<a href="%s" target="_blank">' . __( 'What are Link Ads and where does it appear?','ads-for-wp' ) . '</a>',  __( 'https://ampforwp.com/tutorials/' ) ),
 		'id'               	=> '_amp_adsense_link',
 		'type'             	=> 'checkbox',
 		'classes'		   	=> 'amp-vendor-fields amp-adsense-data-1'

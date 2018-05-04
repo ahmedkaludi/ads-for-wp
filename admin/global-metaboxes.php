@@ -363,9 +363,9 @@ function adsforwp_help_metabox(){
 function adsforwp_help_links(){
 	wp_nonce_field( '_adsforwp_ads_meta_box_nonce', 'adsforwp_ads_meta_box_nonce' ); ?>
 	<div class="ads-for-wp-help">
-		<p><a href="https://ampforwp.com/tutorials/article/work-ads-for-wp/">Documentation</a></p>
-		<p><a href="https://ampforwp.com/amp-ads-beta-form/">Feedback</a></p>
-		<p><a href="https://ampforwp.com/amp-ads-beta-form/">Request a feature</a></p>
-		<p><a href="https://ampforwp.com/amp-ads-beta-form/">Report a bug</a></p>
+		<p><a target="_blank" href="https://ampforwp.com/tutorials/article/work-ads-for-wp/"><?php esc_attr_e('Documentation', 'ads-for-wp') ?></a></p>
+		<p><a target="_blank" href="https://ampforwp.com/amp-ads-beta-form/"><?php esc_attr_e('Feedback', 'ads-for-wp') ?></a></p>
+		<p><a target="_blank" href="https://ampforwp.com/amp-ads-beta-form/"><?php esc_attr_e('Request a feature', 'ads-for-wp') ?></a></p>
+		<p><a target="_blank" href="https://ampforwp.com/amp-ads-beta-form/"><?php esc_attr_e('Report a bug', 'ads-for-wp') ?></a></p>
 	</div>
 <?php }
