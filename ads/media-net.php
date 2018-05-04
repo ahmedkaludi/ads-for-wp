@@ -26,7 +26,7 @@ function adsforwp_media_net_ads($args){
 		$optimize = '';
 	}
 
-	$ad_code 			= '<amp-ad class="aa_wrp aa_medianet aa_'.$post_medianet_ad_id.'"
+	$ad_code 			= '<amp-ad data-block-on-consent class="aa_wrp aa_medianet aa_'.$post_medianet_ad_id.'"
 							width="'. $width .'"
 							height="'. $height .'"
 							type="medianet"'.$optimize.'
@@ -83,7 +83,7 @@ function adsforwp_incontent_media_net_ads($id){
 	}
 
 		$ad_code 			= $parallax_container;
-		$ad_code 			.= '<amp-ad class="aa_wrp aa_incontent_medianet aa_'.$post_medianet_ad_id.'"
+		$ad_code 			.= '<amp-ad data-block-on-consent class="aa_wrp aa_incontent_medianet aa_'.$post_medianet_ad_id.'"
 				width="'. $width .'"
 				height="'. $height .'"
 				type="medianet"'.$optimize.'

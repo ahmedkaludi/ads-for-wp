@@ -30,7 +30,7 @@ function ampforwp_adsense_ads($args){
 	}
 
 	if('on' === $is_responsive){
-		$ad_code 			= '<amp-ad class="aa_wrp aa_adsense aa_'.$post_adsense_ad_id.'"
+		$ad_code 			= '<amp-ad data-block-on-consent class="aa_wrp aa_adsense aa_'.$post_adsense_ad_id.'"
 								width="100vw" height=320
 								  type="adsense"
 								  data-ad-client="'. $ad_client .'"
@@ -42,7 +42,7 @@ function ampforwp_adsense_ads($args){
 	}
 	else{
 
-		$ad_code 			= '<amp-ad class="aa_wrp aa_adsense aa_'.$post_adsense_ad_id.'"
+		$ad_code 			= '<amp-ad data-block-on-consent class="aa_wrp aa_adsense aa_'.$post_adsense_ad_id.'"
 								type="adsense"'.$optimize.'
 								width="'. $width .'"
 								height="'. $height .'"
@@ -102,7 +102,7 @@ function ampforwp_incontent_adsense_ads($id){
 	}
 
 	if('on' === $is_responsive){
-		$ad_code 			= '<amp-ad class="aa_wrp aa_incontent_adsense aa_'.$post_adsense_ad_id.'"width="100vw" height=320
+		$ad_code 			= '<amp-ad data-block-on-consent class="aa_wrp aa_incontent_adsense aa_'.$post_adsense_ad_id.'"width="100vw" height=320
 			  type="adsense"
 			  data-ad-client="'. $ad_client .'"
 			  data-ad-slot="'. $ad_slot .'"
@@ -113,7 +113,7 @@ function ampforwp_incontent_adsense_ads($id){
 	}
 	else{
 		$ad_code 			= $parallax_container;
-		$ad_code 			.= '<amp-ad class="aa_wrp aa_incontent_adsense aa_'.$post_adsense_ad_id.'"
+		$ad_code 			.= '<amp-ad data-block-on-consent class="aa_wrp aa_incontent_adsense aa_'.$post_adsense_ad_id.'"
 				type="adsense"'.$optimize.'
 				width="'. $width .'"
 				height="'. $height .'"

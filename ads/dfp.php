@@ -25,7 +25,7 @@ function ampforwp_dfp_ads($args){
 	else{
 		$optimize = '';
 	}
-	$ad_code		= '<amp-ad class="aa_wrp aa_dfp aa_'.$post_dfp_ad_id.'"
+	$ad_code		= '<amp-ad data-block-on-consent class="aa_wrp aa_dfp aa_'.$post_dfp_ad_id.'"
 							type="doubleclick"'.$optimize.'
 							width="'. $width .'"
 							height="'. $height .'"
@@ -73,7 +73,7 @@ function ampforwp_incontent_dfp_ads($id){
 	}
 
 	$ad_code 			= $parallax_container;
-	$ad_code			.= '<amp-ad class="aa_wrp aa_incontent_dfp aa_'.$post_dfp_ad_id.'"
+	$ad_code			.= '<amp-ad data-block-on-consent class="aa_wrp aa_incontent_dfp aa_'.$post_dfp_ad_id.'"
 							type="doubleclick"'.$optimize.'
 							width="'. $width .'"
 							height="'. $height .'"
@@ -143,6 +143,8 @@ function adsforwp_non_amp_dfp_scripts(){
 				echo $dfp_wp_script;
 			}
 	}
+	wp_reset_query();
+	wp_reset_postdata();
 }
 
 function ampforwp_dfp_sticky_ads(){
