@@ -85,7 +85,7 @@ function adsforwp_ads_meta_box() {
 
 		add_meta_box(
 			'adsforwp_ads_meta_box',
-			__( 'Ads on this ' . $value, 'ads-for-wp' ),
+			esc_html__( 'Ads on this ' . $value, 'ads-for-wp' ),
 			'adsforwp_ads_meta_box_html',
 			$ampforwp_post_type,
 			'side',
@@ -103,11 +103,11 @@ function adsforwp_ads_meta_box_html( $post ) {
 	<input type="text" class="screen-reader-text" id="adsforwp-current-ad-status" value="<?php echo adsforwp_get_meta_post( 'adsforwp_ads_meta_box_ads_on_off' ); ?>">
 	<p class="adsforwp-ads-controls">
 		<input type="radio" name="adsforwp_ads_meta_box_ads_on_off" id="adsforwp_ads_meta_box_radio_show" value="show" <?php echo ( adsforwp_get_meta_post( 'adsforwp_ads_meta_box_ads_on_off' ) === 'show' ) ? 'checked' : ''; ?>>
-		<label for="adsforwp_ads_meta_box_radio_show">Show</label> 
+		<label for="adsforwp_ads_meta_box_radio_show"><?php esc_attr_e('Show', 'ads-for-wp') ?></label> 
 	</p>
 	<p class="adsforwp-ads-controls">
 		<input type="radio" name="adsforwp_ads_meta_box_ads_on_off" id="adsforwp_ads_meta_box_radio_hide" value="hide" <?php echo ( adsforwp_get_meta_post( 'adsforwp_ads_meta_box_ads_on_off' ) === 'hide' ) ? 'checked' : ''; ?>>
-		<label for="adsforwp_ads_meta_box_radio_hide">Hide</label><br>
+		<label for="adsforwp_ads_meta_box_radio_hide"><?php esc_attr_e('Hide', 'ads-for-wp') ?></label><br>
 	</p>
 
 	<div id="adsforwp-all-ads" style="display: none">
@@ -216,19 +216,19 @@ function adsforwp_generate_ad_post_type_data(){
 						}
 
 				    echo '<div data-ads-id="'.$ads_post_id.'" id="ad-control-child-'.$count.'">'; ?>
-					   	Ad name: <?php echo esc_attr( $ad->post_title ); ?> <br />
+					   	<?php esc_attr_e('Ad name:', 'ads-for-wp') ?><?php echo esc_attr( $ad->post_title ); ?> <br />
 						
 						<select  data-ad-visibility="<?php echo $visibility ?>" name="post_specific_visi" class="ads-visibility widefat" id="ad-visibility-<?php echo $count ?>" disabled="disabled">
 
-							<option value="show" <?php if ( $visibility == "show" ) echo 'selected="selected"'; ?>>Show</option> 				
-							<option value="hide" <?php if ( $visibility == "hide" ) echo 'selected="selected"'; ?>>Hide</option>
+							<option value="show" <?php if ( $visibility == "show" ) echo 'selected="selected"'; ?>><?php esc_attr_e('Show:', 'ads-for-wp') ?></option> 				
+							<option value="hide" <?php if ( $visibility == "hide" ) echo 'selected="selected"'; ?>><?php esc_attr_e('Hide:', 'ads-for-wp') ?></option>
 						</select>
 						
-				   		<label for="ad-paragraph-<?php echo $count ?>"> Paragraph Position:</label>
-				   		<input class="small-text" id="ad-paragraph-<?php echo $count ?>" data-ad-paragraph=" <?php echo $paragraph ?>" type="number" disabled="disabled" value="<?php echo $paragraph ?>" >
+				   		<label for="ad-paragraph-<?php echo esc_attr($count); ?>"> <?php esc_attr_e('Paragraph Position:', 'ads-for-wp') ?></label>
+				   		<input class="small-text" id="ad-paragraph-<?php echo esc_attr($count);?>" data-ad-paragraph=" <?php echo esc_attr($paragraph); ?>" type="number" disabled="disabled" value="<?php echo esc_attr($paragraph); ?>" >
 
-				   		<span class='edit-ads'> Edit</span>
-				   		<span class="save-ads" style="display:none"> Save</span>
+				   		<span class='edit-ads'> <?php esc_attr_e('Edit:', 'ads-for-wp') ?></span>
+				   		<span class="save-ads" style="display:none"> <?php esc_attr_e('Save:', 'ads-for-wp') ?></span>
 				   		<div class="spinner"></div>
 				   		<br /><br />
 				   		<?php

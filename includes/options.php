@@ -87,8 +87,8 @@ function advanced_amp_ampforwp_ads_options() {
 		'type'    			=> 'radio_inline',
 		'options'			=> 
 			array(
-				'show' 		=> __( 'Show', 'ads-for-wp' ),
-				'hide'   	=> __( 'Hide', 'ads-for-wp' ),
+				'show' 		=> esc_html__( 'Show', 'ads-for-wp' ),
+				'hide'   	=> esc_html__( 'Hide', 'ads-for-wp' ),
 			),
 		'default' 			=> 'show',
 	) );
