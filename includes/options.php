@@ -7,9 +7,9 @@ function ads_for_options(){
 	
 	$prefix = 'adsforwp_ads_for';
 	$ads_for_option = new_cmb2_box( array(
-		'id'            => $prefix . 'metabox',
-		'title'         => esc_html__( 'Select Ads For', 'ampforwp_adsforwp' ),
-		'object_types'  => array( 'ads-for-wp-ads', ), 
+		'id'            	=> $prefix . 'metabox',
+		'title'         	=> esc_html__( 'Select Ads For', 'ads-for-wp' ),
+		'object_types'  	=> array( 'ads-for-wp-ads', ), 
 	) );
 
 	$ads_for_option->add_field( array(
@@ -23,12 +23,12 @@ function ads_for_options(){
 		'name'    			=> esc_attr__( 'AMP Compatibility With', 'ads-for-wp' ),
 		'id'      			=> 'select_ads_for',
 		'type'    			=> 'select',
+		'default' 			=> 'ampforwp',
 		'options' 			=> 
 			array(
 				'ampforwp' 				=> esc_attr__( 'AMPforWP', 'ads-for-wp' ),
 				'amp_by_automattic'  	=> esc_attr__( 'AMP by Automattic', 'ads-for-wp' ),
 			),
-		'default' 			=> 'ampforwp',
 	) );
 }
 add_action( 'cmb2_admin_init', 'advanced_amp_ampforwp_ads_options' );
