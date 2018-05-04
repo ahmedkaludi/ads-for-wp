@@ -28,8 +28,6 @@ define( 'ADSFORWP_STORE_URL', 'https://accounts.ampforwp.com/' ); // you should 
 // the name of your product. This should match the download name in EDD exactly
 define( 'ADSFORWP_ITEM_NAME', 'ADS for WP' );
 
-// the download ID. This is the ID of your product in EDD and should match the download ID visible in your Downloads list (see example below)
-//define( 'AMPFORWP_ITEM_ID', 2502 );
 // the name of the settings page for the license input to be displayed
 define( 'ADSFORWP_LICENSE_PAGE', 'ads-for-wp-license' );
 if(! defined('AMP_ADSFORWP_ITEM_FOLDER_NAME')){
