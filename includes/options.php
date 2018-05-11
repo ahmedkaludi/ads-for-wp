@@ -25,11 +25,12 @@ function ads_for_options(){
 		'type'    			=> 'select',
 		'options' 			=> 
 			array(
-				'ampforwp' 				=> esc_attr__( 'AMPforWP', 'ads-for-wp' ),
-				'amp_by_automattic'  	=> esc_attr__( 'AMP by Automattic', 'ads-for-wp' ),
+				'1' 	=> esc_attr__( 'AMPforWP', 'ads-for-wp' ),
+				'2'  	=> esc_attr__( 'AMP by Automattic', 'ads-for-wp' ),
 			),
-		'default' 			=> 'ampforwp',
+		'default' 			=> '1',
 	) );
+	 
 }
 add_action( 'cmb2_admin_init', 'advanced_amp_ampforwp_ads_options' );
 function advanced_amp_ampforwp_ads_options() {
