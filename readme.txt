@@ -3,7 +3,7 @@ Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
 Tags: ADS, adsense, dfp, amp, publish, google adsense, plugin, SEO, advertisement
 Requires at least: 3.6
 Tested up to: 4.9.5
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,9 @@ ADS for WP is the Successor of the ADVANCED AMP ADS plugin with all goodness of 
 
 == Changelog ==
 
+= 1.1.1 (11 May 2018) =
+* Ads Break issue resolved.
+ 
 = 1.1.0 (4 May 2018) =
 * GDPR Compliancy
 * Reset Current wp_query
