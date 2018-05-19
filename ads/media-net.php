@@ -7,13 +7,13 @@ function adsforwp_media_net_ads($args){
 	$dimensions 		= get_medianet_dimensions($post_medianet_ad_id);
 	$width				= $dimensions['width'];
 	$height				= $dimensions['height'];
-	if('1' === $selected_ads_for){
+	if('ampforwp' === $selected_ads_for){
 		$ad_client			= get_post_meta($post_medianet_ad_id,'medianet_ad_client',true);
 		$ad_slot			= get_post_meta($post_medianet_ad_id,'medianet_ad_slot',true);
 		$ad_parallax		= get_post_meta($post_medianet_ad_id,'medianet_parallax',true);
 		$is_optimize		= get_post_meta($post_medianet_ad_id,'optimize_ads',true);
 	}
-	elseif('2' === $selected_ads_for){
+	elseif('amp_by_automattic' === $selected_ads_for){
 		$ad_client			= get_post_meta($post_medianet_ad_id,'_amp_medianet_ad_client',true);
 		$ad_slot			= get_post_meta($post_medianet_ad_id,'_amp_medianet_ad_slot',true);
 		$ad_parallax		= get_post_meta($post_medianet_ad_id,'_amp_medianet_parallax',true);
@@ -55,13 +55,13 @@ function adsforwp_incontent_media_net_ads($id){
 	$height				= $dimensions['height'];
 	$size 				= $width.'x'.$height;
 	$non_amp_ads 		= get_post_meta($post_medianet_ad_id,'non_amp_ads',true);
-	if('1' === $selected_ads_for){
+	if('ampforwp' === $selected_ads_for){
 		$ad_client			= get_post_meta($post_medianet_ad_id,'medianet_ad_client',true);
 		$ad_slot			= get_post_meta($post_medianet_ad_id,'medianet_ad_slot',true);
 		$ad_parallax		= get_post_meta($post_medianet_ad_id,'medianet_parallax',true);
 		$is_optimize		= get_post_meta($post_medianet_ad_id,'optimize_ads',true);
 	}
-	elseif('2' === $selected_ads_for){
+	elseif('amp_by_automattic' === $selected_ads_for){
 		$ad_client			= get_post_meta($post_medianet_ad_id,'_amp_medianet_ad_client',true);
 		$ad_slot			= get_post_meta($post_medianet_ad_id,'_amp_medianet_ad_slot',true);
 		$ad_parallax		= get_post_meta($post_medianet_ad_id,'_amp_medianet_parallax',true);
@@ -119,10 +119,10 @@ function adsforwp_incontent_media_net_ads($id){
 
 function adsforwp_medianet_sticky_ads(){
 	$selected_ads_for 	= get_post_meta($id,'select_ads_for',true);
-	if('1' === $selected_ads_for){
+	if('ampforwp' === $selected_ads_for){
 		$global_visibility  = get_post_meta($post_ad_id,'ad_visibility_status',true);
 	}
-	elseif('2' === $selected_ads_for){
+	elseif('amp_by_automattic' === $selected_ads_for){
 		$global_visibility  = get_post_meta($post_ad_id,'_amp_ad_visibility_status',true);
 	}
 	if($global_visibility != 'hide'){
@@ -139,7 +139,7 @@ function adsforwp_medianet_sticky_ads(){
 function get_medianet_dimensions($id){
 
 $selected_ads_for 	= get_post_meta($id,'select_ads_for',true);
-	if('1' === $selected_ads_for){
+	if('ampforwp' === $selected_ads_for){
 		
 		$dimensions = get_post_meta($id,'medianet_dimensions',true);
 		switch ($dimensions) {
@@ -207,7 +207,7 @@ $selected_ads_for 	= get_post_meta($id,'select_ads_for',true);
 		}
 	}
 
-	if('2' === $selected_ads_for){
+	if('amp_by_automattic' === $selected_ads_for){
 		
 		$dimensions = get_post_meta($id,'_amp_medianet_dimensions',true);
 		switch ($dimensions) {

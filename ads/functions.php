@@ -165,7 +165,7 @@ function ampforwp_adsforwp_scripts( $data ) {
 	// 	return $data ; // Do not show ads and return the data as it is
 	// }
 	$selected_ads_for 	= get_post_meta($post_ad_id,'select_ads_for',true);
-	if('1' === $selected_ads_for){
+	if('ampforwp' === $selected_ads_for){
 		$ad_type 	= get_post_meta($post_ad_id,'ad_type_format',true);
 		$ad_vendor	= get_post_meta($post_ad_id,'ad_vendor',true);
 
@@ -175,7 +175,7 @@ function ampforwp_adsforwp_scripts( $data ) {
 
 		$ad_visibility_status = get_post_meta($post_ad_id,'ad_visibility_status',true);
 	}
-	elseif('2' === $selected_ads_for){
+	elseif('amp_by_automattic' === $selected_ads_for){
 		$ad_type 	= get_post_meta($post_ad_id,'_amp_ad_type_format',true);
 		$ad_vendor	= get_post_meta($post_ad_id,'_amp_ad_vendor',true);
 
@@ -309,7 +309,7 @@ function ampforwp_display_amp_ads(){
 			$ad_position = $post_data['normal_ad_type'][0];
 		}
 	
-		if('1' === $selected_ads_for) {
+		if('ampforwp' === $selected_ads_for) {
 			if($global_visibility != 'hide') {
 				// Normal Ads
 				if('1' === $ad_type){					
@@ -560,7 +560,7 @@ function ampforwp_display_amp_ads(){
 			}
 		}
 		// FOR AMP BY AUTOMATTIC Normal And Incontent Ads
-		elseif('2' === $selected_ads_for) {
+		elseif('amp_by_automattic' === $selected_ads_for) {
 			if ( $post_data['_amp_ad_type_format'] ) {
 				$amp_ad_type = $post_data['_amp_ad_type_format'][0];
 			}		

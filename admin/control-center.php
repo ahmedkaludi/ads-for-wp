@@ -46,22 +46,22 @@ function adsforwp_shortcode_generator( $atts ){
 	$show_ads 			= 'yes';
 	$show_ads 			= apply_filters('adsforwp_advert_on_off', $show_ads);
 
-	if('1' === $selected_ads_for){
+	if('ampforwp' === $selected_ads_for){
 		$ad_vendor = get_post_meta($adsPostId,'ad_vendor',true);
 		$ad_type   = get_post_meta($adsPostId,'ad_type_format',true);
 	}
-	elseif('2' === $selected_ads_for){
+	elseif('amp_by_automattic' === $selected_ads_for){
 		$ad_vendor = get_post_meta($adsPostId,'_amp_ad_vendor',true);
 		$ad_type   = get_post_meta($adsPostId,'_amp_ad_type_format',true);
 	}			
 	
-	if('1' === $selected_ads_for){
+	if('ampforwp' === $selected_ads_for){
 		$global_visibility  = get_post_meta($adsPostId,'ad_visibility_status',true);
 		if($global_visibility != 'show'){
 			$show_ads = 'no';
 		}
 	}
-	elseif('2' === $selected_ads_for){
+	elseif('amp_by_automattic' === $selected_ads_for){
 		$global_visibility  = get_post_meta($adsPostId,'_amp_ad_visibility_status',true);
 		if($global_visibility != 'show'){
 			$show_ads = 'no';
@@ -119,7 +119,7 @@ function adsforwp_save_ads_data() {
 	if (  $current_post_meta  ) {
 		$save_data = array_replace_recursive($current_post_meta, $save_data);
 	}
-
+	
 	update_post_meta($data['post_id'], 'adsforwp-advert-data', $save_data);
 
 	// Send the updated and final data back to ajax so it can update the view dynamically
@@ -163,13 +163,13 @@ function adsforwp_insert_ads( $content ){
 
 	}
 	$selected_ads_for 	= get_post_meta(get_ad_id(get_the_ID()),'select_ads_for',true);
-	if('1' === $selected_ads_for){
+	if('ampforwp' === $selected_ads_for){
 		$cmb2_incontent_options = get_metadata('post',get_ad_id(get_the_ID()), 'incontent_ad_type');
 		$incontent_visibility = 'ad_visibility_status';
 		$amp_ad_type 			= 'ad_type_format';
 		
 	}
-	elseif('2' === $selected_ads_for){
+	elseif('amp_by_automattic' === $selected_ads_for){
 		$cmb2_incontent_options = get_metadata('post',get_ad_id(get_the_ID()), '_amp_incontent_ad_type');
 		$incontent_visibility 	= '_amp_ad_visibility_status';
 		$amp_ad_type 			= '_amp_ad_type_format';
@@ -205,7 +205,7 @@ function adsforwp_insert_ads( $content ){
  
 
 	    if(isset($cmb2_incontent_options)){
-	    	if('1' === $selected_ads_for){
+	    	if('ampforwp' === $selected_ads_for){
 	    	  if('on' === $non_amp_ads || function_exists('ampforwp_is_amp_endpoint') && ampforwp_is_amp_endpoint()){	
 		    	
 			    	$adsVisiblityType 	= get_post_meta($currentPostId,'adsforwp-advert-data',true);
@@ -264,7 +264,7 @@ function adsforwp_insert_ads( $content ){
 				
 			  }
 			}
-			if('2' === $selected_ads_for){
+			if('amp_by_automattic' === $selected_ads_for){
 				if('on' === $non_amp_ads || function_exists('is_amp_endpoint') && is_amp_endpoint()){	
 			    	$adsVisiblityType 	= get_post_field('adsforwp_incontent_ads_default', $post_id);
 				    $adsVisiblityType 	= (isset($adsVisiblityType[$adsPostId]['visibility'])

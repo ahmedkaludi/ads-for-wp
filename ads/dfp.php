@@ -8,13 +8,13 @@ function ampforwp_dfp_ads($args){
 	$dimensions 		= get_dfp_dimensions($post_dfp_ad_id);
 	$width				= $dimensions['width'];
 	$height				= $dimensions['height'];
-	if('1' === $selected_ads_for){
+	if('ampforwp' === $selected_ads_for){
 		$ad_slot			= get_post_meta($post_dfp_ad_id,'dfp_ad_slot',true);
 		$ad_parallax		= get_post_meta($post_dfp_ad_id,'dfp_parallax',true);
 		$is_optimize		= get_post_meta($post_dfp_ad_id,'optimize_ads',true);
 
 	}
-	elseif('2' === $selected_ads_for){
+	elseif('amp_by_automattic' === $selected_ads_for){
 		$ad_slot			= get_post_meta($post_dfp_ad_id,'_amp_dfp_ad_slot',true);
 		$ad_parallax		= get_post_meta($post_dfp_ad_id,'_amp_dfp_parallax',true);
 		$is_optimize		= get_post_meta($post_dfp_ad_id,'_amp_optimize_ads',true);
@@ -47,12 +47,12 @@ function ampforwp_incontent_dfp_ads($id){
 	$width				= $dimensions['width'];
 	$height				= $dimensions['height'];
 	$non_amp_ads 		= get_post_meta($post_dfp_ad_id,'non_amp_ads',true);
-	if('1' === $selected_ads_for){
+	if('ampforwp' === $selected_ads_for){
 		$ad_slot			= get_post_meta($post_dfp_ad_id,'dfp_ad_slot',true);
 		$ad_parallax		= get_post_meta($post_dfp_ad_id,'dfp_parallax',true);
 		$is_optimize		= get_post_meta($post_dfp_ad_id,'optimize_ads',true);
 	}
-	elseif('2' === $selected_ads_for){
+	elseif('amp_by_automattic' === $selected_ads_for){
 		$ad_slot			= get_post_meta($post_dfp_ad_id,'_amp_dfp_ad_slot',true);
 		$ad_parallax		= get_post_meta($post_dfp_ad_id,'_amp_dfp_parallax',true);
 		$is_optimize		= get_post_meta($post_dfp_ad_id,'_amp_optimize_ads',true);
@@ -116,10 +116,10 @@ function adsforwp_non_amp_dfp_scripts(){
 		$width				= $dimensions['width'];
 		$height				= $dimensions['height'];
 		$non_amp_ads 		= get_post_meta($post_dfp_ad_id,'non_amp_ads',true);
-		if('1' === $selected_ads_for){
+		if('ampforwp' === $selected_ads_for){
 			$ad_slot			= get_post_meta($post_dfp_ad_id,'dfp_ad_slot',true);
 		}
-		elseif('2' === $selected_ads_for){
+		elseif('amp_by_automattic' === $selected_ads_for){
 			$ad_slot			= get_post_meta($post_dfp_ad_id,'_amp_dfp_ad_slot',true);
 		}
 			if('on' === $non_amp_ads){ 
@@ -159,7 +159,7 @@ function ampforwp_dfp_sticky_ads(){
 
 function get_dfp_dimensions($id){
 	$selected_ads_for 	= get_post_meta($id,'select_ads_for',true);
-	if('1' === $selected_ads_for){
+	if('ampforwp' === $selected_ads_for){
 		$dimensions = get_post_meta($id,'dfp_dimensions',true);
 		switch ($dimensions) {
 			case '1':
@@ -227,7 +227,7 @@ function get_dfp_dimensions($id){
 		}
 	}
 
-	if('2' === $selected_ads_for){
+	if('amp_by_automattic' === $selected_ads_for){
 		$dimensions = get_post_meta($id,'_amp_dfp_dimensions',true);
 		switch ($dimensions) {
 			case '1':
