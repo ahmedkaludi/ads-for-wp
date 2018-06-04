@@ -147,7 +147,7 @@ function adsforwp_insert_ads( $content ){
 	if ( $show_ads != 'yes' ) {
 		return $content ; // Do not show ads and return the content as it is
 	}
-	if(function_exists(ampforwp_is_front_page())){
+	if(function_exists('ampforwp_is_front_page')){
 		if(!is_singular() && !ampforwp_is_front_page()){
 			return $content;
 		}
@@ -163,16 +163,43 @@ function adsforwp_insert_ads( $content ){
 
 	}
 	$selected_ads_for 	= get_post_meta(get_ad_id(get_the_ID()),'select_ads_for',true);
+	$incontent_ad_type 	= get_post_meta(get_ad_id(get_the_ID()),'incontent_ad_type',true);
 	if('1' === $selected_ads_for){
-		$cmb2_incontent_options = get_metadata('post',get_ad_id(get_the_ID()), 'incontent_ad_type');
-		$incontent_visibility = 'ad_visibility_status';
-		$amp_ad_type 			= 'ad_type_format';
+		if($incontent_ad_type == '1'){
+			$closing_p = '</p>';
+			$paragraphs = explode( $closing_p, $content );
+			$paragraph_id =  count($paragraphs);
+			$paragraph_id = $paragraph_id / 2 ;
+			$paragraph_id = round($paragraph_id);
+			$cmb2_incontent_options = $paragraph_id;
+			$incontent_visibility = 'ad_visibility_status';
+			$amp_ad_type 			= 'ad_type_format';
+		}
+		elseif($incontent_ad_type == '2'){
+			$cmb2_incontent_options = get_metadata('post',get_ad_id(get_the_ID()), 'incontent_ad_type_paragraph');
+			$incontent_visibility = 'ad_visibility_status';
+			$amp_ad_type 			= 'ad_type_format';
+		}
 		
 	}
-	elseif('2' === $selected_ads_for){
-		$cmb2_incontent_options = get_metadata('post',get_ad_id(get_the_ID()), '_amp_incontent_ad_type');
-		$incontent_visibility 	= '_amp_ad_visibility_status';
-		$amp_ad_type 			= '_amp_ad_type_format';
+	elseif('2' === $selected_ads_for){  
+		$amp_incontent_ad_type =  get_post_meta(get_ad_id(get_the_ID()),'_amp_incontent_ad_type',true);
+		  
+		if($amp_incontent_ad_type == '1'){
+			$closing_p = '</p>';
+			$paragraphs = explode( $closing_p, $content );
+			$paragraph_id =  count($paragraphs);
+			$paragraph_id = $paragraph_id / 2 ;
+			$paragraph_id = round($paragraph_id);
+			$cmb2_incontent_options = $paragraph_id;
+			$incontent_visibility = 'ad_visibility_status';
+			$amp_ad_type 			= 'ad_type_format';
+		}
+		elseif($amp_incontent_ad_type == '2'){
+			$cmb2_incontent_options = get_metadata('post',get_ad_id(get_the_ID()), '_amp_incontent_ad_type_paragraph');
+			$incontent_visibility = 'ad_visibility_status';
+			$amp_ad_type 			= 'ad_type_format';
+		}
 	}
 	
 	//Get all other adds which are set to inline
@@ -214,10 +241,26 @@ function adsforwp_insert_ads( $content ){
 			    		? $adsVisiblityType[$adsPostId]['visibility'] 
 			    		: get_post_meta($adsPostId,'ad_visibility_status',true) 
 			    							);
+
+				$incontent_ad_type 	= get_post_meta(get_ad_id(get_the_ID()),'incontent_ad_type',true);
+		 
+				if($incontent_ad_type == '1'){
+					$closing_p = '</p>';
+					$paragraphs = explode( $closing_p, $content );
+					$paragraph_id =  count($paragraphs)-1;
+					$paragraph_id = $paragraph_id / 2 ;
+					$paragraph_id = round($paragraph_id);
+
+					$adsparagraphs 		= ( isset($post_meta[$adsPostId]['paragraph'])
+					    		? $post_meta[$adsPostId]['paragraph'] 
+					    		: $paragraph_id );
+				}
+				elseif($incontent_ad_type == '2'){
+
 			    	$adsparagraphs 		= ( isset($post_meta[$adsPostId]['paragraph'])
 			    		? $post_meta[$adsPostId]['paragraph'] 
-			    		: get_post_meta($adsPostId,'incontent_ad_type',true) );
-
+			    		: get_post_meta($adsPostId,'incontent_ad_type_paragraph',true) );
+				    }
 
 				    $ad_vendor 			= get_post_meta($adsPostId,'ad_vendor',true);
 				    $ad_type 			= get_post_meta($adsPostId,'ad_type_format',true);
@@ -260,20 +303,40 @@ function adsforwp_insert_ads( $content ){
 										            'paragraph' => $adsparagraphs,
 										            'content'=>$adsContent,
 				    							);
+
 					}
 				
 			  }
 			}
-			if('2' === $selected_ads_for){
+			if('2' === $selected_ads_for){ 
 				if('on' === $non_amp_ads || function_exists('is_amp_endpoint') && is_amp_endpoint()){	
 			    	$adsVisiblityType 	= get_post_field('adsforwp_incontent_ads_default', $post_id);
 				    $adsVisiblityType 	= (isset($adsVisiblityType[$adsPostId]['visibility'])
 			    		? $adsVisiblityType[$adsPostId]['visibility'] 
 			    		: get_post_meta($adsPostId,'_amp_ad_visibility_status',true) 
 			    							);
+
+
+				$amp_incontent_ad_type 	= get_post_meta(get_ad_id(get_the_ID()),'_amp_incontent_ad_type',true);
+		 	
+				if($amp_incontent_ad_type == '1'){
+					$closing_p = '</p>';
+					$paragraphs = explode( $closing_p, $content );
+					$paragraph_id =  count($paragraphs)-1;
+					$paragraph_id = $paragraph_id / 2 ;
+					$paragraph_id = round($paragraph_id);
+
+					$adsparagraphs 		= ( isset($post_meta[$adsPostId]['paragraph'])
+					    		? $post_meta[$adsPostId]['paragraph'] 
+					    		: $paragraph_id );
+				}
+				elseif($amp_incontent_ad_type == '2'){
+
 			    	$adsparagraphs 		= ( isset($post_meta[$adsPostId]['paragraph'])
 			    		? $post_meta[$adsPostId]['paragraph'] 
-			    		: get_post_meta($adsPostId,'_amp_incontent_ad_type',true) );
+			    		: get_post_meta($adsPostId,'_amp_incontent_ad_type_paragraph',true) );
+				    }
+
 				    $ad_vendor 			= get_post_meta($adsPostId,'_amp_ad_vendor',true);
 				    $ad_type 			= get_post_meta($adsPostId,'_amp_ad_type_format',true);
 			    	if('1' === $ad_vendor && '2' === $ad_type){
@@ -354,6 +417,7 @@ function adsforwp_insert_ads( $content ){
 	    }
 	    
 	}
+
 	wp_reset_query();
 	ksort($post_meta);
 	$isPagesSplits = false;
@@ -369,31 +433,27 @@ function adsforwp_insert_ads( $content ){
 		$content = preg_split("/\\r\\n|\\r|\\n/", $content);
 		if(count($post_meta)>0){
 			foreach ($post_meta as $key => $adsValue) {
+
 				if(!empty($adsValue) && $adsValue['visibility']!="show"){
 					continue;
 				}
 				if(isset($adsValue['paragraph']) && isset($adsValue['content'])){
-					// var_dump(count($content));var_dump($adsValue['paragraph']);
+					 
 					if(count($content) > intval($adsValue['paragraph'])){
-
-						$content[$adsValue['paragraph']] .= $adsValue['content'];
-					}
-
-					//array_splice( $content, $adsValue['paragraph'], 0, $adsValue['content'] );
+						$content[$adsValue['paragraph']-1] .= $adsValue['content'];
+					} 
 				}
 				
 			}
 			
 			$completeContents .= implode(' ', $content);
-		}
-
+		} 
 		//Check for page splits
 		if($isPagesSplits){
 			$completeContents .= '!--nextpage--';
 		}
 	}
-
-	return $completeContents; 
+ 	return $completeContents; 
 }
 
 /*

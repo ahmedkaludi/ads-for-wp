@@ -18,11 +18,11 @@ function adsforwp_get_meta_post( $value, $post_id = '' ) {
 	if ( $value === 'adsforwp_incontent_ads_paragraphs') {
 		$selected_ads_for   = get_post_meta(get_ad_id(get_the_ID()),'select_ads_for',true);
 		    if('1' === $selected_ads_for){
-		      $doint   = get_post_meta(get_ad_id(get_the_ID()),'incontent_ad_type',true);
+		      $doint   = get_post_meta(get_ad_id(get_the_ID()),'incontent_ad_type_paragraph',true);
 		      $default = $doint;
 		    }
 		    elseif('2' === $selected_ads_for){
-		      $default   = get_post_meta(get_ad_id(get_the_ID()),'_amp_incontent_ad_type',true);
+		      $default   = get_post_meta(get_ad_id(get_the_ID()),'_amp_incontent_ad_type_paragraph',true);
 		      
 		    }
 
@@ -45,9 +45,9 @@ function adsforwp_get_meta_post( $value, $post_id = '' ) {
 			            }
 					$selected_ads_for 	= get_post_meta($key,'select_ads_for',true);
 					if('1' === $selected_ads_for){
-						$cpt_paragraph = get_post_meta($key,'incontent_ad_type',true);
+						$cpt_paragraph = get_post_meta($key,'incontent_ad_type_paragraph',true);
 					}elseif('2' === $selected_ads_for){
-						$cpt_paragraph = get_post_meta($key,'_amp_incontent_ad_type',true);
+						$cpt_paragraph = get_post_meta($key,'_amp_incontent_ad_type_paragraph',true);
 					}
 						$cpt_paragraph = $cpt_paragraph[0];
 						$value['post_id'] = get_the_ID();
@@ -185,7 +185,7 @@ function adsforwp_generate_ad_post_type_data(){
 			    $ad_type  =  get_post_meta($ad->ID, 'ad_visibility_status', true );
 			    
 		    }
-		    elseif('1' === $selected_ads_for){
+		    elseif('2' === $selected_ads_for){
 		    	
 			    $ad_type  =  get_post_meta($ad->ID, '_amp_ad_visibility_status', true );
 		    }
@@ -193,7 +193,7 @@ function adsforwp_generate_ad_post_type_data(){
 			    $ads_post_id = 	$ad->ID;
 			    $ad_type 	 =  adsforwp_get_meta_post( 'adsforwp_ads_position', $ads_post_id );
 			    $visibility  =  adsforwp_get_meta_post( 'adsforwp_incontent_ads_default', $ads_post_id );
-			    $paragraph 	 =  adsforwp_get_meta_post( 'incontent_ad_type', $ads_post_id );
+			    $paragraph 	 =  adsforwp_get_meta_post( 'incontent_ad_type_paragraph', $ads_post_id );
 
 				if ( 'show' === $ad_type ) {
 

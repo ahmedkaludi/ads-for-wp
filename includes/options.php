@@ -119,21 +119,36 @@ function advanced_amp_ampforwp_ads_options() {
 		'classes' 			=> 'ad-type ad-type-1'
 	) );
 
-	// 2. Incontent type        
+	// 2. Incontent type    
+
 	$ampforwp_ads_option->add_field( array(
-		'name' 	  			=> esc_html__( 'Show Ad After', 'ads-for-wp' ),
-		'desc' 	  			=> esc_html__( 'Paragraphs', 'ads-for-wp' ),
-		'id'      			=> 'incontent_ad_type',
+		'name'             	=> esc_html__( 'Show Ad After', 'ads-for-wp' ),
+		'id'               	=> 'incontent_ad_type',
+		'type'             	=> 'select',
+		'show_option_none' 	=> false,
+		'classes' 			=> 'ad-type ad-type-2',
+		'options'          	=> 
+			array(
+				'1' 		=> esc_html__( '50% of content', 'ads-for-wp' ),
+				'2'  	 	=> esc_html__( 'Paragraphs', 'ads-for-wp' ),
+			),
+			'default'          => '1',
+	) );
+
+	$ampforwp_ads_option->add_field( array(
+		'name' 	  			=> esc_html__( 'Select Paragraphs', 'ads-for-wp' ),
+		// 'desc' 	  			=> esc_html__( 'Paragraphs', 'ads-for-wp' ),
+		'id'      			=> 'incontent_ad_type_paragraph',
 		'type'    			=> 'text_small',
-		'default' 			=> '2',
-		'classes' 			=> 'ad-type ad-type-2',	
+		'default' 			=> '1',
+		'classes' 			=> 'ad-type ad-type-2 incontent-ad-type-2',	
 		'attributes' 		=> array(
 			'type' 			=> 'number',
 			'min'  			=> '1',
 		),
 
 
-	) );
+	) ); 
 
 	// 3. Manual Ads        
 	$ampforwp_ads_option->add_field( array(
@@ -521,20 +536,34 @@ function amp_by_automattic_options(){
 		),
 	) );
 
-	// 2. Incontent type        
+	// 2. Incontent type   
+
+		$amp_ads_option->add_field( array(
+		'name'             	=> esc_html__( 'Show Ad After', 'ads-for-wp' ),
+		'id'               	=> '_amp_incontent_ad_type',
+		'type'             	=> 'select',
+		'show_option_none' 	=> false,
+		'classes' 			=> 'amp-ad-type amp-ad-type-2',
+		'options'          	=> 
+			array(
+				'1' 		=> esc_html__( '50% of content', 'ads-for-wp' ),
+				'2'  	 	=> esc_html__( 'Paragraphs', 'ads-for-wp' ),
+			),
+			'default'          => '1',
+	) );
+
 	$amp_ads_option->add_field( array(
-		'name' 	  			=> esc_html__( 'Show Ad After', 'ads-for-wp' ),
-		'desc' 	  			=> esc_html__( 'Paragraphs', 'ads-for-wp' ),
-		'id'   	  			=> '_amp_incontent_ad_type',
+		'name' 	  			=> esc_html__( 'Select Paragraphs', 'ads-for-wp' ),
+		// 'desc' 	  			=> esc_html__( 'Paragraphs', 'ads-for-wp' ),
+		'id'      			=> '_amp_incontent_ad_type_paragraph',
 		'type'    			=> 'text_small',
-		'default' 			=> '2',
-		'classes' 			=> 'amp-ad-type amp-ad-type-2',	
+		'default' 			=> '1',
+		'classes' 			=> 'amp-ad-type amp-ad-type-2 amp-incontent-ad-type-2',	
 		'attributes' 		=> array(
 			'type' 			=> 'number',
 			'min'  			=> '1',
 		),
-	) );
-
+	) );  
 
 	// 3. Manual Ads        
 	$amp_ads_option->add_field( array(

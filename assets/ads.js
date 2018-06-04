@@ -25,10 +25,6 @@ $("#select_ads_for").change(function(){
     }).change();
 
 // AMPforWP Ads Options
-
-
-
-
  $("#ad_type_format").change(function(){
       $(this).find("option:selected").each(function(){
           var optionValue = $(this).attr("value");
@@ -38,13 +34,15 @@ $("#select_ads_for").change(function(){
               $("[id=dfp_parallax]").hide();
               $("[id=custom_parallax]").hide();	
               $("[id=medianet_parallax]").hide();
+
               $(".ad-type.ad-type-" + optionValue).show();
               
               if('2' == optionValue){
-              	 $("[id=adsense_parallax]").show();
-              	 $("[id=dfp_parallax]").show();
-              	  $("[id=custom_parallax]").show();
-                  $("[id=medianet_parallax]").show();
+                $(".incontent-ad-type-2").hide();
+              	$("[id=adsense_parallax]").show();
+              	$("[id=dfp_parallax]").show();
+              	$("[id=custom_parallax]").show();
+                $("[id=medianet_parallax]").show();
               }
               
 
@@ -55,7 +53,20 @@ $("#select_ads_for").change(function(){
       });
     }).change();
 
+// AMPforWP Incontent Ad type
+ $("#incontent_ad_type").change(function(){
+    $(this).find("option:selected").each(function(){
+      var optionValue = $(this).attr("value");
+      if('2' == optionValue){ 
+       $(".incontent-ad-type-2").show();      
+      }
+      else{
+       $(".incontent-ad-type-2").hide();
 
+      }
+    });
+ }).change();  
+// AMPforWP Incontent Ad type end here
 
   $("#ad_vendor").change(function(){
       $(this).find("option:selected").each(function(){
@@ -163,16 +174,32 @@ $("#_amp_ad_type_format").change(function(){
                $("[id=_amp_medianet_parallax]").hide();
               $(".amp-ad-type.amp-ad-type-" + optionValue).show();
               if('2' == optionValue){
-              	 $("[id=_amp_adsense_parallax]").show();
-              	 $("[id=_amp_dfp_parallax]").show();
-              	  $("[id=_amp_custom_parallax]").show();
-                   $("[id=_amp_medianet_parallax]").show();
+                $(".amp-incontent-ad-type-2").hide();
+              	$("[id=_amp_adsense_parallax]").show();
+              	$("[id=_amp_dfp_parallax]").show();
+              	$("[id=_amp_custom_parallax]").show();
+                $("[id=_amp_medianet_parallax]").show();
               }
           } else{
               $(".amp-ad-type").hide();
           }         
       });
     }).change();
+
+// AMP by Automattic Incontent Ad type
+ $("#_amp_incontent_ad_type").change(function(){
+    $(this).find("option:selected").each(function(){
+      var optionValue = $(this).attr("value");
+      if('2' == optionValue){ 
+       $(".amp-incontent-ad-type-2").show();      
+      }
+      else{
+       $(".amp-incontent-ad-type-2").hide();
+
+      }
+    });
+ }).change();  
+// AMP by Automattic Incontent Ad type end here
 
   $("#_amp_ad_vendor").change(function(){
       $(this).find("option:selected").each(function(){
