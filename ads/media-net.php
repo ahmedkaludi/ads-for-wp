@@ -3,21 +3,23 @@
 function adsforwp_media_net_ads($args){
 	
 	$post_medianet_ad_id = $args['id'];
-	$selected_ads_for 	= get_post_meta($post_medianet_ad_id,'select_ads_for',true);
+        $post_meta_dataset = get_post_meta($post_medianet_ad_id,$key='',true);
+        
+	$selected_ads_for 	= $post_meta_dataset['select_ads_for'][0];
 	$dimensions 		= get_medianet_dimensions($post_medianet_ad_id);
 	$width				= $dimensions['width'];
 	$height				= $dimensions['height'];
 	if('1' === $selected_ads_for){
-		$ad_client			= get_post_meta($post_medianet_ad_id,'medianet_ad_client',true);
-		$ad_slot			= get_post_meta($post_medianet_ad_id,'medianet_ad_slot',true);
-		$ad_parallax		= get_post_meta($post_medianet_ad_id,'medianet_parallax',true);
-		$is_optimize		= get_post_meta($post_medianet_ad_id,'optimize_ads',true);
+		$ad_client			= $post_meta_dataset['medianet_ad_client'][0];
+		$ad_slot			= $post_meta_dataset['medianet_ad_slot'][0];
+		$ad_parallax		= $post_meta_dataset['medianet_parallax'][0];
+		$is_optimize		= $post_meta_dataset['optimize_ads'][0];
 	}
 	elseif('2' === $selected_ads_for){
-		$ad_client			= get_post_meta($post_medianet_ad_id,'_amp_medianet_ad_client',true);
-		$ad_slot			= get_post_meta($post_medianet_ad_id,'_amp_medianet_ad_slot',true);
-		$ad_parallax		= get_post_meta($post_medianet_ad_id,'_amp_medianet_parallax',true);
-		$is_optimize		= get_post_meta($post_medianet_ad_id,'_amp_optimize_ads',true);
+		$ad_client			= $post_meta_dataset['_amp_medianet_ad_client'][0];
+		$ad_slot			= $post_meta_dataset['_amp_medianet_ad_slot'][0];
+		$ad_parallax		= $post_meta_dataset['_amp_medianet_parallax'][0];
+		$is_optimize		= $post_meta_dataset['_amp_optimize_ads'][0];
 	}
 	if('on' === $is_optimize){
 		$optimize =  'data-loading-strategy="prefer-viewability-over-views"';
@@ -49,23 +51,25 @@ function adsforwp_incontent_media_net_ads($id){
 	$ad_slot			= '';
 	$ad_parallax		= '';
 	$is_optimize		= '';
-	$selected_ads_for 	= get_post_meta($post_medianet_ad_id,'select_ads_for',true);
+        
+        $post_meta_dataset = get_post_meta($post_medianet_ad_id,$key='',true);        
+	$selected_ads_for 	= $post_meta_dataset['select_ads_for'][0];
 	$dimensions 		= get_medianet_dimensions($post_medianet_ad_id);
 	$width				= $dimensions['width'];
 	$height				= $dimensions['height'];
 	$size 				= $width.'x'.$height;
-	$non_amp_ads 		= get_post_meta($post_medianet_ad_id,'non_amp_ads',true);
+	$non_amp_ads 		= $post_meta_dataset['non_amp_ads'][0];
 	if('1' === $selected_ads_for){
-		$ad_client			= get_post_meta($post_medianet_ad_id,'medianet_ad_client',true);
-		$ad_slot			= get_post_meta($post_medianet_ad_id,'medianet_ad_slot',true);
-		$ad_parallax		= get_post_meta($post_medianet_ad_id,'medianet_parallax',true);
-		$is_optimize		= get_post_meta($post_medianet_ad_id,'optimize_ads',true);
+		$ad_client			= $post_meta_dataset['medianet_ad_client'][0];
+		$ad_slot			= $post_meta_dataset['medianet_ad_slot'][0];
+		$ad_parallax		= $post_meta_dataset['medianet_parallax'][0];
+		$is_optimize		= $post_meta_dataset['optimize_ads'][0];
 	}
 	elseif('2' === $selected_ads_for){
-		$ad_client			= get_post_meta($post_medianet_ad_id,'_amp_medianet_ad_client',true);
-		$ad_slot			= get_post_meta($post_medianet_ad_id,'_amp_medianet_ad_slot',true);
-		$ad_parallax		= get_post_meta($post_medianet_ad_id,'_amp_medianet_parallax',true);
-		$is_optimize		= get_post_meta($post_medianet_ad_id,'_amp_optimize_ads',true);
+		$ad_client			= $post_meta_dataset['_amp_medianet_ad_client'][0];
+		$ad_slot			= $post_meta_dataset['_amp_medianet_ad_slot'][0];
+		$ad_parallax		= $post_meta_dataset['_amp_medianet_parallax'][0];
+		$is_optimize		= $post_meta_dataset['_amp_optimize_ads'][0];
 	}
 	if('on' === $is_optimize){
 		$optimize =  'data-loading-strategy="prefer-viewability-over-views"';
@@ -138,10 +142,11 @@ function adsforwp_medianet_sticky_ads(){
 
 function get_medianet_dimensions($id){
 
-$selected_ads_for 	= get_post_meta($id,'select_ads_for',true);
+$post_meta_dataset = get_post_meta($id,$key='',true);            
+$selected_ads_for 	= $post_meta_dataset['select_ads_for'][0];
 	if('1' === $selected_ads_for){
 		
-		$dimensions = get_post_meta($id,'medianet_dimensions',true);
+		$dimensions = $post_meta_dataset['medianet_dimensions'][0];
 		switch ($dimensions) {
 			case '1':
 				$dimension = array('width' => '300',
@@ -194,8 +199,8 @@ $selected_ads_for 	= get_post_meta($id,'select_ads_for',true);
 
 			case '8':
 				$dimension = array();
-				$dimension['width'] = get_post_meta($id,'medianet_custom_width',true);
-				$dimension['height'] = get_post_meta($id,'medianet_custom_height',true);
+				$dimension['width'] = $post_meta_dataset['medianet_custom_width'][0];
+				$dimension['height'] = $post_meta_dataset['medianet_custom_height'][0];
 				return $dimension;
 				break;
 
@@ -209,7 +214,7 @@ $selected_ads_for 	= get_post_meta($id,'select_ads_for',true);
 
 	if('2' === $selected_ads_for){
 		
-		$dimensions = get_post_meta($id,'_amp_medianet_dimensions',true);
+		$dimensions = $post_meta_dataset['_amp_medianet_dimensions'][0];
 		switch ($dimensions) {
 			case '1':
 				$dimension = array('width' => '300',
@@ -262,8 +267,8 @@ $selected_ads_for 	= get_post_meta($id,'select_ads_for',true);
 
 			case '8':
 				$dimension = array();
-				$dimension['width'] = get_post_meta($id,'_amp_medianet_custom_width',true);
-				$dimension['height'] = get_post_meta($id,'_amp_medianet_custom_height',true);
+				$dimension['width'] = $post_meta_dataset['_amp_medianet_custom_width'][0];
+				$dimension['height'] = $post_meta_dataset['_amp_medianet_custom_height'][0];
 				return $dimension;
 				break;
 

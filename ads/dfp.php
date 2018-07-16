@@ -4,20 +4,21 @@
 function ampforwp_dfp_ads($args){
 
 	$post_dfp_ad_id 	= $args['id'];
-	$selected_ads_for 	= get_post_meta($post_dfp_ad_id,'select_ads_for',true);
+        $post_meta_dataset = get_post_meta($post_dfp_ad_id,$key='',true);
+	$selected_ads_for 	= $post_meta_dataset['select_ads_for'][0];
 	$dimensions 		= get_dfp_dimensions($post_dfp_ad_id);
 	$width				= $dimensions['width'];
 	$height				= $dimensions['height'];
 	if('1' === $selected_ads_for){
-		$ad_slot			= get_post_meta($post_dfp_ad_id,'dfp_ad_slot',true);
-		$ad_parallax		= get_post_meta($post_dfp_ad_id,'dfp_parallax',true);
-		$is_optimize		= get_post_meta($post_dfp_ad_id,'optimize_ads',true);
+		$ad_slot			= $post_meta_dataset['dfp_ad_slot'][0];
+		$ad_parallax		= $post_meta_dataset['dfp_parallax'][0];
+		$is_optimize		= $post_meta_dataset['optimize_ads'][0];
 
 	}
 	elseif('2' === $selected_ads_for){
-		$ad_slot			= get_post_meta($post_dfp_ad_id,'_amp_dfp_ad_slot',true);
-		$ad_parallax		= get_post_meta($post_dfp_ad_id,'_amp_dfp_parallax',true);
-		$is_optimize		= get_post_meta($post_dfp_ad_id,'_amp_optimize_ads',true);
+		$ad_slot		= $post_meta_dataset['_amp_dfp_ad_slot'][0];
+		$ad_parallax		= $post_meta_dataset['_amp_dfp_parallax'][0];
+		$is_optimize		= $post_meta_dataset['_amp_optimize_ads'][0];
 	}
 	if('on' === $is_optimize){
 		$optimize =  'data-loading-strategy="prefer-viewability-over-views"';
@@ -35,7 +36,7 @@ function ampforwp_dfp_ads($args){
 }
 
 function ampforwp_incontent_dfp_ads($id){
-	$selected_ads_for 	= get_post_meta($id,'select_ads_for',true);
+	
 	$post_dfp_ad_id = $id;
 	if(NULL != $post_dfp_ad_id){
 		// do nothing
@@ -43,19 +44,22 @@ function ampforwp_incontent_dfp_ads($id){
 	else{
 		$post_dfp_ad_id = get_ad_id(get_the_ID());
 	}
+        $post_meta_dataset = get_post_meta($post_dfp_ad_id,$key='',true);
+        $selected_ads_for 	= $post_meta_dataset['select_ads_for'][0];
+        
 	$dimensions 		= get_dfp_dimensions($post_dfp_ad_id);
 	$width				= $dimensions['width'];
 	$height				= $dimensions['height'];
-	$non_amp_ads 		= get_post_meta($post_dfp_ad_id,'non_amp_ads',true);
+	$non_amp_ads 		= $post_meta_dataset['non_amp_ads'][0];
 	if('1' === $selected_ads_for){
-		$ad_slot			= get_post_meta($post_dfp_ad_id,'dfp_ad_slot',true);
-		$ad_parallax		= get_post_meta($post_dfp_ad_id,'dfp_parallax',true);
-		$is_optimize		= get_post_meta($post_dfp_ad_id,'optimize_ads',true);
+		$ad_slot			= $post_meta_dataset['dfp_ad_slot'][0];
+		$ad_parallax		= $post_meta_dataset['dfp_parallax'][0];
+		$is_optimize		= $post_meta_dataset['optimize_ads'][0];
 	}
 	elseif('2' === $selected_ads_for){
-		$ad_slot			= get_post_meta($post_dfp_ad_id,'_amp_dfp_ad_slot',true);
-		$ad_parallax		= get_post_meta($post_dfp_ad_id,'_amp_dfp_parallax',true);
-		$is_optimize		= get_post_meta($post_dfp_ad_id,'_amp_optimize_ads',true);
+		$ad_slot			= $post_meta_dataset['_amp_dfp_ad_slot'][0];
+		$ad_parallax		= $post_meta_dataset['_amp_dfp_parallax'][0];
+		$is_optimize		= $post_meta_dataset['_amp_optimize_ads'][0];
 	}
 	if('on' === $is_optimize){
 		$optimize =  'data-loading-strategy="prefer-viewability-over-views"';
@@ -111,16 +115,18 @@ function adsforwp_non_amp_dfp_scripts(){
 	while ($query->have_posts()) {
 	    $query->the_post();
 	    $post_dfp_ad_id = get_the_ID();
-		$selected_ads_for 	= get_post_meta($post_dfp_ad_id,'select_ads_for',true);
+            $post_meta_dataset = get_post_meta($post_dfp_ad_id,$key='',true);
+            
+		$selected_ads_for 	= $post_meta_dataset['select_ads_for'][0];
 		$dimensions 		= get_dfp_dimensions($post_dfp_ad_id);
 		$width				= $dimensions['width'];
 		$height				= $dimensions['height'];
-		$non_amp_ads 		= get_post_meta($post_dfp_ad_id,'non_amp_ads',true);
+		$non_amp_ads 		= $post_meta_dataset['non_amp_ads'][0];
 		if('1' === $selected_ads_for){
-			$ad_slot			= get_post_meta($post_dfp_ad_id,'dfp_ad_slot',true);
+			$ad_slot			= $post_meta_dataset['dfp_ad_slot'][0];
 		}
 		elseif('2' === $selected_ads_for){
-			$ad_slot			= get_post_meta($post_dfp_ad_id,'_amp_dfp_ad_slot',true);
+			$ad_slot			= $post_meta_dataset['_amp_dfp_ad_slot'][0];
 		}
 			if('on' === $non_amp_ads){ 
 				$dfp_wp_script = "<!-- Start GPT Async Tag -->
@@ -158,9 +164,12 @@ function ampforwp_dfp_sticky_ads(){
 // DoubleClick dimensions 
 
 function get_dfp_dimensions($id){
-	$selected_ads_for 	= get_post_meta($id,'select_ads_for',true);
+    
+        $post_meta_dataset = get_post_meta($id,$key='',true);                
+        
+	$selected_ads_for 	= $post_meta_dataset['select_ads_for'][0];
 	if('1' === $selected_ads_for){
-		$dimensions = get_post_meta($id,'dfp_dimensions',true);
+		$dimensions = $post_meta_dataset['dfp_dimensions'][0];
 		switch ($dimensions) {
 			case '1':
 				$dimension = array('width' => '300',
@@ -213,8 +222,8 @@ function get_dfp_dimensions($id){
 
 			case '8':
 				$dimension = array();
-				$dimension['width'] = get_post_meta($id,'dfp_custom_width',true);
-				$dimension['height'] = get_post_meta($id,'dfp_custom_height',true);
+				$dimension['width'] = $post_meta_dataset['dfp_custom_width'][0];
+				$dimension['height'] = $post_meta_dataset['dfp_custom_height'][0];
 				return $dimension;
 				break;
 
@@ -228,7 +237,7 @@ function get_dfp_dimensions($id){
 	}
 
 	if('2' === $selected_ads_for){
-		$dimensions = get_post_meta($id,'_amp_dfp_dimensions',true);
+		$dimensions = $post_meta_dataset['_amp_dfp_dimensions'][0];
 		switch ($dimensions) {
 			case '1':
 				$dimension = array('width' => '300',
@@ -281,8 +290,8 @@ function get_dfp_dimensions($id){
 
 			case '8':
 				$dimension = array();
-				$dimension['width'] = get_post_meta($id,'_amp_dfp_custom_width',true);
-				$dimension['height'] = get_post_meta($id,'_amp_dfp_custom_height',true);
+				$dimension['width'] = $post_meta_dataset['_amp_dfp_custom_width'][0];
+				$dimension['height'] = $post_meta_dataset['_amp_dfp_custom_height'][0];
 				return $dimension;
 				break;
 

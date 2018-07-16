@@ -15,14 +15,16 @@ function adsforwp_get_meta_post( $value, $post_id = '' ) {
 
 	$default 	= "show"; 
 	
+        $post_meta_dataset = get_post_meta(get_ad_id(get_the_ID()),$key='',true);        
+        
 	if ( $value === 'adsforwp_incontent_ads_paragraphs') {
-		$selected_ads_for   = get_post_meta(get_ad_id(get_the_ID()),'select_ads_for',true);
+		$selected_ads_for   = $post_meta_dataset['select_ads_for'][0];
 		    if('1' === $selected_ads_for){
-		      $doint   = get_post_meta(get_ad_id(get_the_ID()),'incontent_ad_type_paragraph',true);
+		      $doint   = $post_meta_dataset['incontent_ad_type_paragraph'][0];
 		      $default = $doint;
 		    }
 		    elseif('2' === $selected_ads_for){
-		      $default   = get_post_meta(get_ad_id(get_the_ID()),'_amp_incontent_ad_type_paragraph',true);
+		      $default   = $post_meta_dataset['_amp_incontent_ad_type_paragraph'][0];
 		      
 		    }
 
@@ -43,16 +45,18 @@ function adsforwp_get_meta_post( $value, $post_id = '' ) {
 			                      'paragraph' => '',
 			                      );
 			            }
-					$selected_ads_for 	= get_post_meta($key,'select_ads_for',true);
+                                        $post_meta_dataset = get_post_meta($key,$keynull='',true);   
+                                    
+					$selected_ads_for 	= $post_meta_dataset['select_ads_for'][0];
 					if('1' === $selected_ads_for){
-						$cpt_paragraph = get_post_meta($key,'incontent_ad_type_paragraph',true);
+						$cpt_paragraph = $post_meta_dataset['incontent_ad_type_paragraph'][0];
 					}elseif('2' === $selected_ads_for){
-						$cpt_paragraph = get_post_meta($key,'_amp_incontent_ad_type_paragraph',true);
+						$cpt_paragraph = $post_meta_dataset['_amp_incontent_ad_type_paragraph'][0];
 					}
 						$cpt_paragraph = $cpt_paragraph[0];
 						$value['post_id'] = get_the_ID();
 						$value['ads_id']  = $key;
-						$visi = get_post_meta($key,'ad_visibility_status',true);
+						$visi = $post_meta_dataset['ad_visibility_status'][0];
 						if('show' === $visi){
 						$value['visibility'] = 'show';
 						}

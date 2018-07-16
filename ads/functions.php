@@ -25,9 +25,12 @@ function adsforwp_ads_between_related_posts($r_count){
 	$number_of_RP = $redux_builder_amp['ampforwp-number-of-related-posts'];
 	$in_between = round(abs($number_of_RP / 2));
 	if(intval($in_between) === $r_count){
-		$ad_position = get_post_meta(get_ad_id($ID),'normal_ad_type',true);
+            
+                $post_meta_dataset = get_post_meta(get_ad_id($ID),$key='',true);                                
+            
+		$ad_position = $post_meta_dataset['normal_ad_type'][0];
 		if('13' === $ad_position){
-			$ad_vendor			= get_post_meta(get_ad_id($ID),'ad_vendor',true);
+			$ad_vendor = $post_meta_dataset['ad_vendor'][0];
 			if('1' === $ad_vendor){
 				ampforwp_adsense_ads();
 			}elseif('2' === $ad_vendor){
@@ -49,8 +52,11 @@ add_action('amp_post_template_footer','ampforwp_amp_sticky_ad');
 
 function ampforwp_amp_sticky_ad(){
 	$ad_id 		= get_ad_id(get_the_ID());
-	$ad_type 	= get_post_meta($ad_id,'ad_type_format',true);
-	$ad_vendor	= get_post_meta($ad_id,'ad_vendor',true);
+        
+        $post_meta_dataset = get_post_meta($ad_id,$key='',true); 
+        
+	$ad_type 	= $post_meta_dataset['ad_type_format'][0];
+	$ad_vendor	= $post_meta_dataset['ad_vendor'][0];
 	if('4' === $ad_type){
 		if('1' === $ad_vendor){
 		 ampforwp_sticky_adsense_ads();
@@ -73,11 +79,13 @@ add_action('ampforwp_body_beginning','ampforwp_adv_amp_auto_ads');
 
 function ampforwp_adv_amp_auto_ads(){
 	$ad_id 		= get_ad_id(get_the_ID());
-	$ad_type 	= get_post_meta($ad_id,'ad_type_format',true);
-	$global_visibility  = get_post_meta($ad_id,'ad_visibility_status',true);
+        $post_meta_dataset = get_post_meta($ad_id,$key='',true);        
+        
+	$ad_type 	= $post_meta_dataset['ad_type_format'][0];
+	$global_visibility  = $post_meta_dataset['ad_visibility_status'][0];
 	if($global_visibility != 'hide'){
 		if('5' === $ad_type){
-			$ampauto_ad_code	    = get_post_meta($ad_id,'amp_auto_ad_type',true);
+			$ampauto_ad_code	    = $post_meta_dataset['amp_auto_ad_type'][0];
 			echo $ampauto_ad_code;
 		}
 	}
@@ -93,9 +101,12 @@ function ampforwp_inbetween_loop_ads($count){
 	$in_between = round(abs($displayed_posts / 2));
 	$ID = $post->ID;
 	if(intval($in_between) === $count){
-		$ad_position = get_post_meta(get_ad_id($ID),'normal_ad_type',true);
+            
+                $post_meta_dataset = get_post_meta(get_ad_id($ID),$key='',true);     
+            
+		$ad_position = $post_meta_dataset['normal_ad_type'][0];
 		if('12' === $ad_position){
-			$ad_vendor			= get_post_meta(get_ad_id($ID),'ad_vendor',true);
+			$ad_vendor = $post_meta_dataset['ad_vendor'][0];
 			if('1' === $ad_vendor){
 				ampforwp_adsense_ads();
 			}elseif('2' === $ad_vendor){
@@ -123,8 +134,11 @@ function ampforwp_extra_sticky_css_styles( $amp_template ) {
 }
 
 <?php $ad_id 		= get_ad_id(get_the_ID());
-	$ad_type 	= get_post_meta($ad_id,'ad_type_format',true);
-	$ad_vendor	= get_post_meta($ad_id,'ad_vendor',true);
+          
+        $post_meta_dataset = get_post_meta($ad_id,$key='',true);                                                
+
+	$ad_type 	= $post_meta_dataset['ad_type_format'][0];
+	$ad_vendor	= $post_meta_dataset['ad_vendor'][0];
 	if('4' === $ad_type){
 	 if('3' === $ad_vendor){?>
 	.ampforwp-sticky-custom-ad{
@@ -164,26 +178,28 @@ function ampforwp_adsforwp_scripts( $data ) {
 	// if ( $show_ads != 'yes' ) {
 	// 	return $data ; // Do not show ads and return the data as it is
 	// }
-	$selected_ads_for 	= get_post_meta($post_ad_id,'select_ads_for',true);
+        $post_meta_dataset = get_post_meta($post_ad_id,$key='',true);        
+        
+	$selected_ads_for 	= $post_meta_dataset['select_ads_for'][0];
 	if('1' === $selected_ads_for){
-		$ad_type 	= get_post_meta($post_ad_id,'ad_type_format',true);
-		$ad_vendor	= get_post_meta($post_ad_id,'ad_vendor',true);
+		$ad_type 	= $post_meta_dataset['ad_type_format'][0];
+		$ad_vendor	= $post_meta_dataset['ad_vendor'][0];
 
-		$adsense_parallax 	= get_post_meta($post_ad_id,'adsense_parallax',true);
-		$dfp_parallax 		= get_post_meta($post_ad_id,'dfp_parallax',true);
-		$custom_parallax 	= get_post_meta($post_ad_id,'custom_parallax',true);
+		$adsense_parallax 	= $post_meta_dataset['adsense_parallax'][0];
+		$dfp_parallax 		= $post_meta_dataset['dfp_parallax'][0];
+		$custom_parallax 	= $post_meta_dataset['custom_parallax'][0];
 
-		$ad_visibility_status = get_post_meta($post_ad_id,'ad_visibility_status',true);
+		$ad_visibility_status = $post_meta_dataset['ad_visibility_status'][0];
 	}
 	elseif('2' === $selected_ads_for){
-		$ad_type 	= get_post_meta($post_ad_id,'_amp_ad_type_format',true);
-		$ad_vendor	= get_post_meta($post_ad_id,'_amp_ad_vendor',true);
+		$ad_type 	= $post_meta_dataset['_amp_ad_type_format'][0];
+		$ad_vendor	= $post_meta_dataset['_amp_ad_vendor'][0];
 
-		$adsense_parallax 	= get_post_meta($post_ad_id,'_amp_adsense_parallax',true);
-		$dfp_parallax 		= get_post_meta($post_ad_id,'_amp_dfp_parallax',true);
-		$custom_parallax 	= get_post_meta($post_ad_id,'_amp_custom_parallax',true);
+		$adsense_parallax 	= $post_meta_dataset['_amp_adsense_parallax'][0];
+		$dfp_parallax 		= $post_meta_dataset['_amp_dfp_parallax'][0];
+		$custom_parallax 	= $post_meta_dataset['_amp_custom_parallax'][0];
 
-		$ad_visibility_status = get_post_meta($post_ad_id,'_amp_ad_visibility_status',true);
+		$ad_visibility_status = $post_meta_dataset['_amp_ad_visibility_status'][0];
 	}
 	
 	
