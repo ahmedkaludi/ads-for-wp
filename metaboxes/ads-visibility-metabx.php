@@ -1,5 +1,4 @@
-<?php
-
+<?php 
 class ads_for_wp_metaboxes_ads_visibility_metabx {
 	private $screen = array(
 		'post',

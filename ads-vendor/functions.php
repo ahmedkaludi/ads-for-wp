@@ -1,21 +1,16 @@
 <?php
-
-
-
-
 /*
  *  Display the ads according to the settings
  */
-
 add_filter('the_content', 'ads_for_wp_display_ads');
 function ads_for_wp_display_ads($content){
 
          if ( is_single() ) {                       
-        $current_post_data = get_post_meta(get_the_ID(),$key='',true);        
-        $visibility = $current_post_data['ads-for-wp-visibility'][0];
-        
-        
-        
+        $current_post_data = get_post_meta(get_the_ID(),$key='',true);  
+        $visibility ='';
+        if(array_key_exists('ads-for-wp-visibility', $current_post_data)){
+        $visibility = $current_post_data['ads-for-wp-visibility'][0];    
+        }                                
         $is_amp = 'no';
         if (function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) {
         $is_amp = 'yes';        

@@ -1,5 +1,4 @@
 <?php
-
 class ads_for_wp_metaboxes_amp_metabox {
 	private $screen = array(
 		'ads-for-wp-ads',

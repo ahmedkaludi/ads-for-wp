@@ -1,17 +1,11 @@
 <?php 
-
 add_action('admin_menu', 'ads_for_wp_menu');
 function ads_for_wp_menu(){
     add_menu_page('My Page Title', 'Ads Settings', 'manage_options', 'ads_for_wp', 'ads_for_wp_settings_page1' );
     add_submenu_page('ads_for_wp', 'Page 1', 'Page1', 'manage_options', 'ads_for_wp', 'ads_for_wp_settings_page1' );
     add_submenu_page('ads_for_wp', 'Page 2', 'Page2', 'manage_options', 'ads_for_wp2', 'ads_for_wp_settings_page1');
-    add_submenu_page('ads_for_wp', 'Page 3', 'Page3', 'manage_options', 'ads_for_wp3', 'ads_for_wp_settings_page1');
-    
-    
-
+    add_submenu_page('ads_for_wp', 'Page 3', 'Page3', 'manage_options', 'ads_for_wp3', 'ads_for_wp_settings_page1');       
 }
-
-
 function ads_for_wp_settings_page1() {
 ?>
 <div class="wrap">
@@ -42,7 +36,3 @@ function ads_for_wp_settings_page1() {
 </form>
 </div>
 <?php } ?>
-
-
-
-
