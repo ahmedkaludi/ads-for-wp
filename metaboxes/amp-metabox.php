@@ -1,6 +1,6 @@
 <?php
 
-class ampcompatibilityMetabox {
+class ads_for_wp_metaboxes_amp_metabox {
 	private $screen = array(
 		'ads-for-wp-ads',
 	);
@@ -10,8 +10,8 @@ class ampcompatibilityMetabox {
 			'id' => 'ads-for-wp_amp_compatibilty',
 			'type' => 'radio',
 			'options' => array(
-				'On',
-				'Off',
+				'Enable',
+				'Disable',
 			),
 		),
 	);
@@ -23,7 +23,7 @@ class ampcompatibilityMetabox {
 		foreach ( $this->screen as $single_screen ) {
 			add_meta_box(
 				'ampcompatibility',
-				__( 'Amp compatibility ?', 'adsforwpdomain' ),
+				__( 'Amp Compatibility ', 'ads-for-wp' ),
 				array( $this, 'meta_box_callback' ),
 				$single_screen,
 				'side',
@@ -32,18 +32,20 @@ class ampcompatibilityMetabox {
 		}
 	}
 	public function meta_box_callback( $post ) {
-		wp_nonce_field( 'ampcompatibility_data', 'ampcompatibility_nonce' );
+		wp_nonce_field( 'ads_for_wp_amp_data', 'ads_for_wp_amp_nonce' );
+                	echo 'Amp compatibility has been enabled';
 		$this->field_generator( $post );
 	}
 	public function field_generator( $post ) {
 		$output = '';
 		foreach ( $this->meta_fields as $meta_field ) {
-			$label = '<label for="' . $meta_field['id'] . '">' . isset($meta_field['label']) . '</label>';
+                        $meta_field_label = isset($meta_field['label']);
+			$label = '<label for="' . $meta_field['id'] . '">' . esc_html__( $meta_field_label, 'ads-for-wp' ) . '</label>';
 			$meta_value = get_post_meta( $post->ID, $meta_field['id'], true );
 			if ( empty( $meta_value ) ) {
 				$meta_value = isset($meta_field['default']);
                                 if(empty($meta_value)){
-                                $meta_value ='On';   
+                                $meta_value ='Enable';   
                                }
                                 }
 			switch ( $meta_field['type'] ) {
@@ -54,13 +56,13 @@ class ampcompatibilityMetabox {
 					foreach ( $meta_field['options'] as $key => $value ) {
 						$meta_field_value = !is_numeric( $key ) ? $key : $value;
 						$input .= sprintf(
-							'<label><input %s id=" % s" name="% s" type="radio" value="% s"> %s</label>%s',
+							'<label style="padding-right:10px;"><input %s id=" % s" name="% s" type="radio" value="% s"> %s</label>%s',
 							$meta_value === $meta_field_value ? 'checked' : '',
 							$meta_field['id'],
 							$meta_field['id'],
 							$meta_field_value,
 							$value,
-							$i < count( $meta_field['options'] ) - 1 ? '<br>' : ''
+							$i < count( $meta_field['options'] ) - 1 ? '' : ''
 						);
 						$i++;
 					}
@@ -84,10 +86,10 @@ class ampcompatibilityMetabox {
 		return '<tr><td>'.$input.'</td></tr>';
 	}
 	public function save_fields( $post_id ) {
-		if ( ! isset( $_POST['ampcompatibility_nonce'] ) )
+		if ( ! isset( $_POST['ads_for_wp_amp_nonce'] ) )
 			return $post_id;
-		$nonce = $_POST['ampcompatibility_nonce'];
-		if ( !wp_verify_nonce( $nonce, 'ampcompatibility_data' ) )
+		$nonce = $_POST['ads_for_wp_amp_nonce'];
+		if ( !wp_verify_nonce( $nonce, 'ads_for_wp_amp_data' ) )
 			return $post_id;
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 			return $post_id;
@@ -108,6 +110,6 @@ class ampcompatibilityMetabox {
 		}
 	}
 }
-if (class_exists('ampcompatibilityMetabox')) {
-	new ampcompatibilityMetabox;
+if (class_exists('ads_for_wp_metaboxes_amp_metabox')) {
+	new ads_for_wp_metaboxes_amp_metabox;
 };

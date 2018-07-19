@@ -1,6 +1,6 @@
 <?php
 
-class showadsforcurrentpagMetabox {
+class ads_for_wp_metaboxes_ads_visibility_metabx {
 	private $screen = array(
 		'post',
 	);
@@ -10,8 +10,8 @@ class showadsforcurrentpagMetabox {
 			'id' => 'ads-for-wp-visibility',
 			'type' => 'radio',
 			'options' => array(
-				'show',
-				'hide',
+				'Show',
+				'Hide',
 			),
 		),
 	);
@@ -23,7 +23,7 @@ class showadsforcurrentpagMetabox {
 		foreach ( $this->screen as $single_screen ) {
 			add_meta_box(
 				'showadsforcurrentpag',
-				__( 'Show Ads for Current Page?', 'adsforwpdomain' ),
+				__( 'Show Ads for Current Page?', 'ads-for-wp' ),
 				array( $this, 'meta_box_callback' ),
 				$single_screen,
 				'side',
@@ -32,7 +32,7 @@ class showadsforcurrentpagMetabox {
 		}
 	}
 	public function meta_box_callback( $post ) {
-		wp_nonce_field( 'showadsforcurrentpag_data', 'showadsforcurrentpag_nonce' );
+		wp_nonce_field( 'ads_for_wp_showadscurrent_data', 'ads_for_wp_showadscurrent_nonce' );
 		$this->field_generator( $post );
 	}
 	public function field_generator( $post ) {
@@ -43,25 +43,26 @@ class showadsforcurrentpagMetabox {
 			if ( empty( $meta_value ) ) {
 				$meta_value = isset($meta_field['default']); 
                                 if(empty($meta_value)){
-                               $meta_value ='show';   
+                               $meta_value ='Show';   
                                }
                           }
 			switch ( $meta_field['type'] ) {
 				case 'radio':
+                                        $meta_field_label = isset($meta_field['label']);
 					$input = '<fieldset>';
-					$input .= '<legend class="screen-reader-text">' . isset($meta_field['label']) . '</legend>';
+					$input .= '<legend class="screen-reader-text">' . esc_html__($meta_field_label, 'ads-for-wp' ) . '</legend>';
 					$i = 0;
 					foreach ( $meta_field['options'] as $key => $value ) {
 						$meta_field_value = !is_numeric( $key ) ? $key : $value;
                                                
 						$input .= sprintf(
-							'<label><input %s id="% s" name="% s" type="radio" value="% s"> %s</label>%s',
+							'<label style="padding-right:10px;"><input %s id="% s" name="% s" type="radio" value="% s"> %s</label>%s',
 							$meta_value === $meta_field_value ? 'checked' : '',
 							$meta_field['id'],
 							$meta_field['id'],
 							$meta_field_value,
 							$value,
-							$i < count( $meta_field['options'] ) - 1 ? '<br>' : ''
+							$i < count( $meta_field['options'] ) - 1 ? '' : ''
 						);
 						$i++;
 					}
@@ -85,10 +86,10 @@ class showadsforcurrentpagMetabox {
 		return '<tr><td>'.$input.'</td></tr>';
 	}
 	public function save_fields( $post_id ) {
-		if ( ! isset( $_POST['showadsforcurrentpag_nonce'] ) )
+		if ( ! isset( $_POST['ads_for_wp_showadscurrent_nonce'] ) )
 			return $post_id;
-		$nonce = $_POST['showadsforcurrentpag_nonce'];
-		if ( !wp_verify_nonce( $nonce, 'showadsforcurrentpag_data' ) )
+		$nonce = $_POST['ads_for_wp_showadscurrent_nonce'];
+		if ( !wp_verify_nonce( $nonce, 'ads_for_wp_showadscurrent_data' ) )
 			return $post_id;
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 			return $post_id;
@@ -109,6 +110,6 @@ class showadsforcurrentpagMetabox {
 		}
 	}
 }
-if (class_exists('showadsforcurrentpagMetabox')) {
-	new showadsforcurrentpagMetabox;
+if (class_exists('ads_for_wp_metaboxes_ads_visibility_metabx')) {
+	new ads_for_wp_metaboxes_ads_visibility_metabx;
 };

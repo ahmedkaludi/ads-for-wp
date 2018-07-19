@@ -7,8 +7,8 @@
  *  Display the ads according to the settings
  */
 
-add_filter('the_content', 'ampforwp_display_ads');
-function ampforwp_display_ads($content){
+add_filter('the_content', 'ads_for_wp_display_ads');
+function ads_for_wp_display_ads($content){
 
          if ( is_single() ) {                       
         $current_post_data = get_post_meta(get_the_ID(),$key='',true);        
@@ -22,7 +22,7 @@ function ampforwp_display_ads($content){
         }
         
             
-                if($visibility == 'show') {
+                if($visibility == 'Show') {
                   $all_ads_post = get_posts(
 		        array(
 				'post_type' 	 => 'ads-for-wp-ads',
@@ -66,7 +66,7 @@ function ampforwp_display_ads($content){
             $ad_code ='';
             $height = $explode_size[1];     
             if($is_amp == 'yes'){
-                if($amp_compatibility == 'On'){
+                if($amp_compatibility == 'Enable'){
                  $ad_code = '<amp-ad 
 				type="adsense"
 				width="'. $width .'"

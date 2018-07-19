@@ -1,12 +1,5 @@
 <?php 
 
-//add_action( 'plugins_loaded', 'my_plugin_override' );
-//function my_plugin_override() {
-//    show_admin_bar(true);
-//}
-
-//add_filter( 'show_admin_bar', '__return_false' );
-
 add_action('admin_menu', 'ads_for_wp_menu');
 function ads_for_wp_menu(){
     add_menu_page('My Page Title', 'Ads Settings', 'manage_options', 'ads_for_wp', 'ads_for_wp_settings_page1' );
@@ -15,16 +8,9 @@ function ads_for_wp_menu(){
     add_submenu_page('ads_for_wp', 'Page 3', 'Page3', 'manage_options', 'ads_for_wp3', 'ads_for_wp_settings_page1');
     
     
-    //add_action( 'admin_init', 'register_ads_for_wp_plugin_settings' );
+
 }
 
-
-//function register_ads_for_wp_plugin_settings() {
-//	//register our settings
-//	register_setting( 'my-cool-plugin-settings-group', 'new_option_name' );
-//	register_setting( 'my-cool-plugin-settings-group', 'some_other_option' );
-//	register_setting( 'my-cool-plugin-settings-group', 'option_etc' );
-//}
 
 function ads_for_wp_settings_page1() {
 ?>

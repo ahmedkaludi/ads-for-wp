@@ -1,6 +1,6 @@
 <?php
 
-class displayMetabox {
+class ads_for_wp_metaboxes_display_metabox {
 	private $screen = array(
 		'ads-for-wp-ads'
 	);
@@ -38,7 +38,7 @@ class displayMetabox {
 		foreach ( $this->screen as $single_screen ) {
 			add_meta_box(
 				'display',
-				__( 'Display', 'textdomain' ),
+				__( 'Display', 'ads-for-wp' ),
 				array( $this, 'meta_box_callback' ),
 				$single_screen,
 				'normal',
@@ -47,13 +47,13 @@ class displayMetabox {
 		}
 	}
 	public function meta_box_callback( $post ) {
-		wp_nonce_field( 'display_data', 'display_nonce' );
+		wp_nonce_field( 'ads_for_wp_display_data', 'ads_for_wp_display_nonce' );
 		$this->field_generator( $post );
 	}
 	public function field_generator( $post ) {
 		$output = '';
 		foreach ( $this->meta_fields as $meta_field ) {
-			$label = '<label for="' . $meta_field['id'] . '">' . $meta_field['label'] . '</label>';
+			$label = '<label for="' . $meta_field['id'] . '">' . esc_html__( $meta_field['label'], 'ads-for-wp' ) . '</label>';
 			$meta_value = get_post_meta( $post->ID, $meta_field['id'], true );
 			if ( empty( $meta_value ) ) {
 				$meta_value = isset($meta_field['default']); }
@@ -93,10 +93,10 @@ class displayMetabox {
 		return '<tr><th>'.$label.'</th><td>'.$input.'</td></tr>';
 	}
 	public function save_fields( $post_id ) {
-		if ( ! isset( $_POST['display_nonce'] ) )
+		if ( ! isset( $_POST['ads_for_wp_display_nonce'] ) )
 			return $post_id;
-		$nonce = $_POST['display_nonce'];
-		if ( !wp_verify_nonce( $nonce, 'display_data' ) )
+		$nonce = $_POST['ads_for_wp_display_nonce'];
+		if ( !wp_verify_nonce( $nonce, 'ads_for_wp_display_data' ) )
 			return $post_id;
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 			return $post_id;
@@ -117,6 +117,6 @@ class displayMetabox {
 		}
 	}
 }
-if (class_exists('displayMetabox')) {
-	new displayMetabox;
+if (class_exists('ads_for_wp_metaboxes_display_metabox')) {
+	new ads_for_wp_metaboxes_display_metabox;
 };
