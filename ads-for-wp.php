@@ -41,18 +41,49 @@ if(! defined('AMP_ADSFORWP_ITEM_FOLDER_NAME')){
 /* Adding Files*/
 require ( ADSFORWP_PLUGIN_DIR.'/widget/ads-widget.php' );
 // Options panel
-require ( ADSFORWP_PLUGIN_DIR.'/admin/control-center.php' );
-require ( ADSFORWP_PLUGIN_DIR.'/admin/global-metaboxes.php' );
-require_once  ADSFORWP_PLUGIN_DIR . '/includes/options.php';
+require ( ADSFORWP_PLUGIN_DIR.'/admin/control-center-new.php' );
+//require ( ADSFORWP_PLUGIN_DIR.'/admin/global-metaboxes.php' );
+//require_once  ADSFORWP_PLUGIN_DIR . '/includes/options.php';
 // Adding CMB2
-require_once  ADSFORWP_PLUGIN_DIR . '/includes/cmb2/init.php';
+//require_once  ADSFORWP_PLUGIN_DIR . '/includes/cmb2/init.php';
 
 // Adding necessary files
-require_once  ADSFORWP_PLUGIN_DIR . '/ads/functions.php';
-require_once  ADSFORWP_PLUGIN_DIR . '/ads/adsense.php';
-require_once  ADSFORWP_PLUGIN_DIR . '/ads/dfp.php';
-require_once  ADSFORWP_PLUGIN_DIR . '/ads/custom.php';
-require_once  ADSFORWP_PLUGIN_DIR . '/ads/media-net.php';
+//require_once  ADSFORWP_PLUGIN_DIR . '/ads/functions.php';
+//require_once  ADSFORWP_PLUGIN_DIR . '/ads/adsense.php';
+//require_once  ADSFORWP_PLUGIN_DIR . '/ads/dfp.php';
+//require_once  ADSFORWP_PLUGIN_DIR . '/ads/custom.php';
+//require_once  ADSFORWP_PLUGIN_DIR . '/ads/media-net.php';
+
+//Loading custom admin menu
+require  ADSFORWP_PLUGIN_DIR . '/settings/function-admin.php';
+
+//Loading Metaboxes
+require ( ADSFORWP_PLUGIN_DIR.'/metaboxes/ads-type-metabox.php' );
+require ( ADSFORWP_PLUGIN_DIR.'/metaboxes/display-metabox.php' );
+require ( ADSFORWP_PLUGIN_DIR.'/metaboxes/ads-visibility-metabx.php' );
+
+add_action( 'admin_init', 'check_some_other_plugin' );
+function check_some_other_plugin() {
+  if ( is_plugin_active('accelerated-mobile-pages/accelerated-moblie-pages.php') ) {
+    require ( ADSFORWP_PLUGIN_DIR.'/metaboxes/amp-compatibility-metabox.php' );	
+  }
+}
+
+
+
+//Loading ads vendor files
+require_once  ADSFORWP_PLUGIN_DIR . '/ads-vendor/functions.php';
+//require_once  ADSFORWP_PLUGIN_DIR . '/ads-vendor/custom.php';
+//require_once  ADSFORWP_PLUGIN_DIR . '/ads-vendor/adsense.php';
+
+//amp_init0
+
+
+
+
+
+
+
 
 
 /*
@@ -61,23 +92,23 @@ require_once  ADSFORWP_PLUGIN_DIR . '/ads/media-net.php';
  * Want to hide add the ads in the current page?
  * Pass 'no' adsforwp_advert_on_off filter 
 */
-add_filter('adsforwp_advert_on_off', 'adsforwp_hide_ads_controller');
-function adsforwp_hide_ads_controller($show) {
-	global $post;
-
-	if ( is_singular()  ) { 
-		$content 		= get_post_field('post_content', $post->ID );
-		$content_count 	= str_word_count($content);
-	}
-
-	$current = adsforwp_get_meta_post( 'adsforwp_ads_meta_box_ads_on_off' );
-
-	if ( $current === 'hide' ) {
-		$show = 'no';
-	}
-	return $show;
-
-}
+//add_filter('adsforwp_advert_on_off', 'adsforwp_hide_ads_controller');
+//function adsforwp_hide_ads_controller($show) {
+//	global $post;
+//
+//	if ( is_singular()  ) { 
+//		$content 		= get_post_field('post_content', $post->ID );
+//		$content_count 	= str_word_count($content);
+//	}
+//
+//	$current = adsforwp_get_meta_post( 'adsforwp_ads_meta_box_ads_on_off' );
+//
+//	if ( $current === 'hide' ) {
+//		$show = 'no';
+//	}
+//	return $show;
+//
+//}
 
 // Get all the post types and add metaboxs of the ads in this post types
 add_action('admin_init', 'adsforwp_generate_postype');
@@ -175,4 +206,5 @@ $path = plugin_basename( __FILE__ );
         }
     }, 10, 3 );
 
-
+    
+    

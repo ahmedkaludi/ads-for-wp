@@ -7,12 +7,14 @@ function adsforwp_setup_post_type() {
 	        'name' 				=> esc_html__( 'Ads', 'ads-for-wp' ),
 	        'singular_name' 	=> esc_html__( 'Ad', 'ads-for-wp' ),
 	        'add_new' 			=> esc_html__( 'Add New Ad', 'ads-for-wp' ),
-	        'add_new_item'  	=> esc_html__( 'Add New Ad', 'ads-for-wp' )
+	        'add_new_item'  	=> esc_html__( 'Add New Ad', 'ads-for-wp' ),
+                'edit_item'             => esc_html__('Edit AD','ads-for-wp')
 	    ),
       	'public' 				=> true,
       	'has_archive' 			=> false,
       	'exclude_from_search'	=> true,
-    	'publicly_queryable'	=> false
+    	'publicly_queryable'	=> true,
+        
     );
     register_post_type( 'ads-for-wp-ads', $args );
 }
@@ -472,6 +474,7 @@ function adsforwp_admin_enqueue() {
 
 
 	wp_register_script( 'adsforwp-admin-js', ADSFORWP_PLUGIN_DIR_URI . 'assets/ads.js', array('jquery'), ADSFORWP_VERSION , true );
+        
 
 	// Localize the script with new data
 	$data = array(
