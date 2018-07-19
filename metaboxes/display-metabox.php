@@ -93,10 +93,8 @@ class ads_for_wp_metaboxes_display_metabox {
 	}
 	public function save_fields( $post_id ) {
 		if ( ! isset( $_POST['ads_for_wp_display_nonce'] ) )
-			return $post_id;
-                if(isset($_POST['ads_for_wp_showadscurrent_nonce']))
-		$nonce = $_POST['ads_for_wp_display_nonce'];
-		if ( !wp_verify_nonce( $nonce, 'ads_for_wp_display_data' ) )
+			return $post_id;		
+		if ( !wp_verify_nonce( $_POST['ads_for_wp_display_nonce'], 'ads_for_wp_display_data' ) )
 			return $post_id;
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 			return $post_id;

@@ -77,19 +77,17 @@ class ads_for_wp_metaboxes_ads_visibility_metabx {
 						$meta_value
 					);
 			}
-			$output .= $this->format_rows( $label, $input );
+			$output .= $this->format_rows($input );
 		}
 		echo '<table class="form-table"><tbody>' . $output . '</tbody></table>';
 	}
-	public function format_rows($input ) {
+	public function format_rows($input) {
 		return '<tr><td>'.$input.'</td></tr>';
 	}
 	public function save_fields( $post_id ) {
 		if ( ! isset( $_POST['ads_for_wp_showadscurrent_nonce'] ) )
-			return $post_id;
-                if(isset($_POST['ads_for_wp_showadscurrent_nonce']))
-		$nonce = $_POST['ads_for_wp_showadscurrent_nonce'];                
-		if ( !wp_verify_nonce( $nonce, 'ads_for_wp_showadscurrent_data' ) )
+			return $post_id;		
+		if ( !wp_verify_nonce( $_POST['ads_for_wp_showadscurrent_nonce'], 'ads_for_wp_showadscurrent_data' ) )
 			return $post_id;
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 			return $post_id;

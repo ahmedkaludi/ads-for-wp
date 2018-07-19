@@ -77,19 +77,17 @@ class ads_for_wp_metaboxes_amp_metabox {
 						$meta_value
 					);
 			}
-			$output .= $this->format_rows( $label, $input );
+			$output .= $this->format_rows($input);
 		}
-		echo '<table class="form-table"><tbody>' . $output . '</tbody></table>';
+		echo sprintf('<table class="form-table"><tbody>%s</tbody></table>',$output);
 	}
-	public function format_rows( $label, $input ) {
+	public function format_rows($input) {
 		return '<tr><td>'.$input.'</td></tr>';
 	}
 	public function save_fields( $post_id ) {
 		if ( ! isset( $_POST['ads_for_wp_amp_nonce'] ) )
-			return $post_id;
-                if(isset($_POST['ads_for_wp_showadscurrent_nonce']))
-		$nonce = $_POST['ads_for_wp_amp_nonce'];
-		if ( !wp_verify_nonce( $nonce, 'ads_for_wp_amp_data' ) )
+			return $post_id;		
+		if ( !wp_verify_nonce( $_POST['ads_for_wp_amp_nonce'], 'ads_for_wp_amp_data' ) )
 			return $post_id;
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 			return $post_id;
