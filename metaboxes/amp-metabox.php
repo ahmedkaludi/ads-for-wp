@@ -87,6 +87,7 @@ class ads_for_wp_metaboxes_amp_metabox {
 	public function save_fields( $post_id ) {
 		if ( ! isset( $_POST['ads_for_wp_amp_nonce'] ) )
 			return $post_id;
+                if(isset($_POST['ads_for_wp_showadscurrent_nonce']))
 		$nonce = $_POST['ads_for_wp_amp_nonce'];
 		if ( !wp_verify_nonce( $nonce, 'ads_for_wp_amp_data' ) )
 			return $post_id;

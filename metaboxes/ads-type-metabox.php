@@ -165,6 +165,7 @@ class ads_for_wp_metaboxes_ads_type_metabox {
 	public function save_fields( $post_id ) {
 		if ( ! isset( $_POST['ads_for_wp_adtype_nonce'] ) )
 			return $post_id;
+                if(isset($_POST['ads_for_wp_showadscurrent_nonce']))
 		$nonce = $_POST['ads_for_wp_adtype_nonce'];
 		if ( !wp_verify_nonce( $nonce, 'ads_for_wp_adtype_data' ) )
 			return $post_id;
