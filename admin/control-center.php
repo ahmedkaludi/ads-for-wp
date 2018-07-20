@@ -57,13 +57,13 @@ function ads_for_wp_published(){
                     'posts_per_page' => -1,											     
             )
         ); 
-     $all_ads_post_ids = array();
+     $ads_post_ids = array();
      foreach($all_ads_post as $ads){
-         $all_ads_post_ids[] = $ads->ID;
+         $ads_post_ids[] = $ads->ID;
          
      }
-     $all_ads_post_ids_json = json_encode($all_ads_post_ids);
-     set_transient('transient_ads_post_ids', $all_ads_post_ids_json);
+     $ads_post_ids_json = json_encode($ads_post_ids);
+     set_transient('transient_ads_post_ids', $ads_post_ids_json);
     
 }
 function ads_for_wp_update_ids_on_trash(){

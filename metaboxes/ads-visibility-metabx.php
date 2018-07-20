@@ -39,8 +39,7 @@ class ads_for_wp_metaboxes_ads_visibility_metabx {
 	}
 	public function field_generator( $post ) {
 		$output = '';
-		foreach ( $this->meta_fields as $meta_field ) {
-			$label = '';
+		foreach ( $this->meta_fields as $meta_field ) {			
 			$meta_value = get_post_meta( $post->ID, $meta_field['id'], true );                        
 			if ( empty( $meta_value ) ) {
 				$meta_value = isset($meta_field['default']); 

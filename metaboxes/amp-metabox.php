@@ -39,8 +39,7 @@ class ads_for_wp_metaboxes_amp_metabox {
 	public function field_generator( $post ) {
 		$output = '';
 		foreach ( $this->meta_fields as $meta_field ) {
-                        $meta_field_label = isset($meta_field['label']);
-			$label = '<label for="' . $meta_field['id'] . '">' . esc_html__( $meta_field_label, 'ads-for-wp' ) . '</label>';
+                        $meta_field_label = isset($meta_field['label']);			
 			$meta_value = get_post_meta( $post->ID, $meta_field['id'], true );
 			if ( empty( $meta_value ) ) {
 				$meta_value = isset($meta_field['default']);

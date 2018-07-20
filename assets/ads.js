@@ -20,19 +20,19 @@ $("#select_adtype").change(function(){
           if(optionHtml){    
               
               
-              if("Custom" == optionValue){
+              if("Custom" === optionValue){
           		$("#custom_code").parent().parent("tr").show();
                         $("#data_client_id").parent().parent("tr").hide();
                         $("#data_ad_slot").parent().parent("tr").hide();
                         $("#banner_size").parent().parent("tr").hide();
               }
-              if("AdSense" == optionValue){
+              if("AdSense" === optionValue){
                   $("#custom_code").parent().parent("tr").hide();
               	  $("#data_client_id").parent().parent("tr").show();
                   $("#data_ad_slot").parent().parent("tr").show();
                   $("#banner_size").parent().parent("tr").show();
               }
-              if("Select Ad Type" == optionValue){
+              if("Select Ad Type" === optionValue){
                   $("#custom_code").parent().parent("tr").hide();
               	  $("#data_client_id").parent().parent("tr").hide();
                   $("#data_ad_slot").parent().parent("tr").hide();
@@ -51,7 +51,7 @@ $("#select_adtype").change(function(){
       $(this).find("option:selected").each(function(){          
           var optionHtml = $(this).html().toLowerCase();       
           if(optionHtml){                                 
-              if("between the content" == optionHtml){
+              if("between the content" === optionHtml){
           	$("#adposition").parent().parent("tr").show();               
               }else{
                $("#adposition").parent().parent("tr").hide();  
@@ -65,7 +65,7 @@ $("#select_adtype").change(function(){
       $(this).find("option:selected").each(function(){          
           var optionHtml = $(this).html().toLowerCase();        
           if(optionHtml){                                 
-              if("number of paragraph" == optionHtml){
+              if("number of paragraph" === optionHtml){
           	$("#paragraph_number").parent().parent("tr").show();
                 $("#paragraph_number").parent().parent("tr").removeClass("afw_dnone");
               }else{

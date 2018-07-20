@@ -102,10 +102,8 @@ class ads_for_wp_metaboxes_ads_type_metabox {
 			if ( empty( $meta_value ) ) {
 				$meta_value = isset($meta_field['default']); }
 			switch ( $meta_field['type'] ) {
-				case 'select':
-                                    
-                                    
-                                        if(isset($meta_field['attributes'])){
+				case 'select':                                                                        
+                                     if(isset($meta_field['attributes'])){
                                       foreach ( $meta_field['attributes'] as $key => $value ) {
                                     
 					$attributes .=  $key."=".'"'.$value.'"'.' ';                                        
