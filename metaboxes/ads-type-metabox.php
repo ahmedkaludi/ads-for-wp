@@ -1,4 +1,7 @@
 <?php
+/*
+Metabox to show ads type such as custom and adsense 
+ */
 class ads_for_wp_metaboxes_ads_type_metabox {
 	private $screen = array(		
             'ads-for-wp-ads'                                                      
@@ -9,9 +12,9 @@ class ads_for_wp_metaboxes_ads_type_metabox {
 			'id' => 'select_adtype',
 			'type' => 'select',                        
 			'options' => array(
-				'Select Ad Type',
-				'AdSense',
-				'Custom',
+				'' => 'Select Ad Type',
+				'AdSense' =>'AdSense',
+				'Custom' =>'Custom',
 			),
                                 'attributes' => array(				
                                 'required' => 'required',                                
@@ -77,7 +80,7 @@ class ads_for_wp_metaboxes_ads_type_metabox {
 		foreach ( $this->screen as $single_screen ) {
 			add_meta_box(
 				'adtype',
-				__( 'Ad Type', 'ads-for-wp' ),
+				esc_html__( 'Ad Type', 'ads-for-wp' ),
 				array( $this, 'meta_box_callback' ),
 				$single_screen,
 				'normal',
@@ -122,7 +125,7 @@ class ads_for_wp_metaboxes_ads_type_metabox {
 							'<option %s value="%s">%s</option>',
 							$meta_value === $meta_field_value ? 'selected' : '',
 							$meta_field_value,
-							$value
+							esc_html__($value, 'ads-for-wp')
 						);
 					}
 					$input .= '</select>';

@@ -34,18 +34,45 @@ add_action('admin_enqueue_scripts','ads_for_wp_admin_enqueue');
 function ads_for_wp_admin_enqueue() {
 
 	wp_enqueue_style( 'ads-for-wp-admin', ADS_FOR_WP_PLUGIN_DIR_URI . 'assets/ads.css', false , ADS_FOR_WP_VERSION );
-
-
 	wp_register_script( 'ads-for-wp-admin-js', ADS_FOR_WP_PLUGIN_DIR_URI . 'assets/ads.js', array('jquery'), ADS_FOR_WP_VERSION , true );
-        
-	// Localize the script with new data
+// Localize the script with new data
 	$data = array(
 		'ajax_url'  => admin_url( 'admin-ajax.php' ),
 		'id'		=> get_the_ID()
 	);
-	wp_localize_script( 'ads-for-wp-admin-js', 'ads_for_wp_localize_data', $data );
-	
+	wp_localize_script( 'ads_for_wp-admin-js', 'ads_for_wp_localize_data', $data );	
 	// Enqueued script with localized data.
-	wp_enqueue_script( 'ads-for-wp-admin-js' );
-
+	wp_enqueue_script( 'ads-for-wp-admin-js' );        
+        	
 }
+// storing and updating all ads post ids in transient on different actions starts here
+    add_action( 'publish_ads-for-wp-ads', 'ads_for_wp_published');
+    add_action( 'trash_ads-for-wp-ads', 'ads_for_wp_update_ids_on_trash');    
+    add_action('untrash_ads-for-wp-ads', 'ads_for_wp_update_ids_on_untrash');
+
+function ads_for_wp_published(){        
+        $all_ads_post = get_posts(
+            array(
+                    'post_type' 	 => 'ads-for-wp-ads',
+                    'posts_per_page' => -1,											     
+            )
+        ); 
+     $all_ads_post_ids = array();
+     foreach($all_ads_post as $ads){
+         $all_ads_post_ids[] = $ads->ID;
+         
+     }
+     $all_ads_post_ids_json = json_encode($all_ads_post_ids);
+     set_transient('transient_ads_post_ids', $all_ads_post_ids_json);
+    
+}
+function ads_for_wp_update_ids_on_trash(){
+     delete_transient('transient_ads_post_ids');
+     ads_for_wp_published();     
+    
+}
+function ads_for_wp_update_ids_on_untrash(){     
+     ads_for_wp_published();
+    
+}
+// storing and updating all ads post ids in transient on different actions ends here

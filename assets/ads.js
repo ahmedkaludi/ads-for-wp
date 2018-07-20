@@ -55,30 +55,25 @@ $("#select_adtype").change(function(){
           	$("#adposition").parent().parent("tr").show();               
               }else{
                $("#adposition").parent().parent("tr").hide();  
-               $("#paragraph_number").parent().parent("tr").addClass("dnone");
+               $("#paragraph_number").parent().parent("tr").addClass("afw_dnone");
               }                                                      
           }      
       });
     }).change();
-    
-    
-    
+            
     $("#adposition").change(function(){        
       $(this).find("option:selected").each(function(){          
           var optionHtml = $(this).html().toLowerCase();        
           if(optionHtml){                                 
               if("number of paragraph" == optionHtml){
           	$("#paragraph_number").parent().parent("tr").show();
-                $("#paragraph_number").parent().parent("tr").removeClass("dnone");
+                $("#paragraph_number").parent().parent("tr").removeClass("afw_dnone");
               }else{
                $("#paragraph_number").parent().parent("tr").hide();   
               }                                                      
           }      
       });
-    }).change();
-    
-    
-    
+    }).change();            
 });
 
  

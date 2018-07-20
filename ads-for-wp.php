@@ -40,17 +40,16 @@ if(! defined('AMP_ADS_FOR_WP_ITEM_FOLDER_NAME')){
 // Options panel
 require ( ADS_FOR_WP_PLUGIN_DIR.'/admin/control-center.php' );
 //Loading custom admin menu
-require  ADS_FOR_WP_PLUGIN_DIR . '/settings/function-admin.php';
-
 //Loading Metaboxes
 require ( ADS_FOR_WP_PLUGIN_DIR.'/metaboxes/ads-type-metabox.php' );
 require ( ADS_FOR_WP_PLUGIN_DIR.'/metaboxes/display-metabox.php' );
 require ( ADS_FOR_WP_PLUGIN_DIR.'/metaboxes/ads-visibility-metabx.php' );
 
-add_action( 'admin_init', 'check_some_other_plugin' );
-function check_some_other_plugin() {
+//Function to check other plugin is install or not
+add_action( 'admin_init', 'ads_for_wp_check_plugin' );
+function ads_for_wp_check_plugin() {
   if ( is_plugin_active('accelerated-mobile-pages/accelerated-moblie-pages.php') ) {
     require ( ADS_FOR_WP_PLUGIN_DIR.'/metaboxes/amp-metabox.php' );	
   }
-}//Loading ads vendor files
+}//Loading ads vendor files and function
 require_once  ADS_FOR_WP_PLUGIN_DIR . '/ads-vendor/functions.php';

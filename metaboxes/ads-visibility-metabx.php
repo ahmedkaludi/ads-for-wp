@@ -1,4 +1,7 @@
 <?php 
+/*
+//Metabox displays in admin sidebar to show and hide ads on particular post
+ */
 class ads_for_wp_metaboxes_ads_visibility_metabx {
 	private $screen = array(
 		'post',
@@ -9,8 +12,8 @@ class ads_for_wp_metaboxes_ads_visibility_metabx {
 			'id' => 'ads-for-wp-visibility',
 			'type' => 'radio',
 			'options' => array(
-				'Show',
-				'Hide',
+				'Show'=>'Show',
+				'Hide'=>'Hide',
 			),
 		),
 	);
@@ -22,7 +25,7 @@ class ads_for_wp_metaboxes_ads_visibility_metabx {
 		foreach ( $this->screen as $single_screen ) {
 			add_meta_box(
 				'showadsforcurrentpag',
-				__( 'Show Ads for Current Page?', 'ads-for-wp' ),
+				esc_html__( 'Show Ads for Current Page?', 'ads-for-wp' ),
 				array( $this, 'meta_box_callback' ),
 				$single_screen,
 				'side',
@@ -60,7 +63,7 @@ class ads_for_wp_metaboxes_ads_visibility_metabx {
 							$meta_field['id'],
 							$meta_field['id'],
 							$meta_field_value,
-							$value,
+							esc_html__($value, 'ads-for-wp'),
 							$i < count( $meta_field['options'] ) - 1 ? '' : ''
 						);
 						$i++;
@@ -82,7 +85,7 @@ class ads_for_wp_metaboxes_ads_visibility_metabx {
 		echo '<table class="form-table"><tbody>' . $output . '</tbody></table>';
 	}
 	public function format_rows($input) {
-		return '<tr><td>'.$input.'</td></tr>';
+		return '<tr><td style="padding:0px;">'.$input.'</td></tr>';
 	}
 	public function save_fields( $post_id ) {
 		if ( ! isset( $_POST['ads_for_wp_showadscurrent_nonce'] ) )

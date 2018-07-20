@@ -1,4 +1,5 @@
 <?php
+//Metabox displays in admin sidebar to show amp compatibilty is enabled or disabled
 class ads_for_wp_metaboxes_amp_metabox {
 	private $screen = array(
 		'ads-for-wp-ads',
@@ -9,8 +10,8 @@ class ads_for_wp_metaboxes_amp_metabox {
 			'id' => 'ads-for-wp_amp_compatibilty',
 			'type' => 'radio',
 			'options' => array(
-				'Enable',
-				'Disable',
+				'Enable'=>'Enable',
+				'Disable'=>'Disable',
 			),
 		),
 	);
@@ -22,7 +23,7 @@ class ads_for_wp_metaboxes_amp_metabox {
 		foreach ( $this->screen as $single_screen ) {
 			add_meta_box(
 				'ampcompatibility',
-				__( 'Amp Compatibility ', 'ads-for-wp' ),
+				esc_html__( 'Amp Compatibility ', 'ads-for-wp' ),
 				array( $this, 'meta_box_callback' ),
 				$single_screen,
 				'side',
@@ -32,7 +33,7 @@ class ads_for_wp_metaboxes_amp_metabox {
 	}
 	public function meta_box_callback( $post ) {
 		wp_nonce_field( 'ads_for_wp_amp_data', 'ads_for_wp_amp_nonce' );
-                	echo 'Amp compatibility has been enabled';
+                	echo "<p>".esc_html__('Amp compatibility has been enabled', 'ads-for-wp')."</p>";
 		$this->field_generator( $post );
 	}
 	public function field_generator( $post ) {
@@ -60,7 +61,7 @@ class ads_for_wp_metaboxes_amp_metabox {
 							$meta_field['id'],
 							$meta_field['id'],
 							$meta_field_value,
-							$value,
+							esc_html__($value, 'ads-for-wp'),
 							$i < count( $meta_field['options'] ) - 1 ? '' : ''
 						);
 						$i++;
@@ -79,10 +80,10 @@ class ads_for_wp_metaboxes_amp_metabox {
 			}
 			$output .= $this->format_rows($input);
 		}
-		echo sprintf('<table class="form-table"><tbody>%s</tbody></table>',$output);
+		echo '<table class="form-table"><tbody>' . $output . '</tbody></table>';
 	}
 	public function format_rows($input) {
-		return '<tr><td>'.$input.'</td></tr>';
+		return '<tr><td style="padding:0px;">'.$input.'</td></tr>';
 	}
 	public function save_fields( $post_id ) {
 		if ( ! isset( $_POST['ads_for_wp_amp_nonce'] ) )

@@ -1,4 +1,5 @@
 <?php
+//Metabox to create display areas for ads in ads admin post
 class ads_for_wp_metaboxes_display_metabox {
 	private $screen = array(
 		'ads-for-wp-ads'
@@ -37,7 +38,7 @@ class ads_for_wp_metaboxes_display_metabox {
 		foreach ( $this->screen as $single_screen ) {
 			add_meta_box(
 				'display',
-				__( 'Display', 'ads-for-wp' ),
+				esc_html__( 'Display', 'ads-for-wp' ),
 				array( $this, 'meta_box_callback' ),
 				$single_screen,
 				'normal',
