@@ -1,3 +1,7 @@
 .afw_dnone{
     display: none !important;
 }
+#manual_ads_type{
+ border: 0px;
+ color: black;
+}

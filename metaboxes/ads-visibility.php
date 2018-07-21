@@ -1,8 +1,8 @@
 <?php 
 /*
-//Metabox displays in admin sidebar to show and hide ads on particular post
+ *  Metabox displays in admin sidebar to show and hide ads on particular post
  */
-class ads_for_wp_metaboxes_ads_visibility_metabx {
+class adsforwp_metaboxes_ads_visibility {
 	private $screen = array(
 		'post',
 	);
@@ -12,39 +12,39 @@ class ads_for_wp_metaboxes_ads_visibility_metabx {
 			'id' => 'ads-for-wp-visibility',
 			'type' => 'radio',
 			'options' => array(
-				'Show'=>'Show',
-				'Hide'=>'Hide',
+				'show'=>'Show',
+				'hide'=>'Hide',
 			),
 		),
 	);
 	public function __construct() {
-		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
-		add_action( 'save_post', array( $this, 'save_fields' ) );
+		add_action( 'add_meta_boxes', array( $this, 'adsforwp_add_meta_boxes' ) );
+		add_action( 'save_post', array( $this, 'adsforwp_save_fields' ) );
 	}
-	public function add_meta_boxes() {
+	public function adsforwp_add_meta_boxes() {
 		foreach ( $this->screen as $single_screen ) {
 			add_meta_box(
 				'showadsforcurrentpag',
 				esc_html__( 'Show Ads for Current Page?', 'ads-for-wp' ),
-				array( $this, 'meta_box_callback' ),
+				array( $this, 'adsforwp_meta_box_callback' ),
 				$single_screen,
 				'side',
 				'low'
 			);
 		}
 	}
-	public function meta_box_callback( $post ) {
-		wp_nonce_field( 'ads_for_wp_showadscurrent_data', 'ads_for_wp_showadscurrent_nonce' );
-		$this->field_generator( $post );
+	public function adsforwp_meta_box_callback( $post ) {
+		wp_nonce_field( 'adsforwp_showadscurrent_data', 'adsforwp_showadscurrent_nonce' );
+		$this->adsforwp_field_generator( $post );
 	}
-	public function field_generator( $post ) {
+	public function adsforwp_field_generator( $post ) {
 		$output = '';
 		foreach ( $this->meta_fields as $meta_field ) {			
 			$meta_value = get_post_meta( $post->ID, $meta_field['id'], true );                        
 			if ( empty( $meta_value ) ) {
 				$meta_value = isset($meta_field['default']); 
                                 if(empty($meta_value)){
-                               $meta_value ='Show';   
+                               $meta_value ='show';   
                                }
                           }
 			switch ( $meta_field['type'] ) {
@@ -79,17 +79,19 @@ class ads_for_wp_metaboxes_ads_visibility_metabx {
 						$meta_value
 					);
 			}
-			$output .= $this->format_rows($input );
+			$output .= $this->adsforwp_format_rows($input );
 		}
-		echo '<table class="form-table"><tbody>' . $output . '</tbody></table>';
+                $common_function_obj = new adsforwp_admin_common_functions();
+                $allowed_html = $common_function_obj->adsforwp_expanded_allowed_tags();
+		echo '<table class="form-table"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table>';
 	}
-	public function format_rows($input) {
+	public function adsforwp_format_rows($input) {
 		return '<tr><td style="padding:0px;">'.$input.'</td></tr>';
 	}
-	public function save_fields( $post_id ) {
-		if ( ! isset( $_POST['ads_for_wp_showadscurrent_nonce'] ) )
+	public function adsforwp_save_fields( $post_id ) {
+		if ( ! isset( $_POST['adsforwp_showadscurrent_nonce'] ) )
 			return $post_id;		
-		if ( !wp_verify_nonce( $_POST['ads_for_wp_showadscurrent_nonce'], 'ads_for_wp_showadscurrent_data' ) )
+		if ( !wp_verify_nonce( $_POST['adsforwp_showadscurrent_nonce'], 'adsforwp_showadscurrent_data' ) )
 			return $post_id;
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 			return $post_id;
@@ -110,6 +112,6 @@ class ads_for_wp_metaboxes_ads_visibility_metabx {
 		}
 	}
 }
-if (class_exists('ads_for_wp_metaboxes_ads_visibility_metabx')) {
-	new ads_for_wp_metaboxes_ads_visibility_metabx;
+if (class_exists('adsforwp_metaboxes_ads_visibility')) {
+	new adsforwp_metaboxes_ads_visibility;
 };

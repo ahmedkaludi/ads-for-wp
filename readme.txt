@@ -16,12 +16,8 @@ ADS for WP is the Successor of the ADVANCED AMP ADS plugin with all goodness of 
 
 * Unlimited Ads
 * Custom Ad HTML support
+* Ads Shortcode
 * AMP Compatibility: AmpforWp Seamless integration & AMP by Automattic..
 * Post Specific Ads Control
 * 3 Fixed Ad positions (Between the content, After the content, Before the content, )
-* Unlimited InContent Ads: After nth paragraph
 
-== Changelog ==
-
-= 1.1.2 (23 June 2018) =
-* 'Show Ad After 50% of content' feature added.

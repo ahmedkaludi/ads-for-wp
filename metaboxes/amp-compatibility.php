@@ -1,8 +1,8 @@
 <?php
 //Metabox displays in admin sidebar to show amp compatibilty is enabled or disabled
-class ads_for_wp_metaboxes_amp_metabox {
+class adsforwp_metaboxes_amp_compatibility {
 	private $screen = array(
-		'ads-for-wp-ads',
+		'adsforwp',
 	);
 	private $meta_fields = array(
 		array(
@@ -10,33 +10,33 @@ class ads_for_wp_metaboxes_amp_metabox {
 			'id' => 'ads-for-wp_amp_compatibilty',
 			'type' => 'radio',
 			'options' => array(
-				'Enable'=>'Enable',
-				'Disable'=>'Disable',
+				'enable'=>'Enable',
+				'disable'=>'Disable',
 			),
 		),
 	);
 	public function __construct() {
-		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
-		add_action( 'save_post', array( $this, 'save_fields' ) );
+		add_action( 'add_meta_boxes', array( $this, 'adsforwp_add_meta_boxes' ) );
+		add_action( 'save_post', array( $this, 'adsforwp_save_fields' ) );
 	}
-	public function add_meta_boxes() {
+	public function adsforwp_add_meta_boxes() {
 		foreach ( $this->screen as $single_screen ) {
 			add_meta_box(
 				'ampcompatibility',
 				esc_html__( 'Amp Compatibility ', 'ads-for-wp' ),
-				array( $this, 'meta_box_callback' ),
+				array( $this, 'adsforwp_meta_box_callback' ),
 				$single_screen,
 				'side',
 				'low'
 			);
 		}
 	}
-	public function meta_box_callback( $post ) {
-		wp_nonce_field( 'ads_for_wp_amp_data', 'ads_for_wp_amp_nonce' );
+	public function adsforwp_meta_box_callback( $post ) {
+		wp_nonce_field( 'adsforwp_amp_data', 'adsforwp_amp_nonce' );
                 	echo "<p>".esc_html__('Amp compatibility has been enabled', 'ads-for-wp')."</p>";
-		$this->field_generator( $post );
+		$this->adsforwp_field_generator( $post );
 	}
-	public function field_generator( $post ) {
+	public function adsforwp_field_generator( $post ) {
 		$output = '';
 		foreach ( $this->meta_fields as $meta_field ) {
                         $meta_field_label = isset($meta_field['label']);			
@@ -44,7 +44,7 @@ class ads_for_wp_metaboxes_amp_metabox {
 			if ( empty( $meta_value ) ) {
 				$meta_value = isset($meta_field['default']);
                                 if(empty($meta_value)){
-                                $meta_value ='Enable';   
+                                $meta_value ='enable';   
                                }
                                 }
 			switch ( $meta_field['type'] ) {
@@ -77,17 +77,19 @@ class ads_for_wp_metaboxes_amp_metabox {
 						$meta_value
 					);
 			}
-			$output .= $this->format_rows($input);
+			$output .= $this->adsforwp_format_rows($input);
 		}
-		echo '<table class="form-table"><tbody>' . $output . '</tbody></table>';
+                $common_function_obj = new adsforwp_admin_common_functions();
+                $allowed_html = $common_function_obj->adsforwp_expanded_allowed_tags();
+		echo '<table class="form-table"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table>';
 	}
-	public function format_rows($input) {
+	public function adsforwp_format_rows($input) {
 		return '<tr><td style="padding:0px;">'.$input.'</td></tr>';
 	}
-	public function save_fields( $post_id ) {
-		if ( ! isset( $_POST['ads_for_wp_amp_nonce'] ) )
+	public function adsforwp_save_fields( $post_id ) {
+		if ( ! isset( $_POST['adsforwp_amp_nonce'] ) )
 			return $post_id;		
-		if ( !wp_verify_nonce( $_POST['ads_for_wp_amp_nonce'], 'ads_for_wp_amp_data' ) )
+		if ( !wp_verify_nonce( $_POST['adsforwp_amp_nonce'], 'adsforwp_amp_data' ) )
 			return $post_id;
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 			return $post_id;
@@ -108,6 +110,6 @@ class ads_for_wp_metaboxes_amp_metabox {
 		}
 	}
 }
-if (class_exists('ads_for_wp_metaboxes_amp_metabox')) {
-	new ads_for_wp_metaboxes_amp_metabox;
+if (class_exists('adsforwp_metaboxes_amp_compatibility')) {
+	new adsforwp_metaboxes_amp_compatibility;
 };

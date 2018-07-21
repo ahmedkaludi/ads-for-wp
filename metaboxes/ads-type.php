@@ -1,10 +1,10 @@
 <?php
 /*
-Metabox to show ads type such as custom and adsense 
+  Metabox to show ads type such as custom and adsense 
  */
-class ads_for_wp_metaboxes_ads_type_metabox {
+class adsforwp_metaboxes_ads_type {
 	private $screen = array(		
-            'ads-for-wp-ads'                                                      
+            'adsforwp'                                                      
 	);
 	private $meta_fields = array(
 		array(
@@ -13,8 +13,8 @@ class ads_for_wp_metaboxes_ads_type_metabox {
 			'type' => 'select',                        
 			'options' => array(
 				'' => 'Select Ad Type',
-				'AdSense' =>'AdSense',
-				'Custom' =>'Custom',
+				'adsense' =>'AdSense',
+				'custom' =>'Custom',
 			),
                                 'attributes' => array(				
                                 'required' => 'required',                                
@@ -73,15 +73,15 @@ class ads_for_wp_metaboxes_ads_type_metabox {
 		),
 	);
 	public function __construct() {
-		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
-		add_action( 'save_post', array( $this, 'save_fields' ) );
+		add_action( 'add_meta_boxes', array( $this, 'adsforwp_add_meta_boxes' ) );
+		add_action( 'save_post', array( $this, 'adsforwp_save_fields' ) );
 	}
-	public function add_meta_boxes() {
+	public function adsforwp_add_meta_boxes() {
 		foreach ( $this->screen as $single_screen ) {
 			add_meta_box(
 				'adtype',
 				esc_html__( 'Ad Type', 'ads-for-wp' ),
-				array( $this, 'meta_box_callback' ),
+				array( $this, 'adsforwp_meta_box_callback' ),
 				$single_screen,
 				'normal',
 				'default'
@@ -89,26 +89,26 @@ class ads_for_wp_metaboxes_ads_type_metabox {
 		}
                 
 	}
-	public function meta_box_callback( $post ) {
-		wp_nonce_field( 'ads_for_wp_adtype_data', 'ads_for_wp_adtype_nonce' );
-		$this->field_generator( $post );
+	public function adsforwp_meta_box_callback( $post ) {
+		wp_nonce_field( 'adsforwp_adtype_data', 'adsforwp_adtype_nonce' );
+		$this->adsforwp_field_generator( $post );
 	}
-	public function field_generator( $post ) {
+	public function adsforwp_field_generator( $post ) {
 		$output = '';                
 		foreach ( $this->meta_fields as $meta_field ) {
                     $attributes ='';
-			$label = '<label for="' . $meta_field['id'] . '">' . esc_html__($meta_field['label'], 'ads-for-wp' ) . '</label>';
+			$label = '<label for="' . $meta_field['id'] . '">' . esc_html__( $meta_field['label'], 'ads-for-wp' ) . '</label>';
 			$meta_value = get_post_meta( $post->ID, $meta_field['id'], true );
 			if ( empty( $meta_value ) ) {
 				$meta_value = isset($meta_field['default']); }
 			switch ( $meta_field['type'] ) {
 				case 'select':                                                                        
-                                     if(isset($meta_field['attributes'])){
-                                      foreach ( $meta_field['attributes'] as $key => $value ) {
-                                    
-					$attributes .=  $key."=".'"'.$value.'"'.' ';                                        
-					}
-                                    }
+                    
+                    if(isset($meta_field['attributes'])){
+                        foreach ( $meta_field['attributes'] as $key => $value ) {
+                        	$attributes .=  $key."=".'"'.$value.'"'.' ';
+                        }
+                    }
                                     
 					$input = sprintf(
 						'<select id="%s" name="%s" %s>',
@@ -156,17 +156,20 @@ class ads_for_wp_metaboxes_ads_type_metabox {
                                                 $attributes
 					);
 			}
-			$output .= $this->format_rows( $label, $input );
+			$output .= $this->adsforwp_format_rows( $label, $input );
 		}
-		echo '<table class="form-table"><tbody>' . $output . '</tbody></table>';
+                
+                $common_function_obj = new adsforwp_admin_common_functions();
+                $allowed_html = $common_function_obj->adsforwp_expanded_allowed_tags();                                                		                                
+		echo '<table class="form-table"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table>';
 	}
-	public function format_rows( $label, $input ) {
+	public function adsforwp_format_rows( $label, $input ) {
 		return '<tr class=""><th>'.$label.'</th><td>'.$input.'</td></tr>';
-	}
-	public function save_fields( $post_id ) {
-		if ( ! isset( $_POST['ads_for_wp_adtype_nonce'] ) )
+	}                
+	public function adsforwp_save_fields( $post_id ) {
+		if ( ! isset( $_POST['adsforwp_adtype_nonce'] ) )
 			return $post_id;		
-		if ( !wp_verify_nonce( $_POST['ads_for_wp_adtype_nonce'], 'ads_for_wp_adtype_data' ) )
+		if ( !wp_verify_nonce( $_POST['adsforwp_adtype_nonce'], 'adsforwp_adtype_data' ) )
 			return $post_id;
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 			return $post_id;
@@ -187,6 +190,6 @@ class ads_for_wp_metaboxes_ads_type_metabox {
 		}
 	}
 }
-if (class_exists('ads_for_wp_metaboxes_ads_type_metabox')) {
-	new ads_for_wp_metaboxes_ads_type_metabox;
+if (class_exists('adsforwp_metaboxes_ads_type')) {
+	new adsforwp_metaboxes_ads_type;
 };
