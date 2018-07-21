@@ -1,5 +1,3 @@
-
-
 jQuery( document ).ready(function($) {
 var currentAdID       		= adsforwp_localize_data.id;       
 // Metaboxes field selection on different dropdown selection
@@ -10,7 +8,7 @@ $("#custom_code").parent().parent("tr").hide();
 $("#data_client_id").parent().parent("tr").hide();
 $("#data_ad_slot").parent().parent("tr").hide();
 $("#paragraph_number").parent().parent("tr").hide();
-$("#paragraph_number").parent().parent("tr").addClass("afw_dnone");
+$("#paragraph_number").parent().parent("tr").addClass("afw_hide");
 $("#banner_size").parent().parent("tr").hide();
 $("#manual_ads_type").parent().parent("tr").hide();
 
@@ -61,13 +59,13 @@ $("#select_adtype").change(function(){
                 case "ad_shortcode":
                     $("#manual_ads_type").parent().parent("tr").show();
                     $("#adposition").parent().parent("tr").hide(); 
-                    $("#paragraph_number").parent().parent("tr").addClass("afw_dnone");                    
+                    $("#paragraph_number").parent().parent("tr").addClass("afw_hide");                    
                     $("#paragraph_number").parent().parent("tr").hide();
                     break
                 default:
                     $("#adposition").parent().parent("tr").hide(); 
                     $("#manual_ads_type").parent().parent("tr").hide();
-                    $("#paragraph_number").parent().parent("tr").addClass("afw_dnone");
+                    $("#paragraph_number").parent().parent("tr").addClass("afw_hide");
                   break;   
                 }                          
           }      
@@ -80,7 +78,7 @@ $("#select_adtype").change(function(){
           if(optionValue){                                 
               if("number_of_paragraph" === optionValue){
           	$("#paragraph_number").parent().parent("tr").show();
-                $("#paragraph_number").parent().parent("tr").removeClass("afw_dnone");
+                $("#paragraph_number").parent().parent("tr").removeClass("afw_hide");
               }else{
                $("#paragraph_number").parent().parent("tr").hide();   
               }                                                      

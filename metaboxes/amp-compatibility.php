@@ -10,8 +10,8 @@ class adsforwp_metaboxes_amp_compatibility {
 			'id' => 'ads-for-wp_amp_compatibilty',
 			'type' => 'radio',
 			'options' => array(
-				'enable'=>'Enable',
-				'disable'=>'Disable',
+				'enable'=>'Activated',
+				'disable'=>'Deactivate',
 			),
 		),
 	);
@@ -23,7 +23,7 @@ class adsforwp_metaboxes_amp_compatibility {
 		foreach ( $this->screen as $single_screen ) {
 			add_meta_box(
 				'ampcompatibility',
-				esc_html__( 'Amp Compatibility ', 'ads-for-wp' ),
+				esc_html__( 'AMP', 'ads-for-wp' ),
 				array( $this, 'adsforwp_meta_box_callback' ),
 				$single_screen,
 				'side',
@@ -33,7 +33,7 @@ class adsforwp_metaboxes_amp_compatibility {
 	}
 	public function adsforwp_meta_box_callback( $post ) {
 		wp_nonce_field( 'adsforwp_amp_data', 'adsforwp_amp_nonce' );
-                	echo "<p>".esc_html__('Amp compatibility has been enabled', 'ads-for-wp')."</p>";
+                	echo "<p>".esc_html__('AMP compatibility has been activated', 'ads-for-wp')."</p>";
 		$this->adsforwp_field_generator( $post );
 	}
 	public function adsforwp_field_generator( $post ) {

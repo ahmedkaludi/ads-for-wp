@@ -1,5 +1,4 @@
 <?php
-
 /*
  *      We are registering our post type here in wordpress
  */

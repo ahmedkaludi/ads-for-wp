@@ -1,7 +1,7 @@
-.afw_dnone{
-    display: none !important;
+.afw_hide{
+    display: none;
 }
-#manual_ads_type{
+.afw_manual_ads_type{
  border: 0px;
  color: black;
 }

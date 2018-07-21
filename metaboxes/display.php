@@ -34,10 +34,11 @@ class adsforwp_metaboxes_display {
                array(
 			'label' => 'Manual Ad',
 			'id' => 'manual_ads_type',
-			'type' => 'text',
+			'type' => 'text',                                
                         'attributes' => array(				
                                'readonly' 	=> 'readonly',	
                                'disabled' 	=> 'disabled',
+                               'class' => 'afw_manual_ads_type',
 			),
 		),
 	);

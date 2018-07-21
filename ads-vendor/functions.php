@@ -192,4 +192,3 @@ function adsforwp_get_ad_code($post_ad_id){
       } 
             
 }
-

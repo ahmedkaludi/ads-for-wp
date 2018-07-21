@@ -3,7 +3,7 @@
 Plugin Name: Ads for WP
 Plugin URI: https://wordpress.org/plugins/ads-for-wp/
 Description: Ads for WP - The best Advertisement plugin in WordPress
-Version: 1.1.2
+Version: 1.0
 Author: Ahmed Kaludi, Mohammed Kaludi
 Author URI: https://ampforwp.com/
 Donate link: https://www.paypal.me/Kaludi/25
