@@ -1,12 +1,12 @@
 <?php
 /*
-Plugin Name: Ads for WP
+Plugin Name: Ads for WP - Advanced Ads & Adsense Solution for WP & AMP
 Plugin URI: https://wordpress.org/plugins/ads-for-wp/
-Description: Ads for WP - The best Advertisement plugin in WordPress
+Description: ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy to Use, Unlimited Incontent Ads, Adsense, Premium Features and more
 Version: 1.0
 Author: Ahmed Kaludi, Mohammed Kaludi
 Author URI: https://ampforwp.com/
-Donate link: https://www.paypal.me/Kaludi/25
+Donate link: https://www.paypal.me/Kaludi/25usd
 Text Domain: ads-for-wp
 License: GPL2+
 */
