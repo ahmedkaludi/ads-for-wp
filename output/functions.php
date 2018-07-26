@@ -163,13 +163,15 @@ function adsforwp_get_ad_code($post_ad_id){
             }            
             if($is_amp == 'yes'){
                 if($amp_compatibility == 'enable'){
-                 $ad_code = '<amp-ad 
+                 $ad_code = '<div class="afw afw-ga afw_'.$post_ad_id.'">
+                                <amp-ad 
 				type="adsense"
 				width="'. esc_attr($width) .'"
 				height="'. esc_attr($height) .'"
 				data-ad-client="'. $ad_client .'"
 				data-ad-slot="'.$ad_slot .'">
-			    </amp-ad>';   
+			    </amp-ad>
+                            </div>';
                 }                             
 				                
             }
@@ -184,7 +186,48 @@ function adsforwp_get_ad_code($post_ad_id){
 							</script>
 						</div>';   
             }                                    
-            break;         
+            break;
+            
+            case 'media_net':
+                        
+            $ad_data_cid = $post_meta_dataset['data_cid'][0];
+            $ad_data_crid = $post_meta_dataset['data_crid'][0];    
+            $width='200';
+            $height='200';
+            $banner_size = $post_meta_dataset['banner_size'][0];    
+            if($banner_size !=''){
+            $explode_size = explode('x', $banner_size);            
+            $width = $explode_size[0];            
+            $height = $explode_size[1];                               
+            }            
+            if($is_amp == 'yes'){
+                if($amp_compatibility == 'enable'){
+                 $ad_code = 
+                            '<div class="afw afw-md afw_'.$post_ad_id.'">
+                            <amp-ad 
+				type="medianet"
+				width="'. esc_attr($width) .'"
+				height="'. esc_attr($height) .'"
+                                data-tagtype="cm"    
+				data-cid="'. $ad_data_cid.'"
+				data-crid="'.$ad_data_crid.'">
+			    </amp-ad>;  
+                            </div>';    
+                }                             
+				                
+            }
+            if($is_amp == 'no'){                
+             $ad_code = '<div class="afw afw-md afw_'.$post_ad_id.'">
+						<script id="mNCC" language="javascript">
+                                                            medianet_width = "'.esc_attr($width).'";
+                                                            medianet_height = "'.esc_attr($height).'";
+                                                            medianet_crid = "'.$ad_data_crid.'"
+                                                            medianet_versionId ="3111299"
+                                                   </script>
+                                                   <script src="//contextual.media.net/nmedianet.js?cid='.$ad_data_cid.'"></script>		
+						</div>';   
+            }                                    
+            break;
             default:
             break;
         }        

@@ -14,7 +14,9 @@ class adsforwp_metaboxes_ads_type {
 			'options' => array(
 				'' => 'Select Ad Type',
 				'adsense' =>'AdSense',
+                'media_net' =>'Media.net',
 				'custom' =>'Custom',
+                            
 			),
                                 'attributes' => array(				
                                 'required' => 'required',                                
@@ -46,6 +48,28 @@ class adsforwp_metaboxes_ads_type {
 				
 			),
 		),
+            //Media.net fields starts here
+                array(
+			'label' => 'Data CID',
+			'id' => 'data_cid',
+			'type' => 'text',
+                        'attributes' => array(
+				'placeholder' => '8XXXXX74',
+                                'maxlength' => '20',
+				
+			),
+		),
+                array(
+			'label' => 'Data CRID',
+			'id' => 'data_crid',
+			'type' => 'text',
+                        'attributes' => array(
+				'placeholder' => '1XXXXXX82',
+                                'maxlength' => '20',
+				
+			),
+		),
+            //Media.net fields ends here                    
 		array(
 			'label' => 'Size',
 			'id' => 'banner_size',
@@ -69,6 +93,8 @@ class adsforwp_metaboxes_ads_type {
 				'320x50'=>'mobile banner (320x50)',
 				'970x90'=>'large leaderboard (970x90)',
 				'970x250'=>'billboard (970x250)',
+                                '728x20'=>'wide horizontal (728x20)',
+                                '600x120'=>'horizontal (600x120)',
 			),
 		),
 	);

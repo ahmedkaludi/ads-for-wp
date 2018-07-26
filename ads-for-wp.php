@@ -37,5 +37,5 @@ function adsforwp_check_plugin() {
     require ( adsforwp_PLUGIN_DIR.'/metaboxes/amp-compatibility.php' );	
   }
 }//Loading ads vendor files and function
-require_once  adsforwp_PLUGIN_DIR . '/ads-vendor/functions.php';
+require_once  adsforwp_PLUGIN_DIR . '/output/functions.php';
 require_once  adsforwp_PLUGIN_DIR . '/admin/common-functions.php';
