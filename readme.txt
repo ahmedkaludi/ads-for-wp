@@ -22,6 +22,16 @@ ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy t
 * Post Specific Ads Control
 * Easily inject Between the content, After the content or Before the content.
 
+= Active Development: =
+We are actively developing this plugin and our aim is to make this plugin into the #1 solution in the world. 
+
+= Development Roadmap: =
+Product development roadmap is coming soon.
+
+= Development Roadmap: =
+Support is provided in forums, to contact, use this link: http://magazine3.company/contact/
+
+
 == Changelog ==
 
 = 1.1 (27th July 2018) =
