@@ -15,7 +15,7 @@ function adsforwp_display_ads($content){
         if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {
             $is_amp = 'yes';        
         }                    
-        if($visibility == 'show') {
+        if($visibility != 'hide') {
             $all_ads_post = json_decode(get_transient('adsforwp_transient_ads_ids'), true);              
             foreach($all_ads_post as $ads){
             $post_ad_id = $ads;                           
@@ -94,11 +94,10 @@ function adsforwp_manual_ads($atts) {
         if(array_key_exists('ads-for-wp-visibility', $current_post_data)){
         $visibility = $current_post_data['ads-for-wp-visibility'][0];    
         }                                                            
-        if($visibility == 'show') {                                    
+        if($visibility != 'hide') {                                    
         $ad_code =  adsforwp_get_ad_code($post_ad_id);          
         return $ad_code;                           
-       }
-        
+       }        
 }
 /*
  * Generating html for ads to be displayed by post id
