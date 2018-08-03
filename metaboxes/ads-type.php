@@ -154,7 +154,7 @@ class adsforwp_metaboxes_ads_type {
 					}
                                         switch($meta_field['id']){
                                             case 'select_adtype':
-                                                $input .= '</select><span style="cursor:pointer;" class="afw_pointer" id="afw_data_cid_pointer"><img src="'.ADSFORWP_PLUGIN_DIR_URI.'/assets/images/questionmark.png"/></span>';
+                                                $input .= '</select><span style="cursor:pointer;float:right;" class="afw_pointer dashicons-before dashicons-editor-help" id="afw_data_cid_pointer"></span>';
                                                 break;                                            
                                             default:
                                                 $input .= '</select>';

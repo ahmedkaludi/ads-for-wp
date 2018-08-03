@@ -96,7 +96,7 @@ function adsforwp_print_footer_scripts() {
             edge: 'top',
         },
         show: function(event, t){
-            t.pointer.css({'left':'670px'});
+            t.pointer.css({'right':'95px'});
         },
         close: function() {
             // This function is fired when you click the close button
@@ -123,13 +123,7 @@ function adsforwp_print_footer_scripts() {
         var status = 'open';
         var id = $(this).attr('id');         
         adsforwp_pointer_hover(id, status);
-    });  
-    $(".afw_pointer").mouseout(function(){
-        var status = 'close';
-        var id = $(this).attr('id');         
-        adsforwp_pointer_hover(id, status);
-    }); 
-      
+    });            
    });   
    </script>
 <?php
