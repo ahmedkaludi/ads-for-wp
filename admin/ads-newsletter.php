@@ -31,16 +31,15 @@
         if (!array_key_exists($tab, $tour)) {                
 			$show_pointer = true;                                            
 			$id = '#menu-posts-adsforwp';  // Define ID used on page html element where we want to display pointer
-			$content = '<h3>' . sprintf (__('You are awesome for using ADSFORWP!', 'ads-for-wp'), self::DISPLAY_VERSION) . '</h3>';
-			$content .= __('<p>Do you want the latest on <b>ADS update</b> before others and some best resources on ADS in a single email? - Free just for users of ADS!</p>', 'accelerated-mobile-pages');
+			$content = '<h3>' . sprintf (__('You are awesome for using Ads for WP!', 'ads-for-wp'), self::DISPLAY_VERSION) . '</h3>';
+			$content .= __('<p>Do you want the latest on <b>Ads update</b> before others and some best resources on monetization in a single email? - Free just for users of ADS!</p>', 'ads-for-wp');
                         $content .= __('
-                        <!-- Begin MailChimp Signup Form -->
                         <style type="text/css">
                         .wp-pointer-buttons{ padding:0; overflow: hidden; }
                         .wp-pointer-content .button-secondary{  left: -25px;background: transparent;top: 5px; border: 0;position: relative; padding: 0; box-shadow: none;margin: 0;color: #0085ba;} .wp-pointer-content .button-primary{ display:none}	#afw_mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; }
                         </style>
-                        <div id="afw_mc_embed_signup">
-                            <form action="//app.mailerlite.com/webforms/submit/d3w0e1" data-id="258182" data-code="d3w0e1" method="POST" target="_blank">
+                        <div id="afw_mc_embed_signup">  
+                            <form action="//app.mailerlite.com/webforms/submit/o1s7u3" data-id="258182" data-code="o1s7u3" method="POST" target="_blank">
                                     <div id="afw_mc_embed_signup_scroll">
                                     <div class="afw-mc-field-group" style="    margin-left: 15px;    width: 195px;    float: left;">
                                                     <input type="text" name="fields[name]" class="form-control" placeholder="Name" hidden value="' . esc_attr( $current_user->display_name ) . '" style="display:none">
