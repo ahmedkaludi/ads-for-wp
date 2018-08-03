@@ -43,6 +43,8 @@ $("#select_adtype").change(function(){
                 }                                                        
           }      
       });
+      var id = $(".afw_pointer").attr('id');          
+          $("#"+id).pointer().pointer('close');
     }).change();
     
     
