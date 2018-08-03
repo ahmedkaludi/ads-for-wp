@@ -3,7 +3,7 @@ Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
 Tags: Ads, Advanced Ads, Ad Inserter, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
 Tested up to: 4.9.7
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -34,7 +34,13 @@ Support is provided in forums, to contact, use this link: http://magazine3.compa
 
 == Changelog ==
 
-= 1.1 (27th July 2018) =
+= 1.0.2 (3rd August 2018) =
+* Ads not showing in the old posts bug fixed
+* Pointers added for help.
+* Optin Capability Added
+
+
+= 1.0.1 (27th July 2018) =
 * Media.net Ad Support
 * Minor improvements
 
