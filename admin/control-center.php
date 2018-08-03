@@ -36,8 +36,13 @@ add_action('admin_enqueue_scripts','adsforwp_admin_enqueue');
 
 function adsforwp_admin_enqueue() {
 
-	wp_enqueue_style( 'ads-for-wp-admin', adsforwp_PLUGIN_DIR_URI . 'assets/ads.css', false , adsforwp_VERSION );
-	wp_register_script( 'ads-for-wp-admin-js', adsforwp_PLUGIN_DIR_URI . 'assets/ads.js', array('jquery'), adsforwp_VERSION , true );
+    
+         wp_enqueue_style('wp-pointer');
+         wp_enqueue_script('wp-pointer');
+         add_action('admin_print_footer_scripts', 'adsforwp_print_footer_scripts' );
+    
+	wp_enqueue_style( 'ads-for-wp-admin', ADSFORWP_PLUGIN_DIR_URI . 'assets/ads.css', false , ADSFORWP_VERSION );
+	wp_register_script( 'ads-for-wp-admin-js', ADSFORWP_PLUGIN_DIR_URI . 'assets/ads.js', array('jquery'), ADSFORWP_VERSION , true );
         // Localize the script with new data
 	$data = array(
 		'ajax_url'  => admin_url( 'admin-ajax.php' ),
@@ -77,5 +82,56 @@ function adsforwp_update_ids_on_trash(){
 function adsforwp_update_ids_on_untrash(){     
      adsforwp_published();    
 }
-
+//Showing pointer on mouse movement 
+function adsforwp_print_footer_scripts() {       
+    $adsense_pointer_content = '<h3>'.esc_html__( 'WordPress Answers', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'You can find Data Client ID and Data Ad Slot from adsense website.', 'ads-for-wp' ).'</p>';
+    $media_net_pointer_content = '<h3>'.esc_html__( 'WordPress Answers', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'You can find Data CID id and Data CRID from media.net website.', 'ads-for-wp' ).'</p>';   
+?>
+   <script type="text/javascript">
+   
+   function adsforwp_pointer(id,content, status){
+       $("#"+id).pointer({
+        content: content,
+         position: {
+            edge: 'top',
+        },
+        show: function(event, t){
+            t.pointer.css({'left':'670px'});
+        },
+        close: function() {
+            // This function is fired when you click the close button
+        }
+      }).pointer(status); 
+   }
+   function adsforwp_pointer_hover(id, status){      
+       var content ='default';                        
+        switch(id){
+            case 'afw_adsense_pointer':
+                 content = '<?php echo $adsense_pointer_content; ?>';
+                break;
+            case 'afw_media_net_pointer':
+                content = '<?php echo $media_net_pointer_content; ?>';
+                break;           
+            default:
+                break;
+        }         
+        adsforwp_pointer(id,content, status);        
+   }
+      
+   jQuery(document).ready( function($) {       
+    $(".afw_pointer").mouseover(function(){
+        var status = 'open';
+        var id = $(this).attr('id');         
+        adsforwp_pointer_hover(id, status);
+    });  
+    $(".afw_pointer").mouseout(function(){
+        var status = 'close';
+        var id = $(this).attr('id');         
+        adsforwp_pointer_hover(id, status);
+    }); 
+      
+   });   
+   </script>
+<?php
+}
 

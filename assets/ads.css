@@ -1,7 +1,18 @@
 .afw_hide{
     display: none;
 }
-.afw_manual_ads_type{
- border: 0px;
+input[name=manual_ads_type] {    
+border: 0px;
  color: black;
 }
+
+.afw_input {
+    width: 50%;
+}
+.afw_select {
+    width: 50%;
+}
+.afw_textarea {
+    width: 50%;
+}
+

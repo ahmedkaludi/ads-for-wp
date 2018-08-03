@@ -14,7 +14,7 @@ class adsforwp_metaboxes_ads_type {
 			'options' => array(
 				'' => 'Select Ad Type',
 				'adsense' =>'AdSense',
-                'media_net' =>'Media.net',
+                                'media_net' =>'Media.net',
 				'custom' =>'Custom',
                             
 			),
@@ -137,7 +137,7 @@ class adsforwp_metaboxes_ads_type {
                     }
                                     
 					$input = sprintf(
-						'<select id="%s" name="%s" %s>',
+						'<select class="afw_select" id="%s" name="%s" %s>',
 						$meta_field['id'],
 						$meta_field['id'],
                                                 $attributes    
@@ -152,11 +152,19 @@ class adsforwp_metaboxes_ads_type {
 							esc_html__($value, 'ads-for-wp')
 						);
 					}
-					$input .= '</select>';
+                                        switch($meta_field['id']){
+                                            case 'select_adtype':
+                                                $input .= '</select><span style="cursor:pointer;" class="afw_pointer" id="afw_data_cid_pointer"><img src="'.ADSFORWP_PLUGIN_DIR_URI.'/assets/images/questionmark.png"/></span>';
+                                                break;                                            
+                                            default:
+                                                $input .= '</select>';
+                                               break;
+                                        }
+					
 					break;
 				case 'textarea':
 					$input = sprintf(
-						'<textarea style="width: 100%%" id="%s" name="%s" rows="5">%s</textarea>',
+						'<textarea class="afw_textarea" id="%s" name="%s" rows="5">%s</textarea>',
 						$meta_field['id'],
 						$meta_field['id'],
 						$meta_value
@@ -171,16 +179,17 @@ class adsforwp_metaboxes_ads_type {
 					}
                                     }
     
-                                
-					$input = sprintf(
-						'<input %s id="%s" name="%s" type="%s" value="%s" %s>',
-						$meta_field['type'] !== 'color' ? 'style="width: 100%"' : '',
+                                     $input = sprintf(
+						'<input class="afw_input" %s id="%s" name="%s" type="%s" value="%s" %s>',
+						$meta_field['type'] !== 'color' ? '' : '',
 						$meta_field['id'],
 						$meta_field['id'],
 						$meta_field['type'],
 						$meta_value,
                                                 $attributes
-					);
+                                             );
+                                        
+					
 			}
 			$output .= $this->adsforwp_format_rows( $label, $input );
 		}

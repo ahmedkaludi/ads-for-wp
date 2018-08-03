@@ -14,28 +14,27 @@ License: GPL2+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define('adsforwp_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
-define('adsforwp_PLUGIN_DIR_URI', plugin_dir_url(__FILE__));
+define('ADSFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
+define('ADSFORWP_PLUGIN_DIR_URI', plugin_dir_url(__FILE__));
 
-if ( ! defined( 'adsforwp_VERSION' ) ) {
-	define( 'adsforwp_VERSION', '1.1.2' );
+if ( ! defined( 'ADSFORWP_VERSION' ) ) {
+	define( 'ADSFORWP_VERSION', '1.1.2' );
 }
 /* Adding Files*/
-//require ( adsforwp__PLUGIN_DIR.'/widget/ads-widget.php' );
-// Options panel
-require ( adsforwp_PLUGIN_DIR.'/admin/control-center.php' );
-//Loading custom admin menu
+require ( ADSFORWP_PLUGIN_DIR.'/admin/control-center.php' );
+require ( ADSFORWP_PLUGIN_DIR.'/admin/ads-newsletter.php' );
 //Loading Metaboxes
-require ( adsforwp_PLUGIN_DIR.'/metaboxes/ads-type.php' );
-require ( adsforwp_PLUGIN_DIR.'/metaboxes/display.php' );
-require ( adsforwp_PLUGIN_DIR.'/metaboxes/ads-visibility.php' );
+require ( ADSFORWP_PLUGIN_DIR.'/metaboxes/ads-type.php' );
+require ( ADSFORWP_PLUGIN_DIR.'/metaboxes/display.php' );
+require ( ADSFORWP_PLUGIN_DIR.'/metaboxes/ads-visibility.php' );
 
 //Function to check other plugin is install or not
 add_action( 'admin_init', 'adsforwp_check_plugin' );
 function adsforwp_check_plugin() {
   if ( is_plugin_active('accelerated-mobile-pages/accelerated-moblie-pages.php') ) {
-    require ( adsforwp_PLUGIN_DIR.'/metaboxes/amp-compatibility.php' );	
+    require ( ADSFORWP_PLUGIN_DIR.'/metaboxes/amp-compatibility.php' );	
   }
-}//Loading ads vendor files and function
-require_once  adsforwp_PLUGIN_DIR . '/output/functions.php';
-require_once  adsforwp_PLUGIN_DIR . '/admin/common-functions.php';
+}//Loading files and function
+require_once  ADSFORWP_PLUGIN_DIR . '/output/functions.php';
+require_once  ADSFORWP_PLUGIN_DIR . '/admin/common-functions.php';
+

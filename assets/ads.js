@@ -14,6 +14,7 @@ $("#select_adtype").change(function(){
               switch (optionValue) {
                   
                 case "custom":
+                   $(".afw_pointer").hide(); 
                    $("#custom_code").parent().parent("tr").show();                                       
                    $("#data_client_id, #data_ad_slot, #banner_size, #data_cid, #data_crid").parent().parent("tr").hide();                                          
                    $("#custom_code").attr("required",true);                    
@@ -23,16 +24,21 @@ $("#select_adtype").change(function(){
                   $("#custom_code, #data_cid, #data_crid").parent().parent("tr").hide();                                                      
               	  $("#data_client_id, #data_ad_slot, #banner_size").parent().parent("tr").show();                                    
                   $("#banner_size, #data_client_id, #data_ad_slot").attr("required",true);                                                      
-                  $("#data_cid, #data_crid, #custom_code").attr("required",false);                                    
+                  $("#data_cid, #data_crid, #custom_code").attr("required",false); 
+                  $(".afw_pointer").show();
+                  $(".afw_pointer").attr("id", "afw_adsense_pointer");
                     break
                 case "media_net":
                   $("#data_cid, #banner_size, #data_crid").parent().parent("tr").show();                                                      
                   $("#custom_code, #data_ad_slot, #data_client_id").parent().parent("tr").hide();              	                                      
                   $("#banner_size, #data_crid, #data_cid").attr("required",true);                                                      
-                  $("#custom_code, #data_client_id, #data_ad_slot").attr("required",false);                  
+                  $("#custom_code, #data_client_id, #data_ad_slot").attr("required",false);  
+                  $(".afw_pointer").show();
+                  $(".afw_pointer").attr("id", "afw_media_net_pointer");
                     break    
                 default:
                   $("#custom_code, #data_client_id, #data_ad_slot, #banner_size").parent().parent("tr").hide();              	  
+                  $(".afw_pointer").hide();
                   break;   
                 }                                                        
           }      
