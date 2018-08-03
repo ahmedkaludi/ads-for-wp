@@ -84,8 +84,8 @@ function adsforwp_update_ids_on_untrash(){
 }
 //Showing pointer on mouse movement 
 function adsforwp_print_footer_scripts() {       
-    $adsense_pointer_content = '<h3>'.esc_html__( 'WordPress Answers', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'You can find Data Client ID and Data Ad Slot from adsense website.', 'ads-for-wp' ).'</p>';
-    $media_net_pointer_content = '<h3>'.esc_html__( 'WordPress Answers', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'You can find Data CID id and Data CRID from media.net website.', 'ads-for-wp' ).'</p>';   
+    $adsense_pointer_content = '<h3>'.esc_html__( 'WordPress Answers', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'You can find Data Client ID and Data Ad Slot from adsense code.', 'ads-for-wp' ).'</p>';
+    $media_net_pointer_content = '<h3>'.esc_html__( 'WordPress Answers', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'You can find Data CID id and Data CRID from media.net code.', 'ads-for-wp' ).'</p>';   
 ?>
    <script type="text/javascript">
    
@@ -96,7 +96,7 @@ function adsforwp_print_footer_scripts() {
             edge: 'top',
         },
         show: function(event, t){
-            t.pointer.css({'right':'95px'});
+            t.pointer.css({'right':'95px','left':'auto'});
         },
         close: function() {
             // This function is fired when you click the close button
