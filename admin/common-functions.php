@@ -39,7 +39,20 @@ public function adsforwp_expanded_allowed_tags() {
                     'type'  => array(),
                     'style'  => array(),
                     'rows'  => array(),                                                            
-            );              
+            );  
+             //textarea
+             $my_allowed['amp-ad'] = array(
+                    'class' => array(),
+                    'width'    => array(),
+                    'height'  => array(),
+                    'type' => array(),
+                    'data-slot'  => array(),                 
+                    'data-ad-client'  => array(),
+                    'data-ad-slot'  => array(),
+                    'data-tagtype'  => array(),
+                    'data-cid'  => array(),
+                    'data-crid'  => array(),
+            );
             // select
             $my_allowed['select'] = array(
                     'class'  => array(),

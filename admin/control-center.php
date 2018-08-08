@@ -87,9 +87,9 @@ function adsforwp_print_footer_scripts() {
     $adsense_pointer_content = '<h3>'.esc_html__( 'WordPress Answers', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'You can find Data Client ID and Data Ad Slot from adsense code.', 'ads-for-wp' ).'</p>';
     $media_net_pointer_content = '<h3>'.esc_html__( 'WordPress Answers', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'You can find Data CID id and Data CRID from media.net code.', 'ads-for-wp' ).'</p>';   
 ?>
-   <script type="text/javascript">
-   
-   function adsforwp_pointer(id,content, status){
+   <script type="text/javascript">   
+   jQuery(document).ready( function($) {       
+     function adsforwp_pointer(id,content, status){
        $("#"+id).pointer({
         content: content,
          position: {
@@ -116,9 +116,8 @@ function adsforwp_print_footer_scripts() {
                 break;
         }         
         adsforwp_pointer(id,content, status);        
-   }
-      
-   jQuery(document).ready( function($) {       
+   }  
+       
     $(".afw_pointer").mouseover(function(){
         var status = 'open';
         var id = $(this).attr('id');         
