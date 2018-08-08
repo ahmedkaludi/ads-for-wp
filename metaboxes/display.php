@@ -73,7 +73,7 @@ class adsforwp_metaboxes_display {
 			switch ( $meta_field['type'] ) {
 				case 'select':
 					$input = sprintf(
-						'<select id="%s" name="%s">',
+						'<select class="afw_select" id="%s" name="%s">',
 						$meta_field['id'],
 						$meta_field['id']
 					);
@@ -98,8 +98,8 @@ class adsforwp_metaboxes_display {
                                        }
     
 					$input = sprintf(
-						'<input %s id="%s" name="%s" type="%s" value="%s" %s>',
-						$meta_field['type'] !== 'color' ? 'style="width: 100%"' : '',
+						'<input class="afw_input" %s id="%s" name="%s" type="%s" value="%s" %s>',
+						$meta_field['type'] !== 'color' ? '' : '',
 						$meta_field['id'],
 						$meta_field['id'],
 						$meta_field['type'],

@@ -3,44 +3,48 @@ var currentAdID       		= adsforwp_localize_data.id;
 // Metaboxes field selection on different dropdown selection
 
 //$("#wp-admin-bar-view").addClass('dnone');
-
-$("#custom_code").parent().parent("tr").hide();
-$("#data_client_id").parent().parent("tr").hide();
-$("#data_ad_slot").parent().parent("tr").hide();
-$("#paragraph_number").parent().parent("tr").hide();
 $("#paragraph_number").parent().parent("tr").addClass("afw_hide");
-$("#banner_size").parent().parent("tr").hide();
-$("#manual_ads_type").parent().parent("tr").hide();
+$("#custom_code, #data_client_id, #data_ad_slot, #paragraph_number, #banner_size, #manual_ads_type, #data_cid, #data_crid").parent().parent("tr").hide();
 
 $("#select_adtype").change(function(){        
       $(this).find("option:selected").each(function(){
           var optionValue = $(this).attr("value");
-          var optionHtml = $(this).html().toLowerCase();
-          
+          var optionHtml = $(this).html().toLowerCase();          
           if(optionHtml){                                                            
               switch (optionValue) {
                   
                 case "custom":
-                    $("#custom_code").parent().parent("tr").show();
-                    $("#data_client_id").parent().parent("tr").hide();
-                    $("#data_ad_slot").parent().parent("tr").hide();
-                    $("#banner_size").parent().parent("tr").hide();                   
+                   $(".afw_pointer").hide(); 
+                   $("#custom_code").parent().parent("tr").show();                                       
+                   $("#data_client_id, #data_ad_slot, #banner_size, #data_cid, #data_crid").parent().parent("tr").hide();                                          
+                   $("#custom_code").attr("required",true);                    
+                   $("#banner_size, #data_client_id, #data_ad_slot, #data_cid, #data_crid").attr("required",false);                    
                     break;
                 case "adsense":
-                  $("#custom_code").parent().parent("tr").hide();
-              	  $("#data_client_id").parent().parent("tr").show();
-                  $("#data_ad_slot").parent().parent("tr").show();
-                  $("#banner_size").parent().parent("tr").show();
+                  $("#custom_code, #data_cid, #data_crid").parent().parent("tr").hide();                                                      
+              	  $("#data_client_id, #data_ad_slot, #banner_size").parent().parent("tr").show();                                    
+                  $("#banner_size, #data_client_id, #data_ad_slot").attr("required",true);                                                      
+                  $("#data_cid, #data_crid, #custom_code").attr("required",false); 
+                  $(".afw_pointer").show();
+                  $(".afw_pointer").attr("id", "afw_adsense_pointer");
                     break
+                case "media_net":
+                  $("#data_cid, #banner_size, #data_crid").parent().parent("tr").show();                                                      
+                  $("#custom_code, #data_ad_slot, #data_client_id").parent().parent("tr").hide();              	                                      
+                  $("#banner_size, #data_crid, #data_cid").attr("required",true);                                                      
+                  $("#custom_code, #data_client_id, #data_ad_slot").attr("required",false);  
+                  $(".afw_pointer").show();
+                  $(".afw_pointer").attr("id", "afw_media_net_pointer");
+                    break    
                 default:
-                  $("#custom_code").parent().parent("tr").hide();
-              	  $("#data_client_id").parent().parent("tr").hide();
-                  $("#data_ad_slot").parent().parent("tr").hide();
-                  $("#banner_size").parent().parent("tr").hide();
+                  $("#custom_code, #data_client_id, #data_ad_slot, #banner_size").parent().parent("tr").hide();              	  
+                  $(".afw_pointer").hide();
                   break;   
                 }                                                        
           }      
       });
+      var id = $(".afw_pointer").attr('id');          
+          $("#"+id).pointer().pointer('close');
     }).change();
     
     

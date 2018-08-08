@@ -14,7 +14,9 @@ class adsforwp_metaboxes_ads_type {
 			'options' => array(
 				'' => 'Select Ad Type',
 				'adsense' =>'AdSense',
+                                'media_net' =>'Media.net',
 				'custom' =>'Custom',
+                            
 			),
                                 'attributes' => array(				
                                 'required' => 'required',                                
@@ -46,6 +48,28 @@ class adsforwp_metaboxes_ads_type {
 				
 			),
 		),
+            //Media.net fields starts here
+                array(
+			'label' => 'Data CID',
+			'id' => 'data_cid',
+			'type' => 'text',
+                        'attributes' => array(
+				'placeholder' => '8XXXXX74',
+                                'maxlength' => '20',
+				
+			),
+		),
+                array(
+			'label' => 'Data CRID',
+			'id' => 'data_crid',
+			'type' => 'text',
+                        'attributes' => array(
+				'placeholder' => '1XXXXXX82',
+                                'maxlength' => '20',
+				
+			),
+		),
+            //Media.net fields ends here                    
 		array(
 			'label' => 'Size',
 			'id' => 'banner_size',
@@ -69,6 +93,8 @@ class adsforwp_metaboxes_ads_type {
 				'320x50'=>'mobile banner (320x50)',
 				'970x90'=>'large leaderboard (970x90)',
 				'970x250'=>'billboard (970x250)',
+                                '728x20'=>'wide horizontal (728x20)',
+                                '600x120'=>'horizontal (600x120)',
 			),
 		),
 	);
@@ -111,7 +137,7 @@ class adsforwp_metaboxes_ads_type {
                     }
                                     
 					$input = sprintf(
-						'<select id="%s" name="%s" %s>',
+						'<select class="afw_select" id="%s" name="%s" %s>',
 						$meta_field['id'],
 						$meta_field['id'],
                                                 $attributes    
@@ -126,11 +152,19 @@ class adsforwp_metaboxes_ads_type {
 							esc_html__($value, 'ads-for-wp')
 						);
 					}
-					$input .= '</select>';
+                                        switch($meta_field['id']){
+                                            case 'select_adtype':
+                                                $input .= '</select><span style="cursor:pointer;float:right;" class="afw_pointer dashicons-before dashicons-editor-help" id="afw_data_cid_pointer"></span>';
+                                                break;                                            
+                                            default:
+                                                $input .= '</select>';
+                                               break;
+                                        }
+					
 					break;
 				case 'textarea':
 					$input = sprintf(
-						'<textarea style="width: 100%%" id="%s" name="%s" rows="5">%s</textarea>',
+						'<textarea class="afw_textarea" id="%s" name="%s" rows="5">%s</textarea>',
 						$meta_field['id'],
 						$meta_field['id'],
 						$meta_value
@@ -145,16 +179,17 @@ class adsforwp_metaboxes_ads_type {
 					}
                                     }
     
-                                
-					$input = sprintf(
-						'<input %s id="%s" name="%s" type="%s" value="%s" %s>',
-						$meta_field['type'] !== 'color' ? 'style="width: 100%"' : '',
+                                     $input = sprintf(
+						'<input class="afw_input" %s id="%s" name="%s" type="%s" value="%s" %s>',
+						$meta_field['type'] !== 'color' ? '' : '',
 						$meta_field['id'],
 						$meta_field['id'],
 						$meta_field['type'],
 						$meta_value,
                                                 $attributes
-					);
+                                             );
+                                        
+					
 			}
 			$output .= $this->adsforwp_format_rows( $label, $input );
 		}

@@ -3,7 +3,7 @@ Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
 Tags: Ads, Advanced Ads, Ad Inserter, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
 Tested up to: 4.9.7
-Stable tag: 1.0
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -16,8 +16,33 @@ ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy t
 * Unlimited Ads
 * Google Adsense Support
 * Custom Ad HTML support
+* NEW: Media.net Support
 * Ads Shortcode
 * AMP Compatibility: Seamless integration with AMP for WP & AMP by Automattic.
 * Post Specific Ads Control
-* 3 Fixed Ad positions (Between the content, After the content, Before the content, )
+* Easily inject Between the content, After the content or Before the content.
 
+= Active Development: =
+We are actively developing this plugin and our aim is to make this plugin into the #1 solution in the world. 
+
+= Development Roadmap: =
+Product development roadmap is coming soon.
+
+= Development Roadmap: =
+Support is provided in forums, to contact, use this link: http://magazine3.company/contact/
+
+
+== Changelog ==
+
+= 1.0.2 (3rd August 2018) =
+* Ads not showing in the old posts bug fixed
+* Pointers added for help.
+* Optin Capability Added
+
+
+= 1.0.1 (27th July 2018) =
+* Media.net Ad Support
+* Minor improvements
+
+= 1.0 (25th July 2018) =
+* Initial Release
