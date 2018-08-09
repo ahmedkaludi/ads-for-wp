@@ -38,7 +38,7 @@ class adsforwp_metaboxes_ads_visibility {
 		$this->adsforwp_field_generator( $post );
 	}
 	public function adsforwp_field_generator( $post ) {
-		$output = '';
+		$output = '';                
 		foreach ( $this->meta_fields as $meta_field ) {			
 			$meta_value = get_post_meta( $post->ID, $meta_field['id'], true );                        
 			if ( empty( $meta_value ) ) {

@@ -5,7 +5,10 @@ input[name=manual_ads_type] {
 border: 0px;
  color: black;
 }
-
+input[name=adsforwp_group_shortcode] {    
+border: 0px;
+color: black;
+}
 .afw_input {
     width: 50%;
 }
@@ -14,5 +17,8 @@ border: 0px;
 }
 .afw_textarea {
     width: 50%;
+}
+.afw-group-ads{
+   background-color: #f9f9f9; 
 }
 

@@ -1,8 +1,7 @@
-jQuery( document ).ready(function($) {
-var currentAdID       		= adsforwp_localize_data.id;       
-// Metaboxes field selection on different dropdown selection
+jQuery( document ).ready(function($) {    
+var currentAdID       		= adsforwp_localize_data.id;      
 
-//$("#wp-admin-bar-view").addClass('dnone');
+// Metaboxes field selection on different dropdown selection
 $("#paragraph_number").parent().parent("tr").addClass("afw_hide");
 $("#custom_code, #data_client_id, #data_ad_slot, #paragraph_number, #banner_size, #manual_ads_type, #data_cid, #data_crid").parent().parent("tr").hide();
 
@@ -90,10 +89,39 @@ $("#select_adtype").change(function(){
       });
     }).change();  
     
+    $(document).on("click",'.afw-ads-group-button', function(){
+        var adsval = $("#adsforwp_group_ad_list option:selected").val();
+        var adstext = $("#adsforwp_group_ad_list option:selected").text();        
+        var status = 'Not exist';
+            $(".afw-group-ads").find("tr.afw-group-add-ad-list").each(function(){
+            var optionValue = $(this).attr('name');            
+            if(adsval === optionValue){
+                status = 'Exist';                
+                return false; 
+            }
+            });           
+          if(status === 'Not exist') {             
+            var html ='';
+            html +='<tr class="afw-group-add-ad-list" name="'+adsval+'" >';
+            html +='<td>'+adstext+' <input type="hidden" name="'+adsval+'" value="'+adstext+'"></td>';
+            html +='<td><button type="button" class="afw-remove-ad-from-group button">x</button></td>';
+            html +='</tr>';
+            $(".afw-group-ads tbody").append(html);                            
+          } 
+                
+    });
+    $(document).on("click", ".afw-remove-ad-from-group", function(){
+        $(this).parent().parent('tr').remove();
+    });
+    
+        
     // setting shortcode on page load
         if(document.getElementById('manual_ads_type')){
 	document.getElementById('manual_ads_type').value = '[adsforwp id="'+currentAdID+'"]';
-        }	
+        }
+        if(document.getElementById('adsforwp_group_shortcode')){
+	document.getElementById('adsforwp_group_shortcode').value = '[adsforwp-group id="'+currentAdID+'"]';
+        }
 });
 
  

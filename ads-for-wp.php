@@ -27,6 +27,7 @@ require ( ADSFORWP_PLUGIN_DIR.'/admin/ads-newsletter.php' );
 require ( ADSFORWP_PLUGIN_DIR.'/metaboxes/ads-type.php' );
 require ( ADSFORWP_PLUGIN_DIR.'/metaboxes/display.php' );
 require ( ADSFORWP_PLUGIN_DIR.'/metaboxes/ads-visibility.php' );
+require ( ADSFORWP_PLUGIN_DIR.'/metaboxes/ad-groups.php' );
 
 //Function to check other plugin is install or not
 add_action( 'admin_init', 'adsforwp_check_plugin' );

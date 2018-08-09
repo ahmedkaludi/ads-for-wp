@@ -99,6 +99,35 @@ function adsforwp_manual_ads($atts) {
         return $ad_code;                           
        }        
 }
+
+/*
+ *    ShortCode to display random ads from group
+ *    Use the shortcode: [adsforwp-group id=""]
+ */
+add_shortcode( 'adsforwp-group', 'adsforwp_group_ads' );
+function adsforwp_group_ads($atts) {
+        $ad_code='';
+        $all_ad_code='';
+        $post_group_id  =   $atts['id']; 
+	$current_post_data = get_post_meta(get_the_ID(),$key='',true);  
+        $visibility ='';
+        if(array_key_exists('ads-for-wp-visibility', $current_post_data)){
+        $visibility = $current_post_data['ads-for-wp-visibility'][0];    
+        }                                                            
+        if($visibility != 'hide') {
+        $post_group_data = get_post_meta($post_group_id,$key='adsforwp_ads',true);      
+        foreach($post_group_data as $post_ad_id => $post){
+            
+        $ad_code ='<div class="afw-groups-ads-div" style="display:none;">';    
+        $ad_code .='<a href="">';        
+        $ad_code .=  adsforwp_get_ad_code($post_ad_id); 
+        $ad_code .='</a>';
+        $ad_code .='</div>';       
+        $all_ad_code.= $ad_code;
+        }            
+        return $all_ad_code;                           
+       }        
+}
 /*
  * Generating html for ads to be displayed by post id
  */

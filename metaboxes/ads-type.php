@@ -120,7 +120,7 @@ class adsforwp_metaboxes_ads_type {
 		$this->adsforwp_field_generator( $post );
 	}
 	public function adsforwp_field_generator( $post ) {
-		$output = '';                
+		$output = '';                               
 		foreach ( $this->meta_fields as $meta_field ) {
                     $attributes ='';
 			$label = '<label for="' . $meta_field['id'] . '">' . esc_html__( $meta_field['label'], 'ads-for-wp' ) . '</label>';

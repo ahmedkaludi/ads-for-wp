@@ -19,6 +19,22 @@ function adsforwp_setup_post_type() {
     	'publicly_queryable'	=> false,
     );
     register_post_type( 'adsforwp', $args );
+    
+    $group_post_type = array(
+	    'labels' => array(
+	        'name' 			=> esc_html__( 'Groups', 'ads-for-wp' ),	        
+	        'add_new' 		=> esc_html__( 'Add New Groups', 'ads-for-wp' ),
+	        'add_new_item'  	=> esc_html__( 'Edit Groups', 'ads-for-wp' ),
+                'edit_item'             => esc_html__('Edit AD','ads-for-wp')
+	    ),
+      	'public' 		=> true,
+      	'has_archive' 		=> false,
+      	'exclude_from_search'	=> true,
+    	'publicly_queryable'	=> false,
+        'show_in_menu'  =>	'edit.php?post_type=adsforwp',
+    );
+    register_post_type( 'adsforwp-groups', $group_post_type );
+    
 }
 /*
  *      Hiding WYSIWYG For AMPforWP Ads 2.0, as there is no need for it 
@@ -27,7 +43,21 @@ add_action( 'admin_init', 'adsforwp_removing_wysiwig' );
 
 function adsforwp_removing_wysiwig() {
     remove_post_type_support( 'adsforwp', 'editor');   
+    remove_post_type_support( 'adsforwp-groups', 'editor');   
     
+}
+/*
+ *	 REGISTER ALL NON-ADMIN SCRIPTS
+ */
+
+add_action( 'wp_enqueue_scripts', 'adsforwp_frontend_enqueue' );
+function adsforwp_frontend_enqueue(){
+    wp_register_script('pwaforwp-ads-front-js', ADSFORWP_PLUGIN_DIR_URI . 'assets/ads-front.js', array( 'jquery' ), ADSFORWP_VERSION, true);
+        $object_name = array(
+            'uploader_title' => esc_html('Application Icon', 'pwa-for-wp'),            
+        );
+        wp_localize_script('pwaforwp-ads-front-js', 'adsforwp_obj', $object_name);
+        wp_enqueue_script('pwaforwp-ads-front-js');
 }
 /*
  *	Enqueue Javascript and CSS in admin area
