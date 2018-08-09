@@ -5,7 +5,7 @@ Plugin URI: https://wordpress.org/plugins/ads-for-wp/
 Description: ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy to Use, Unlimited Incontent Ads, Adsense, Premium Features and more
 Version: 1.0.2
 Author: Ahmed Kaludi, Mohammed Kaludi
-Author URI: https://ampforwp.com/
+Author URI: http://adsforwp.com/
 Donate link: https://www.paypal.me/Kaludi/25usd
 Text Domain: ads-for-wp
 License: GPL2+
