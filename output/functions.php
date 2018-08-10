@@ -106,8 +106,7 @@ function adsforwp_manual_ads($atts) {
  */
 add_shortcode( 'adsforwp-group', 'adsforwp_group_ads' );
 function adsforwp_group_ads($atts) {
-        $ad_code='';
-        $all_ad_code='';
+        
         $post_group_id  =   $atts['id']; 
 	$current_post_data = get_post_meta(get_the_ID(),$key='',true);  
         $visibility ='';
@@ -115,17 +114,25 @@ function adsforwp_group_ads($atts) {
         $visibility = $current_post_data['ads-for-wp-visibility'][0];    
         }                                                            
         if($visibility != 'hide') {
-        $post_group_data = get_post_meta($post_group_id,$key='adsforwp_ads',true);      
-        foreach($post_group_data as $post_ad_id => $post){
             
-        $ad_code ='<div class="afw-groups-ads-div" style="display:none;">';    
-        $ad_code .='<a href="">';        
-        $ad_code .=  adsforwp_get_ad_code($post_ad_id); 
-        $ad_code .='</a>';
-        $ad_code .='</div>';       
-        $all_ad_code.= $ad_code;
-        }            
-        return $all_ad_code;                           
+        $post_group_data = get_post_meta($post_group_id,$key='adsforwp_ads',true); 
+        $post_data = get_post_meta($post_group_id,$key='',true);        
+        if($post_group_data){
+        $adsresultset = array();  
+        $response = array();           
+        foreach($post_group_data as $post_ad_id => $post){
+        $adsresultset[] = array(
+                'ad_id' => $post_ad_id
+        ) ;           
+        }        
+        $response['adsforwp_group_ref_interval'] = $post_data['adsforwp_group_ref_interval'][0];
+        $response['adsforwp_group_ref_interval_sec'] = $post_data['adsforwp_group_ref_interval_sec'][0];
+        $response['adsforwp_group_type'] = $post_data['adsforwp_group_type'][0];
+        $response['ad_ids'] = $adsresultset;        
+        $ad_code ='<div class="afw-groups-ads-json" afw-group-id="'.esc_attr($post_group_id).'" data-json="'. esc_attr(json_encode($response)).'">';           
+        $ad_code .='</div>';
+        }
+        return $ad_code;                           
        }        
 }
 /*
@@ -262,4 +269,14 @@ function adsforwp_get_ad_code($post_ad_id){
         return $ad_code;
       } 
             
+}
+
+add_action('wp_ajax_nopriv_adsforwp_get_groups_ad', 'adsforwp_get_groups_ad');
+add_action('wp_ajax_adsforwp_get_groups_ad', 'adsforwp_get_groups_ad');
+
+function adsforwp_get_groups_ad(){           
+   // $ad_id = sanitize_text_field($_GET['ad_id']);
+    
+         echo json_encode(array('a'=> 'data'));                             
+           wp_die();           
 }

@@ -52,9 +52,9 @@ function adsforwp_removing_wysiwig() {
 
 add_action( 'wp_enqueue_scripts', 'adsforwp_frontend_enqueue' );
 function adsforwp_frontend_enqueue(){
-    wp_register_script('pwaforwp-ads-front-js', ADSFORWP_PLUGIN_DIR_URI . 'assets/ads-front.js', array( 'jquery' ), ADSFORWP_VERSION, true);
+       wp_register_script('pwaforwp-ads-front-js', ADSFORWP_PLUGIN_DIR_URI . 'assets/ads-front.js', array( 'jquery' ), ADSFORWP_VERSION, true);
         $object_name = array(
-            'uploader_title' => esc_html('Application Icon', 'pwa-for-wp'),            
+            'ajax_url' => admin_url( 'admin-ajax.php' ),            
         );
         wp_localize_script('pwaforwp-ads-front-js', 'adsforwp_obj', $object_name);
         wp_enqueue_script('pwaforwp-ads-front-js');
