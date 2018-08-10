@@ -16,7 +16,7 @@ public function adsforwp_expanded_allowed_tags() {
                     'checked'      => array(),
                     'readonly'     => array(),
                     'disabled'     => array(),
-                    'width'     => array(),
+                    'width'        => array(),
                     
             ); 
             //number
@@ -39,8 +39,8 @@ public function adsforwp_expanded_allowed_tags() {
                     'type'  => array(),
                     'style'  => array(),
                     'rows'  => array(),                                                            
-            );  
-             //textarea
+            );       
+             //amp tag
              $my_allowed['amp-ad'] = array(
                     'class' => array(),
                     'width'    => array(),
@@ -53,6 +53,118 @@ public function adsforwp_expanded_allowed_tags() {
                     'data-cid'  => array(),
                     'data-crid'  => array(),
             );
+             $my_allowed['amp-img'] = array(
+                    'class' => array(),
+                    'id' => array(),
+                    'width'    => array(),
+                    'height'  => array(),
+                    'type' => array(),
+                    'src'  => array(), 
+                    'on'  => array(), 
+                    'role'  => array(), 
+                    'tabindex'  => array(), 
+                    'layout'  => array(), 
+            );
+             $my_allowed['amp-ad-exit'] = array(
+                    'id' => array(),                    
+             );
+             $my_allowed['amp-auto-ads'] = array(
+                    'type' => array(),
+                    'id' => array(),
+                    'data-ad-client' => array(),
+                    'height'  => array(),
+                    'width' => array(),             
+            );
+             $my_allowed['amp-sticky-ad'] = array(
+                    'layout' => array(),
+                    'id' => array(),                             
+            );
+             $my_allowed['amp-list'] = array(
+                    'width' => array(),
+                    'height' => array(),
+                    'layout' => array(),
+                    'src'  => array(),
+                    'width' => array(), 
+                    'id' => array(), 
+            );
+             $my_allowed['amp-live-list'] = array(                    
+                    'data-max-items-per-page'  => array(),
+                    'data-poll-interval' => array(), 
+                    'id' => array(), 
+            );
+             $my_allowed['amp-app-banner'] = array(                    
+                    'layout'  => array(),                    
+                    'id' => array(), 
+            );
+             $my_allowed['amp-carousel'] = array(                    
+                    'width'  => array(),                    
+                    'height' => array(), 
+                    'id' => array(), 
+                    'layout' => array(), 
+                    'type' => array(), 
+                     'data-next-button-aria-label' => array(), 
+                     'data-previous-button-aria-label' => array(),
+                    'delay' => array(),
+                    'loop' => array(),
+                    'autoplay' => array(),
+                    'controls' => array(),
+                 
+            );
+             $my_allowed['amp-iframe'] = array(                    
+                    'width'  => array(), 
+                    'height'  => array(), 
+                    'sandbox'  => array(), 
+                    'layout'  => array(), 
+                    'frameborder'  => array(),
+                    'src'  => array(),                 
+                    'id' => array(), 
+            );
+             $my_allowed['amp-image-lightbox'] = array(                    
+                    'layout'  => array(), 
+                    'height'  => array(),                                         
+                    'id' => array(), 
+            );
+             $my_allowed['amp-layout'] = array(                    
+                    'layout'  => array(), 
+                    'width'  => array(),   
+                    'height'  => array(),   
+                    'id' => array(), 
+            );
+             $my_allowed['amp-3d-gltf'] = array(                    
+                    'layout'  => array(), 
+                    'width'  => array(),   
+                    'height'  => array(),   
+                    'id' => array(), 
+                    'antialiasing' => array(), 
+                    'src' => array(),                  
+            );
+             $my_allowed['amp-anim'] = array(                    
+                    'layout'  => array(), 
+                    'width'  => array(),   
+                    'height'  => array(),   
+                    'id' => array(), 
+                    'srcset' => array(), 
+                    'src' => array(),                  
+            );
+             $my_allowed['amp-imgur'] = array(                    
+                    'data-imgur-id'  => array(), 
+                    'layout'  => array(),   
+                    'width'  => array(),   
+                    'height' => array(), 
+                    'id' => array(),                                   
+            );
+             $my_allowed['amp-animation'] = array(                                        
+                    'layout'  => array(),   
+                    'duration'  => array(),   
+                    'delay' => array(), 
+                    'endDelay' => array(),
+                    'iterations' => array(),
+                    'iterationStart' => array(),
+                    'easing' => array(),
+                    'direction' => array(),
+                    'fill' => array(),   
+            );
+             
             // select
             $my_allowed['select'] = array(
                     'class'  => array(),
