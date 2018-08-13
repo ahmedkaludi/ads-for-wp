@@ -21,14 +21,18 @@ class adsforwp_metaboxes_ad_groups {
 			'id' => 'adsforwp_group_type',
 			'type' => 'radio',
 			'options' => array(
-				'Random ads',
-				'Ordered ads ',
+				'rand'=>'Random ads',
+				'ordered'=>'Ordered ads ',
 			),
 		),		
 		array(
-			'label' => 'Refresh Interval',
-			'id' => 'adsforwp_group_ref_interval',
-			'type' => 'checkbox',
+			'label' => 'Refresh Type',
+			'id' => 'adsforwp_refresh_type',
+			'type' => 'select',
+                        'options' => array(
+                          'on_load' => 'On Reload Load',
+                          'on_interval' => 'Auto Refresh'  
+                        )
 		),
 		array(			
 			'id' => 'adsforwp_group_ref_interval_sec',
@@ -66,27 +70,27 @@ class adsforwp_metaboxes_ad_groups {
                                'ad_name' => $ad->post_title
                                );         
                  }                 
-		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
-		add_action( 'save_post', array( $this, 'save_fields' ) );                                
+		add_action( 'add_meta_boxes', array( $this, 'adsforwp_add_meta_boxes' ) );
+		add_action( 'save_post', array( $this, 'adsforwp_save_fields' ) );                                
                 
 	}
-	public function add_meta_boxes() {
+	public function adsforwp_add_meta_boxes() {
 		foreach ( $this->screen as $single_screen ) {
 			add_meta_box(
 				'adgroup',
-				__( 'Ad Group', 'ads-for-wp' ),
-				array( $this, 'meta_box_callback' ),
+				esc_html__( 'Ad Group', 'ads-for-wp' ),
+				array( $this, 'adsforwp_meta_box_callback' ),
 				$single_screen,
 				'advanced',
 				'low'
 			);
 		}
 	}
-	public function meta_box_callback( $post ) {
+	public function adsforwp_meta_box_callback( $post ) {
 		wp_nonce_field( 'adgroup_data', 'adgroup_nonce' );
-		$this->field_generator( $post );
+		$this->adsforwp_field_generator( $post );
 	}
-	public function field_generator( $post ) {
+	public function adsforwp_field_generator( $post ) {
 		$output = '';                    
 		foreach ( $this->meta_fields as $meta_field ) {
 			$id =''; 
@@ -98,36 +102,24 @@ class adsforwp_metaboxes_ad_groups {
                         if(array_key_exists('label', $meta_field)){
                           $metafieldlabel  =$meta_field['label'];
                         }
-                        $label = '<label for="' . $id . '">' . $metafieldlabel . '</label>';
+                        $label = '<label for="' . $id . '">' . esc_html__($metafieldlabel, 'ads-for-wp' ) . '</label>';
 			$meta_value = get_post_meta( $post->ID, $id, true );                           
 			if ( empty( $meta_value ) ) {
 				$meta_value = isset($meta_field['default']); }
 			switch ( $meta_field['type'] ) {
-				case 'checkbox':
-                                    switch ($meta_field['id']) {
-                                        case 'adsforwp_group_ref_interval':
-                                            $input = sprintf(
-						'<input %s id="%s" name="%s" type="checkbox" value="1">Enabled',
-						$meta_value === '1' ? 'checked' : '',
-						$id,
-						$id
-						);
-                                            break;                                        
-                                        default:
+				case 'checkbox':                                   
                                             $input = sprintf(
 						'<input %s id="%s" name="%s" type="checkbox" value="1">',
 						$meta_value === '1' ? 'checked' : '',
 						$id,
 						$id
-						);
-                                            break;
-                                        }					
+						);                                         					
 					break;
                                 case 'div':
                                             $input = '<div id="'.esc_attr($meta_field['id']).'" class="'.esc_attr($meta_field['class']).'"> <table class="afw-group-ads">';                                            
                                             $input .= '<tbody>';   
                                             if($meta_value){
-                                              foreach($meta_value as $key => $val){
+                                              foreach($meta_value as $key => $val){                                                  
                                              $input .= '<tr class="afw-group-add-ad-list" name="adsforwp_ads['.esc_attr($key).']">'
                                                     . '<td>'.esc_html($val).'<input type="hidden" name="adsforwp_ads['.esc_attr($key).']" value="'.esc_attr($val).'"></td>' 
                                                     . '<td><button type="button" class="afw-remove-ad-from-group button">x</button></td>'                                                        
@@ -135,8 +127,9 @@ class adsforwp_metaboxes_ad_groups {
                                               }                                            
                                               }
                                             $input .= '</tbody>';
-                                            $input .= '</table>';
-                                            $input .= '</div>';                                              
+                                            $input .= '</table>';                                            
+                                            $input .= '</div>';  
+                                            $input .= '<a class="button afw_add_more" style="margin:20px;">'. esc_html__('Add More...', 'ads-for-wp').'</a>';
 					
 					break;    
 				case 'radio':
@@ -163,7 +156,7 @@ class adsforwp_metaboxes_ad_groups {
                                         switch ($id) {
                                             case 'adsforwp_group_ad_list':  
                                                 $input = sprintf(
-						'<select class="afw_select" id="%s" name="%s">',
+						'<span class="afw-error afw-add-new-note">'. esc_html__('This ad is already added in list', 'ads-for-wp').'</span><br><select class="afw_select afw_group_ad_list" id="%s" name="%s">',
 						$id,
 						$id
                                                 );
@@ -176,7 +169,7 @@ class adsforwp_metaboxes_ad_groups {
 							$value['ad_name']
 						);
                                                 }
-                                                $input .= '</select><button type="button" class="button afw-ads-group-button">add</button>';
+                                                $input .= '</select><button type="button" class="button afw-ads-group-button">'.esc_html('add', 'ads-for-wp').'</button>';
                                                 break;
 
                                             default:
@@ -203,8 +196,9 @@ class adsforwp_metaboxes_ad_groups {
                                     switch ($meta_field['id']) {
                                         case 'adsforwp_group_ref_interval_sec':
                                             $input = sprintf(
-						'<input class="afw_input" %s id="%s" name="%s" type="%s" value="%s"> milliseconds'
-                                                    . '<p class="description">Refresh ads on the same spot. Works when cache-busting is used.</p>',
+						'<input class="afw_input" %s id="%s" name="%s" type="%s" value="%s"> '.esc_html__('milliseconds', 'ads-for-wp')
+                                                    . '<p class="description">'. esc_html__('Refresh ads on the same spot', 'ads-for-wp').'</p>'
+                                                    . '<p class="description">'.esc_html__('On AMP ads will be shown only on reload.', 'ads-for-wp').' <a href="#">'.esc_html__('why?', 'ads-for-wp').'</a></p>',
 						$meta_field['type'] !== 'color' ? '' : '',
 						$id,
 						$id,
@@ -231,14 +225,16 @@ class adsforwp_metaboxes_ad_groups {
                                             break;
                                     }					
 			}
-			$output .= $this->format_rows( $label, $input );
+			$output .= $this->adsforwp_format_rows( $label, $input );
 		}
-		echo '<table class="form-table afw-ads-groups-box-table"><tbody>' . $output . '</tbody></table>';
+                $common_function_obj = new adsforwp_admin_common_functions();
+                $allowed_html = $common_function_obj->adsforwp_expanded_allowed_tags();
+		echo '<table class="form-table afw-ads-groups-box-table"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table>';
 	}
-	public function format_rows( $label, $input ) {
+	public function adsforwp_format_rows( $label, $input ) {
 		return '<tr><th>'.$label.'</th><td>'.$input.'</td></tr>';
 	}
-	public function save_fields( $post_id ) {                                               
+	public function adsforwp_save_fields( $post_id ) {                                               
 		if ( ! isset( $_POST['adgroup_nonce'] ) )
 			return $post_id;
 		$nonce = $_POST['adgroup_nonce'];

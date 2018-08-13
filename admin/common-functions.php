@@ -1,5 +1,77 @@
 <?php 
-class adsforwp_admin_common_functions {    
+class adsforwp_admin_common_functions {   
+    
+        
+    public function adsforwp_fetch_all_ads(){
+        $all_ads = get_posts(
+                    array(
+                            'post_type' 	 => 'adsforwp',
+                            'posts_per_page' => -1,   
+                            'post_status' => 'publish',
+                    )
+                 ); 
+        return $all_ads;
+        
+    }
+    public function adsforwp_fetch_all_ads_post_meta(){
+        $all_ads_post_meta = array();
+        $all_ads = get_posts(
+                    array(
+                            'post_type' 	 => 'adsforwp',
+                            'posts_per_page' => -1,   
+                            'post_status' => 'publish',
+                    )
+                 );         
+        foreach($all_ads as $ad){
+                 $all_ads_post_meta[$ad->ID] = get_post_meta( $ad->ID, $key='', true );                                                                           
+                }               
+        return $all_ads_post_meta;        
+    }
+    public function adsforwp_fetch_all_groups(){
+        $all_groups = get_posts(
+                    array(
+                            'post_type' 	 => 'adsforwp-groups',
+                            'posts_per_page' => -1,   
+                            'post_status' => 'publish',
+                    )
+                 );        
+        return $all_groups;
+    }
+     public function adsforwp_fetch_all_groups_post_meta(){
+        $all_groups_post_meta = array();
+        $all_groups = get_posts(
+                    array(
+                            'post_type' 	 => 'adsforwp-groups',
+                            'posts_per_page' => -1,   
+                            'post_status' => 'publish',
+                    )
+                 );         
+        foreach($all_groups as $group){
+                 $all_groups_post_meta[$group->ID] = get_post_meta( $group->ID, $key='', true );                                                                           
+                }                    
+        return $all_groups_post_meta;        
+    }
+    public function adsforwp_check_ads_in_group($ad_id){
+        $all_groups = get_posts(
+                    array(
+                            'post_type' 	 => 'adsforwp-groups',
+                            'posts_per_page' => -1,   
+                            'post_status' => 'publish',
+                    )
+                 );
+                $meta_value = array(); 
+                $ad_group_ids = array();
+                foreach($all_groups as $groups){
+                  $meta_value  = get_post_meta( $groups->ID, $key='adsforwp_ads', true );                   
+                    if(in_array($ad_id, array_keys($meta_value))){
+                     $ad_group_ids[] = $groups->ID;  
+                    }
+                    
+                                      
+                }                
+                return $ad_group_ids;
+    }
+
 //Function to expand html tags form allowed html tags in wordpress    
 public function adsforwp_expanded_allowed_tags() {
             $my_allowed = wp_kses_allowed_html( 'post' );
@@ -173,6 +245,11 @@ public function adsforwp_expanded_allowed_tags() {
                     'value'  => array(),
                     'type'   => array(),
                     'required' => array(),
+            );
+            $my_allowed['tr'] = array(
+                    'class'  => array(),
+                    'id'     => array(),
+                    'name'   => array(),                    
             );
             //  options
             $my_allowed['option'] = array(
