@@ -130,7 +130,7 @@ class adsforwp_set_expiredate {
 							'<option %s value="%s">%s</option>',
                                                         in_array($meta_field_value, $specific_days) ? 'selected' : '',							
 							$meta_field_value,
-							$value
+							esc_html__($value, 'ads-for-wp')
 						);
 					}
                                         
@@ -148,7 +148,7 @@ class adsforwp_set_expiredate {
 							'<option %s value="%s">%s</option>',
 							$meta_value === $meta_field_value ? 'selected' : '',
 							$meta_field_value,
-							$value
+							esc_html__($value, 'ads-for-wp')
 						);
 					}
                                         
