@@ -1,4 +1,4 @@
-<?php class adsforwp_pointers {
+<?php class adsforwp_ads_newsletter {
 	const DISPLAY_VERSION = 'v1.0';
 	function __construct () {
 		add_action('admin_enqueue_scripts', array($this, 'adsforwp_admin_enqueue_scripts'));
@@ -30,7 +30,7 @@
 
         if (!array_key_exists($tab, $tour)) {                
 			$show_pointer = true;                                            
-			$id = '#menu-posts-adsforwp';  // Define ID used on page html element where we want to display pointer
+			$displayID = '#menu-posts-adsforwp';  // Define ID used on page html element where we want to display pointer
 			$content = '<h3>' . sprintf (__('You are awesome for using Ads for WP!', 'ads-for-wp'), self::DISPLAY_VERSION) . '</h3>';
 			$content .= __('<p>Do you want the latest on <b>Ads update</b> before others and some best resources on monetization in a single email? - Free just for users of ADS!</p>', 'ads-for-wp');
                         $content .= __('
@@ -66,7 +66,7 @@
                                             );
 		}
 		if ($show_pointer) {
-			$this->adsforwp_pointer_script ($id, $options, __('No Thanks', 'ads-for-wp'), $button2, $function);
+			$this->adsforwp_pointer_script ($displayID, $options, esc_html__('No Thanks', 'ads-for-wp'), $button2, $function);
 		}
 	}
 	function adsforwp_get_admin_url($page, $tab) {
@@ -74,7 +74,7 @@
 		$url .= $page.'?tab='.$tab;
 		return $url;
 	}
-	function adsforwp_pointer_script ($id, $options, $button1, $button2=false, $function='') {
+	function adsforwp_pointer_script ($displayID, $options, $button1, $button2=false, $function='') {
 		?>
 		<script type="text/javascript">
 			(function ($) {
@@ -102,7 +102,7 @@
                                       }                                               
 				});
 				setup = function () {
-					$('<?php echo $id; ?>').pointer(wp_pointers_tour_opts).pointer('open');
+					$('<?php echo esc_attr($displayID); ?>').pointer(wp_pointers_tour_opts).pointer('open');
 					<?php if ($button2) { ?>
 						jQuery ('#pointer-close').after ('<a id="pointer-primary" class="button-primary">' + '<?php echo $button2; ?>' + '</a>');
 						jQuery ('#pointer-primary').click (function () {
@@ -127,5 +127,5 @@
  	<?php
 	}
 }
-$adsforwp_pointers = new adsforwp_pointers();
+$adsforwp_ads_newsletter = new adsforwp_ads_newsletter();
 ?>

@@ -1,12 +1,11 @@
 <?php
-
 /* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 /**
- * Adds Foo_Widget widget.
+ * Adds Adsforwp_Ads_Widget widget.
  */
 class Adsforwp_Ads_Widget extends WP_Widget {
 
@@ -30,7 +29,8 @@ class Adsforwp_Ads_Widget extends WP_Widget {
 	 * @param array $instance Saved values from database.
 	 */
 	public function widget( $args, $instance ) {
-		echo $args['before_widget'];
+                          
+		echo html_entity_decode(esc_attr($args['before_widget']));
 		if ( ! empty( $instance['title'] ) ) {
 			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
 		}
@@ -38,29 +38,20 @@ class Adsforwp_Ads_Widget extends WP_Widget {
                 
                 $common_function_obj = new adsforwp_admin_common_functions();
                 $all_ads = $common_function_obj->adsforwp_fetch_all_ads();
-                $all_groups = $common_function_obj->adsforwp_fetch_all_groups();
-                $current_post_data = get_post_meta(get_the_ID(),$key='',true);  
-                $visibility ='';
-                if(array_key_exists('ads-for-wp-visibility', $current_post_data)){
-                $visibility = $current_post_data['ads-for-wp-visibility'][0];    
-                }                 
+                $all_groups = $common_function_obj->adsforwp_fetch_all_groups();                                                 
                 foreach($all_ads as $ad){
-                if($ad->ID == $instance['ads']){                
-                if($visibility != 'hide') {    
-                $ad_code =  $output_function_obj->adsforwp_get_ad_code($instance['ads']);          
-                echo $ad_code;    
-                }                
-                }     
+                    if($ad->ID == $instance['ads']){                                        
+                            $ad_code =  $output_function_obj->adsforwp_get_ad_code($instance['ads']);          
+                            echo $ad_code;                                        
+                    }     
                 }
                 foreach($all_groups as $group){
-                 if($group->ID == $instance['ads']){                     
-                     if($visibility != 'hide') { 
-                 $ad_code =  $output_function_obj->adsforwp_group_ads($atts=null, $instance['ads']);                   
-                 echo $ad_code;   
-                     }
+                 if($group->ID == $instance['ads']){                                         
+                        $ad_code =  $output_function_obj->adsforwp_group_ads($atts=null, $instance['ads'], $widget=true);                   
+                        echo $ad_code;                        
                 }    
-                }                                                                
-		echo $args['after_widget'];
+                }
+                echo html_entity_decode(esc_attr($args['after_widget']));		
 	}
 
 	/**
@@ -104,11 +95,12 @@ class Adsforwp_Ads_Widget extends WP_Widget {
                  foreach($all_groups as $group){
                      $group_select_html .='<option '. esc_attr(selected( $ads, $group->ID, false)).' value="'.esc_attr($group->ID).'">'.esc_html__($group->post_title, 'ads-for-wp').'</option>';
                  }
+                 $allow_html = $common_function_obj->adsforwp_expanded_allowed_tags();
                  echo '<select id="'.esc_attr( $this->get_field_id( 'ads' )).'" name="'.esc_attr( $this->get_field_name( 'ads' )).'">'
                          . '<optgroup label="Groups">'
-                         . $group_select_html
+                         . wp_kses($group_select_html, $allow_html)
                          . '<optgroup label="Ads">'
-                         . $ads_select_html
+                         . wp_kses($ads_select_html, $allow_html)
                          . '</select>';
                  ?>                       
 		

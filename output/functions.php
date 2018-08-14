@@ -116,14 +116,17 @@ class adsforwp_output_functions{
      */
     public function adsforwp_get_ad_code($post_ad_id){
     
-            $ad_image="";	                             
-            $custom_ad_code="";
-            $where_to_display="";            
+            $ad_image="";
             $ad_type="";
-            $amp_compatibility =''; 
-            $ad_code ='';   
-            $ad_expire_from ='';
-            $ad_expire_to ='';
+            $ad_code ="";  
+            $ad_expire_to ="";
+            $ad_expire_from ="";
+            $custom_ad_code="";
+            $where_to_display="";                        
+            $amp_compatibility ="";              
+            $adsforwp_ad_expire_enable ="";                        
+            $adsforwp_ad_days_enable ="";
+            $adsforwp_ad_expire_days =array();
             $post_meta_dataset = array();
             $post_meta_dataset = get_post_meta($post_ad_id,$key='',true);              
             
@@ -139,13 +142,21 @@ class adsforwp_output_functions{
             if(array_key_exists('select_adtype', $post_meta_dataset)){
             $ad_type = $post_meta_dataset['select_adtype'][0];      
             }
+            if(array_key_exists('adsforwp_ad_expire_day_enable', $post_meta_dataset)){
+            $adsforwp_ad_expire_enable = $post_meta_dataset['adsforwp_ad_expire_day_enable'][0];      
+            }            
             if(array_key_exists('adsforwp_ad_expire_from', $post_meta_dataset)){
             $ad_expire_from = $post_meta_dataset['adsforwp_ad_expire_from'][0];      
             }
             if(array_key_exists('adsforwp_ad_expire_to', $post_meta_dataset)){
             $ad_expire_to = $post_meta_dataset['adsforwp_ad_expire_to'][0];      
             }
-                                                            
+            if(array_key_exists('adsforwp_ad_expire_day_enable', $post_meta_dataset)){
+            $adsforwp_ad_days_enable = $post_meta_dataset['adsforwp_ad_expire_day_enable'][0];      
+            }
+            if(array_key_exists('adsforwp_ad_expire_days', $post_meta_dataset)){
+            $adsforwp_ad_expire_days = get_post_meta($post_ad_id,$key='adsforwp_ad_expire_days',true); ;      
+            }                                                          
             if($ad_type !=""){                                        
             if(array_key_exists('ads-for-wp_amp_compatibilty', $post_meta_dataset)){
             $amp_compatibility = $post_meta_dataset['ads-for-wp_amp_compatibilty'][0];    
@@ -168,7 +179,7 @@ class adsforwp_output_functions{
                     if($this->is_amp){
                      if($amp_compatibility == 'enable'){
                      $ad_code = '<div class="afw afw_ad_image afw_'.$post_ad_id.'">
-							<amp-img src="'.$ad_image.'" layout="responsive" height="400" width="500"></amp-img>
+							<amp-img src="'.$ad_image.'" layout="responsive" height="300" width="400"></amp-img>
 							</div>';    
                     }   
                     }else{
@@ -259,17 +270,44 @@ class adsforwp_output_functions{
             break;
         }      
               
-            if($ad_expire_from && $ad_expire_to )  {                
-                $current_date = date("Y-m-d");                                
+            $current_date = date("Y-m-d"); 
+            
+            if($adsforwp_ad_expire_enable){
+                
+             if($ad_expire_from && $ad_expire_to )  {     
+                 
                 if($ad_expire_from <= $current_date && $ad_expire_to >=$current_date){
-                return $ad_code;      
+                    
+                 if($adsforwp_ad_days_enable){
+                     
+                    foreach ($adsforwp_ad_expire_days as $days){
+                        
+                        if(date('Y-m-d', strtotime($days))==$current_date){
+                            
+                         return $ad_code;     
+                        }
+                    }      
                 }else{
-                return '';      
-                }                              
+                return $ad_code;          
+                }                                                        
+                }                             
             }else{
               return $ad_code;    
             }
-        
+            }else{
+              if($adsforwp_ad_days_enable){
+                  
+                    foreach ($adsforwp_ad_expire_days as $days){
+                        
+                        if(date('Y-m-d', strtotime($days))==$current_date){
+                            
+                        return $ad_code;     
+                        }
+                    }      
+                }else{
+                 return $ad_code;     
+                }
+            }
         
       }                         
 }
@@ -294,13 +332,14 @@ class adsforwp_output_functions{
      * @param type $atts
      * @return type string
      */
-    public function adsforwp_group_ads($atts, $group_id = null) { 
-        if ( is_single() ) { 
+    public function adsforwp_group_ads($atts, $group_id = null, $widget=false) { 
+        if ( is_single() || is_page()) { 
         $post_group_id  =   $atts['id']; 
         if($group_id){
         $post_group_id  =   $group_id;     
         }        
-        if($this->visibility != 'hide') {         
+        if($this->visibility != 'hide') {
+        $ad_code ="";    
         if($this->is_amp){
         $post_group_data = get_post_meta($post_group_id,$key='adsforwp_ads',true);         
         $ad_code =  $this->adsforwp_get_ad_code(array_rand($post_group_data));          

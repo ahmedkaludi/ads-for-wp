@@ -1,7 +1,9 @@
 <?php 
+/**
+ * This is a common class for all common functions which we will use in different classes in our plugin
+ */
 class adsforwp_admin_common_functions {   
-    
-        
+            
     public function adsforwp_fetch_all_ads(){
         $all_ads = get_posts(
                     array(
@@ -62,12 +64,11 @@ class adsforwp_admin_common_functions {
                 $meta_value = array(); 
                 $ad_group_ids = array();
                 foreach($all_groups as $groups){
-                  $meta_value  = get_post_meta( $groups->ID, $key='adsforwp_ads', true );                   
-                    if(in_array($ad_id, array_keys($meta_value))){
-                     $ad_group_ids[] = $groups->ID;  
-                    }
-                    
-                                      
+                  $meta_value  = get_post_meta( $groups->ID, $key='adsforwp_ads', true );                    
+                    if($meta_value){
+                        if(in_array($ad_id, array_keys($meta_value))){
+                        $ad_group_ids[] = $groups->ID;  
+                    }}                                  
                 }                
                 return $ad_group_ids;
     }
@@ -245,6 +246,8 @@ public function adsforwp_expanded_allowed_tags() {
                     'value'  => array(),
                     'type'   => array(),
                     'required' => array(),
+                    'multiple' => array(),
+                    'style' => array(),
             );
             $my_allowed['tr'] = array(
                     'class'  => array(),

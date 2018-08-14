@@ -106,11 +106,11 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
         $post_title ='';
             foreach($result as $group){
                $group_post = get_post($group);  
-               $post_title .= '<a href="'. esc_url(get_admin_url()).'post.php?post='.$group.'&action=edit">'.$group_post->post_title.'</a>, ';
+               $post_title .= '<a href="'. esc_url(get_admin_url()).'post.php?post='.esc_attr($group).'&action=edit">'.esc_html__($group_post->post_title, 'ads-for-wp').'</a>, ';
             }
             switch ( $column ) {        
                 case 'adsforwp_group_column' :
-                    echo $post_title; 
+                    echo html_entity_decode(esc_attr($post_title)); 
                     break;
             }
 }
@@ -137,7 +137,7 @@ add_filter( 'manage_adsforwp_posts_columns', 'adsforwp_custom_columns' );
 function adsforwp_custom_column_set( $column, $post_id ) {
     switch ( $column ) {        
         case 'ads_group_shortcode' :
-            echo '<a>[adsforwp-group id="'.$post_id.'"]</a>'; 
+            echo '<a>[adsforwp-group id="'.esc_attr($post_id).'"]</a>'; 
             break;
     }
 }
@@ -226,9 +226,7 @@ function adsforwp_update_ids_on_untrash(){
 /**
  * Showing pointer on mouse movement 
  */
-function adsforwp_print_footer_scripts() {       
-    $adsense_pointer_content = '<h3>'.esc_html__( 'Help', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'You can find Data Client ID and Data Ad Slot from adsense code.', 'ads-for-wp' ).'</p>';
-    $media_net_pointer_content = '<h3>'.esc_html__( 'Help', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'You can find Data CID id and Data CRID from media.net code.', 'ads-for-wp' ).'</p>';   
+function adsforwp_print_footer_scripts() {               
 ?>
    <script type="text/javascript">   
    jQuery(document).ready( function($) {       
@@ -250,10 +248,10 @@ function adsforwp_print_footer_scripts() {
        var content ='default';                        
         switch(id){
             case 'afw_adsense_pointer':
-                 content = '<?php echo $adsense_pointer_content; ?>';
+                 content = '<?php echo '<h3>'.esc_html__( 'Help', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'You can find Data Client ID and Data Ad Slot from adsense code.', 'ads-for-wp' ).'</p>'; ?>';
                 break;
             case 'afw_media_net_pointer':
-                content = '<?php echo $media_net_pointer_content; ?>';
+                content = '<?php echo '<h3>'.esc_html__( 'Help', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'You can find Data CID id and Data CRID from media.net code.', 'ads-for-wp' ).'</p>'; ?>';
                 break;           
             default:
                 break;

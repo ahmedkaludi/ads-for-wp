@@ -1,4 +1,12 @@
 jQuery( document ).ready(function($) {    
+    
+    /**
+     * We are here fetching ads by their id from database via ajax call
+     * @param {type} ads_group_id
+     * @param {type} ads_group_type
+     * @param {type} ad_id
+     * @returns {html tags}
+     */
     function adsforwpGetAdsById(ads_group_id, ads_group_type, ad_id){            
             $.ajax({
                     url:adsforwp_obj.ajax_url,
@@ -6,13 +14,17 @@ jQuery( document ).ready(function($) {
                     data:{ads_group_id:ads_group_id, ads_group_type:ads_group_type,ad_id:ad_id, action:"adsforwp_get_groups_ad"},
                     success:function(response){
                      if(response['status'] == 't' ){
-                       result =  response['ad_code'];
+                      var result =  response['ad_code'];
                        $(".afw-groups-ads-json[afw-group-id="+ads_group_id+"]").html(result);
                      }                       
                     }                
                 });                 
             }
-            $(".afw-groups-ads-json").each(function(){
+    /**
+     * we are here iterating on each group div to display all ads 
+     * randomly or ordered on interval or on reload
+     */        
+    $(".afw-groups-ads-json").each(function(){
             var ad_data_json = $(this).attr('data-json');
             var obj = JSON.parse(ad_data_json);            
                         
@@ -35,16 +47,18 @@ jQuery( document ).ready(function($) {
              if(i >= ad_ids_length){
                  i = 0;
              }    
-             if(ads_group_type === 'ordered')   {
-             adsforwpGetAdsById(ads_group_id, ads_group_type, ad_ids[i].ad_id);             
+             var adbyindex ='';
+                 adbyindex = ad_ids[i].ad_id;
+             if(ads_group_type === 'ordered')   {                  
+             adsforwpGetAdsById(ads_group_id, ads_group_type, adbyindex);             
              i++;    
              } else{
-             adsforwpGetAdsById(ads_group_id, ads_group_type, ad_ids[i].ad_id);                 
+             adsforwpGetAdsById(ads_group_id, ads_group_type, adbyindex);                 
              }             
             }, ads_group_ref_interval_sec);   
             
             }           
-            });            
+    });            
 });
 
  

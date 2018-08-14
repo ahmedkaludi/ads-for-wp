@@ -28,13 +28,29 @@ $('#adsforwp_ad_expire_to').focus();
  $("#adsforwp_ad_expire_enable").change(function(){
      if(!$(this).is(':checked')){
         $(".afw-table-expire-ad tr").each(function(index, element){
-        if(index !=0){
+        if(index !=0 && index<3){
             $(element).hide();
         }                           
      })
      }else{
         $(".afw-table-expire-ad tr").each(function(index, element){
-        if(index !=0){
+        if(index !=0 && index<3){
+            $(element).show();
+        }                           
+     }) 
+     }     
+ }).change();
+ 
+ $("#adsforwp_ad_expire_day_enable").change(function(){
+     if(!$(this).is(':checked')){
+        $(".afw-table-expire-ad tr").each(function(index, element){
+        if(index>3){
+            $(element).hide();
+        }                           
+     })
+     }else{
+        $(".afw-table-expire-ad tr").each(function(index, element){
+        if(index>3){
             $(element).show();
         }                           
      }) 
@@ -188,23 +204,39 @@ $("#select_adtype").change(function(){
             $(".afw-group-ads").find("tr.afw-group-add-ad-list").each(function(){
             var optionValue = $(this).attr('name');            
             if(adsval === optionValue){
-                status = 'Exist';  
-                $(".afw-add-new-note").show();
+                status = 'Exist';                  
                 return false; 
             }
             });           
-          if(status === 'Not exist') {             
+          if(status === 'Not exist' && adsval) {
+              
             var html ='';
             html +='<tr class="afw-group-add-ad-list" name="'+adsval+'" >';
             html +='<td>'+adstext+' <input type="hidden" name="'+adsval+'" value="'+adstext+'"></td>';
             html +='<td><button type="button" class="afw-remove-ad-from-group button">x</button></td>';
             html +='</tr>';
-            $(".afw-group-ads tbody").append(html);                            
+            $(".afw-group-ads tbody").append(html);  
+            $("#adsforwp_group_ad_list option:selected").remove();
             $(".afw-add-new-note").hide();
-          } 
+          } else{
+            $(".afw-add-new-note").show();  
+          }
                 
     });
+    $("input[name='ads-for-wp_amp_compatibilty']").change(function(){
+        var checked = $("input[name=ads-for-wp_amp_compatibilty]:checked").val();        
+        if(checked =='enable'){
+          $(".afw_amp_comp_check").text("AMP compatibility has been activated");  
+        }else{
+          $(".afw_amp_comp_check").text("AMP compatibility has been deactivated");  
+        }
+    }).change();
+    
     $(document).on("click", ".afw-remove-ad-from-group", function(){
+        var ad_id = $(this).parent().parent().find('input[type="hidden"]').attr('name');
+        var ad_title = $(this).parent().parent().find('input[type="hidden"]').val();
+        var optionhtml = '<option value="'+ad_id+'">'+ad_title+'</option>';
+        $("#adsforwp_group_ad_list").append(optionhtml);
         $(this).parent().parent('tr').remove();
     });
             

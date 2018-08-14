@@ -31,9 +31,9 @@ class adsforwp_metaboxes_amp_compatibility {
 			);
 		}
 	}
-	public function adsforwp_meta_box_callback( $post ) {
+	public function adsforwp_meta_box_callback( $post ) {                
 		wp_nonce_field( 'adsforwp_amp_data', 'adsforwp_amp_nonce' );
-                	echo "<p>".esc_html__('AMP compatibility has been activated', 'ads-for-wp')."</p>";
+                	echo '<p class="afw_amp_comp_check">'.esc_html__('AMP compatibility has been activated', 'ads-for-wp').'</p>';
 		$this->adsforwp_field_generator( $post );
 	}
 	public function adsforwp_field_generator( $post ) {
@@ -55,7 +55,7 @@ class adsforwp_metaboxes_amp_compatibility {
 					foreach ( $meta_field['options'] as $key => $value ) {
 						$meta_field_value = !is_numeric( $key ) ? $key : $value;
 						$input .= sprintf(
-							'<label style="padding-right:10px;"><input %s id=" % s" name="% s" type="radio" value="% s"> %s</label>%s',
+							'<label style="padding-right:10px;"><input %s id="%s" name="% s" type="radio" value="% s"> %s</label>%s',
 							$meta_value === $meta_field_value ? 'checked' : '',
 							$meta_field['id'],
 							$meta_field['id'],

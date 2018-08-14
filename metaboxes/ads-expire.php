@@ -19,6 +19,25 @@ class adsforwp_set_expiredate {
 			'id' => 'adsforwp_ad_expire_to',
 			'type' => 'text',
 		),
+              array(
+			'label' => 'Set Specific Days',
+			'id' => 'adsforwp_ad_expire_day_enable',
+			'type' => 'checkbox',
+		),
+            array(
+			'label' => 'Days',
+			'id' => 'adsforwp_ad_expire_days',
+			'type' => 'select',
+                        'options' => array(
+                            '0' => 'Monday',
+                            '1' => 'Tuesday',
+                            '2' => 'Wednesday',
+                            '3' => 'Thursday',
+                            '4' => 'Friday',
+                            '5' => 'Saturday',
+                            '6' => 'Sunday'
+                        )
+		),
 //		array(
 //			'label' => 'Time',
 //			'id' => 'adsforwp_ad_expire_time',
@@ -53,7 +72,7 @@ class adsforwp_set_expiredate {
 		$this->field_generator( $post );
 	}
 	public function field_generator( $post ) {
-		$output = '';
+		$output = '';                                 
 		foreach ( $this->meta_fields as $meta_field ) {
 			$label = '<label for="' . $meta_field['id'] . '">' . esc_html__($meta_field['label'], 'ads-for-wp') . '</label>';
 			$meta_value = get_post_meta( $post->ID, $meta_field['id'], true );
@@ -93,7 +112,30 @@ class adsforwp_set_expiredate {
                                         }                                        
 					$input .= '</select>';
                                             break;
-
+                                        
+                                        case 'adsforwp_ad_expire_days':                                               
+                                            $input = sprintf(
+						'<select multiple id="%s" name="%s[]" style="height:146px;">',
+						$meta_field['id'],
+						$meta_field['id']
+                                                    
+					);
+                                        $specific_days = array();  
+                                        if($meta_value){
+                                        $specific_days = $meta_value;    
+                                        }                                        
+					foreach ( $meta_field['options'] as $key => $value ) {
+						$meta_field_value = !is_numeric( $key ) ? $key : $value;                                                
+						$input .= sprintf(
+							'<option %s value="%s">%s</option>',
+                                                        in_array($meta_field_value, $specific_days) ? 'selected' : '',							
+							$meta_field_value,
+							$value
+						);
+					}
+                                        
+					$input .= '</select>';
+                                            break;
                                         default:
                                             $input = sprintf(
 						'<select id="%s" name="%s">',
@@ -137,13 +179,19 @@ class adsforwp_set_expiredate {
 	}
 	public function save_fields( $post_id ) {
 		if ( ! isset( $_POST['setexpiredate_nonce'] ) )
-			return $post_id;
-		$nonce = $_POST['setexpiredate_nonce'];
-		if ( !wp_verify_nonce( $nonce, 'setexpiredate_data' ) )
+			return $post_id;		
+		if ( !wp_verify_nonce( $_POST['setexpiredate_nonce'], 'setexpiredate_data' ) )
 			return $post_id;
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 			return $post_id;
+                
+                      
+                    $adsforwp_days_array = array();                     
+                    $adsforwp_days_array = array_map('sanitize_text_field', $_POST['adsforwp_ad_expire_days']);                      
+                    update_post_meta($post_id, 'adsforwp_ad_expire_days', $adsforwp_days_array);
+                    
 		foreach ( $this->meta_fields as $meta_field ) {
+                        if($meta_field['id'] != 'adsforwp_ad_expire_days'){ 
 			if ( isset( $_POST[ $meta_field['id'] ] ) ) {
 				switch ( $meta_field['type'] ) {
 					case 'email':
@@ -157,6 +205,7 @@ class adsforwp_set_expiredate {
 			} else if ( $meta_field['type'] === 'checkbox' ) {
 				update_post_meta( $post_id, $meta_field['id'], '0' );
 			}
+                 }
 		}
 	}
 }
