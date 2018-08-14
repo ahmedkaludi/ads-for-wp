@@ -15,7 +15,8 @@ class adsforwp_metaboxes_ads_type {
 				'' => 'Select Ad Type',
 				'adsense' =>'AdSense',
                                 'media_net' =>'Media.net',
-				'custom' =>'Custom',
+				'custom' =>'Custom Code',
+                                'ad_image' =>'Ad Image',
                             
 			),
                                 'attributes' => array(				
@@ -28,6 +29,7 @@ class adsforwp_metaboxes_ads_type {
 			'id' => 'custom_code',
 			'type' => 'textarea',
 		),
+               
 		array(
 			'label' => 'Data Client ID',
 			'id' => 'data_client_id',
@@ -97,6 +99,11 @@ class adsforwp_metaboxes_ads_type {
                                 '600x120'=>'horizontal (600x120)',
 			),
 		),
+              array(
+			'label' => 'Upload Ad Image',
+			'id' => 'adsforwp_ad_image',                        
+			'type' => 'media',
+		),
 	);
 	public function __construct() {
 		add_action( 'add_meta_boxes', array( $this, 'adsforwp_add_meta_boxes' ) );
@@ -120,7 +127,7 @@ class adsforwp_metaboxes_ads_type {
 		$this->adsforwp_field_generator( $post );
 	}
 	public function adsforwp_field_generator( $post ) {
-		$output = '';                
+		$output = '';                               
 		foreach ( $this->meta_fields as $meta_field ) {
                     $attributes ='';
 			$label = '<label for="' . $meta_field['id'] . '">' . esc_html__( $meta_field['label'], 'ads-for-wp' ) . '</label>';
@@ -168,8 +175,19 @@ class adsforwp_metaboxes_ads_type {
 						$meta_field['id'],
 						$meta_field['id'],
 						$meta_value
+					); 
+                                    break;
+                                case 'media':
+                                                $input = sprintf(
+						'<input class="afw_input adsforwp-icon" type="text" name="%s" id="%s" value="%s"/>'
+                                                . '<button type="button" class="button adsforwp-ad-img-upload" data-editor="content">'
+                                                . '<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> Upload Image'
+                                                . '</button>',
+						$meta_field['id'],
+						$meta_field['id'],
+						$meta_value
 					);
-					break;
+                                                break;
 				default:
                                       
                                     if(isset($meta_field['attributes'])){

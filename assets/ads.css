@@ -2,10 +2,13 @@
     display: none;
 }
 input[name=manual_ads_type] {    
-border: 0px;
- color: black;
+    border: 0px;
+    color: black;
 }
-
+input[name=adsforwp_group_shortcode] {    
+    border: 0px;
+    color: black;
+}
 .afw_input {
     width: 50%;
 }
@@ -15,4 +18,32 @@ border: 0px;
 .afw_textarea {
     width: 50%;
 }
-
+.afw-group-ads{
+    background-color: #f9f9f9; 
+}
+.afw-error {
+    color:red;
+}
+.afw-table-expire-ad label{
+    font-size: 14px;
+    font-weight: 500;  
+}
+.afw-table-expire-ad td{
+    padding-top:5px;
+    padding-bottom:5px;
+}
+.adsforwp_ad_expire_from_span{
+    position: absolute;
+    top: 53px;
+    right: 25px;
+    cursor: pointer;
+}
+.adsforwp_ad_expire_to_span{
+    position: absolute;
+    top: 94px;
+    right: 25px;
+    cursor: pointer;
+}
+input[name=adsforwp_group_ref_interval_sec]{
+    width: 100px; 
+}

@@ -44,7 +44,8 @@ class adsforwp_metaboxes_display {
 	);
 	public function __construct() {                                                                                                     
 		add_action( 'add_meta_boxes', array( $this, 'adsforwp_add_meta_boxes' ) );
-		add_action( 'save_post', array( $this, 'adsforwp_save_fields' ) );
+		add_action( 'save_post', array( $this, 'adsforwp_save_fields' ) );                               
+                
 	}
 	public function adsforwp_add_meta_boxes() {
 		foreach ( $this->screen as $single_screen ) {
@@ -63,6 +64,7 @@ class adsforwp_metaboxes_display {
 		$this->adsforwp_field_generator( $post );
 	}
 	public function adsforwp_field_generator( $post ) {
+           
 		$output = '';
 		foreach ( $this->meta_fields as $meta_field ) {
                         $attributes ='';
@@ -109,16 +111,27 @@ class adsforwp_metaboxes_display {
 			}
 			$output .= $this->adsforwp_format_rows( $label, $input );
 		}
-                $common_function_obj = new adsforwp_admin_common_functions();
-                $allowed_html = $common_function_obj->adsforwp_expanded_allowed_tags();
-		echo '<table class="form-table"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table>';
-                
+                        $common_function_obj = new adsforwp_admin_common_functions();
+                        $allowed_html = $common_function_obj->adsforwp_expanded_allowed_tags();                
+                        $in_group = $common_function_obj->adsforwp_check_ads_in_group($post->ID);                               
+                if(!empty($in_group)){
+                        $group_links = '';
+                        foreach($in_group as $group){                       
+                        $group_post = get_post($group);                        
+                        $group_links .= '<span style="padding-right:5px;"><a href="?post='.esc_attr($group).'&action=edit"> '.esc_html__($group_post->post_title, 'ads-for-wp').'</a>,</span> ';    
+                        }
+                        echo '<p>'.esc_html__('This ad is associated with groups. Go to the groups', 'ads-for-wp').' '.html_entity_decode(esc_html($group_links)).'</p>';   
+                        echo '<table class="form-table" style="display:none;"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table>';      
+                }else{
+                        echo '<table class="form-table"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table>';   
+                }
+		                
 	}
 	public function adsforwp_format_rows( $label, $input ) {                                    
 		return '<tr><th>'.$label.'</th><td>'.$input.'</td></tr>';                
 	}
 	public function adsforwp_save_fields( $post_id ) {
-            
+                            
 		if ( ! isset( $_POST['adsforwp_display_nonce'] ) )
 			return $post_id;		
 		if ( !wp_verify_nonce( $_POST['adsforwp_display_nonce'], 'adsforwp_display_data' ) )
