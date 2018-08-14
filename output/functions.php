@@ -179,7 +179,7 @@ class adsforwp_output_functions{
                     if($this->is_amp){
                      if($amp_compatibility == 'enable'){
                      $ad_code = '<div class="afw afw_ad_image afw_'.$post_ad_id.'">
-							<amp-img src="'.$ad_image.'" layout="responsive" height="300" width="400"></amp-img>
+							<amp-img src="'.$ad_image.'" layout="" height="300" width="400"></amp-img>
 							</div>';    
                     }   
                     }else{
