@@ -338,8 +338,7 @@ class adsforwp_output_functions{
     public function adsforwp_group_ads($atts, $group_id = null, $widget=false) { 
         if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {
             $this->is_amp = true;        
-        }
-        if ( is_single() || is_page()) { 
+        }        
         $post_group_id  =   $atts['id']; 
         if($group_id){
         $post_group_id  =   $group_id;     
@@ -376,8 +375,7 @@ class adsforwp_output_functions{
         }
         return $ad_code;                           
        } 
-        }
-        }              
+        }                    
 }
 
     /**
