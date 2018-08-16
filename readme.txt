@@ -16,6 +16,7 @@ ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy t
 
 * NEW: Ad Groups with AMP support
 * NEW: Ad Widget added
+* NEW: Ad expiry and scheduling option added
 * Unlimited Ads
 * Google Adsense Support
 * Custom Ad HTML support
