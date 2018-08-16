@@ -116,6 +116,9 @@ class adsforwp_output_functions{
      */
     public function adsforwp_get_ad_code($post_ad_id){
     
+            if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {
+            $this->is_amp = true;        
+            }
             $ad_image="";
             $ad_type="";
             $ad_code ="";  
@@ -333,6 +336,9 @@ class adsforwp_output_functions{
      * @return type string
      */
     public function adsforwp_group_ads($atts, $group_id = null, $widget=false) { 
+        if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {
+            $this->is_amp = true;        
+        }
         if ( is_single() || is_page()) { 
         $post_group_id  =   $atts['id']; 
         if($group_id){
@@ -340,11 +346,11 @@ class adsforwp_output_functions{
         }        
         if($this->visibility != 'hide') {
         $ad_code ="";    
-        if($this->is_amp){
+        if($this->is_amp){            
         $post_group_data = get_post_meta($post_group_id,$key='adsforwp_ads',true);         
         $ad_code =  $this->adsforwp_get_ad_code(array_rand($post_group_data));          
         return $ad_code;
-        }else{
+        }else{            
         $post_group_data = get_post_meta($post_group_id,$key='adsforwp_ads',true);     
         $post_data = get_post_meta($post_group_id,$key='',true);
         if($post_group_data){
