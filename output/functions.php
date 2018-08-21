@@ -131,7 +131,8 @@ class adsforwp_output_functions{
             $adsforwp_ad_days_enable ="";
             $adsforwp_ad_expire_days =array();
             $post_meta_dataset = array();
-            $post_meta_dataset = get_post_meta($post_ad_id,$key='',true);              
+            $post_meta_dataset = get_post_meta($post_ad_id,$key='',true);  
+            
             
             if(array_key_exists('custom_code', $post_meta_dataset)){
             $custom_ad_code = $post_meta_dataset['custom_code'][0];    
@@ -162,12 +163,12 @@ class adsforwp_output_functions{
             }                                                          
             if($ad_type !=""){                                        
             if(array_key_exists('ads-for-wp_amp_compatibilty', $post_meta_dataset)){
-            $amp_compatibility = $post_meta_dataset['ads-for-wp_amp_compatibilty'][0];    
+            $amp_compatibility = $post_meta_dataset['ads-for-wp_amp_compatibilty'][0];              
             }                
             switch ($ad_type) {
             case 'custom':
                     if($this->is_amp){
-                     if($amp_compatibility == 'enable'){
+                     if($amp_compatibility != 'disable'){
                      $ad_code = '<div class="afw afw_custom afw_'.$post_ad_id.'">
 							'.$custom_ad_code.'
 							</div>';    
@@ -180,7 +181,7 @@ class adsforwp_output_functions{
             break;
             case 'ad_image':
                     if($this->is_amp){
-                     if($amp_compatibility == 'enable'){
+                     if($amp_compatibility != 'disable'){
                      $ad_code = '<div class="afw afw_ad_image afw_'.$post_ad_id.'">
 							<amp-img src="'.$ad_image.'" layout="" height="300" width="400"></amp-img>
 							</div>';    
@@ -198,14 +199,14 @@ class adsforwp_output_functions{
             $ad_slot = $post_meta_dataset['data_ad_slot'][0];    
             $width='200';
             $height='200';
-            $banner_size = $post_meta_dataset['banner_size'][0];    
+            $banner_size = $post_meta_dataset['banner_size'][0];              
             if($banner_size !=''){
-            $explode_size = explode('x', $banner_size);            
+            $explode_size = explode('x', $banner_size);              
             $width = $explode_size[0];            
             $height = $explode_size[1];                               
             }            
             if($this->is_amp){
-                if($amp_compatibility == 'enable'){
+                if($amp_compatibility != 'disable'){
                  $ad_code = '<div class="afw afw-ga afw_'.$post_ad_id.'">
                                 <amp-ad 
 				type="adsense"
@@ -243,7 +244,7 @@ class adsforwp_output_functions{
             $height = $explode_size[1];                               
             }            
             if($this->is_amp){
-                if($amp_compatibility == 'enable'){
+                if($amp_compatibility != 'disable'){
                  $ad_code = 
                             '<div class="afw afw-md afw_'.$post_ad_id.'">
                             <amp-ad 
@@ -375,7 +376,7 @@ class adsforwp_output_functions{
         }
         return $ad_code;                           
        } 
-        }                    
+      }                    
 }
 
     /**
