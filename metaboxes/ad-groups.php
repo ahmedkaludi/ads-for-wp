@@ -175,7 +175,7 @@ class adsforwp_metaboxes_ad_groups {
 							'<option %s value="adsforwp_ads%s">%s</option>',
 							$meta_value === $meta_field_value ? 'selected' : '',
 							$meta_field_value,
-							$value['ad_name']
+							esc_html__($value['ad_name'], 'ads-for-wp')
 						);
                                                 
                                                 }
@@ -185,7 +185,7 @@ class adsforwp_metaboxes_ad_groups {
 							'<option %s value="adsforwp_ads%s">%s</option>',
 							$meta_value === $meta_field_value ? 'selected' : '',
 							$meta_field_value,
-							$value['ad_name']
+							esc_html__($value['ad_name'], 'ads-for-wp')
 						);  
                                                 }
                                                 }
@@ -204,7 +204,7 @@ class adsforwp_metaboxes_ad_groups {
 							'<option %s value="%s">%s</option>',
 							$meta_value === $meta_field_value ? 'selected' : '',
 							$meta_field_value,
-							$value
+							esc_html__($value, 'ads-for-wp')
 						);
                                                  }
                                                 $input .= '</select>';

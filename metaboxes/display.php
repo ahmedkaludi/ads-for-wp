@@ -85,7 +85,7 @@ class adsforwp_metaboxes_display {
 							'<option %s value="%s">%s</option>',
 							$meta_value === $meta_field_value ? 'selected' : '',
 							$meta_field_value,
-							esc_html__($value, 'ads-for-wp')
+							esc_html__($value, 'ads-for-wp')                                                        
 						);
 					}
 					$input .= '</select>';
