@@ -1,6 +1,30 @@
+function adsforwpGetParamByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
 jQuery( document ).ready(function($) {    
 var currentAdID       		= adsforwp_localize_data.id;      
 
+
+$(".adsforwp-tabs a").click(function(e){
+		var href = $(this).attr("href");
+		var currentTab = adsforwpGetParamByName("tab",href);
+		if(!currentTab){
+			currentTab = "dashboard";
+		}
+		$(this).siblings().removeClass("nav-tab-active");
+		$(this).addClass("nav-tab-active");
+		$(".form-wrap").find(".adsforwp-"+currentTab).siblings().hide();
+		$(".form-wrap .adsforwp-"+currentTab).show();
+		window.history.pushState("", "", href);
+		return false;
+	});
  $('#adsforwp_ad_expire_from, #adsforwp_ad_expire_to').datepicker({
      dateFormat: "yy-mm-dd",
      minDate: 0,
@@ -85,7 +109,7 @@ $(".afw_group_ad_list").parent().parent().show();
 
 // Metaboxes field selection on different dropdown selection
 $("#paragraph_number").parent().parent("tr").addClass("afw_hide");
-$("#custom_code, #data_client_id, #data_ad_slot, #paragraph_number, #banner_size, #manual_ads_type, #data_cid, #data_crid, #adsforwp_ad_image").parent().parent("tr").hide();
+$("#custom_code, #data_client_id, #data_ad_slot, #paragraph_number, #banner_size, #manual_ads_type, #data_cid, #data_crid, #adsforwp_ad_image, #adsforwp_ad_redirect_url, #adsense_type").parent().parent("tr").hide();
 
 $("#select_adtype").change(function(){        
       $(this).find("option:selected").each(function(){
@@ -95,37 +119,62 @@ $("#select_adtype").change(function(){
               switch (optionValue) {
                   
                 case "custom":
+                    $("#display-metabox").show();
                    $(".afw_pointer").hide(); 
                    $("#custom_code").parent().parent("tr").show();                                       
-                   $("#data_client_id, #data_ad_slot, #banner_size, #data_cid, #data_crid, #adsforwp_ad_image").parent().parent("tr").hide();                                          
+                   $("#data_client_id, #data_ad_slot, #banner_size, #data_cid, #data_crid, #adsforwp_ad_image, #adsforwp_ad_redirect_url, #adsense_type").parent().parent("tr").hide();                                          
                    $("#custom_code").attr("required",true);                    
                    $("#banner_size, #data_client_id, #data_ad_slot, #data_cid, #data_crid, #adsforwp_ad_image").attr("required",false);                    
                     break;
                 case "adsense":
-                  $("#custom_code, #data_cid, #data_crid, #adsforwp_ad_image").parent().parent("tr").hide();                                                      
-              	  $("#data_client_id, #data_ad_slot, #banner_size").parent().parent("tr").show();                                    
-                  $("#banner_size, #data_client_id, #data_ad_slot").attr("required",true);                                                      
-                  $("#data_cid, #data_crid, #custom_code, #adsforwp_ad_image").attr("required",false); 
+                  $("#adsense_type").parent().parent("tr").show();
+                  var adsense_type = $("#adsense_type option:selected").val();                 
+                  switch(adsense_type){
+                      case "normal":  
+                           $("#display-metabox").show(); 
+                           $("#banner_size, #data_client_id, #data_ad_slot").parent().parent("tr").show();
+                           $("#banner_size, #data_client_id, #data_ad_slot").attr("required",true);
+                           $("#custom_code, #data_cid, #data_crid, #adsforwp_ad_image, #adsforwp_ad_redirect_url").parent().parent("tr").hide();
+                          break;
+                      case "adsense_auto_ads":
+                            $("#display-metabox").hide();
+                            $("#data_client_id").parent().parent("tr").show();
+                            $("#banner_size, #data_ad_slot").parent().parent("tr").hide();
+                            $("#data_client_id").attr("required",true);
+                            $("#banner_size, #data_ad_slot").attr("required",false);
+                            $("#custom_code, #data_cid, #data_crid, #adsforwp_ad_image, #adsforwp_ad_redirect_url").parent().parent("tr").hide();
+                          break;
+                      default:
+                          $("#display-metabox").show();
+                          $("#banner_size, #data_client_id, #data_ad_slot").parent().parent("tr").hide();
+                          $("#banner_size, #data_client_id, #data_ad_slot").attr("required",false);
+                          break;
+                  }                                     
+                  
+                  $("#data_cid, #data_crid, #custom_code, #adsforwp_ad_image").attr("required",false);
                   $(".afw_pointer").show();
                   $(".afw_pointer").attr("id", "afw_adsense_pointer");
                     break
                 case "media_net":
+                  $("#display-metabox").show();
                   $("#data_cid, #banner_size, #data_crid").parent().parent("tr").show();                                                      
-                  $("#custom_code, #data_ad_slot, #data_client_id, #adsforwp_ad_image").parent().parent("tr").hide();              	                                      
+                  $("#custom_code, #data_ad_slot, #data_client_id, #adsforwp_ad_image, #adsforwp_ad_redirect_url, #adsense_type").parent().parent("tr").hide();              	                                      
                   $("#banner_size, #data_crid, #data_cid").attr("required",true);                                                      
                   $("#custom_code, #data_client_id, #data_ad_slot, #adsforwp_ad_image").attr("required",false);  
                   $(".afw_pointer").show();
                   $(".afw_pointer").attr("id", "afw_media_net_pointer");
                     break 
                 case "ad_image":
+                  $("#display-metabox").show();
                   $("#adsforwp_ad_image").attr("required",true);  
                   $("#banner_size, #data_client_id, #data_ad_slot, #data_cid, #data_crid, #custom_code").attr("required",false);
-                  $("#adsforwp_ad_image").parent().parent("tr").show();                                                      
-                  $("#custom_code, #data_ad_slot, #data_client_id, #banner_size, #data_crid, #data_cid").parent().parent("tr").hide();              	                                                                                            
+                  $("#adsforwp_ad_image, #adsforwp_ad_redirect_url").parent().parent("tr").show();                                                      
+                  $("#custom_code, #data_ad_slot, #data_client_id, #banner_size, #data_crid, #data_cid, #adsense_type").parent().parent("tr").hide();              	                                                                                            
                   $(".afw_pointer").hide();
                     break 
                 default:
-                  $("#custom_code, #data_client_id, #data_ad_slot, #banner_size").parent().parent("tr").hide();              	  
+                  $("#display-metabox").show();
+                  $("#custom_code, #data_client_id, #data_ad_slot, #paragraph_number, #banner_size, #manual_ads_type, #data_cid, #data_crid, #adsforwp_ad_image, #adsforwp_ad_redirect_url, #adsense_type").parent().parent("tr").hide();
                   $(".afw_pointer").hide();
                   break;   
                 }                                                        
@@ -136,6 +185,45 @@ $("#select_adtype").change(function(){
     }).change();
     
     
+    
+    $("#adsense_type").change(function(){   
+                
+          var optionValue = $("#adsense_type option:selected").val();            
+          if(optionValue){
+              
+              switch (optionValue) {
+                 case "normal":
+                    $("#banner_size, #data_client_id, #data_ad_slot").parent().parent("tr").show();
+                    $("#banner_size, #data_client_id, #data_ad_slot").attr("required",true);                    
+                    $("#display-metabox").show();
+                    break;
+                case "adsense_auto_ads":
+                   $("#display-metabox").hide();
+                   $("#data_client_id").parent().parent("tr").show();
+                   $("#banner_size, #data_ad_slot").parent().parent("tr").hide();
+                   $("#data_client_id").attr("required",true);
+                   $("#banner_size, #data_ad_slot").attr("required",false);
+                   $.ajax({
+                    url:adsforwp_localize_data.ajax_url,
+                    async: false, 
+                    dataType: "json",
+                    data:{action:"adsforwp_check_meta"},
+                    success:function(response){
+                     if(response['status'] == 't' ){                         
+                         $(".afw_adsense_auto_note").removeClass('afw_hide'); 
+                         var location_name = location.protocol + "//" + location.host;
+                         $(".afw_adsense_auto").attr('href', ''+location_name+'/wordpress/wp-admin/post.php?post='+response['post_id']+'&action=edit')
+                     }                     
+                    }                
+                    }); 
+                   
+                    break
+                default:                    
+                  break;   
+                }                          
+          }      
+      
+    });
     
     $("#wheretodisplay").change(function(){   
         

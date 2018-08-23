@@ -1,5 +1,95 @@
 <?php
 /**
+ * We are here overriding tile for adsforwp post type
+ * @global type $post
+ * @param string $title
+ * @return string
+ */
+function adsforwp_modify_title( $title) {
+    global $post;
+    if($post->post_type =='adsforwp'){
+        $adsense_auto = get_post_meta($post->ID, $key='adsense_type', true);
+        if($adsense_auto === 'adsense_auto_ads'){
+            $title = $title.' (Auto AdSense Ad)';
+        }
+    }    
+    return $title;
+}
+add_filter( 'the_title', 'adsforwp_modify_title', 10, 1 );
+
+/**
+* This is a ajax handler function to check adsese auto ads, if it is already added.
+* @return type json string
+ */
+function adsforwp_ajax_check_post_availability(){                                     
+                    $cc_args = array(
+                        'posts_per_page'   => -1,
+                        'post_type'        => 'adsforwp',
+                        'meta_key'         => 'adsense_type',
+                        'meta_value'       => 'adsense_auto_ads',
+                    );
+                    $postdata = new WP_Query($cc_args);                      
+                    $auto_adsense_post = $postdata->posts;                      
+                    if($postdata->post_count >0){                   
+                    $ad_sense_type = get_post_meta($auto_adsense_post[0]->ID,$key='adsense_type',true);                     
+                    }               
+                    if($ad_sense_type){
+                    echo json_encode(array('status'=> 't','post_id'=> $auto_adsense_post[0]->ID, 'adsense_type'=> $ad_sense_type));        
+                    }else{
+                    echo json_encode(array('status'=> 'f','post_id'=> esc_html__('not available', 'ads-for-wp')));                                 
+                    }
+        
+           wp_die();           
+}
+add_action('wp_ajax_adsforwp_check_meta', 'adsforwp_ajax_check_post_availability');
+
+function adsforwp_admin_link($tab = '', $args = array()){	
+	$page = 'adsforwp';
+	if ( ! is_multisite() ) {
+		$link = admin_url( 'admin.php?page=' . $page );
+	}
+	else {
+		$link = network_admin_url( 'admin.php?page=' . $page );
+	}
+
+	if ( $tab ) {
+		$link .= '&tab=' . $tab;
+	}
+
+	if ( $args ) {
+		foreach ( $args as $arg => $value ) {
+			$link .= '&' . $arg . '=' . urlencode( $value );
+		}
+	}
+
+	return esc_url($link);
+}
+
+
+function adsforwp_get_tab( $default = '', $available = array() ) {
+
+	$tab = isset( $_GET['tab'] ) ? sanitize_text_field($_GET['tab']) : $default;
+        
+	if ( ! in_array( $tab, $available ) ) {
+		$tab = $default;
+	}
+	return $tab;
+}
+
+/**
+ * It is default settings value, if value is not set for any option in setting section 
+ * @return type
+ */
+function adsforwp_defaultSettings(){
+	$defaults = array(
+		'app_blog_name'		=> get_bloginfo( 'name' ),
+		'advnc_ads_import_check'	=> 1,				
+	);        
+	$settings = get_option( 'adsforwp_settings', $defaults );         
+	return $settings;
+}
+
+/**
  * We are here checking expire date of all ads and change status
  */
 function adsforwp_update_ads_status(){
@@ -45,7 +135,7 @@ function adsforwp_setup_post_type() {
 	        'singular_name' 	=> esc_html__( 'Ad', 'ads-for-wp' ),
 	        'add_new' 		=> esc_html__( 'Add New Ad', 'ads-for-wp' ),
 	        'add_new_item'  	=> esc_html__( 'Add New Ad', 'ads-for-wp' ),
-                'edit_item'             => esc_html__('Edit AD','ads-for-wp'),                
+                'edit_item'             => esc_html__( 'Edit AD','ads-for-wp'),                
 	    ),
       	'public' 		=> true,
       	'has_archive' 		=> false,
@@ -65,19 +155,26 @@ function adsforwp_setup_post_type() {
       	'has_archive' 		=> false,
       	'exclude_from_search'	=> true,
     	'publicly_queryable'	=> false,
-        'show_in_menu'  =>	'edit.php?post_type=adsforwp',
+        'show_in_menu'  =>	'edit.php?post_type=adsforwp',                
+        'show_ui'           => true,
+	'show_in_nav_menus' => false,			
+        'show_admin_column' => true,        
+	'rewrite'           => false,
     );
     register_post_type( 'adsforwp-groups', $group_post_type );        
 }
 
 function adsforwp_modified_views_so( $views ) 
 {
-    $views['draft'] = str_replace('Draft', 'Expire', $views['draft']);
-    $views['publish'] = str_replace('Published', 'Live', $views['publish']);
+    if(isset($views['draft'])){
+    $views['draft'] = str_replace('Draft', 'Expire', $views['draft']);    
+    }    
+    if(isset($views['publish'])){
+    $views['publish'] = str_replace('Published', 'Live', $views['publish']);    
+    }    
     return $views;
 }
 add_filter( "views_edit-adsforwp", 'adsforwp_modified_views_so' );
-
 
 /**
  * Add the custom columns to the adsforwp_groups post type:
@@ -101,9 +198,10 @@ function adsforwp_groups_custom_columns($columns) {
  * @param type $post_id
  */
 function adsforwp_group_custom_column_set( $column, $post_id ) {
+        
         $common_function_obj = new adsforwp_admin_common_functions();
         $result = $common_function_obj->adsforwp_check_ads_in_group($post_id);
-        $post_title ='';
+        $post_title ='';        
             foreach($result as $group){
                $group_post = get_post($group);  
                $post_title .= '<a href="'. esc_url(get_admin_url()).'post.php?post='.esc_attr($group).'&action=edit">'.esc_html__($group_post->post_title, 'ads-for-wp').'</a>, ';
@@ -111,7 +209,7 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
             switch ( $column ) {        
                 case 'adsforwp_group_column' :
                     echo html_entity_decode(esc_attr($post_title)); 
-                    break;
+                    break;                
             }
 }
 add_action( 'manage_adsforwp_posts_custom_column' , 'adsforwp_group_custom_column_set', 10, 2 );
@@ -122,9 +220,9 @@ add_action( 'manage_adsforwp_posts_custom_column' , 'adsforwp_group_custom_colum
  * @return string
  */
 
-function adsforwp_custom_columns($columns) {        
+function adsforwp_custom_columns($columns) {    
     unset($columns['date']);
-    $columns['adsforwp_group_column'] = '<a>'.esc_html__( 'Groups', 'ads-for-wp' ).'<a>';                        
+    $columns['adsforwp_group_column'] = '<a>'.esc_html__( 'Groups', 'ads-for-wp' ).'<a>';                            
     return $columns;
 }
 add_filter( 'manage_adsforwp_posts_columns', 'adsforwp_custom_columns' );
@@ -135,6 +233,7 @@ add_filter( 'manage_adsforwp_posts_columns', 'adsforwp_custom_columns' );
  */
 
 function adsforwp_custom_column_set( $column, $post_id ) {
+    
     switch ( $column ) {        
         case 'ads_group_shortcode' :
             echo '<a>[adsforwp-group id="'.esc_attr($post_id).'"]</a>'; 
@@ -157,12 +256,12 @@ add_action( 'admin_init', 'adsforwp_removing_wysiwig' );
  *	 REGISTER ALL NON-ADMIN SCRIPTS
  */
 function adsforwp_frontend_enqueue(){
-        wp_register_script('pwaforwp-ads-front-js', ADSFORWP_PLUGIN_DIR_URI . 'assets/ads-front.js', array( 'jquery' ), ADSFORWP_VERSION, true);
+        wp_register_script('adsforwp-ads-front-js', ADSFORWP_PLUGIN_DIR_URI . 'assets/ads-front.js', array( 'jquery' ), ADSFORWP_VERSION, true);
         $object_name = array(
             'ajax_url' => admin_url( 'admin-ajax.php' ),            
         );
-        wp_localize_script('pwaforwp-ads-front-js', 'adsforwp_obj', $object_name);
-        wp_enqueue_script('pwaforwp-ads-front-js');
+        wp_localize_script('adsforwp-ads-front-js', 'adsforwp_obj', $object_name);
+        wp_enqueue_script('adsforwp-ads-front-js');
 }
 add_action( 'wp_enqueue_scripts', 'adsforwp_frontend_enqueue' );
 /*

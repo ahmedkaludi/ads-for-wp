@@ -50,7 +50,7 @@ class adsforwp_metaboxes_display {
 	public function adsforwp_add_meta_boxes() {
 		foreach ( $this->screen as $single_screen ) {
 			add_meta_box(
-				'display',
+				'display-metabox',
 				esc_html__( 'Display', 'ads-for-wp' ),
 				array( $this, 'adsforwp_meta_box_callback' ),
 				$single_screen,

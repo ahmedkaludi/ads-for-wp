@@ -47,3 +47,29 @@ input[name=adsforwp_group_shortcode] {
 input[name=adsforwp_group_ref_interval_sec]{
     width: 100px; 
 }
+
+.afw-import table th{
+    width: auto;
+    font-weight: 600;
+    padding: 0px;
+} 
+.afw-settings-list{
+    display:inline-block;
+    width:100%
+}
+.afw-settings-list li{
+    padding:15px;
+    padding-left:0px;
+}
+.afw-settings-list li div label{
+    font-weight: 600;
+}
+.afw-general h2{
+    margin-bottom: 0px;
+}
+.afw-settings-form p.submit{
+    margin-top:0px;
+}
+.afw_qanda_p{
+    font-weight: 500;
+}

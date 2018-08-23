@@ -24,6 +24,15 @@ class adsforwp_metaboxes_ads_type {
 				
 			),
 		),
+                  array(
+			'label' => 'AdSense Type',
+			'id' => 'adsense_type',
+			'type' => 'select',                        
+			'options' => array(				
+				'normal' =>'Normal',
+                                'adsense_auto_ads' =>'AdSense Auto Ads'				                                                            
+			)
+                      ),
 		array(
 			'label' => 'Custom Code',
 			'id' => 'custom_code',
@@ -104,6 +113,11 @@ class adsforwp_metaboxes_ads_type {
 			'id' => 'adsforwp_ad_image',                        
 			'type' => 'media',
 		),
+              array(
+			'label' => 'Ad Redirect URL',
+			'id' => 'adsforwp_ad_redirect_url',                        
+			'type' => 'text',
+		),
 	);
 	public function __construct() {
 		add_action( 'add_meta_boxes', array( $this, 'adsforwp_add_meta_boxes' ) );
@@ -162,7 +176,10 @@ class adsforwp_metaboxes_ads_type {
                                         switch($meta_field['id']){
                                             case 'select_adtype':
                                                 $input .= '</select><span style="cursor:pointer;float:right;" class="afw_pointer dashicons-before dashicons-editor-help" id="afw_data_cid_pointer"></span>';
-                                                break;                                            
+                                                break; 
+                                            case 'adsense_type':
+                                                $input .= '</select><p class="afw_adsense_auto_note afw_hide">'.esc_html__('You have already added Adsense Auto Ad.', 'ads-for-wp').' <a class="afw_adsense_auto">'.esc_html('Edit' ,'ads-for-wp').'</a></p>';
+                                                break; 
                                             default:
                                                 $input .= '</select>';
                                                break;
