@@ -3,7 +3,287 @@
  * This is a common class for all common functions which we will use in different classes in our plugin
  */
 class adsforwp_admin_common_functions {   
-            
+        
+    public function __construct() {
+        //add_action( 'plugins_loaded', array($this, 'adsforwp_import_all_advanced_ads' ));
+    }   
+    /**
+     * We are here fetching all groups information from advanced ads plugin
+     * @return type array
+     */
+    public function adsforwp_get_advads_groups(){
+        
+        $group_list = array();
+        
+        $terms = get_terms( 'advanced_ads_groups', array(
+        'hide_empty' => false,
+        ));        
+        foreach($terms as $term){
+            $ad_ids = array();
+            $args = array(
+			'post_type' => 'advanced_ads',
+			'post_status' => array('publish', 'pending', 'future', 'private'),
+			'taxonomy' => $term->taxonomy,
+			'term' => $term->slug,
+			'posts_per_page' => -1
+		);
+             $wp = new WP_Query( $args );
+             if($wp->post_count){
+                 foreach ($wp->posts as $ad_id){
+                    $ad_ids[] = $ad_id->ID; 
+                 }
+             }
+             $group_list[$term->term_id] = $ad_ids;
+        }    
+        return $group_list;
+    }
+    /**
+     * We are here fetching all ads from advanced ads plugin
+     * note: Transaction is applied on this function, if any error occure all the data will be rollbacked
+     * @global type $wpdb
+     * @return boolean
+     */
+    public function adsforwp_import_all_advanced_ads(){    
+        $advads_groups = array();
+        $advads_groups = $this->adsforwp_get_advads_groups();        
+        $advads_ads_adsense = get_option('advanced-ads-adsense');
+        $advads_ads_placement = get_option('advads-ads-placements');                                                         
+        $ads_post = array();
+        global $wpdb;
+        $user_id = get_current_user_id();
+        $all_advanced_ads = get_posts(
+                    array(
+                            'post_type' 	 => 'advanced_ads',                                                                                   
+                            'posts_per_page' => -1,   
+                            'post_status' => 'any',
+                    )
+                 );  
+       
+        
+        if($all_advanced_ads){
+            // begin transaction
+            $wpdb->query('START TRANSACTION');
+            foreach($all_advanced_ads as $ads){    
+                
+                $ads_post = array(
+                    'post_author' => $user_id,
+                    'post_date' => $ads->post_date,
+                    'post_date_gmt' => $ads->post_date_gmt,
+                    'post_content' => $ads->post_content,
+                    'post_title' => $ads->post_title,
+                    'post_excerpt' => $ads->post_excerpt,
+                    'post_status' => $ads->post_status,
+                    'comment_status' => $ads->comment_status,
+                    'ping_status' => $ads->ping_status,
+                    'post_password' => $ads->post_password,
+                    'post_name' =>  $ads->post_name,
+                    'to_ping' => $ads->to_ping,
+                    'pinged' => $ads->pinged,
+                    'post_modified' => $ads->post_modified,
+                    'post_modified_gmt' => $ads->post_modified_gmt,
+                    'post_content_filtered' => $ads->post_content_filtered,
+                    'post_parent' => $ads->post_parent,                                        
+                    'menu_order' => $ads->menu_order,
+                    'post_type' => 'adsforwp',
+                    'post_mime_type' => $ads->post_mime_type,
+                    'comment_count' => $ads->comment_count,
+                    'filter' => $ads->filter,                    
+                );      
+                                
+                $post_id = wp_insert_post($ads_post);
+                $result = $post_id;
+                $guid = get_option('siteurl') .'/?post_type=adsforwp&p='.$post_id;                
+                $wpdb->get_results("UPDATE wp_posts SET guid ='".$guid."' WHERE ID ='".$post_id."'");
+                $advn_meta_value = array();
+                $advn_meta_value  = get_post_meta($ads->ID, $key='advanced_ads_ad_options', true );                  
+                
+                foreach($advads_groups as $group_id => $ads_id){
+                   
+                    for($i=0;$i<count($ads_id);$i++){
+                    if($ads_id[$i] == $ads->ID){
+                      $advads_groups[$group_id][$i] =  $post_id; 
+                    }
+                    }                                                           
+                }
+                               
+                $post_content = '';               
+                $slot_id ='';
+                $shortcode = '';
+                $adtype ='';
+                $width ='';
+                $height ='';        
+                $wheretodisplay ='';
+                $adsense_type ='';
+                
+                foreach($advads_ads_placement as $placement){
+                    if($placement['item'] == 'ad_'.$post_id){
+                        switch($placement['type']){
+                            case 'post_top':
+                                $wheretodisplay = 'before_the_content';   
+                                break;
+                            case 'post_bottom':
+                                $wheretodisplay = 'after_the_content';
+                                break;
+                            case 'post_content':
+                                $wheretodisplay = 'between_the_content';
+                                break;
+                            case 'default':
+                                $wheretodisplay = 'between_the_content';
+                                break;
+                        }
+                        
+                    }
+                }                                
+                $ad_expire_enable = 0;
+                $expire_date = date('Y-m-d');
+                if(isset($advn_meta_value['expiry_date'])){                    
+                  $ad_expire_enable = 1;  
+                  $expire_date = date('Y-m-d', $advn_meta_value['expiry_date']);
+                }
+                
+                if(isset($advn_meta_value['output']['allow_shortcodes'])){
+                 $shortcode = '[adsforwp id="'.$post_id.'"]';   
+                }
+                if(isset($advn_meta_value['type'])){
+                switch($advn_meta_value['type']){
+                    case 'image':
+                        $adtype = 'adsforwp_ad_image';                        
+                        break;
+                    case 'dummy':
+                        $adtype = 'adsforwp_ad_image';                        
+                        break;
+                    case 'plain':
+                        $adtype = 'custom';
+                        $post_content = $ads->post_content;
+                        break;
+                    case 'content':
+                        $adtype = 'custom';
+                        $post_content = $ads->post_content;
+                        break;
+                    case 'adsense':     
+                        $adsenedata = json_decode($ads->post_content, true);
+                        $slot_id = $adsenedata['slotId'];
+                        $adtype = 'adsense';
+                        $adsense_type = 'normal';
+                        break;
+                }
+              }
+                
+                $adsense_id = '';
+                $ad_width = '';
+                $ad_height = '';
+                $ad_url = '';
+                $ad_position = '';                
+                if(isset($advads_ads_adsense['adsense-id'])){
+                  $adsense_id = $advads_ads_adsense['adsense-id'];  
+                }
+                if(isset($advn_meta_value['width'])){
+                 $ad_width =$advn_meta_value['width'];    
+                }
+                if(isset($advn_meta_value['height'])){
+                 $ad_height =$advn_meta_value['height'];    
+                }
+                if(isset($advn_meta_value['url'])){
+                 $ad_url =$advn_meta_value['url'];    
+                }        
+                if(isset($advn_meta_value['output']['position'])){
+                $ad_position =   $advn_meta_value['output']['position'];  
+                }
+                $adforwp_meta_key = array(
+                    'select_adtype' => $adtype,  
+                    'adsense_type' => $adsense_type,
+                    'custom_code' =>$post_content,                     
+                    'data_client_id' =>$adsense_id, 
+                    'data_ad_slot' =>$slot_id,                     
+                    'banner_size' =>$ad_width.'x'.$ad_height, 
+                    'adsforwp_ad_image' =>$ad_url, 
+                    'wheretodisplay' =>$wheretodisplay,
+                    'adposition' =>$ad_position, 
+                    'paragraph_number' =>1, 
+                    'adsforwp_ad_expire_day_enable' =>0,                     
+                    'adsforwp_ad_expire_days' =>array(
+                        'Monday' => 'Monday',
+                        'Tuesday' => 'Tuesday',
+                        'Wednesday' => 'Wednesday',
+                        'Thursday' => 'Thursday',
+                        'Friday' => 'Friday',
+                        'Saturday' => 'Saturday',
+                        'Sunday' => 'Sunday',
+                    ), 
+                    'adsforwp_ad_expire_enable' =>$ad_expire_enable, 
+                    'adsforwp_ad_expire_from' =>date('Y-m-d', strtotime($ads->post_date)), 
+                    'adsforwp_ad_expire_to' =>$expire_date,                     
+                    'manual_ads_type' => $shortcode,  
+                    'imported_from' => 'advance_ads',
+                );
+                foreach ($adforwp_meta_key as $key => $val){                     
+                    update_post_meta($post_id, $key, $val);  
+                }                                                                  
+              }   
+            $result = $this->adsforwp_import_all_advanced_groups($advads_groups);
+            if (is_wp_error($result) ){
+              echo $result->get_error_message();              
+              $wpdb->query('ROLLBACK');             
+            }else{
+              $wpdb->query('COMMIT'); 
+              return true;
+            }            
+        }
+                             
+    }
+    /**
+     * We are here importing all fetched groups from advanced ads to adsforwp plugin
+     * @param type $advads_groups
+     */
+    public function adsforwp_import_all_advanced_groups($advads_groups) {
+        
+            $user_id = get_current_user_id();
+            $terms = get_terms( 'advanced_ads_groups', array(
+            'hide_empty' => false,
+            ));
+            $groups_extra_attr = get_option( 'advads-ad-groups', array());            
+            foreach($terms as $term){
+             $group_post = array(
+                    'user_ID' =>$user_id,
+                    'post_author' => $user_id,                                                            
+                    'post_title' => $term->name,                    
+                    'post_status' => 'publish',                    
+                    'post_name' =>  $term->name,                                                                                
+                    'post_type' => 'adsforwp-groups',                     
+                    
+                );                         
+            $group_post_id = wp_insert_post($group_post);             
+            $adforwp_group_meta_key = array(
+                'imported_from' => 'advance_ads',
+            );                                                                                                                   
+            if($groups_extra_attr[$term->term_id]['type'] =='default'){
+               $adforwp_group_meta_key['adsforwp_group_type'] = 'rand'; 
+            }else{
+               $adforwp_group_meta_key['adsforwp_group_type'] = 'ordered';  
+            }   
+            if($groups_extra_attr[$term->term_id]['options']['refresh']['enabled']){
+                $adforwp_group_meta_key['adsforwp_refresh_type'] = 'on_interval';
+                $adforwp_group_meta_key['adsforwp_group_ref_interval_sec'] = $groups_extra_attr[$term->term_id]['options']['refresh']['interval'];
+            }else{
+               $adforwp_group_meta_key['adsforwp_refresh_type'] = 'on_load';  
+            }
+            $store_ads_id = $advads_groups[$term->term_id];
+            $ads_forwp_ads = array();
+            foreach($store_ads_id as $id){
+              $title = get_the_title($id);
+              $ads_forwp_ads[$id] = $title;              
+            }    
+            $adforwp_group_meta_key['adsforwp_ads']= $ads_forwp_ads;           
+            foreach ($adforwp_group_meta_key as $key => $val){                     
+                    update_post_meta($group_post_id, $key, $val);  
+                }   
+            }  
+    }
+
+    /**
+     * We are here fetching all ads post from adsforwp post type
+     * @return type
+     */
     public function adsforwp_fetch_all_ads(){
         $all_ads = get_posts(
                     array(
@@ -15,6 +295,10 @@ class adsforwp_admin_common_functions {
         return $all_ads;
         
     }
+    /**
+     * we are here fetching all ads post meta for adsforwp post type 
+     * @return type
+     */
     public function adsforwp_fetch_all_ads_post_meta(){
         $all_ads_post_meta = array();
         $all_ads = get_posts(
@@ -29,6 +313,10 @@ class adsforwp_admin_common_functions {
                 }               
         return $all_ads_post_meta;        
     }
+    /**
+     * We are here fetching all ads groups post from adsforwp-grops post type
+     * @return type
+     */
     public function adsforwp_fetch_all_groups(){
         $all_groups = get_posts(
                     array(
@@ -39,6 +327,10 @@ class adsforwp_admin_common_functions {
                  );        
         return $all_groups;
     }
+    /**
+     * we are here fetching all ads groups post meta for adsforwp-groups post type 
+     * @return type
+     */
      public function adsforwp_fetch_all_groups_post_meta(){
         $all_groups_post_meta = array();
         $all_groups = get_posts(
@@ -53,6 +345,11 @@ class adsforwp_admin_common_functions {
                 }                    
         return $all_groups_post_meta;        
     }
+    /**
+     * We are checking ad if it is added in group or not
+     * @param type $ad_id
+     * @return type
+     */
     public function adsforwp_check_ads_in_group($ad_id){
         $all_groups = get_posts(
                     array(
@@ -73,8 +370,11 @@ class adsforwp_admin_common_functions {
                 return $ad_group_ids;
     }
 
-//Function to expand html tags form allowed html tags in wordpress    
-public function adsforwp_expanded_allowed_tags() {
+    /**
+     * Function to expand html tags form allowed html tags in wordpress
+     * @return array
+     */
+    public function adsforwp_expanded_allowed_tags() {
             $my_allowed = wp_kses_allowed_html( 'post' );
             // form fields - input
             $my_allowed['input'] = array(
@@ -266,4 +566,3 @@ public function adsforwp_expanded_allowed_tags() {
             return $my_allowed;
         }    
 }
-

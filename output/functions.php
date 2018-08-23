@@ -8,14 +8,143 @@ class adsforwp_output_functions{
     public  $visibility = null;
 
     public function __construct() {       
+     
+    }
+    /**
+     * We are here calling all required hooks
+     */    
+    public function adsforwp_hooks(){
+        //Adsense Auto Ads hooks for amp and non amp starts here
         
+        add_action('wp_head', array($this, 'adsforwp_adsense_auto_ads'));
+        add_action('amp_post_template_head',array($this, 'adsforwp_adsense_auto_ads_amp_script'),9);
+        add_action('amp_post_template_footer',array($this, 'adsforwp_adsense_auto_ads_amp_tag'));
         
+        //Adsense Auto Ads hooks for amp and non amp ends here
         
         add_filter('the_content', array($this, 'adsforwp_display_ads'));            
         add_shortcode('adsforwp', array($this,'adsforwp_manual_ads'));
         add_shortcode('adsforwp-group', array($this, 'adsforwp_group_ads'));
         add_action('wp_ajax_nopriv_adsforwp_get_groups_ad', array($this, 'adsforwp_get_groups_ad'));
         add_action('wp_ajax_adsforwp_get_groups_ad', array($this, 'adsforwp_get_groups_ad'));
+    }
+    /**
+     * This function returns publisher id or data ad client id for adsense ads
+     * @return type
+     */
+    public function adsforwp_get_adsense_publisher_id(){                    
+                    $data_ad_client ='';
+                    $cc_args = array(
+                        'posts_per_page'   => -1,
+                        'post_type'        => 'adsforwp',
+                        'meta_key'         => 'adsense_type',
+                        'meta_value'       => 'adsense_auto_ads',
+                    );
+                    $postdata = new WP_Query($cc_args);  
+                    $auto_adsense_post = $postdata->posts; 
+                    if($postdata->post_count >0){                   
+                    $data_ad_client = get_post_meta($auto_adsense_post[0]->ID,$key='data_client_id',true);                     
+                    }
+                    $response = array('post_id' => $auto_adsense_post[0]->ID, 'data_ad_client' => $data_ad_client);
+                    return $response;
+    }
+    /**
+     * we are here enqueying adsense auto ads script for amp posts
+     */
+    public function adsforwp_adsense_auto_ads_amp_script(){
+        if ( is_single() ) {                       
+        echo '<script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>';
+        }
+    }
+    /**
+     * we are here integrating adsense auto ads amp tag for amp posts
+     */
+    public function adsforwp_adsense_auto_ads_amp_tag(){
+            
+            $result = $this->adsforwp_get_adsense_publisher_id(); 
+            $post_id = $result['post_id']; 
+            if($result){
+            $content =  '<amp-auto-ads
+                            type="adsense"
+                            data-ad-client="'.esc_attr($result['data_ad_client']).'">
+                        </amp-auto-ads>';
+            $this->adsforwp_adsense_auto_ads_content($content, $post_id);
+            }            
+    }
+    /**
+     * we are here integrating adsense auto ads for ever non amp posts
+     */
+    public function adsforwp_adsense_auto_ads(){
+            
+            $result = $this->adsforwp_get_adsense_publisher_id(); 
+            $post_id = $result['post_id']; 
+            if($result){
+            $content = '<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                  <script>
+                  (adsbygoogle = window.adsbygoogle || []).push({
+                  google_ad_client: "'.esc_attr($result['data_ad_client']).'",
+                  enable_page_level_ads: true
+                  }); 
+                 </script>';
+            $this->adsforwp_adsense_auto_ads_content($content, $post_id);
+            }
+           
+    }
+    
+    public function adsforwp_adsense_auto_ads_content($content, $post_id){
+                                    
+            if ( is_single() ) {     
+            $current_post_data = get_post_meta(get_the_ID(),$key='',true);                  
+            if(array_key_exists('ads-for-wp-visibility', $current_post_data)){
+            $this->visibility = $current_post_data['ads-for-wp-visibility'][0];    
+            }  
+            if($this->visibility != 'hide') {
+            $post_meta_dataset = get_post_meta($post_id,$key='',true);                        
+            $current_date = date("Y-m-d");
+            $adsforwp_ad_expire_enable = $post_meta_dataset['adsforwp_ad_expire_day_enable'][0];      
+            $ad_expire_from = $post_meta_dataset['adsforwp_ad_expire_from'][0];      
+            $ad_expire_to = $post_meta_dataset['adsforwp_ad_expire_to'][0];      
+            $adsforwp_ad_days_enable = $post_meta_dataset['adsforwp_ad_expire_day_enable'][0];      
+            $adsforwp_ad_expire_days = get_post_meta($post_id,$key='adsforwp_ad_expire_days',true);                   
+                                     
+            if($adsforwp_ad_expire_enable){
+                
+             if($ad_expire_from && $ad_expire_to )  {     
+                 
+                if($ad_expire_from <= $current_date && $ad_expire_to >=$current_date){
+                    
+                 if($adsforwp_ad_days_enable){
+                     
+                    foreach ($adsforwp_ad_expire_days as $days){
+                        
+                        if(date('Y-m-d', strtotime($days))==$current_date){
+                            
+                         echo $content;     
+                        }
+                    }      
+                }else{
+                echo $content;          
+                }                                                        
+                }                             
+            }else{
+              echo $content;    
+            }
+            }else{
+              if($adsforwp_ad_days_enable){
+                  
+                    foreach ($adsforwp_ad_expire_days as $days){
+                        
+                        if(date('Y-m-d', strtotime($days))==$current_date){
+                            
+                        echo $content;
+                        }
+                    }      
+                }else{
+                 echo $content;
+                }
+            }
+            }
+         }
     }
     /**
      * This hook function display content in post. we are modifying post content here
@@ -104,7 +233,7 @@ class adsforwp_output_functions{
           
             }
          }                          
-       }
+         }
          }
         return $content;    
     }
@@ -120,6 +249,7 @@ class adsforwp_output_functions{
             $this->is_amp = true;        
             }
             $ad_image="";
+            $ad_image_redirect_url="";
             $ad_type="";
             $ad_code ="";  
             $ad_expire_to ="";
@@ -140,6 +270,9 @@ class adsforwp_output_functions{
             if(array_key_exists('adsforwp_ad_image', $post_meta_dataset)){
             $ad_image = $post_meta_dataset['adsforwp_ad_image'][0];    
             }
+            if(array_key_exists('adsforwp_ad_redirect_url', $post_meta_dataset)){
+            $ad_image_redirect_url = $post_meta_dataset['adsforwp_ad_redirect_url'][0];    
+            }
             if(array_key_exists('wheretodisplay', $post_meta_dataset)){
             $where_to_display = $post_meta_dataset['wheretodisplay'][0];  
             }            
@@ -159,7 +292,7 @@ class adsforwp_output_functions{
             $adsforwp_ad_days_enable = $post_meta_dataset['adsforwp_ad_expire_day_enable'][0];      
             }
             if(array_key_exists('adsforwp_ad_expire_days', $post_meta_dataset)){
-            $adsforwp_ad_expire_days = get_post_meta($post_ad_id,$key='adsforwp_ad_expire_days',true); ;      
+            $adsforwp_ad_expire_days = get_post_meta($post_ad_id,$key='adsforwp_ad_expire_days',true);
             }                                                          
             if($ad_type !=""){                                        
             if(array_key_exists('ads-for-wp_amp_compatibilty', $post_meta_dataset)){
@@ -169,12 +302,12 @@ class adsforwp_output_functions{
             case 'custom':
                     if($this->is_amp){
                      if($amp_compatibility != 'disable'){
-                     $ad_code = '<div class="afw afw_custom afw_'.$post_ad_id.'">
+                     $ad_code = '<div class="afw afw_custom afw_'.esc_attr($post_ad_id).'">
 							'.$custom_ad_code.'
 							</div>';    
                     }   
                     }else{
-                    $ad_code = '<div class="afw afw_custom afw_'.$post_ad_id.'">
+                    $ad_code = '<div class="afw afw_custom afw_'.esc_attr($post_ad_id).'">
 							'.$custom_ad_code.'
 							</div>';        
                     }                                                                                
@@ -182,53 +315,60 @@ class adsforwp_output_functions{
             case 'ad_image':
                     if($this->is_amp){
                      if($amp_compatibility != 'disable'){
-                     $ad_code = '<div class="afw afw_ad_image afw_'.$post_ad_id.'">
-							<amp-img src="'.$ad_image.'" layout="" height="300" width="400"></amp-img>
+                     $ad_code = '<div class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
+							<a target="_blank" href="'.esc_url($ad_image_redirect_url).'"><amp-img src="'.esc_url($ad_image).'" layout="" height="300" width="400"></amp-img></a>
 							</div>';    
                     }   
                     }else{
-                    $ad_code = '<div class="afw afw_ad_image afw_'.$post_ad_id.'">
-							<img src="'.$ad_image.'">
+                    $ad_code = '<div class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
+							<a target="_blank" href="'.esc_url($ad_image_redirect_url).'"><img src="'.esc_url($ad_image).'"></a>
 							</div>';        
                     }                                                                                
             break;
            //adsense ads logic code starts here
             case 'adsense':
-                        
-            $ad_client = $post_meta_dataset['data_client_id'][0];
-            $ad_slot = $post_meta_dataset['data_ad_slot'][0];    
-            $width='200';
-            $height='200';
-            $banner_size = $post_meta_dataset['banner_size'][0];              
-            if($banner_size !=''){
-            $explode_size = explode('x', $banner_size);              
-            $width = $explode_size[0];            
-            $height = $explode_size[1];                               
-            }            
-            if($this->is_amp){
-                if($amp_compatibility != 'disable'){
-                 $ad_code = '<div class="afw afw-ga afw_'.$post_ad_id.'">
-                                <amp-ad 
-				type="adsense"
-				width="'. esc_attr($width) .'"
-				height="'. esc_attr($height) .'"
-				data-ad-client="'. $ad_client .'"
-				data-ad-slot="'.$ad_slot .'">
-			    </amp-ad>
-                            </div>';
-                }                             
-				                
-            }else{                
-             $ad_code = '<div class="afw afw-ga afw_'.$post_ad_id.'">
-							<script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
-							</script>
-							<ins class="adsbygoogle" style="display:inline-block;width:'.esc_attr($width).'px;height:'.esc_attr($height).'px" data-ad-client="'.$ad_client.'" data-ad-slot="'.$ad_slot.'">
-							</ins>
-							<script>
-								(adsbygoogle = window.adsbygoogle || []).push({});
-							</script>
-						</div>';   
-            }                                    
+            
+            $adsense_type = $post_meta_dataset['adsense_type'][0]; 
+            $ad_client = $post_meta_dataset['data_client_id'][0];    
+            switch ($adsense_type) {
+                case 'normal':
+                    $ad_slot = $post_meta_dataset['data_ad_slot'][0];    
+                    $width='200';
+                    $height='200';
+                    $banner_size = $post_meta_dataset['banner_size'][0]; 
+                    if($banner_size !=''){
+                    $explode_size = explode('x', $banner_size);              
+                    $width = $explode_size[0];            
+                    $height = $explode_size[1];                               
+                    }            
+                    if($this->is_amp){
+                        if($amp_compatibility != 'disable'){
+                         $ad_code = '<div class="afw afw-ga afw_'.esc_attr($post_ad_id).'">
+                                        <amp-ad 
+                                        type="adsense"
+                                        width="'. esc_attr($width) .'"
+                                        height="'. esc_attr($height) .'"
+                                        data-ad-client="'. esc_attr($ad_client) .'"
+                                        data-ad-slot="'.esc_attr($ad_slot).'">
+                                    </amp-ad>
+                                    </div>';
+                        }                             
+
+                    }else{                
+                     $ad_code = '<div class="afw afw-ga afw_'.esc_attr($post_ad_id).'">
+                                                                <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
+                                                                </script>
+                                                                <ins class="adsbygoogle" style="display:inline-block;width:'.esc_attr($width).'px;height:'.esc_attr($height).'px" data-ad-client="'.esc_attr($ad_client).'" data-ad-slot="'.esc_attr($ad_slot).'">
+                                                                </ins>
+                                                                <script>
+                                                                        (adsbygoogle = window.adsbygoogle || []).push({});
+                                                                </script>
+                                                        </div>';   
+                    }
+                    break;                
+                default:
+                    break;
+            }                                                                                                                
             break;
             
             case 'media_net':
@@ -246,27 +386,27 @@ class adsforwp_output_functions{
             if($this->is_amp){
                 if($amp_compatibility != 'disable'){
                  $ad_code = 
-                            '<div class="afw afw-md afw_'.$post_ad_id.'">
+                            '<div class="afw afw-md afw_'.esc_attr($post_ad_id).'">
                             <amp-ad 
 				type="medianet"
 				width="'. esc_attr($width) .'"
 				height="'. esc_attr($height) .'"
                                 data-tagtype="cm"    
-				data-cid="'. $ad_data_cid.'"
-				data-crid="'.$ad_data_crid.'">
+				data-cid="'. esc_attr($ad_data_cid).'"
+				data-crid="'.esc_attr($ad_data_crid).'">
 			    </amp-ad>;  
                             </div>';    
                 }                             
 				                
             }else{                
-             $ad_code = '<div class="afw afw-md afw_'.$post_ad_id.'">
+             $ad_code = '<div class="afw afw-md afw_'.esc_attr($post_ad_id).'">
 						<script id="mNCC" language="javascript">
                                                             medianet_width = "'.esc_attr($width).'";
                                                             medianet_height = "'.esc_attr($height).'";
-                                                            medianet_crid = "'.$ad_data_crid.'"
+                                                            medianet_crid = "'.esc_attr($ad_data_crid).'"
                                                             medianet_versionId ="3111299"
                                                    </script>
-                                                   <script src="//contextual.media.net/nmedianet.js?cid='.$ad_data_cid.'"></script>		
+                                                   <script src="//contextual.media.net/nmedianet.js?cid='.esc_attr($ad_data_cid).'"></script>		
 						</div>';   
             }                                    
             break;
@@ -392,8 +532,7 @@ class adsforwp_output_functions{
         switch ($ads_group_type) {
             case 'rand':
             $ad_code =  $this->adsforwp_get_ad_code(array_rand($ads_group_data));
-                break;
-            
+                break;            
             case 'ordered':                
             $ad_code =  $this->adsforwp_get_ad_code($ad_id);    
                 break;
@@ -411,6 +550,7 @@ class adsforwp_output_functions{
 }
 }
 if (class_exists('adsforwp_output_functions')) {
-	new adsforwp_output_functions;
+	$adsforwp_function_obj = new adsforwp_output_functions;
+        $adsforwp_function_obj->adsforwp_hooks();
 };
 
