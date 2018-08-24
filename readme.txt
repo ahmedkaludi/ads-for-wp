@@ -14,17 +14,19 @@ ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy t
 
 = Features: =
 
-* NEW: Ad Groups with AMP support
+* NEW: AdSense Auto Ads Support
+* NEW: Ad Groups with AMP Support
 * NEW: Ad Widget added
 * NEW: Ad expiry and scheduling option added
+* AMP Compatibility: Seamless integration with AMP for WP & AMP by Automattic.
 * Unlimited Ads
 * Google Adsense Support
 * Custom Ad HTML support
 * NEW: Media.net Support
 * Ads Shortcode
-* AMP Compatibility: Seamless integration with AMP for WP & AMP by Automattic.
 * Post Specific Ads Control
 * Easily inject Between the content, After the content or Before the content.
+* NEW: Migrate from Advanced Ads plugin with One Click!
 
 = Active Development: =
 We are actively developing this plugin and our aim is to make this plugin into the #1 solution in the world. You can [Request a Feature](http://www.adsforwp.com/contact/) or [Report a Bug](https://github.com/ahmedkaludi/ads-for-wp/issues). The code is hosted on [Github](https://github.com/ahmedkaludi/ads-for-wp).
@@ -37,7 +39,6 @@ We are actively developing this plugin and our aim is to make this plugin into t
 * <strong>GDPR & Privacy tools</strong>: We have got the GDPR and other privacy tools planned so that you don’t have to worry about complying with privacy laws.
 * <strong>Click Fraud Protection</strong>: Helps you fight the click fraud and helps you stabilize the ad revenue.
 * <strong>Responsive Ads</strong>: We will be adding the responsive support to Ads to give the best viewability to ads on devices.
-* <strong>Ad Group</strong>: You can assign multiple ads to one group and give them a specific condition.
 * <strong>Ad Blocker</strong>: Help you fight Ad blocker users and help you improve monetization.
 * <strong>Innovation & Disruption</strong>: We are constantly evolving our product and going to introduce new features which are not being used by anyone in the world.
 * [View Full Development Roadmap](http://www.adsforwp.com/#roadmap)
@@ -47,6 +48,11 @@ Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp).
 
 
 == Changelog ==
+
+= 1.0.4 (23th August 2018) =
+* Major Feature: AdSense Auto Ads support added
+* Bug fix: Ad was not displaying #36 ( https://github.com/ahmedkaludi/ads-for-wp/issues/36 )
+* Minor bugs fixed
 
 = 1.0.3 (14th August 2018) =
 * MAJOR Update: Ad groups feature added
