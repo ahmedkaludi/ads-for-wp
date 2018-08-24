@@ -236,8 +236,15 @@ $("#select_adtype").change(function(){
               
               switch (optionValue) {
                  case "between_the_content":
+                    var pragraph_no = $("#adposition").val();
+                    if(pragraph_no ==='number_of_paragraph'){
+                     $("#paragraph_number").parent().parent("tr").show();   
+                    }else{
+                     $("#paragraph_number").parent().parent("tr").hide();   
+                    }
                     $("#adposition").parent().parent("tr").show();
-                    $("#manual_ads_type").parent().parent("tr").hide();                    
+                    $("#manual_ads_type").parent().parent("tr").hide(); 
+                    
                     break;
                 case "ad_shortcode":
                     $("#manual_ads_type").parent().parent("tr").show();
@@ -245,6 +252,17 @@ $("#select_adtype").change(function(){
                     $("#paragraph_number").parent().parent("tr").addClass("afw_hide");                    
                     $("#paragraph_number").parent().parent("tr").hide();
                     break
+                case "after_the_content":   
+                    $("#adposition").parent().parent("tr").hide(); 
+                    $("#manual_ads_type").parent().parent("tr").hide();
+                    $("#paragraph_number").parent().parent("tr").hide();
+                    break;
+                case "before_the_content":   
+                    $("#adposition").parent().parent("tr").hide(); 
+                    $("#manual_ads_type").parent().parent("tr").hide();
+                    $("#paragraph_number").parent().parent("tr").hide();
+                    break;    
+                
                 default:
                     $("#adposition").parent().parent("tr").hide(); 
                     $("#manual_ads_type").parent().parent("tr").hide();

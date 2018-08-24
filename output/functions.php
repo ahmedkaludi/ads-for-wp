@@ -17,7 +17,7 @@ class adsforwp_output_functions{
         //Adsense Auto Ads hooks for amp and non amp starts here
         
         add_action('wp_head', array($this, 'adsforwp_adsense_auto_ads'));
-        add_action('amp_post_template_head',array($this, 'adsforwp_adsense_auto_ads_amp_script'),9);
+        add_action('amp_post_template_head',array($this, 'adsforwp_adsense_auto_ads_amp_script'),1);
         add_action('amp_post_template_footer',array($this, 'adsforwp_adsense_auto_ads_amp_tag'));
         
         //Adsense Auto Ads hooks for amp and non amp ends here
@@ -34,6 +34,7 @@ class adsforwp_output_functions{
      */
     public function adsforwp_get_adsense_publisher_id(){                    
                     $data_ad_client ='';
+                    $response = array();
                     $cc_args = array(
                         'posts_per_page'   => -1,
                         'post_type'        => 'adsforwp',
@@ -43,27 +44,30 @@ class adsforwp_output_functions{
                     $postdata = new WP_Query($cc_args);  
                     $auto_adsense_post = $postdata->posts; 
                     if($postdata->post_count >0){                   
-                    $data_ad_client = get_post_meta($auto_adsense_post[0]->ID,$key='data_client_id',true);                     
-                    }
+                    $data_ad_client = get_post_meta($auto_adsense_post[0]->ID,$key='data_client_id',true);  
                     $response = array('post_id' => $auto_adsense_post[0]->ID, 'data_ad_client' => $data_ad_client);
+                    }                    
                     return $response;
     }
     /**
      * we are here enqueying adsense auto ads script for amp posts
      */
     public function adsforwp_adsense_auto_ads_amp_script(){
-        if ( is_single() ) {                       
+        if ( is_single() ) {  
+         $result = $this->adsforwp_get_adsense_publisher_id(); 
+          if($result){
         echo '<script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>';
+          }
         }
     }
     /**
      * we are here integrating adsense auto ads amp tag for amp posts
      */
-    public function adsforwp_adsense_auto_ads_amp_tag(){
-            
-            $result = $this->adsforwp_get_adsense_publisher_id(); 
-            $post_id = $result['post_id']; 
+    public function adsforwp_adsense_auto_ads_amp_tag(){  
+        
+            $result = $this->adsforwp_get_adsense_publisher_id();                          
             if($result){
+            $post_id = $result['post_id'];
             $content =  '<amp-auto-ads
                             type="adsense"
                             data-ad-client="'.esc_attr($result['data_ad_client']).'">
@@ -76,9 +80,9 @@ class adsforwp_output_functions{
      */
     public function adsforwp_adsense_auto_ads(){
             
-            $result = $this->adsforwp_get_adsense_publisher_id(); 
-            $post_id = $result['post_id']; 
+            $result = $this->adsforwp_get_adsense_publisher_id();            
             if($result){
+            $post_id = $result['post_id']; 
             $content = '<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                   <script>
                   (adsbygoogle = window.adsbygoogle || []).push({
@@ -261,8 +265,7 @@ class adsforwp_output_functions{
             $adsforwp_ad_days_enable ="";
             $adsforwp_ad_expire_days =array();
             $post_meta_dataset = array();
-            $post_meta_dataset = get_post_meta($post_ad_id,$key='',true);  
-            
+            $post_meta_dataset = get_post_meta($post_ad_id,$key='',true);             
             
             if(array_key_exists('custom_code', $post_meta_dataset)){
             $custom_ad_code = $post_meta_dataset['custom_code'][0];    
@@ -329,8 +332,10 @@ class adsforwp_output_functions{
             break;
            //adsense ads logic code starts here
             case 'adsense':
-            
-            $adsense_type = $post_meta_dataset['adsense_type'][0]; 
+            $adsense_type = '';
+            if(array_key_exists('adsense_type', $post_meta_dataset)){
+             $adsense_type = $post_meta_dataset['adsense_type'][0];     
+            }           
             $ad_client = $post_meta_dataset['data_client_id'][0];    
             switch ($adsense_type) {
                 case 'normal':
