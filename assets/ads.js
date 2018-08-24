@@ -93,8 +93,10 @@ $(".adsforwp-ad-img-upload").click(function(e) {	// Application Icon upload
 			multiple: false  // Set this to true to allow multiple files to be selected
 		})
 		.on("select", function() {
-			var attachment = pwaforwpMediaUploader.state().get("selection").first().toJSON();
+			var attachment = pwaforwpMediaUploader.state().get("selection").first().toJSON();                        
 			$(".adsforwp-icon").val(attachment.url);
+                        $("#adsforwp_ad_img_height").val(attachment.height);
+                        $("#adsforwp_ad_img_width").val(attachment.width);
 		})
 		.open();
 	});    
@@ -166,7 +168,8 @@ $("#select_adtype").change(function(){
                     break 
                 case "ad_image":
                   $("#display-metabox").show();
-                  $("#adsforwp_ad_image").attr("required",true);  
+                  $("#adsforwp_ad_image").attr("required",true); 
+                  $("#adsforwp_ad_image").attr("readonly",true); 
                   $("#banner_size, #data_client_id, #data_ad_slot, #data_cid, #data_crid, #custom_code").attr("required",false);
                   $("#adsforwp_ad_image, #adsforwp_ad_redirect_url").parent().parent("tr").show();                                                      
                   $("#custom_code, #data_ad_slot, #data_client_id, #banner_size, #data_crid, #data_cid, #adsense_type").parent().parent("tr").hide();              	                                                                                            

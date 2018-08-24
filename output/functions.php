@@ -271,7 +271,7 @@ class adsforwp_output_functions{
             $ad_image = $post_meta_dataset['adsforwp_ad_image'][0];    
             }
             if(array_key_exists('adsforwp_ad_redirect_url', $post_meta_dataset)){
-            $ad_image_redirect_url = $post_meta_dataset['adsforwp_ad_redirect_url'][0];    
+            $ad_image_redirect_url = $post_meta_dataset['adsforwp_ad_redirect_url'][0];                          
             }
             if(array_key_exists('wheretodisplay', $post_meta_dataset)){
             $where_to_display = $post_meta_dataset['wheretodisplay'][0];  
@@ -313,10 +313,12 @@ class adsforwp_output_functions{
                     }                                                                                
             break;
             case 'ad_image':
+                    $adsforwp_ad_img_width = $post_meta_dataset['adsforwp_ad_img_width'][0];
+                    $adsforwp_ad_img_height = $post_meta_dataset['adsforwp_ad_img_height'][0];                    
                     if($this->is_amp){
                      if($amp_compatibility != 'disable'){
                      $ad_code = '<div class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
-							<a target="_blank" href="'.esc_url($ad_image_redirect_url).'"><amp-img src="'.esc_url($ad_image).'" layout="" height="300" width="400"></amp-img></a>
+							<a target="_blank" href="'.esc_url($ad_image_redirect_url).'"><amp-img src="'.esc_url($ad_image).'" height="'. esc_attr($adsforwp_ad_img_height).'" width="'.esc_attr($adsforwp_ad_img_width).'"></amp-img></a>
 							</div>';    
                     }   
                     }else{
