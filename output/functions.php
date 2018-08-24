@@ -7,8 +7,8 @@ class adsforwp_output_functions{
     private $is_amp = false;     
     public  $visibility = null;
 
-    public function __construct() {       
-     
+    public function __construct() {  
+        
     }
     /**
      * We are here calling all required hooks
@@ -510,7 +510,9 @@ class adsforwp_output_functions{
         }
         $response['afw_group_id'] = $post_group_id;
         $response['adsforwp_refresh_type'] = $post_data['adsforwp_refresh_type'][0];
-        $response['adsforwp_group_ref_interval_sec'] = $post_data['adsforwp_group_ref_interval_sec'][0];
+        if(isset($post_data['adsforwp_group_ref_interval_sec'])){
+        $response['adsforwp_group_ref_interval_sec'] = $post_data['adsforwp_group_ref_interval_sec'][0];    
+        }        
         $response['adsforwp_group_type'] = $post_data['adsforwp_group_type'][0];
         $response['ad_ids'] = $adsresultset;  
         if($response['adsforwp_refresh_type'] == 'on_interval'){
