@@ -3,7 +3,8 @@
 class adsforwp_metaboxes_display {
     
     private $screen = array(
-		'adsforwp'
+		'adsforwp',
+                'adsforwp-groups'
 	);
 	private $meta_fields = array(
 		array(

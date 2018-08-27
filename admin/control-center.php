@@ -323,6 +323,36 @@ function adsforwp_update_ids_on_untrash(){
     add_action( 'publish_adsforwp', 'adsforwp_published');
     add_action( 'trash_adsforwp', 'adsforwp_update_ids_on_trash');    
     add_action('untrash_adsforwp', 'adsforwp_update_ids_on_untrash');
+    
+/*
+ *      storing and updating all groups post ids in transient on different actions 
+ *      which we will fetch all ids from here to display our post
+ */    
+function adsforwp_groups_published(){        
+        $all_group_post = get_posts(
+            array(
+                    'post_type' 	 => 'adsforwp-groups',
+                    'posts_per_page' => -1,
+                    'post_status' => 'publish',
+            )
+        );        
+     $group_post_ids = array();
+     foreach($all_group_post as $group){
+         $group_post_ids[] = $group->ID;         
+     }
+     $group_post_ids_json = json_encode($group_post_ids);
+     set_transient('adsforwp_groups_transient_ids', $group_post_ids_json);    
+}
+function adsforwp_groups_update_ids_on_trash(){
+     delete_transient('adsforwp_groups_transient_ids');
+     adsforwp_groups_published();         
+}
+function adsforwp_groups_update_ids_on_untrash(){     
+     adsforwp_groups_published();    
+}
+    add_action( 'publish_adsforwp-groups', 'adsforwp_groups_published');
+    add_action( 'trash_adsforwp-groups', 'adsforwp_groups_update_ids_on_trash');    
+    add_action('untrash_adsforwp-groups', 'adsforwp_groups_update_ids_on_untrash');    
 
 /**
  * Showing pointer on mouse movement 

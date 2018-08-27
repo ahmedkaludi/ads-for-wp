@@ -165,8 +165,11 @@ class adsforwp_output_functions{
             $this->is_amp = true;        
         }         
         if($this->visibility != 'hide') {
-            $all_ads_post = json_decode(get_transient('adsforwp_transient_ads_ids'), true);  
             
+            //Ads positioning starts here
+            $all_ads_post = json_decode(get_transient('adsforwp_transient_ads_ids'), true);  
+            if($all_ads_post){
+                
             foreach($all_ads_post as $ads){                               
             $post_ad_id = $ads;             
             $common_function_obj = new adsforwp_admin_common_functions();
@@ -237,6 +240,81 @@ class adsforwp_output_functions{
           
             }
          }                          
+            }
+            //Ads positioning ends here
+            
+            //Groups positioning starts here
+            $all_group_post = json_decode(get_transient('adsforwp_groups_transient_ids'), true);            
+            if($all_group_post){
+                
+            foreach($all_group_post as $group){                               
+            $post_group_id = $group;             
+                                                 
+            $where_to_display=""; 
+            $adposition="";    
+            $post_meta_dataset = array();
+            $post_meta_dataset = get_post_meta($post_group_id,$key='',true);
+            $ad_code =  $this->adsforwp_group_ads($atts=null, $post_group_id, $widget=true);  
+            if(array_key_exists('wheretodisplay', $post_meta_dataset)){
+            $where_to_display = $post_meta_dataset['wheretodisplay'][0];  
+            }
+            if(array_key_exists('adposition', $post_meta_dataset)){
+            $adposition = $post_meta_dataset['adposition'][0];    
+            }
+                                                                                                                                             
+           //Displays all ads according to their settings paragraphs starts here              
+            switch ($where_to_display) {
+                
+             case 'after_the_content':
+              $content = $content.$ad_code;
+              break;
+          
+             case 'before_the_content':
+              $content = $ad_code.$content;
+              break;
+          
+             case 'between_the_content':        
+              if($adposition == 'number_of_paragraph'){
+                $paragraph_id = $post_meta_dataset['paragraph_number'][0];   
+                $closing_p = '</p>';
+                $paragraphs = explode( $closing_p, $content );   
+                foreach ($paragraphs as $index => $paragraph) {
+
+                 if ( trim( $paragraph ) ) {
+                       $paragraphs[$index] .= $closing_p;
+                   }
+                   if ( $paragraph_id == $index + 1 ) {
+                       $paragraphs[$index] .= $ad_code;
+                   }
+                 }
+                        $content = implode( '', $paragraphs );
+                }
+        
+               if($adposition == '50_of_the_content'){
+                 $closing_p = '</p>';
+                 $paragraphs = explode( $closing_p, $content );       
+                 $total_paragraphs = count($paragraphs);
+                 $paragraph_id = round($total_paragraphs /2);       
+                 foreach ($paragraphs as $index => $paragraph) {
+                    if ( trim( $paragraph ) ) {
+                        $paragraphs[$index] .= $closing_p;
+                    }
+                    if ( $paragraph_id == $index + 1 ) {
+                        $paragraphs[$index] .= $ad_code;
+                    }
+                  }
+                   $content = implode( '', $paragraphs ); 
+                 }
+                break;             
+             default:
+               break;
+          }      
+          //Displays all ads according to their settings paragraphs ends here   
+                               
+         }                          
+            }
+            //Groups positioning ends here
+            
          }
          }
         return $content;    
@@ -494,8 +572,10 @@ class adsforwp_output_functions{
         if($this->visibility != 'hide') {
         $ad_code ="";    
         if($this->is_amp){            
-        $post_group_data = get_post_meta($post_group_id,$key='adsforwp_ads',true);         
-        $ad_code =  $this->adsforwp_get_ad_code(array_rand($post_group_data));          
+        $post_group_data = get_post_meta($post_group_id,$key='adsforwp_ads',true);   
+        if($post_group_data){
+        $ad_code =  $this->adsforwp_get_ad_code(array_rand($post_group_data));              
+        }        
         return $ad_code;
         }else{            
         $post_group_data = get_post_meta($post_group_id,$key='adsforwp_ads',true);     
