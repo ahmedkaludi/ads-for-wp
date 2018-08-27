@@ -16,7 +16,7 @@ class adsforwp_metaboxes_ads_type {
 				'adsense' =>'AdSense',
                                 'media_net' =>'Media.net',
 				'custom' =>'Custom Code',
-                                'ad_image' =>'Ad Image',
+                                'ad_image' =>'Image Ad',
                             
 			),
                                 'attributes' => array(				
@@ -114,7 +114,7 @@ class adsforwp_metaboxes_ads_type {
 			'type' => 'media',
 		),
               array(
-			'label' => 'Ad Redirect URL',
+			'label' => 'Ad Anchor link',
 			'id' => 'adsforwp_ad_redirect_url',                        
 			'type' => 'text',
 		),
