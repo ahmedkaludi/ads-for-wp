@@ -93,8 +93,10 @@ $(".adsforwp-ad-img-upload").click(function(e) {	// Application Icon upload
 			multiple: false  // Set this to true to allow multiple files to be selected
 		})
 		.on("select", function() {
-			var attachment = pwaforwpMediaUploader.state().get("selection").first().toJSON();
+			var attachment = pwaforwpMediaUploader.state().get("selection").first().toJSON();                        
 			$(".adsforwp-icon").val(attachment.url);
+                        $("#adsforwp_ad_img_height").val(attachment.height);
+                        $("#adsforwp_ad_img_width").val(attachment.width);
 		})
 		.open();
 	});    
@@ -166,7 +168,8 @@ $("#select_adtype").change(function(){
                     break 
                 case "ad_image":
                   $("#display-metabox").show();
-                  $("#adsforwp_ad_image").attr("required",true);  
+                  $("#adsforwp_ad_image").attr("required",true); 
+                  $("#adsforwp_ad_image").attr("readonly",true); 
                   $("#banner_size, #data_client_id, #data_ad_slot, #data_cid, #data_crid, #custom_code").attr("required",false);
                   $("#adsforwp_ad_image, #adsforwp_ad_redirect_url").parent().parent("tr").show();                                                      
                   $("#custom_code, #data_ad_slot, #data_client_id, #banner_size, #data_crid, #data_cid, #adsense_type").parent().parent("tr").hide();              	                                                                                            
@@ -233,8 +236,15 @@ $("#select_adtype").change(function(){
               
               switch (optionValue) {
                  case "between_the_content":
+                    var pragraph_no = $("#adposition").val();
+                    if(pragraph_no ==='number_of_paragraph'){
+                     $("#paragraph_number").parent().parent("tr").show();   
+                    }else{
+                     $("#paragraph_number").parent().parent("tr").hide();   
+                    }
                     $("#adposition").parent().parent("tr").show();
-                    $("#manual_ads_type").parent().parent("tr").hide();                    
+                    $("#manual_ads_type").parent().parent("tr").hide(); 
+                    
                     break;
                 case "ad_shortcode":
                     $("#manual_ads_type").parent().parent("tr").show();
@@ -242,6 +252,17 @@ $("#select_adtype").change(function(){
                     $("#paragraph_number").parent().parent("tr").addClass("afw_hide");                    
                     $("#paragraph_number").parent().parent("tr").hide();
                     break
+                case "after_the_content":   
+                    $("#adposition").parent().parent("tr").hide(); 
+                    $("#manual_ads_type").parent().parent("tr").hide();
+                    $("#paragraph_number").parent().parent("tr").hide();
+                    break;
+                case "before_the_content":   
+                    $("#adposition").parent().parent("tr").hide(); 
+                    $("#manual_ads_type").parent().parent("tr").hide();
+                    $("#paragraph_number").parent().parent("tr").hide();
+                    break;    
+                
                 default:
                     $("#adposition").parent().parent("tr").hide(); 
                     $("#manual_ads_type").parent().parent("tr").hide();

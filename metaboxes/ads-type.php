@@ -118,6 +118,14 @@ class adsforwp_metaboxes_ads_type {
 			'id' => 'adsforwp_ad_redirect_url',                        
 			'type' => 'text',
 		),
+            array(			
+			'id' => 'adsforwp_ad_img_height',                        
+			'type' => 'hidden',
+		),
+            array(			
+			'id' => 'adsforwp_ad_img_width',                        
+			'type' => 'hidden',
+		),
 	);
 	public function __construct() {
 		add_action( 'add_meta_boxes', array( $this, 'adsforwp_add_meta_boxes' ) );
@@ -141,10 +149,14 @@ class adsforwp_metaboxes_ads_type {
 		$this->adsforwp_field_generator( $post );
 	}
 	public function adsforwp_field_generator( $post ) {
-		$output = '';                               
+		$output = '';                                        
 		foreach ( $this->meta_fields as $meta_field ) {
                     $attributes ='';
-			$label = '<label for="' . $meta_field['id'] . '">' . esc_html__( $meta_field['label'], 'ads-for-wp' ) . '</label>';
+                    $label ='';
+                    if(isset($meta_field['label'])){
+                      $label =  $meta_field['label']; 
+                    }
+			$label = '<label for="' . $meta_field['id'] . '">' . esc_html__( $label, 'ads-for-wp' ) . '</label>';
 			$meta_value = get_post_meta( $post->ID, $meta_field['id'], true );
 			if ( empty( $meta_value ) ) {
 				$meta_value = isset($meta_field['default']); }
@@ -205,6 +217,14 @@ class adsforwp_metaboxes_ads_type {
 						$meta_value
 					);
                                                 break;
+                                case 'hidden':                                                    
+                                                $input = sprintf(
+						'<input id="%s" name="%s" type="hidden" value="%s">',                                                
+						$meta_field['id'],	
+                                                $meta_field['id'],	        
+						$meta_value
+					);
+                                                break;            
 				default:
                                       
                                     if(isset($meta_field['attributes'])){
@@ -236,7 +256,7 @@ class adsforwp_metaboxes_ads_type {
 	public function adsforwp_format_rows( $label, $input ) {
 		return '<tr class=""><th>'.$label.'</th><td>'.$input.'</td></tr>';
 	}                
-	public function adsforwp_save_fields( $post_id ) {
+	public function adsforwp_save_fields( $post_id ) {               
 		if ( ! isset( $_POST['adsforwp_adtype_nonce'] ) )
 			return $post_id;		
 		if ( !wp_verify_nonce( $_POST['adsforwp_adtype_nonce'], 'adsforwp_adtype_data' ) )

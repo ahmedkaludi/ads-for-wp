@@ -4,8 +4,8 @@
  */
 class adsforwp_admin_common_functions {   
         
-    public function __construct() {
-        //add_action( 'plugins_loaded', array($this, 'adsforwp_import_all_advanced_ads' ));
+    public function __construct() {        
+       
     }   
     /**
      * We are here fetching all groups information from advanced ads plugin
@@ -47,7 +47,7 @@ class adsforwp_admin_common_functions {
         $advads_groups = array();
         $advads_groups = $this->adsforwp_get_advads_groups();        
         $advads_ads_adsense = get_option('advanced-ads-adsense');
-        $advads_ads_placement = get_option('advads-ads-placements');                                                         
+        $advads_ads_placement = get_option('advads-ads-placements');        
         $ads_post = array();
         global $wpdb;
         $user_id = get_current_user_id();
@@ -109,14 +109,13 @@ class adsforwp_admin_common_functions {
                 $post_content = '';               
                 $slot_id ='';
                 $shortcode = '';
-                $adtype ='';
-                $width ='';
-                $height ='';        
+                $adtype ='';                     
                 $wheretodisplay ='';
-                $adsense_type ='';
-                
+                $adsense_type ='';                
+                $adposition = '50_of_the_content';
+                $paragraph_number = '';
                 foreach($advads_ads_placement as $placement){
-                    if($placement['item'] == 'ad_'.$post_id){
+                    if($placement['item'] == 'ad_'.$ads->ID){
                         switch($placement['type']){
                             case 'post_top':
                                 $wheretodisplay = 'before_the_content';   
@@ -124,11 +123,15 @@ class adsforwp_admin_common_functions {
                             case 'post_bottom':
                                 $wheretodisplay = 'after_the_content';
                                 break;
-                            case 'post_content':
+                            case 'post_content':                                
                                 $wheretodisplay = 'between_the_content';
+                                if(isset($placement['item']['options']['index'])){
+                                $adposition = 'number_of_paragraph';    
+                                $paragraph_number  =$placement['item']['options']['index'];
+                                }
                                 break;
                             case 'default':
-                                $wheretodisplay = 'between_the_content';
+                                $wheretodisplay = 'before_the_content';
                                 break;
                         }
                         
@@ -147,10 +150,10 @@ class adsforwp_admin_common_functions {
                 if(isset($advn_meta_value['type'])){
                 switch($advn_meta_value['type']){
                     case 'image':
-                        $adtype = 'adsforwp_ad_image';                        
+                        $adtype = 'ad_image';                        
                         break;
                     case 'dummy':
-                        $adtype = 'adsforwp_ad_image';                        
+                        $adtype = 'ad_image';                        
                         break;
                     case 'plain':
                         $adtype = 'custom';
@@ -173,7 +176,8 @@ class adsforwp_admin_common_functions {
                 $ad_width = '';
                 $ad_height = '';
                 $ad_url = '';
-                $ad_position = '';                
+                $ad_redirect_url = '';                
+                $ad_img_src = array();
                 if(isset($advads_ads_adsense['adsense-id'])){
                   $adsense_id = $advads_ads_adsense['adsense-id'];  
                 }
@@ -184,11 +188,13 @@ class adsforwp_admin_common_functions {
                  $ad_height =$advn_meta_value['height'];    
                 }
                 if(isset($advn_meta_value['url'])){
-                 $ad_url =$advn_meta_value['url'];    
+                 $ad_redirect_url =$advn_meta_value['url'];    
                 }        
-                if(isset($advn_meta_value['output']['position'])){
-                $ad_position =   $advn_meta_value['output']['position'];  
-                }
+                
+                if(isset($advn_meta_value['output']['image_id'])){
+                $ad_img_src = wp_get_attachment_image_src($advn_meta_value['output']['image_id'], 'full'); 
+                $ad_url = $ad_img_src[0];
+                }                
                 $adforwp_meta_key = array(
                     'select_adtype' => $adtype,  
                     'adsense_type' => $adsense_type,
@@ -197,9 +203,12 @@ class adsforwp_admin_common_functions {
                     'data_ad_slot' =>$slot_id,                     
                     'banner_size' =>$ad_width.'x'.$ad_height, 
                     'adsforwp_ad_image' =>$ad_url, 
+                    'adsforwp_ad_redirect_url' => $ad_redirect_url,
+                    'adsforwp_ad_img_width' =>$ad_width, 
+                    'adsforwp_ad_img_height' =>$ad_height,                                        
                     'wheretodisplay' =>$wheretodisplay,
-                    'adposition' =>$ad_position, 
-                    'paragraph_number' =>1, 
+                    'adposition' =>$adposition, 
+                    'paragraph_number' =>$paragraph_number, 
                     'adsforwp_ad_expire_day_enable' =>0,                     
                     'adsforwp_ad_expire_days' =>array(
                         'Monday' => 'Monday',

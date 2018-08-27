@@ -7,12 +7,14 @@
  */
 function adsforwp_modify_title( $title) {
     global $post;
+    if($post){
     if($post->post_type =='adsforwp'){
         $adsense_auto = get_post_meta($post->ID, $key='adsense_type', true);
         if($adsense_auto === 'adsense_auto_ads'){
             $title = $title.' (Auto AdSense Ad)';
         }
     }    
+}
     return $title;
 }
 add_filter( 'the_title', 'adsforwp_modify_title', 10, 1 );
