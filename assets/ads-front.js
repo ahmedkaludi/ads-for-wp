@@ -35,11 +35,17 @@ jQuery( document ).ready(function($) {
             var ad_ids = obj.ad_ids;                
             var ad_ids_length = Object.keys(ad_ids).length;            
             var i=0;
+            var j =0;
             if(ads_group_refresh_type ==='on_interval'){                
                 
+             if(ads_group_type === 'ordered')   {                  
+             adsforwpGetAdsById(ads_group_id, ads_group_type, ad_ids[i].ad_id);                             
+             } else{
+             adsforwpGetAdsById(ads_group_id, ads_group_type, ad_ids[i].ad_id);                 
+             }   
              var startTime = new Date().getTime();
              var interval =  setInterval(function(){
-                
+                 
              if(new Date().getTime() - startTime > 300000){
                clearInterval(interval);
                return;
@@ -49,16 +55,23 @@ jQuery( document ).ready(function($) {
              }    
              var adbyindex ='';
                  adbyindex = ad_ids[i].ad_id;
-             if(ads_group_type === 'ordered')   {                  
-             adsforwpGetAdsById(ads_group_id, ads_group_type, adbyindex);             
+             if(ads_group_type === 'ordered')   {
+              if(j==0){
+              if(ad_ids[1].ad_id){
+              adsforwpGetAdsById(ads_group_id, ads_group_type, ad_ids[1].ad_id);     
+              }                  
+              i++;
+              }else{
+              adsforwpGetAdsById(ads_group_id, ads_group_type, adbyindex);                 
+              }   
+             
              i++;    
              } else{
              adsforwpGetAdsById(ads_group_id, ads_group_type, adbyindex);                 
-             }             
+             } 
+             j++;
             }, ads_group_ref_interval_sec);   
             
             }           
     });            
 });
-
- 
