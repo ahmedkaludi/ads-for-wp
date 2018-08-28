@@ -1,3 +1,67 @@
+//Ajax selection starts here
+var clone = function(){
+		jQuery(".placement-row-clone").off("click").click(function(){
+			var selectrow = jQuery(document).find("#call_html_template_afw").html();
+			nextId = jQuery(this).parents("tbody").find("tr").length;
+			selectrow = selectrow.replace(/\[0\]/g, "["+nextId+"]");
+			console.log(selectrow);
+			jQuery(this).parents("tr").after(selectrow);removeHtml();clone();
+		});
+	}
+	var removeHtml = function(){
+		jQuery(".placement-row-delete").off("click").click(function(){
+			if(jQuery(this).parents("tbody").find("tr").length>1){
+				jQuery(this).parents("tr").remove();
+			}
+		});
+	}
+ function taxonomyDataCall(){
+	jQuery('select.ajax-output').change(function(){
+		var mainSelectedValue = jQuery(".afw-select-post-type").val();
+		if(mainSelectedValue=="ef_taxonomy"){
+			parentSelector = jQuery(this).parents("td").find(".afw-insert-ajax-select");
+			var selectedValue = jQuery(this).val();
+			var currentFiledNumber = jQuery(this).attr("name").split("[")[1].replace("]",'');
+                        var adsforwp_call_nonce = $("#adsforwp_select_name_nonce").val();
+			
+			parentSelector.find(".afw-ajax-output-child").remove();
+			parentSelector.find(".spinner").attr("style","visibility:visible");
+			parentSelector.children(".spinner").addClass("show");
+			
+			var ajaxURL = adsforwp_localize_data.ajax_url;
+			//ajax call
+			jQuery.ajax({
+	        url : ajaxURL,
+	        method : "POST",
+	        data: { 
+	          action: "adsforwp_ajax_select_taxonomy", 
+	          id: selectedValue,
+	          number : currentFiledNumber,
+                  adsforwp_call_nonce: adsforwp_call_nonce
+	        },
+	        beforeSend: function(){ 
+	        },
+	        success: function(data){ 
+	        	// This code is added twice " withThis.find('.ajax-output').remove(); "
+	      			parentSelector.find(".afw-ajax-output-child").remove();
+	      			parentSelector.children(".spinner").removeClass("show");
+	      			parentSelector.find(".spinner").attr("style","visibility:hidden").hide();
+	      			parentSelector.append(data);
+	      			taxonomyDataCall();
+	        },
+	        error: function(data){
+	          console.log("Failed Ajax Request");
+	          console.log(data);
+	        }
+	      }); 
+		}
+	});
+}       
+//Ajax selection ends here
+
+
+
+
 function adsforwpGetParamByName(name, url) {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, "\\$&");
@@ -8,7 +72,55 @@ function adsforwpGetParamByName(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-jQuery( document ).ready(function($) {    
+jQuery( document ).ready(function($) {
+    
+//Ajax selectin starts here
+
+var selectrow = $("#adsforwp_placement_metabox").find("table.widefat tr").html();
+	$("body").append("<script type='template/html' id='call_html_template_afw'><tr class='toclone cloneya'>"+selectrow+"</tr>");
+	clone();
+	removeHtml();
+	$(document).on("change", ".afw-select-post-type", function(){
+		var parent = $(this).parents('tr').find(".afw-insert-ajax-select");
+		var selectedValue = $(this).val();
+		var currentFiledNumber = $(this).attr("class").split(" ")[2];
+                var adsforwp_call_nonce = $("#adsforwp_select_name_nonce").val();
+		
+		parent.find(".ajax-output").remove();
+		parent.find(".afw-ajax-output-child").remove();
+		parent.find(".spinner").attr("style","visibility:visible");
+		parent.children(".spinner").addClass("show");
+		var ajaxURL = adsforwp_localize_data.ajax_url;
+		//ajax call
+        $.ajax({
+        url : ajaxURL,
+        method : "POST",
+        data: { 
+          action: "adsforwp_create_ajax_select_box", 
+          id: selectedValue,
+          number : currentFiledNumber,
+          adsforwp_call_nonce : adsforwp_call_nonce
+        },
+        beforeSend: function(){ 
+        },
+        success: function(data){ 
+        	// This code is added twice " withThis.find('.ajax-output').remove(); "
+      			parent.find(".ajax-output").remove();
+      			parent.children(".spinner").removeClass("show");
+      			parent.find(".spinner").attr("style","visibility:hidden").hide();
+      			parent.append(data);
+      			taxonomyDataCall();
+        },
+        error: function(data){
+          console.log("Failed Ajax Request");
+          console.log(data);
+        }
+      }); 
+	});
+	taxonomyDataCall();
+	
+//Ajax selectin ends here
+    
 var currentAdID       		= adsforwp_localize_data.id;      
 
 

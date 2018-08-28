@@ -48,8 +48,12 @@ class adsforwp_metaboxes_display {
 		add_action( 'save_post', array( $this, 'adsforwp_save_fields' ) );                               
                 
 	}
-	public function adsforwp_add_meta_boxes() {
-		foreach ( $this->screen as $single_screen ) {
+	public function adsforwp_add_meta_boxes() {                
+                $post_type = get_post_type();                
+		foreach ( $this->screen as $single_screen ) {                         
+                        if($post_type == 'adsforwp-groups'){                                                     
+                         unset($this->meta_fields[0]['options']['ad_shortcode']);
+                        }                    
 			add_meta_box(
 				'display-metabox',
 				esc_html__( 'Display', 'ads-for-wp' ),

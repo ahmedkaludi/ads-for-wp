@@ -27,7 +27,7 @@ require ( ADSFORWP_PLUGIN_DIR.'/admin/ads-newsletter.php' );
 require ( ADSFORWP_PLUGIN_DIR.'/admin/ads-widget.php' );
 require  ADSFORWP_PLUGIN_DIR . '/admin/common-functions.php';
 require  ADSFORWP_PLUGIN_DIR . '/admin/settings.php';
-
+require ( ADSFORWP_PLUGIN_DIR. '/admin/ajax-selectbox.php' );
 
 /* Loading Metaboxes*/
 require ( ADSFORWP_PLUGIN_DIR.'/metaboxes/ads-type.php' );
@@ -35,6 +35,7 @@ require ( ADSFORWP_PLUGIN_DIR.'/metaboxes/display.php' );
 require ( ADSFORWP_PLUGIN_DIR.'/metaboxes/ads-visibility.php' );
 require ( ADSFORWP_PLUGIN_DIR.'/metaboxes/ad-groups.php' );
 require ( ADSFORWP_PLUGIN_DIR.'/metaboxes/ads-expire.php' );
+require ( ADSFORWP_PLUGIN_DIR.'/metaboxes/placement.php' );
 
 /* Loading frontend files*/
 require  ADSFORWP_PLUGIN_DIR . '/output/functions.php';

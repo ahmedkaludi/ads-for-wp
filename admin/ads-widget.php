@@ -42,7 +42,7 @@ class Adsforwp_Ads_Widget extends WP_Widget {
                 foreach($all_ads as $ad){
                     if($ad->ID == $instance['ads']){   
                             $output_function_obj = new adsforwp_output_functions();
-                            $ad_code =  $output_function_obj->adsforwp_get_ad_code($instance['ads']);          
+                            $ad_code =  $output_function_obj->adsforwp_get_ad_code($instance['ads'], $type="AD");          
                             echo $ad_code;                                        
                     }     
                 }
