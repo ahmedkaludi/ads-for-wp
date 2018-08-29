@@ -326,7 +326,8 @@ class adsforwp_output_functions{
      * @return string 
      */
     public function adsforwp_get_ad_code($post_ad_id, $type){
-                        
+            
+            $condition_status ='';
             if($type =="AD"){                
             $placement_obj = new adsforwp_metaboxes_placement();
             $condition_status = $placement_obj->adsforwp_get_post_conditions_status($post_ad_id);    
@@ -596,9 +597,23 @@ class adsforwp_output_functions{
         $adsresultset = array();  
         $response = array();           
         foreach($post_group_data as $post_ad_id => $post){
+        $ad_detail = get_post_meta($post_ad_id,$key='',true);        
         $adsresultset[] = array(
-                'ad_id' => $post_ad_id
-        ) ;           
+                'ad_id' => $post_ad_id,
+                'ad_type' => $ad_detail['select_adtype'][0],
+                'ad_adsense_type' => $ad_detail['adsense_type'][0],
+                'ad_custom_code' => $ad_detail['custom_code'][0],
+                'ad_data_client_id' => $ad_detail['data_client_id'][0],
+                'ad_data_ad_slot' => $ad_detail['data_ad_slot'][0],
+                'ad_data_cid' => $ad_detail['data_cid'][0],
+                'ad_data_crid' => $ad_detail['data_crid'][0],
+                'ad_banner_size' => $ad_detail['banner_size'][0],
+                'ad_image' => $ad_detail['adsforwp_ad_image'][0],
+                'ad_redirect_url' => $ad_detail['adsforwp_ad_redirect_url'][0],
+                'ad_img_height' => $ad_detail['adsforwp_ad_img_height'][0],
+                'ad_img_width' => $ad_detail['adsforwp_ad_img_width'][0],                
+        ) ; 
+        
         }
         $response['afw_group_id'] = $post_group_id;
         $response['adsforwp_refresh_type'] = $post_data['adsforwp_refresh_type'][0];
@@ -606,10 +621,11 @@ class adsforwp_output_functions{
         $response['adsforwp_group_ref_interval_sec'] = $post_data['adsforwp_group_ref_interval_sec'][0];    
         }        
         $response['adsforwp_group_type'] = $post_data['adsforwp_group_type'][0];
-        $response['ad_ids'] = $adsresultset;  
+        $response['ads'] = $adsresultset;  
         if($response['adsforwp_refresh_type'] == 'on_interval'){
         $ad_code ='<div class="afw-groups-ads-json" afw-group-id="'.esc_attr($post_group_id).'" data-json="'. esc_attr(json_encode($response)).'">';           
-        $ad_code .='</div>';    
+        $ad_code .='</div>';
+        $ad_code .='<div data-id="'.esc_attr($post_group_id).'" class="afw afw_ad_container"></div>';
         }else{
         $post_group_data = get_post_meta($post_group_id,$key='adsforwp_ads',true);         
         $ad_code =  $this->adsforwp_get_ad_code(array_rand($post_group_data), $type="GROUP");   
@@ -657,4 +673,3 @@ if (class_exists('adsforwp_output_functions')) {
 	$adsforwp_function_obj = new adsforwp_output_functions;
         $adsforwp_function_obj->adsforwp_hooks();
 };
-
