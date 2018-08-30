@@ -402,16 +402,21 @@ class adsforwp_output_functions{
                     }                                                                                
             break;
             case 'ad_image':
+                    $margin_post_meta = get_post_meta($post_ad_id, $key='adsforwp_ad_margin',true);
                     $adsforwp_ad_img_width = $post_meta_dataset['adsforwp_ad_img_width'][0];
-                    $adsforwp_ad_img_height = $post_meta_dataset['adsforwp_ad_img_height'][0];                    
+                    $adsforwp_ad_img_height = $post_meta_dataset['adsforwp_ad_img_height'][0]; 
+                    $ad_margin_top = $margin_post_meta['ad_margin_top'];
+                    $ad_margin_bottom = $margin_post_meta['ad_margin_bottom'];
+                    $ad_margin_left = $margin_post_meta['ad_margin_left'];
+                    $ad_margin_right = $margin_post_meta['ad_margin_right'];
                     if($this->is_amp){
                      if($amp_compatibility != 'disable'){
-                     $ad_code = '<div class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
+                     $ad_code = '<div style="margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
 							<a target="_blank" href="'.esc_url($ad_image_redirect_url).'"><amp-img src="'.esc_url($ad_image).'" height="'. esc_attr($adsforwp_ad_img_height).'" width="'.esc_attr($adsforwp_ad_img_width).'"></amp-img></a>
 							</div>';    
                     }   
                     }else{
-                    $ad_code = '<div class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
+                    $ad_code = '<div style="margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
 							<a target="_blank" href="'.esc_url($ad_image_redirect_url).'"><img src="'.esc_url($ad_image).'"></a>
 							</div>';        
                     }                                                                                
