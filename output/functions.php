@@ -351,10 +351,14 @@ class adsforwp_output_functions{
             $adsforwp_ad_days_enable ="";
             $adsforwp_ad_expire_days =array();
             $post_meta_dataset = array();
+            $ad_alignment ='';
             $post_meta_dataset = get_post_meta($post_ad_id,$key='',true);             
             
             if(array_key_exists('custom_code', $post_meta_dataset)){
             $custom_ad_code = $post_meta_dataset['custom_code'][0];    
+            }
+            if(array_key_exists('adsforwp_ad_align', $post_meta_dataset)){
+            $ad_alignment = $post_meta_dataset['adsforwp_ad_align'][0];    
             }
             if(array_key_exists('adsforwp_ad_image', $post_meta_dataset)){
             $ad_image = $post_meta_dataset['adsforwp_ad_image'][0];    
@@ -411,12 +415,12 @@ class adsforwp_output_functions{
                     $ad_margin_right = $margin_post_meta['ad_margin_right'];
                     if($this->is_amp){
                      if($amp_compatibility != 'disable'){
-                     $ad_code = '<div style="margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
+                     $ad_code = '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
 							<a target="_blank" href="'.esc_url($ad_image_redirect_url).'"><amp-img src="'.esc_url($ad_image).'" height="'. esc_attr($adsforwp_ad_img_height).'" width="'.esc_attr($adsforwp_ad_img_width).'"></amp-img></a>
 							</div>';    
                     }   
                     }else{
-                    $ad_code = '<div style="margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
+                    $ad_code = '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
 							<a target="_blank" href="'.esc_url($ad_image_redirect_url).'"><img src="'.esc_url($ad_image).'"></a>
 							</div>';        
                     }                                                                                
@@ -679,8 +683,11 @@ class adsforwp_output_functions{
         ?>
         <script type="text/javascript">  
             
-              jQuery(document).ready( function($) {                 
-                 $.getScript("<?php echo site_url().'/'.'front.js' ?>");                
+              jQuery(document).ready( function($) {    
+                  if ($('#adsforwp-hidden-block').length == 0 ) {
+                       $.getScript("<?php echo site_url().'/'.'front.js' ?>");
+                  }
+                 
               });
          </script>
        <?php

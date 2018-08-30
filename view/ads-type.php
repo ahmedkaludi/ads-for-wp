@@ -3,7 +3,7 @@
   Metabox to show ads type such as custom and adsense 
  */
 class adsforwp_view_ads_type {
-        private $ad_margin = array();
+        
 	private $screen = array(		
             'adsforwp'                                                      
 	);
@@ -119,33 +119,6 @@ class adsforwp_view_ads_type {
 			'id' => 'adsforwp_ad_redirect_url',                        
 			'type' => 'text',
 		),            
-            array(		
-                        'label' => 'Margin',
-			'id' => 'adsforwp_ad_margin',                        
-			'type' => 'multiple-text',
-                        'fields'=> array(
-                            array(	
-                            'label' => 'Top',    
-                            'id' => 'ad_margin_top',                        
-                            'type' => 'number',
-                          ),
-                            array(	
-                            'label' => 'Bottom',    
-                            'id' => 'ad_margin_bottom',                        
-                            'type' => 'number',
-                          ),
-                            array(	
-                            'label' => 'Left',    
-                            'id' => 'ad_margin_left',                        
-                            'type' => 'number',
-                          ),
-                            array(	
-                            'label' => 'Right',    
-                            'id' => 'ad_margin_right',                        
-                            'type' => 'number',
-                          ),
-                        )
-		),
                 array(			
                             'id' => 'adsforwp_ad_img_height',                        
                             'type' => 'hidden',
@@ -234,24 +207,6 @@ class adsforwp_view_ads_type {
 						$meta_value
 					); 
                                     break;
-                                
-                                case 'multiple-text':                                        
-                                        $input ='<div class="afw_ad_img_margin">';                                       
-                                        foreach($meta_field['fields'] as $field){
-                                        $input.= sprintf(
-						'<input class="afw_input" %s id="%s" name="adsforwp_ad_margin[%s]" type="%s" placeholder="%s" value="%s">',
-						$meta_field['type'] !== 'color' ? '' : '',
-						$field['id'],
-						$field['id'],
-						$field['type'],
-						$field['label'],
-                                                $meta_value[$field['id']]                                                 
-                                             );                                        
-                                        }
-					$input .='</div>';
-                                    break;
-                                
-                                
                                 case 'media':
                                                 $input = sprintf(
 						'<input class="afw_input adsforwp-icon" type="text" name="%s" id="%s" value="%s"/>'
@@ -309,14 +264,9 @@ class adsforwp_view_ads_type {
 			return $post_id;
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 			return $post_id;
-                                        
-                    $ad_margin = array();                     
-                    $ad_margin = array_map('sanitize_text_field', $_POST['adsforwp_ad_margin']);                      
-                    update_post_meta($post_id, 'adsforwp_ad_margin', $ad_margin);
                     
 		foreach ( $this->meta_fields as $meta_field ) {
                     
-                    if($meta_field['id'] != 'adsforwp_ad_margin'){ 
 			if ( isset( $_POST[ $meta_field['id'] ] ) ) {
 				switch ( $meta_field['type'] ) {
 					case 'email':
@@ -330,7 +280,7 @@ class adsforwp_view_ads_type {
 			} else if ( $meta_field['type'] === 'checkbox' ) {
 				update_post_meta( $post_id, $meta_field['id'], '0' );
 			}
-                   }
+                   
 		}
 	}
 }

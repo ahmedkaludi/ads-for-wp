@@ -367,10 +367,10 @@ function adsforwp_general_admin_notice(){
   <script type="text/javascript">  
        jQuery(document).ready( function($) {
            if ($('#adsforwp-hidden-block').length == 0 ) {
-            $(".afw-blocker-notice").show();
-         }else{
-            $(".afw-blocker-notice").hide(); 
-         }
+                 $(".afw-blocker-notice").show();
+           }else{
+                 $(".afw-blocker-notice").hide(); 
+           }
        });
   </script>                
     <?php
