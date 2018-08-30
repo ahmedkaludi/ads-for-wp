@@ -76,4 +76,11 @@ input[name=adsforwp_group_ref_interval_sec]{
 #adsforwp_ad_image{
     background: #ffffff;
 }
+.afw_ad_img_margin{
+    display: flex;
+}
+.afw_ad_img_margin input{
+    width: 75px;
+    margin-right: 20px;
+}
 
