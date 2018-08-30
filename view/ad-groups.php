@@ -1,5 +1,5 @@
 <?php
-class adsforwp_metaboxes_ad_groups {
+class adsforwp_view_ad_groups {
 	private $screen = array(
 		'adsforwp-groups',
 	);
@@ -286,6 +286,6 @@ class adsforwp_metaboxes_ad_groups {
 		}
 	}
 }
-if (class_exists('adsforwp_metaboxes_ad_groups')) {
-	new adsforwp_metaboxes_ad_groups;
+if (class_exists('adsforwp_view_ad_groups')) {
+	new adsforwp_view_ad_groups;
 };

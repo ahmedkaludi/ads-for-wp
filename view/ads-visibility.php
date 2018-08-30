@@ -2,7 +2,7 @@
 /*
  *  Metabox displays in admin sidebar to show and hide ads on particular post
  */
-class adsforwp_metaboxes_ads_visibility {
+class adsforwp_view_ads_visibility {
 	private $screen = array(
 		'post',
 	);
@@ -112,6 +112,6 @@ class adsforwp_metaboxes_ads_visibility {
 		}
 	}
 }
-if (class_exists('adsforwp_metaboxes_ads_visibility')) {
-	new adsforwp_metaboxes_ads_visibility;
+if (class_exists('adsforwp_view_ads_visibility')) {
+	new adsforwp_view_ads_visibility;
 };

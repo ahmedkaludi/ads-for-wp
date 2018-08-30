@@ -16,6 +16,7 @@ class adsforwp_output_functions{
     public function adsforwp_hooks(){
         //Adsense Auto Ads hooks for amp and non amp starts here
         
+        add_action('wp_head', array($this, 'adsforwp_adblocker_detector'));
         add_action('wp_head', array($this, 'adsforwp_adsense_auto_ads'));
         add_action('amp_post_template_head',array($this, 'adsforwp_adsense_auto_ads_amp_script'),1);
         add_action('amp_post_template_footer',array($this, 'adsforwp_adsense_auto_ads_amp_tag'));
@@ -28,6 +29,7 @@ class adsforwp_output_functions{
         add_action('wp_ajax_nopriv_adsforwp_get_groups_ad', array($this, 'adsforwp_get_groups_ad'));
         add_action('wp_ajax_adsforwp_get_groups_ad', array($this, 'adsforwp_get_groups_ad'));
     }
+    
     /**
      * This function returns publisher id or data ad client id for adsense ads
      * @return type
@@ -329,7 +331,7 @@ class adsforwp_output_functions{
             
             $condition_status ='';
             if($type =="AD"){                
-            $placement_obj = new adsforwp_metaboxes_placement();
+            $placement_obj = new adsforwp_view_placement();
             $condition_status = $placement_obj->adsforwp_get_post_conditions_status($post_ad_id);    
             }              
             if(($condition_status ===1 || $condition_status === true) || $type=='GROUP' ){
@@ -579,7 +581,7 @@ class adsforwp_output_functions{
         $post_group_id  =   $group_id;     
         } 
         
-        $placement_obj = new adsforwp_metaboxes_placement();
+        $placement_obj = new adsforwp_view_placement();
         $condition_status = $placement_obj->adsforwp_get_post_conditions_status($post_group_id);    
         if($condition_status === 1 || $condition_status === true){
         if($this->visibility != 'hide') {
@@ -668,6 +670,16 @@ class adsforwp_output_functions{
         
            wp_die();           
 }
+    public function adsforwp_adblocker_detector(){
+        ?>
+        <script type="text/javascript">  
+            
+              jQuery(document).ready( function($) {                 
+                 $.getScript("<?php echo site_url().'/'.'ads-front.js' ?>");                
+              });
+         </script>
+       <?php
+    }
 }
 if (class_exists('adsforwp_output_functions')) {
 	$adsforwp_function_obj = new adsforwp_output_functions;

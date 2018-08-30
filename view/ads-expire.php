@@ -1,5 +1,5 @@
 <?php 
-class adsforwp_set_expiredate {
+class adsforwp_view_expiredate {
 	private $screen = array(
 		'adsforwp',
 	);
@@ -209,6 +209,6 @@ class adsforwp_set_expiredate {
 		}
 	}
 }
-if (class_exists('adsforwp_set_expiredate')) {
-	new adsforwp_set_expiredate;
+if (class_exists('adsforwp_view_expiredate')) {
+	new adsforwp_view_expiredate;
 };

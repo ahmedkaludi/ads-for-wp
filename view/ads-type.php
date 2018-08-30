@@ -2,7 +2,7 @@
 /*
   Metabox to show ads type such as custom and adsense 
  */
-class adsforwp_metaboxes_ads_type {
+class adsforwp_view_ads_type {
 	private $screen = array(		
             'adsforwp'                                                      
 	);
@@ -280,6 +280,6 @@ class adsforwp_metaboxes_ads_type {
 		}
 	}
 }
-if (class_exists('adsforwp_metaboxes_ads_type')) {
-	new adsforwp_metaboxes_ads_type;
+if (class_exists('adsforwp_view_ads_type')) {
+	new adsforwp_view_ads_type;
 };

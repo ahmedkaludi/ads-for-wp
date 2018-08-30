@@ -1,3 +1,9 @@
+//Creating bait in admin
+var e = document.createElement('div');
+e.id = 'adsforwp-hidden-block';
+e.style.display = 'none';
+document.body.appendChild(e);
+
 jQuery( document ).ready(function($) {    
     
     /**
@@ -22,7 +28,7 @@ jQuery( document ).ready(function($) {
                     content +='<ins class="adsbygoogle" style="display:inline-block;width:'+width+'px;height:'+height+'px" data-ad-client="'+adbyindex.ad_data_client_id+'" data-ad-slot="'+adbyindex.ad_data_ad_slot+'"></ins>';
                     content +='<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>';
                     content +='</div>';                    
-                    container.html(content);                       
+                                         
                     }
                     break;
                 case "media_net":
@@ -39,22 +45,22 @@ jQuery( document ).ready(function($) {
                     content +='</script>';
                     content +='<script src="//contextual.media.net/nmedianet.js?cid='+adbyindex.ad_data_cid+'"></script>';
                     content +='</div>';
-                    container.html(content);
+                   
                     
                     break;
                 case "custom":
                     content +='<div class="afw afw_custom afw_'+adbyindex.ad_id+'">';
                     content +=adbyindex.ad_custom_code;
                     content +='</div>';
-                    container.html(content);
+                   
                     break;
                 case "ad_image":
                     content +='<div class="afw afw_ad_image afw_'+adbyindex.ad_id+'">';
                     content +='<a target="_blank" href="'+adbyindex.ad_redirect_url+'"><img src="'+adbyindex.ad_image+'"></a>';
-                    content +='</div>';
-                    container.html(content);
+                    content +='</div>';                    
                     break;
             }
+            container.html(content);
                         
             }
     /**

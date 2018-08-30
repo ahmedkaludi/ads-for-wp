@@ -32,6 +32,12 @@ public function adsforwp_admin_interface_render(){
                 $result = $common_function_obj->adsforwp_import_all_advanced_ads(); 
                 $this->_imported_current_status = $result;
             }
+            $file_creation = new adsforwp_file_creation();
+            if(isset($settings['ad_blocker_support'])){                
+                $result = $file_creation->adsforwp_create_adblocker_support_js();                
+            }else{
+                $result = $file_creation->adsforwp_delete_adblocker_support_js(); 
+            }
             
 		settings_errors();
 	}
@@ -45,7 +51,7 @@ public function adsforwp_admin_interface_render(){
 
 			echo '<a href="' . esc_url(adsforwp_admin_link('dashboard')) . '" class="nav-tab ' . esc_attr( $tab == 'dashboard' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-dashboard"></span> ' . esc_html__('Dashboard', 'ads-for-wp') . '</a>';
 
-			//echo '<a href="' . esc_url(adsforwp_admin_link('general')) . '" class="nav-tab ' . esc_attr( $tab == 'general' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('General','ads-for-wp') . '</a>';
+			echo '<a href="' . esc_url(adsforwp_admin_link('general')) . '" class="nav-tab ' . esc_attr( $tab == 'general' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('General','ads-for-wp') . '</a>';
 			
 			?>
 		</h2>
@@ -70,7 +76,7 @@ public function adsforwp_admin_interface_render(){
 			<div class="button-wrapper">                            
 				<?php
 				// Output save settings button
-			submit_button( esc_html__('Import', 'ads-for-wp') );
+			submit_button( esc_html__('Save', 'ads-for-wp') );
 				?>
 			</div>
 		</form>
@@ -104,7 +110,16 @@ public function adsforwp_settings_init(){
                             'adsforwp_dashboard_section',							// Page slug
                             'adsforwp_dashboard_section'							// Settings Section ID
                     );              
-                    }                                                
+                    } 
+                    
+              add_settings_section('adsforwp_general_section', 'Settings', '__return_false', 'adsforwp_general_section');		              
+                    add_settings_field(
+                            'adsforwp_ad_blocker_support',								// ID
+                            'Ad Blocker Support',			// Title
+                             array($this, 'adsforwp_ad_blocker_support_callback'),					// Callback
+                            'adsforwp_general_section',							// Page slug
+                            'adsforwp_general_section'							// Settings Section ID
+                    );
                 }            		               
 }
 
@@ -123,6 +138,27 @@ public function adsforwp_import_callback(){
                 echo '<input type="checkbox" name="adsforwp_settings[advnc_ads_import_check]" class="regular-text afw_advnc_ads_import" value="1" >';
             }    
             }
+            
+            ?>
+		
+	</fieldset>
+
+	<?php
+        
+}
+public function adsforwp_ad_blocker_support_callback(){
+	        
+	$settings = adsforwp_defaultSettings();           
+        ?>	
+	<fieldset>
+            <?php
+          
+            if(isset($settings['ad_blocker_support'])){
+                echo '<input type="checkbox" name="adsforwp_settings[ad_blocker_support]" class="regular-text afw_advnc_ad_blocker_support" value="1" checked> ';
+            }else{
+                echo '<input type="checkbox" name="adsforwp_settings[ad_blocker_support]" class="regular-text afw_advnc_ad_blocker_support" value="1" >';
+            }    
+            
             
             ?>
 		

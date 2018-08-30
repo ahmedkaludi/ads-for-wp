@@ -1,3 +1,11 @@
+
+//Creating bait in admin
+var e = document.createElement('div');
+e.id = 'adsforwp-hidden-block';
+e.style.display = 'none';
+document.body.appendChild(e);
+
+
 //Ajax selection starts here
 var clone = function(){
 		jQuery(".placement-row-clone").off("click").click(function(){

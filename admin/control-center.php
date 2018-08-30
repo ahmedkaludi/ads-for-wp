@@ -85,7 +85,8 @@ function adsforwp_get_tab( $default = '', $available = array() ) {
 function adsforwp_defaultSettings(){
 	$defaults = array(
 		'app_blog_name'		=> get_bloginfo( 'name' ),
-		'advnc_ads_import_check'	=> 1,				
+		'advnc_ads_import_check'	=> 1,
+                'ad_blocker_support'	=> 1,
 	);        
 	$settings = get_option( 'adsforwp_settings', $defaults );         
 	return $settings;
@@ -258,7 +259,7 @@ add_action( 'admin_init', 'adsforwp_removing_wysiwig' );
  *	 REGISTER ALL NON-ADMIN SCRIPTS
  */
 function adsforwp_frontend_enqueue(){
-        wp_register_script('adsforwp-ads-front-js', ADSFORWP_PLUGIN_DIR_URI . 'assets/ads-front.js', array( 'jquery' ), ADSFORWP_VERSION, true);
+        wp_register_script('adsforwp-ads-front-js', ADSFORWP_PLUGIN_DIR_URI . 'public/ads-front.js', array( 'jquery' ), ADSFORWP_VERSION, true);
         $object_name = array(
             'ajax_url' => admin_url( 'admin-ajax.php' ),            
         );
@@ -279,8 +280,8 @@ function adsforwp_admin_enqueue() {
          wp_enqueue_style( 'jquery-ui' );
          add_action('admin_print_footer_scripts', 'adsforwp_print_footer_scripts' );
     
-        wp_enqueue_style( 'ads-for-wp-admin', ADSFORWP_PLUGIN_DIR_URI . 'assets/ads.css', false , ADSFORWP_VERSION );
-        wp_register_script( 'ads-for-wp-admin-js', ADSFORWP_PLUGIN_DIR_URI . 'assets/ads.js', array('jquery'), ADSFORWP_VERSION , true );
+        wp_enqueue_style( 'ads-for-wp-admin', ADSFORWP_PLUGIN_DIR_URI . 'public/ads.css', false , ADSFORWP_VERSION );
+        wp_register_script( 'ads-for-wp-admin-js', ADSFORWP_PLUGIN_DIR_URI . 'public/ads.js', array('jquery'), ADSFORWP_VERSION , true );
             // Localize the script with new data
         $data = array(
             'ajax_url'  => admin_url( 'admin-ajax.php' ),
@@ -354,6 +355,27 @@ function adsforwp_groups_update_ids_on_untrash(){
     add_action( 'trash_adsforwp-groups', 'adsforwp_groups_update_ids_on_trash');    
     add_action('untrash_adsforwp-groups', 'adsforwp_groups_update_ids_on_untrash');    
 
+    
+function adsforwp_general_admin_notice(){
+     echo '<div class="message error update-message notice notice-alt notice-error afw-blocker-notice afw_hide">'
+                 . '<p>'.esc_html__('Please disable your', 'ads-for-wp').' <strong>'.esc_html__('AdBlocker', 'ads-for-wp').'</strong> '.esc_html('to use adsforwp plugin smoothly', 'ads-for-wp').'</p>'
+                 . '</div>'; 
+     $post_type = get_post_type();     
+     if($post_type == 'adsforwp'){
+            ?>
+  <script type="text/javascript">  
+       jQuery(document).ready( function($) {
+           if ($('#adsforwp-hidden-block').length == 0 ) {
+            $(".afw-blocker-notice").show();
+         }else{
+            $(".afw-blocker-notice").hide(); 
+         }
+       });
+  </script>                
+    <?php
+     }
+}
+add_action('admin_notices', 'adsforwp_general_admin_notice');    
 /**
  * Showing pointer on mouse movement 
  */
@@ -394,7 +416,8 @@ function adsforwp_print_footer_scripts() {
         var status = 'open';
         var id = $(this).attr('id');         
         adsforwp_pointer_hover(id, status);
-    });            
+    });      
+                
    });   
    </script>
 <?php

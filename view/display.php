@@ -1,6 +1,6 @@
 <?php
 //Metabox to create display areas for ads in ads admin post
-class adsforwp_metaboxes_display {
+class adsforwp_view_display {
     
     private $screen = array(
 		'adsforwp',
@@ -161,6 +161,6 @@ class adsforwp_metaboxes_display {
                 
 	}
 }
-if (class_exists('adsforwp_metaboxes_display')) {
-	new adsforwp_metaboxes_display;
+if (class_exists('adsforwp_view_display')) {
+	new adsforwp_view_display;
 };

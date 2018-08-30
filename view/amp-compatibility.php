@@ -1,6 +1,6 @@
 <?php
 //Metabox displays in admin sidebar to show amp compatibilty is enabled or disabled
-class adsforwp_metaboxes_amp_compatibility {
+class adsforwp_view_amp_compatibility {
 	private $screen = array(
 		'adsforwp',
 	);
@@ -110,6 +110,6 @@ class adsforwp_metaboxes_amp_compatibility {
 		}
 	}
 }
-if (class_exists('adsforwp_metaboxes_amp_compatibility')) {
-	new adsforwp_metaboxes_amp_compatibility;
+if (class_exists('adsforwp_view_amp_compatibility')) {
+	new adsforwp_view_amp_compatibility;
 };

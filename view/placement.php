@@ -1,5 +1,5 @@
 <?php
-class adsforwp_metaboxes_placement {
+class adsforwp_view_placement {
     
  public function __construct() {                                                                                                     
 		add_action( 'add_meta_boxes', array( $this, 'adsforwp_placement_add_meta_box' ) );
@@ -407,6 +407,6 @@ class adsforwp_metaboxes_placement {
 }         
     
 }
-if (class_exists('adsforwp_metaboxes_placement')) {
-	new adsforwp_metaboxes_placement;
+if (class_exists('adsforwp_view_placement')) {
+	new adsforwp_view_placement;
 };
