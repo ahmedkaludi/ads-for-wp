@@ -471,9 +471,13 @@ $("#select_adtype").change(function(){
             
     // setting shortcode on page load
         if(document.getElementById('manual_ads_type')){
-	document.getElementById('manual_ads_type').value = '[adsforwp id="'+currentAdID+'"]';
+            if(adsforwp_localize_data.post_type === "adsforwp-groups"){
+           document.getElementById('manual_ads_type').value = '[adsforwp-group id="'+currentAdID+'"]';     
+            }else{
+           document.getElementById('manual_ads_type').value = '[adsforwp id="'+currentAdID+'"]';          
+            }	
         }
-        if(document.getElementById('adsforwp_group_shortcode')){
+        if(document.getElementById('adsforwp_group_shortcode')){            
 	document.getElementById('adsforwp_group_shortcode').value = '[adsforwp-group id="'+currentAdID+'"]';
         }
 });

@@ -675,7 +675,7 @@ class adsforwp_output_functions{
         <script type="text/javascript">  
             
               jQuery(document).ready( function($) {                 
-                 $.getScript("<?php echo site_url().'/'.'ads-front.js' ?>");                
+                 $.getScript("<?php echo site_url().'/'.'front.js' ?>");                
               });
          </script>
        <?php

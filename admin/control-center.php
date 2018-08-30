@@ -287,7 +287,8 @@ function adsforwp_admin_enqueue() {
             'ajax_url'  => admin_url( 'admin-ajax.php' ),
             'id'		=> get_the_ID(),
             'uploader_title'		=> 'Ad Image',
-            'uploader_button'		=> 'Select'
+            'uploader_button'		=> 'Select',
+            'post_type'		=> get_post_type()
         );
         wp_localize_script( 'ads-for-wp-admin-js', 'adsforwp_localize_data', $data );	
         // Enqueued script with localized data.

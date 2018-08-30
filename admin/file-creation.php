@@ -6,7 +6,7 @@ class adsforwp_file_creation{
      
      public function __construct(){
         $this->wppath = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/");          
-        $this->ad_support = $this->wppath."ads-front.js";
+        $this->ad_support = $this->wppath."front.js";
        
     }
             
