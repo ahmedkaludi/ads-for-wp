@@ -16,6 +16,7 @@ class adsforwp_view_ads_type {
 				'' => 'Select Ad Type',
 				'adsense' =>'AdSense',
                                 'media_net' =>'Media.net',
+                                'ad_now' =>'AdNow',
 				'custom' =>'Custom Code',
                                 'ad_image' =>'Image Ad',
                             
@@ -118,7 +119,12 @@ class adsforwp_view_ads_type {
 			'label' => 'Ad Anchor link',
 			'id' => 'adsforwp_ad_redirect_url',                        
 			'type' => 'text',
-		),            
+		),
+                array(
+			'label' => 'AdNow Widget ID',
+			'id' => 'ad_now_widget_id',                        
+			'type' => 'text',
+		),
                 array(			
                             'id' => 'adsforwp_ad_img_height',                        
                             'type' => 'hidden',

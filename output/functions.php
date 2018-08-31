@@ -437,6 +437,23 @@ class adsforwp_output_functions{
 							</div>';        
                     }                                                                                
             break;
+            
+            case 'ad_now':
+                    
+                    $ad_now_widget_id = $post_meta_dataset['ad_now_widget_id'][0];                    
+                    if(!$this->is_amp){
+                     $ad_code = '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
+				 <div id="SC_TBlock_'.$ad_now_widget_id.'" class="SC_TBlock">loading...</div>
+                                 <script type="text/javascript">
+                                      (sc_adv_out = window.sc_adv_out || []).push({
+                                        id : "'.$ad_now_widget_id.'",
+                                        domain : "n.ads1-adnow.com"
+                                       });
+                                 </script>
+                                 <script type="text/javascript" src="//st-n.ads1-adnow.com/js/a.js"></script>    
+				 </div>';        
+                    }                                                                                
+            break;
            //adsense ads logic code starts here
             case 'adsense':
             $adsense_type = '';

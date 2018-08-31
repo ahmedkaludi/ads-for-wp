@@ -43,6 +43,16 @@ class adsforwp_view_display {
 			),
 		),
             
+                array(
+			'label' => 'Alignment',
+			'id' => 'adsforwp_ad_align',
+			'type' => 'radio',
+			'options' => array(
+				'left'=>'Left',
+				'center'=>'Center',
+                                'right' => 'Right'
+			),
+		),
                 array(		
                         'label' => 'Margin',
 			'id' => 'adsforwp_ad_margin',                        
@@ -69,19 +79,7 @@ class adsforwp_view_display {
                             'type' => 'number',
                           ),
                         )
-		),
-            
-            array(
-			'label' => 'Alignment',
-			'id' => 'adsforwp_ad_align',
-			'type' => 'radio',
-			'options' => array(
-				'left'=>'Left',
-				'center'=>'Center',
-                                'right' => 'Right'
-			),
 		)
-            
                                 
 	);
 	public function __construct() {                                                                                                     
