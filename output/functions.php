@@ -349,17 +349,30 @@ class adsforwp_output_functions{
             $amp_compatibility ="";              
             $adsforwp_ad_expire_enable ="";                        
             $adsforwp_ad_days_enable ="";
+            
+            
+            $ad_margin_top     = 0;
+            $ad_margin_bottom  = 0;
+            $ad_margin_left    = 0;
+            $ad_margin_right   = 0;
+            $ad_alignment      = '';
+            
             $adsforwp_ad_expire_days =array();
             $post_meta_dataset = array();
-            $ad_alignment ='';
+            
             $post_meta_dataset = get_post_meta($post_ad_id,$key='',true);             
             
+            if($type =="AD"){
+            $margin_post_meta  = get_post_meta($post_ad_id, $key='adsforwp_ad_margin',true);
+            $ad_margin_top     = $margin_post_meta['ad_margin_top'];
+            $ad_margin_bottom  = $margin_post_meta['ad_margin_bottom'];
+            $ad_margin_left    = $margin_post_meta['ad_margin_left'];
+            $ad_margin_right   = $margin_post_meta['ad_margin_right'];
+            $ad_alignment      = $post_meta_dataset['adsforwp_ad_align'][0];
+            }                        
             if(array_key_exists('custom_code', $post_meta_dataset)){
             $custom_ad_code = $post_meta_dataset['custom_code'][0];    
-            }
-            if(array_key_exists('adsforwp_ad_align', $post_meta_dataset)){
-            $ad_alignment = $post_meta_dataset['adsforwp_ad_align'][0];    
-            }
+            }            
             if(array_key_exists('adsforwp_ad_image', $post_meta_dataset)){
             $ad_image = $post_meta_dataset['adsforwp_ad_image'][0];    
             }
@@ -390,29 +403,28 @@ class adsforwp_output_functions{
             if($ad_type !=""){                                        
             if(array_key_exists('ads-for-wp_amp_compatibilty', $post_meta_dataset)){
             $amp_compatibility = $post_meta_dataset['ads-for-wp_amp_compatibilty'][0];              
-            }                
+            }
+            
+                
+            
             switch ($ad_type) {
             case 'custom':
                     if($this->is_amp){
                      if($amp_compatibility != 'disable'){
-                     $ad_code = '<div class="afw afw_custom afw_'.esc_attr($post_ad_id).'">
+                     $ad_code = '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_custom afw_'.esc_attr($post_ad_id).'">
 							'.$custom_ad_code.'
 							</div>';    
                     }   
                     }else{
-                    $ad_code = '<div class="afw afw_custom afw_'.esc_attr($post_ad_id).'">
+                    $ad_code = '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_custom afw_'.esc_attr($post_ad_id).'">
 							'.$custom_ad_code.'
 							</div>';        
                     }                                                                                
             break;
             case 'ad_image':
-                    $margin_post_meta = get_post_meta($post_ad_id, $key='adsforwp_ad_margin',true);
+                    
                     $adsforwp_ad_img_width = $post_meta_dataset['adsforwp_ad_img_width'][0];
-                    $adsforwp_ad_img_height = $post_meta_dataset['adsforwp_ad_img_height'][0]; 
-                    $ad_margin_top = $margin_post_meta['ad_margin_top'];
-                    $ad_margin_bottom = $margin_post_meta['ad_margin_bottom'];
-                    $ad_margin_left = $margin_post_meta['ad_margin_left'];
-                    $ad_margin_right = $margin_post_meta['ad_margin_right'];
+                    $adsforwp_ad_img_height = $post_meta_dataset['adsforwp_ad_img_height'][0];                     
                     if($this->is_amp){
                      if($amp_compatibility != 'disable'){
                      $ad_code = '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
@@ -445,7 +457,7 @@ class adsforwp_output_functions{
                     }            
                     if($this->is_amp){
                         if($amp_compatibility != 'disable'){
-                         $ad_code = '<div class="afw afw-ga afw_'.esc_attr($post_ad_id).'">
+                         $ad_code = '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw-ga afw_'.esc_attr($post_ad_id).'">
                                         <amp-ad 
                                         type="adsense"
                                         width="'. esc_attr($width) .'"
@@ -457,7 +469,7 @@ class adsforwp_output_functions{
                         }                             
 
                     }else{                
-                     $ad_code = '<div class="afw afw-ga afw_'.esc_attr($post_ad_id).'">
+                     $ad_code = '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw-ga afw_'.esc_attr($post_ad_id).'">
                                                                 <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
                                                                 </script>
                                                                 <ins class="adsbygoogle" style="display:inline-block;width:'.esc_attr($width).'px;height:'.esc_attr($height).'px" data-ad-client="'.esc_attr($ad_client).'" data-ad-slot="'.esc_attr($ad_slot).'">
@@ -488,7 +500,7 @@ class adsforwp_output_functions{
             if($this->is_amp){
                 if($amp_compatibility != 'disable'){
                  $ad_code = 
-                            '<div class="afw afw-md afw_'.esc_attr($post_ad_id).'">
+                            '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw-md afw_'.esc_attr($post_ad_id).'">
                             <amp-ad 
 				type="medianet"
 				width="'. esc_attr($width) .'"
@@ -501,7 +513,7 @@ class adsforwp_output_functions{
                 }                             
 				                
             }else{                
-             $ad_code = '<div class="afw afw-md afw_'.esc_attr($post_ad_id).'">
+             $ad_code = '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw-md afw_'.esc_attr($post_ad_id).'">
 						<script id="mNCC" language="javascript">
                                                             medianet_width = "'.esc_attr($width).'";
                                                             medianet_height = "'.esc_attr($height).'";
@@ -594,16 +606,26 @@ class adsforwp_output_functions{
         $condition_status = $placement_obj->adsforwp_get_post_conditions_status($post_group_id);    
         if($condition_status === 1 || $condition_status === true){
         if($this->visibility != 'hide') {
+        
+        $post_group_data   = get_post_meta($post_group_id,$key='adsforwp_ads',true);
+        $post_group_meta   = get_post_meta($post_group_id,$key='',true);
+        $margin_post_meta  = get_post_meta($post_group_id, $key='adsforwp_ad_margin',true);
+        $ad_margin_top     = $margin_post_meta['ad_margin_top'];
+        $ad_margin_bottom  = $margin_post_meta['ad_margin_bottom'];
+        $ad_margin_left    = $margin_post_meta['ad_margin_left'];
+        $ad_margin_right   = $margin_post_meta['ad_margin_right'];
+        $ad_alignment      = $post_group_meta['adsforwp_ad_align'][0];    
+           
         $ad_code ="";    
         if($this->is_amp){            
-        $post_group_data = get_post_meta($post_group_id,$key='adsforwp_ads',true);   
+           
         if($post_group_data){
         $ad_code =  $this->adsforwp_get_ad_code(array_rand($post_group_data), $type="GROUP");              
-        }        
-        return $ad_code;
+        }                
         }else{            
-        $post_group_data = get_post_meta($post_group_id,$key='adsforwp_ads',true);     
-        $post_data = get_post_meta($post_group_id,$key='',true);
+                
+        $post_data = get_post_meta($post_group_id,$key='',true);                
+        
         if($post_group_data){
         $adsresultset = array();  
         $response = array();           
@@ -634,20 +656,27 @@ class adsforwp_output_functions{
         $response['adsforwp_group_type'] = $post_data['adsforwp_group_type'][0];
         $response['ads'] = $adsresultset;  
         if($response['adsforwp_refresh_type'] == 'on_interval'){
+        
+        
         $ad_code ='<div class="afw-groups-ads-json" afw-group-id="'.esc_attr($post_group_id).'" data-json="'. esc_attr(json_encode($response)).'">';           
         $ad_code .='</div>';
         $ad_code .='<div data-id="'.esc_attr($post_group_id).'" class="afw afw_ad_container"></div>';
+        
+        
         }else{
         $post_group_data = get_post_meta($post_group_id,$key='adsforwp_ads',true);         
         $ad_code =  $this->adsforwp_get_ad_code(array_rand($post_group_data), $type="GROUP");   
         }        
         }
-        return $ad_code;                           
+                                   
        } 
+       $group_ad_code = '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_group afw_'.esc_attr($post_group_id).'">';
+       $group_ad_code .= $ad_code;
+       $group_ad_code .='</div>';
+       return $group_ad_code;
       }     
         }    
-        
-                         
+                                 
     }
 
     /**
