@@ -361,14 +361,18 @@ class adsforwp_output_functions{
             $post_meta_dataset = array();
             
             $post_meta_dataset = get_post_meta($post_ad_id,$key='',true);             
-            
+            if(array_key_exists('wheretodisplay', $post_meta_dataset)){
+            $where_to_display = $post_meta_dataset['wheretodisplay'][0];  
+            }
             if($type =="AD"){
             $margin_post_meta  = get_post_meta($post_ad_id, $key='adsforwp_ad_margin',true);
             $ad_margin_top     = $margin_post_meta['ad_margin_top'];
             $ad_margin_bottom  = $margin_post_meta['ad_margin_bottom'];
             $ad_margin_left    = $margin_post_meta['ad_margin_left'];
             $ad_margin_right   = $margin_post_meta['ad_margin_right'];
-            $ad_alignment      = $post_meta_dataset['adsforwp_ad_align'][0];
+            if($where_to_display !='ad_shortcode'){
+            $ad_alignment      = $post_meta_dataset['adsforwp_ad_align'][0];    
+            }
             }                        
             if(array_key_exists('custom_code', $post_meta_dataset)){
             $custom_ad_code = $post_meta_dataset['custom_code'][0];    
@@ -379,9 +383,8 @@ class adsforwp_output_functions{
             if(array_key_exists('adsforwp_ad_redirect_url', $post_meta_dataset)){
             $ad_image_redirect_url = $post_meta_dataset['adsforwp_ad_redirect_url'][0];                          
             }
-            if(array_key_exists('wheretodisplay', $post_meta_dataset)){
-            $where_to_display = $post_meta_dataset['wheretodisplay'][0];  
-            }            
+                        
+            
             if(array_key_exists('select_adtype', $post_meta_dataset)){
             $ad_type = $post_meta_dataset['select_adtype'][0];      
             }
@@ -631,7 +634,10 @@ class adsforwp_output_functions{
         $ad_margin_bottom  = $margin_post_meta['ad_margin_bottom'];
         $ad_margin_left    = $margin_post_meta['ad_margin_left'];
         $ad_margin_right   = $margin_post_meta['ad_margin_right'];
+        if($post_group_meta['wheretodisplay'][0] !='ad_shortcode'){
         $ad_alignment      = $post_group_meta['adsforwp_ad_align'][0];    
+            }
+            
            
         $ad_code ="";    
         if($this->is_amp){            

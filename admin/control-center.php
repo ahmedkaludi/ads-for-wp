@@ -212,7 +212,13 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
             switch ( $column ) {        
                 case 'adsforwp_group_column' :
                     echo html_entity_decode(esc_attr($post_title)); 
-                    break;                
+                    break; 
+                case 'adsforwp_ad_image_preview' :
+                    $post_meta = get_post_meta($post_id, $key='', true);
+                    if($post_meta['select_adtype'][0] == 'ad_image'){
+                    echo '<div><a href="'. esc_url(get_admin_url()).'post.php?post='.esc_attr($post_id).'&action=edit"><img width="150" src="'.$post_meta['adsforwp_ad_image'][0].'"></a></div>';    
+                    } 
+                    break; 
             }
 }
 add_action( 'manage_adsforwp_posts_custom_column' , 'adsforwp_group_custom_column_set', 10, 2 );
@@ -225,7 +231,9 @@ add_action( 'manage_adsforwp_posts_custom_column' , 'adsforwp_group_custom_colum
 
 function adsforwp_custom_columns($columns) {    
     unset($columns['date']);
-    $columns['adsforwp_group_column'] = '<a>'.esc_html__( 'Groups', 'ads-for-wp' ).'<a>';                            
+    $columns['adsforwp_ad_image_preview'] = '<a>'.esc_html__( 'Preview', 'ads-for-wp' ).'<a>';
+    $columns['adsforwp_group_column'] = '<a>'.esc_html__( 'Groupss', 'ads-for-wp' ).'<a>';
+    
     return $columns;
 }
 add_filter( 'manage_adsforwp_posts_columns', 'adsforwp_custom_columns' );

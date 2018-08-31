@@ -147,7 +147,7 @@ class adsforwp_view_display {
 					$input .='</div>';
                                     break;
                                     case 'radio':
-					$input = '<fieldset>';
+					$input = '<fieldset class="afw_ads_margin_field">';
 					$input .= '<legend class="screen-reader-text">' . isset($meta_field['label']) . '</legend>';
 					$i = 0;
 					foreach ( $meta_field['options'] as $key => $value ) {

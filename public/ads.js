@@ -372,29 +372,33 @@ $("#select_adtype").change(function(){
                     }
                     $("#adposition").parent().parent("tr").show();
                     $("#manual_ads_type").parent().parent("tr").hide(); 
-                    
+                    $(".afw_ads_margin_field").parent().parent("tr").show();
                     break;
                 case "ad_shortcode":
                     $("#manual_ads_type").parent().parent("tr").show();
                     $("#adposition").parent().parent("tr").hide(); 
                     $("#paragraph_number").parent().parent("tr").addClass("afw_hide");                    
                     $("#paragraph_number").parent().parent("tr").hide();
+                    $(".afw_ads_margin_field").parent().parent("tr").hide();
                     break
                 case "after_the_content":   
                     $("#adposition").parent().parent("tr").hide(); 
                     $("#manual_ads_type").parent().parent("tr").hide();
                     $("#paragraph_number").parent().parent("tr").hide();
+                    $(".afw_ads_margin_field").parent().parent("tr").show();
                     break;
                 case "before_the_content":   
                     $("#adposition").parent().parent("tr").hide(); 
                     $("#manual_ads_type").parent().parent("tr").hide();
                     $("#paragraph_number").parent().parent("tr").hide();
+                    $(".afw_ads_margin_field").parent().parent("tr").show();
                     break;    
                 
                 default:
                     $("#adposition").parent().parent("tr").hide(); 
                     $("#manual_ads_type").parent().parent("tr").hide();
                     $("#paragraph_number").parent().parent("tr").addClass("afw_hide");
+                    $(".afw_ads_margin_field").parent().parent("tr").hide();
                   break;   
                 }                          
           }      
