@@ -677,7 +677,7 @@ class adsforwp_output_functions{
         
         $ad_code ='<div class="afw-groups-ads-json" afw-group-id="'.esc_attr($post_group_id).'" data-json="'. esc_attr(json_encode($response)).'">';           
         $ad_code .='</div>';
-        $ad_code .='<div data-id="'.esc_attr($post_group_id).'" class="afw afw_ad_container"></div>';
+        $ad_code .='<div style="display:none;" data-id="'.esc_attr($post_group_id).'" class="afw_ad_container_pre"></div><div data-id="'.esc_attr($post_group_id).'" class="afw afw_ad_container"></div>';
         
         
         }else{

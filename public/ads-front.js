@@ -13,9 +13,9 @@ jQuery( document ).ready(function($) {
      * @param {type} ad_id
      * @returns {html tags}
      */
-    function adsforwpShowAdsById(ads_group_id, ads_group_type, adbyindex){ 
-         
-            var container = $(".afw_ad_container[data-id='"+ads_group_id+"']");                
+    function adsforwpShowAdsById(ads_group_id, ads_group_type, adbyindex, j){                   
+            var container = $(".afw_ad_container[data-id='"+ads_group_id+"']");  
+            var container_pre = $(".afw_ad_container_pre[data-id='"+ads_group_id+"']");  
             var content ='';
             switch(adbyindex.ad_type){
                 case "adsense":
@@ -27,9 +27,9 @@ jQuery( document ).ready(function($) {
                     content +='<script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>';
                     content +='<ins class="adsbygoogle" style="display:inline-block;width:'+width+'px;height:'+height+'px" data-ad-client="'+adbyindex.ad_data_client_id+'" data-ad-slot="'+adbyindex.ad_data_ad_slot+'"></ins>';
                     content +='<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>';
-                    content +='</div>';                    
-                                         
+                    content +='</div>';                                                             
                     }
+                    container.html(content);
                     break;
                 case "media_net":
                     var bannersize =(adbyindex.ad_banner_size).split("x");
@@ -45,23 +45,36 @@ jQuery( document ).ready(function($) {
                     content +='</script>';
                     content +='<script src="//contextual.media.net/nmedianet.js?cid='+adbyindex.ad_data_cid+'"></script>';
                     content +='</div>';
-                   
-                    
+                    container.html(content);                    
                     break;
                 case "custom":
                     content +='<div class="afw afw_custom afw_'+adbyindex.ad_id+'">';
                     content +=adbyindex.ad_custom_code;
                     content +='</div>';
-                   
+                    container.html(content);                  
                     break;
                 case "ad_image":
                     content +='<div class="afw afw_ad_image afw_'+adbyindex.ad_id+'">';
                     content +='<a target="_blank" href="'+adbyindex.ad_redirect_url+'"><img src="'+adbyindex.ad_image+'"></a>';
-                    content +='</div>';                    
+                    content +='</div>';  
+                    
+                    if(j==1){
+                    container.html(content);       
+                    }                    
+                    if(j==2){
+                    container_pre.html(content);  
+                    }
+                    if(j>2){                                                
+                      container.html(container_pre.html()); 
+                      container_pre.html(content);   
+                    }
+                    
                     break;
-            }
-            container.html(content);
-                        
+                    
+            }            
+            var now = new Date(Date.now());
+            var formatted = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();            
+               console.log(formatted);         
             }
     /**
      * we are here iterating on each group div to display all ads 
@@ -80,25 +93,33 @@ jQuery( document ).ready(function($) {
                
             var ad_ids_length = Object.keys(ad_ids).length;            
             var i=0;
-            
-            if(ads_group_refresh_type ==='on_interval'){                
-                            
-            var adsforwp_ad_on_interval = function () {
-                
+            var j = 0;
+            if(ads_group_refresh_type ==='on_interval'){  
+                 j = 1;
+                 
+                 if(ads_group_type == 'ordered')   {              
+                    adsforwpShowAdsById(ads_group_id, ads_group_type, ad_ids[i], j);                                             
+                i++;    
+                } else{                    
+                    var random_adbyindex = ad_ids[Math.floor(Math.random()*ad_ids.length)];                 
+                    adsforwpShowAdsById(ads_group_id, ads_group_type, random_adbyindex, j);                                 
+                } 
+              j++;  
+            var adsforwp_ad_on_interval = function () {                
             if(i >= ad_ids_length){
                  i = 0;
              }    
                 var adbyindex ='';
                     adbyindex = ad_ids[i];                    
                 if(ads_group_type == 'ordered')   {              
-                 adsforwpShowAdsById(ads_group_id, ads_group_type, adbyindex);                                             
+                    adsforwpShowAdsById(ads_group_id, ads_group_type, adbyindex, j);                                             
                 i++;    
                 } else{                    
-                var random_adbyindex = ad_ids[Math.floor(Math.random()*ad_ids.length)];                 
-                adsforwpShowAdsById(ads_group_id, ads_group_type, random_adbyindex);                 
-                
-                }                
-                 setTimeout(adsforwp_ad_on_interval, ads_group_ref_interval_sec);
+                    var random_adbyindex = ad_ids[Math.floor(Math.random()*ad_ids.length)];                 
+                    adsforwpShowAdsById(ads_group_id, ads_group_type, random_adbyindex, j);                                 
+                }    
+                    j++;
+                    setTimeout(adsforwp_ad_on_interval, ads_group_ref_interval_sec);
                 };
              adsforwp_ad_on_interval();              
             }           
