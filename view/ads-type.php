@@ -214,14 +214,25 @@ class adsforwp_view_ads_type {
 					); 
                                     break;
                                 case 'media':
+                                                $imageprev ='';
+                                                if($meta_value){
+                                                 $imageprev .='<br><div class="afw_ad_thumbnail">';
+                                                 $imageprev .='<img class="afw_ad_image_prev" src="'.esc_url($meta_value).'"/>';
+                                                 $imageprev .='<a href="#" class="afw_ad_prev_close">X</a>';
+                                                 $imageprev .='</div>';
+                                                 
+                                                }
                                                 $input = sprintf(
 						'<input class="afw_input adsforwp-icon" type="text" name="%s" id="%s" value="%s"/>'
                                                 . '<button type="button" class="button adsforwp-ad-img-upload" data-editor="content">'
                                                 . '<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> Upload Image'
-                                                . '</button>',
+                                                . '</button>'
+                                                . '<div class="afw_ad_img_div">%s'
+                                                . '</div>',
 						$meta_field['id'],
 						$meta_field['id'],
-						$meta_value
+						$meta_value,
+                                                $imageprev        
 					);
                                                 break;
                                 case 'hidden':                                                    

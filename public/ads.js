@@ -215,6 +215,7 @@ $(".adsforwp-ad-img-upload").click(function(e) {	// Application Icon upload
 		.on("select", function() {
 			var attachment = pwaforwpMediaUploader.state().get("selection").first().toJSON();                        
 			$(".adsforwp-icon").val(attachment.url);
+                        $(".afw_ad_img_div").html('<div class="afw_ad_thumbnail"><img class="afw_ad_image_prev" src="'+attachment.url+'"/><a href="#" class="afw_ad_prev_close">X</a></div>');
                         $("#adsforwp_ad_img_height").val(attachment.height);
                         $("#adsforwp_ad_img_width").val(attachment.width);
 		})
@@ -481,6 +482,13 @@ $("#select_adtype").change(function(){
         $(this).parent().parent('tr').remove();
     });
             
+    $(document).on("click", ".afw_ad_prev_close", function(e){
+        e.preventDefault();
+        $(".afw_ad_thumbnail").remove();
+        $("#adsforwp_ad_image").val("");
+        $("#adsforwp_ad_img_height").val("");
+        $("#adsforwp_ad_img_width").val("");
+    });        
     // setting shortcode on page load
         if(document.getElementById('manual_ads_type')){
             if(adsforwp_localize_data.post_type === "adsforwp-groups"){
