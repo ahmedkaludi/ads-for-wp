@@ -488,7 +488,8 @@ $("#select_adtype").change(function(){
         $("#adsforwp_ad_image").val("");
         $("#adsforwp_ad_img_height").val("");
         $("#adsforwp_ad_img_width").val("");
-    });        
+    });    
+    $(".afw-group-ads tbody").sortable();
     // setting shortcode on page load
         if(document.getElementById('manual_ads_type')){
             if(adsforwp_localize_data.post_type === "adsforwp-groups"){

@@ -93,7 +93,7 @@ class adsforwp_view_placement {
               <select class="widefat comparison" name="data_array[<?php echo esc_attr( $i )?>][key_2]"> <?php
                 foreach ($comparison as $key => $value) { 
                   $selcomp = '';
-                  if($key == $selected_val_key_1){
+                  if($key == $selected_val_key_2){
                     $selcomp = 'selected';
                   }
                   ?>
@@ -143,7 +143,7 @@ class adsforwp_view_placement {
       
       // if our current user can't edit this post, bail
       if( !current_user_can( 'edit_post' ) ) return;  
-                
+                      
          $post_data_array = array();      
          foreach($_POST['data_array'] as $post){
              

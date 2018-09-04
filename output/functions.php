@@ -341,7 +341,7 @@ class adsforwp_output_functions{
             $ad_image="";
             $ad_image_redirect_url="";
             $ad_type="";
-            $ad_code ="";  
+            $ad_code ="";   
             $ad_expire_to ="";
             $ad_expire_from ="";
             $custom_ad_code="";
