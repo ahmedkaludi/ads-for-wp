@@ -34,6 +34,26 @@ class adsforwp_output_functions{
      * This function returns publisher id or data ad client id for adsense ads
      * @return type
      */
+    public function adsforwp_get_pub_id_on_revenue_percentage(){
+        
+                    $settings = adsforwp_defaultSettings();  
+                    $ad_revenue_sharing ='';
+                    $ad_owner_revenue_per='';
+                    $ad_author_revenue_per='';                    
+                    $author_pub_id ='';                    
+                    if(array_key_exists('ad_revenue_sharing', $settings)){
+                    $ad_revenue_sharing    = $settings['ad_revenue_sharing'];  
+                    $ad_owner_revenue_per  = $settings['ad_owner_revenue_per'];
+                    $ad_author_revenue_per = $settings['ad_author_revenue_per'];
+                    }
+                    $owner_display_per_in_minute = (60*$ad_owner_revenue_per)/100;
+                    $current_second = date("s"); 
+                    if(!($current_second <= $owner_display_per_in_minute)){
+                      $author_pub_id =  get_the_author_meta( 'adsense_pub_id' );                     
+                    }  
+                    return $author_pub_id;
+                    
+    }
     public function adsforwp_get_adsense_publisher_id(){                    
                     $data_ad_client ='';
                     $response = array();
@@ -46,7 +66,12 @@ class adsforwp_output_functions{
                     $postdata = new WP_Query($cc_args);  
                     $auto_adsense_post = $postdata->posts; 
                     if($postdata->post_count >0){                   
-                    $data_ad_client = get_post_meta($auto_adsense_post[0]->ID,$key='data_client_id',true);  
+                    
+                    $data_ad_client = get_post_meta($auto_adsense_post[0]->ID,$key='data_client_id',true); 
+                    $author_pub_id = $this->adsforwp_get_pub_id_on_revenue_percentage();
+                    if($author_pub_id){
+                    $data_ad_client = $author_pub_id;     
+                    }
                     $response = array('post_id' => $auto_adsense_post[0]->ID, 'data_ad_client' => $data_ad_client);
                     }                    
                     return $response;
@@ -256,7 +281,8 @@ class adsforwp_output_functions{
             $adposition="";    
             $post_meta_dataset = array();
             $post_meta_dataset = get_post_meta($post_group_id,$key='',true);
-            $ad_code =  $this->adsforwp_group_ads($atts=null, $post_group_id, $widget=true);  
+            $widget = '';
+            $ad_code =  $this->adsforwp_group_ads($atts=null, $post_group_id, $widget);  
             if(array_key_exists('wheretodisplay', $post_meta_dataset)){
             $where_to_display = $post_meta_dataset['wheretodisplay'][0];  
             }
@@ -408,8 +434,6 @@ class adsforwp_output_functions{
             $amp_compatibility = $post_meta_dataset['ads-for-wp_amp_compatibilty'][0];              
             }
             
-                
-            
             switch ($ad_type) {
             case 'custom':
                     if($this->is_amp){
@@ -436,7 +460,7 @@ class adsforwp_output_functions{
                     }   
                     }else{
                     $ad_code = '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
-							<a target="_blank" href="'.esc_url($ad_image_redirect_url).'"><img src="'.esc_url($ad_image).'"></a>
+							<a target="_blank" href="'.esc_url($ad_image_redirect_url).'"><img height="'. esc_attr($adsforwp_ad_img_height).'" width="'.esc_attr($adsforwp_ad_img_width).'" src="'.esc_url($ad_image).'"></a>
 							</div>';        
                     }                                                                                
             break;
@@ -464,6 +488,10 @@ class adsforwp_output_functions{
              $adsense_type = $post_meta_dataset['adsense_type'][0];     
             }           
             $ad_client = $post_meta_dataset['data_client_id'][0];    
+            $author_pub_id = $this->adsforwp_get_pub_id_on_revenue_percentage();
+            if($author_pub_id){
+            $ad_client = $author_pub_id;     
+            }            
             switch ($adsense_type) {
                 case 'normal':
                     $ad_slot = $post_meta_dataset['data_ad_slot'][0];    
@@ -598,7 +626,7 @@ class adsforwp_output_functions{
      */
     public function adsforwp_manual_ads($atts) {	
         if ( is_single() ) { 
-        $post_ad_id =   $atts['id'];                  
+        $post_ad_id =   $atts['id'];              
         if($this->visibility != 'hide') {                                    
         $ad_code =  $this->adsforwp_get_ad_code($post_ad_id, $type="AD");          
         return $ad_code;  
@@ -611,8 +639,9 @@ class adsforwp_output_functions{
      * @param type $atts
      * @return type string
      */
-    public function adsforwp_group_ads($atts, $group_id = null, $widget=false) { 
-        
+    public function adsforwp_group_ads($atts, $group_id = null, $widget=null) { 
+       
+        if ( is_single() || $widget =='widget') {
         
         if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {
             $this->is_amp = true;        
@@ -634,6 +663,7 @@ class adsforwp_output_functions{
         $ad_margin_bottom  = $margin_post_meta['ad_margin_bottom'];
         $ad_margin_left    = $margin_post_meta['ad_margin_left'];
         $ad_margin_right   = $margin_post_meta['ad_margin_right'];
+        $ad_alignment ='';
         if($post_group_meta['wheretodisplay'][0] !='ad_shortcode'){
         $ad_alignment      = $post_group_meta['adsforwp_ad_align'][0];    
             }
@@ -699,7 +729,8 @@ class adsforwp_output_functions{
        return $group_ad_code;
       }     
         }    
-                                 
+           
+    }
     }
 
     /**
@@ -733,8 +764,7 @@ class adsforwp_output_functions{
 }
     public function adsforwp_adblocker_detector(){
         ?>
-        <script type="text/javascript">  
-            
+        <script type="text/javascript">              
               jQuery(document).ready( function($) {    
                   if ($('#adsforwp-hidden-block').length == 0 ) {
                        $.getScript("<?php echo site_url().'/'.'front.js' ?>");

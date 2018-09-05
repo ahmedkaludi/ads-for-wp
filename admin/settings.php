@@ -120,6 +120,15 @@ public function adsforwp_settings_init(){
                             'adsforwp_general_section',							// Page slug
                             'adsforwp_general_section'							// Settings Section ID
                     );
+                    
+               add_settings_section('adsforwp_general_section', 'Settings', '__return_false', 'adsforwp_general_section');		              
+                    add_settings_field(
+                            'adsforwp_ad_revenue_sharing',								// ID
+                            'Revenue Sharing',			// Title
+                             array($this, 'adsforwp_ad_revenue_sharing_callback'),					// Callback
+                            'adsforwp_general_section',							// Page slug
+                            'adsforwp_general_section'							// Settings Section ID
+                    );     
                 }            		               
 }
 
@@ -157,15 +166,35 @@ public function adsforwp_ad_blocker_support_callback(){
                 echo '<input type="checkbox" name="adsforwp_settings[ad_blocker_support]" class="regular-text afw_advnc_ad_blocker_support" value="1" checked> ';
             }else{
                 echo '<input type="checkbox" name="adsforwp_settings[ad_blocker_support]" class="regular-text afw_advnc_ad_blocker_support" value="1" >';
-            }    
-            
-            
+            }
+           
             ?>
 		
 	</fieldset>
 
 	<?php
         
+}
+public function adsforwp_ad_revenue_sharing_callback(){	        
+	$settings = adsforwp_defaultSettings();   
+        
+        ?>	
+	<fieldset>
+            <?php
+           
+            if(isset($settings['ad_revenue_sharing'])){
+                echo '<input type="checkbox" name="adsforwp_settings[ad_revenue_sharing]" class="regular-text afw_ad_revenue_sharing" value="1" checked> ';
+            }else{
+                echo '<input type="checkbox" name="adsforwp_settings[ad_revenue_sharing]" class="regular-text afw_ad_revenue_sharing" value="1" >';
+            }
+            
+            ?>		
+	</fieldset>
+        <div class="afw_revenue_divider"><p><?php echo esc_html__('How do you want to share this revenue (In every Minutes)', 'ads-for-wp') ?></p>
+            <strong><?php echo esc_html__('Owner', 'ads-for-wp') ?></strong> <input type="number" placeholder="percentage" id="adsforwp_owner_revenue_per" name="adsforwp_settings[ad_owner_revenue_per]" value="<?php echo isset( $settings['ad_owner_revenue_per'] ) ? esc_attr( $settings['ad_owner_revenue_per']) : ''; ?>">
+           <strong><?php echo esc_html__('Author', 'ads-for-wp') ?></strong> <input type="number"  placeholder="percentage" id="adsforwp_author_revenue_per" name="adsforwp_settings[ad_author_revenue_per]" value="<?php echo isset( $settings['ad_author_revenue_per'] ) ? esc_attr( $settings['ad_author_revenue_per']) : ''; ?>">
+        </div>
+	<?php        
 }
     
 }

@@ -489,6 +489,27 @@ $("#select_adtype").change(function(){
         $("#adsforwp_ad_img_height").val("");
         $("#adsforwp_ad_img_width").val("");
     });    
+    
+    $(".afw_ad_revenue_sharing").change(function(){
+     if($(this).is(':checked')){
+       $(".afw_revenue_divider").show();
+     }else{
+       $(".afw_revenue_divider").hide(); 
+     }     
+ }).change();
+    
+    $("#adsforwp_owner_revenue_per").keyup(function(){
+        var owner_per = $(this).val();
+        var author_per = 100 - owner_per;
+        $("#adsforwp_author_revenue_per").val(author_per);
+        
+    });
+    $("#adsforwp_author_revenue_per").keyup(function(){
+        var author_per= $(this).val();
+        var owner_per = 100 - author_per;
+        $("#adsforwp_owner_revenue_per").val(owner_per);
+        
+    });
     $(".afw-group-ads tbody").sortable();
     // setting shortcode on page load
         if(document.getElementById('manual_ads_type')){

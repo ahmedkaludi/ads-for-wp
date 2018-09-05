@@ -1,5 +1,43 @@
 <?php
 /**
+ * We are adding extra fields for user profile
+ * @param type $user
+ */
+function adsforwp_extra_user_profile_fields( $user ) {
+    
+    ?>
+    <h3><?php _e("Extra profile information", "ads-for-wp"); ?></h3>
+
+    <table class="form-table">
+    <tr>
+        <th><label for="address"><?php _e("AdSense Publisher ID"); ?></label></th>
+        <td>
+            <input type="text" name="adsense_pub_id" id="address" value="<?php echo esc_attr( get_the_author_meta( 'adsense_pub_id', $user->ID ) ); ?>" class="regular-text" /><br />
+            <span class="description"><?php _e("Please enter your pub ID.", "ads-for-wp"); ?></span>
+        </td>
+    </tr>
+    
+    </table>
+<?php 
+}
+add_action( 'show_user_profile', 'adsforwp_extra_user_profile_fields' );
+add_action( 'edit_user_profile', 'adsforwp_extra_user_profile_fields' );
+
+/**
+ * we are saving user extra fields data in database
+ * @param type $user_id
+ * @return boolean
+ */
+function adsforwp_save_extra_user_profile_fields( $user_id ) {
+    if ( !current_user_can( 'edit_user', $user_id ) ) { 
+        return false; 
+    }
+    $adsense_pub_id = $_POST['adsense_pub_id'];
+    update_user_meta( $user_id, 'adsense_pub_id', $adsense_pub_id );        
+}
+add_action( 'personal_options_update', 'adsforwp_save_extra_user_profile_fields' );
+add_action( 'edit_user_profile_update', 'adsforwp_save_extra_user_profile_fields' );
+/**
  * We are here overriding tile for adsforwp post type
  * @global type $post
  * @param string $title
@@ -219,6 +257,18 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
                     echo '<div><a href="'. esc_url(get_admin_url()).'post.php?post='.esc_attr($post_id).'&action=edit"><img width="150" src="'.$post_meta['adsforwp_ad_image'][0].'"></a></div>';    
                     } 
                     break; 
+                case 'adsforwp_expire_column' :
+                    $post_meta = get_post_meta($post_id, $key='', true);
+                    $expire_date = $post_meta['adsforwp_ad_expire_to'][0];
+                    if($expire_date){
+                        $current_date = date("Y-m-d");
+                        if($current_date>$expire_date){
+                         echo esc_html__('Expired on', 'ads-for-wp').' '.date('M d Y', strtotime($expire_date));   
+                        }else{
+                         echo esc_html__('expires', 'ads-for-wp').' '.date('M d Y', strtotime($expire_date));
+                        }
+                    } 
+                    break;     
             }
 }
 add_action( 'manage_adsforwp_posts_custom_column' , 'adsforwp_group_custom_column_set', 10, 2 );
@@ -232,7 +282,9 @@ add_action( 'manage_adsforwp_posts_custom_column' , 'adsforwp_group_custom_colum
 function adsforwp_custom_columns($columns) {    
     unset($columns['date']);
     $columns['adsforwp_ad_image_preview'] = '<a>'.esc_html__( 'Preview', 'ads-for-wp' ).'<a>';
-    $columns['adsforwp_group_column'] = '<a>'.esc_html__( 'Groupss', 'ads-for-wp' ).'<a>';
+    $columns['adsforwp_expire_column'] = '<a>'.esc_html__( 'Expire On', 'ads-for-wp' ).'<a>';
+    $columns['adsforwp_group_column'] = '<a>'.esc_html__( 'Groups', 'ads-for-wp' ).'<a>';
+    
     
     return $columns;
 }

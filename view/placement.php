@@ -126,10 +126,7 @@ class adsforwp_view_placement {
           <?php 
         } ?>
         </tbody>
-      </table>
-      
-      
-     
+      </table>                 
     <?php                                                      
                                 
         }

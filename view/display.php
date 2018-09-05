@@ -205,7 +205,7 @@ class adsforwp_view_display {
                         $group_post = get_post($group);                        
                         $group_links .= '<span style="padding-right:5px;"><a href="?post='.esc_attr($group).'&action=edit"> '.esc_html__($group_post->post_title, 'ads-for-wp').'</a>,</span> ';    
                         }
-                        echo '<p>'.esc_html__('This ad is associated with groups. Go to the groups', 'ads-for-wp').' '.html_entity_decode(esc_html($group_links)).'</p>';   
+                        echo '<p>'.esc_html__('This ad is associated with groups. Go to the groups', 'ads-for-wp').' '.html_entity_decode(esc_html($group_links)).' '.esc_html__('Use Shortcode', 'ads-for-wp').' <strong>[adsforwp id="'.$post->ID.'"]</strong></p>';   
                         echo '<table class="form-table" style="display:none;"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table>';      
                 }else{
                         echo '<table class="form-table"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table>';   
