@@ -625,7 +625,7 @@ class adsforwp_output_functions{
      * @return type string
      */
     public function adsforwp_manual_ads($atts) {	
-        if ( is_single() ) { 
+        if ( is_single() || is_page() ) { 
         $post_ad_id =   $atts['id'];              
         if($this->visibility != 'hide') {                                    
         $ad_code =  $this->adsforwp_get_ad_code($post_ad_id, $type="AD");          
@@ -641,7 +641,7 @@ class adsforwp_output_functions{
      */
     public function adsforwp_group_ads($atts, $group_id = null, $widget=null) { 
        
-        if ( is_single() || $widget =='widget') {
+        if ( is_single() || is_page() || $widget =='widget') {
         
         if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {
             $this->is_amp = true;        
