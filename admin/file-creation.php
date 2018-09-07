@@ -1,14 +1,18 @@
 <?php
+/**
+ * This class handls all the file creation functions,
+ * which we use in different different part in project
+ */
 class adsforwp_file_creation{
                 
-     public $ad_support;
-     public $wppath;
-     
-     public function __construct(){
-        $this->wppath = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/");          
-        $this->ad_support = $this->wppath."front.js";
-       
-    }
+        public $ad_support;
+        public $wppath;
+
+        public function __construct(){
+           $this->wppath = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/");          
+           $this->ad_support = $this->wppath."front.js";
+
+       }
             
         public function adsforwp_create_adblocker_support_js(){   
         $writestatus = '';

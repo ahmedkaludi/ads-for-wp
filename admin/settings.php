@@ -41,7 +41,7 @@ public function adsforwp_admin_interface_render(){
             
 		settings_errors();
 	}
-	       $tab = adsforwp_get_tab('dashboard', array('dashboard','general'));
+	       $tab = adsforwp_get_tab('dashboard', array('dashboard','general', 'support'));
         
 	?>
 		                            
@@ -52,6 +52,8 @@ public function adsforwp_admin_interface_render(){
 			echo '<a href="' . esc_url(adsforwp_admin_link('dashboard')) . '" class="nav-tab ' . esc_attr( $tab == 'dashboard' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-dashboard"></span> ' . esc_html__('Dashboard', 'ads-for-wp') . '</a>';
 
 			echo '<a href="' . esc_url(adsforwp_admin_link('general')) . '" class="nav-tab ' . esc_attr( $tab == 'general' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('General','ads-for-wp') . '</a>';
+                        
+                        echo '<a href="' . esc_url(adsforwp_admin_link('support')) . '" class="nav-tab ' . esc_attr( $tab == 'support' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('Support','ads-for-wp') . '</a>';
 			
 			?>
 		</h2>
@@ -68,11 +70,16 @@ public function adsforwp_admin_interface_render(){
 
 			echo "<div class='adsforwp-general' ".( $tab != 'general' ? 'style="display:none;"' : '').">";
 				// general Application Settings
-				do_settings_sections( 'adsforwp_general_section' );	// Page slug
+		        do_settings_sections( 'adsforwp_general_section' );	// Page slug
+			echo "</div>";
+                        
+                        echo "<div class='adsforwp-support' ".( $tab != 'support' ? 'style="display:none;"' : '').">";
+				// general Application Settings
+		        do_settings_sections( 'adsforwp_support_section' );	// Page slug
 			echo "</div>";
 
 			?>
-		</div>
+                        </div>
 			<div class="button-wrapper">                            
 				<?php
 				// Output save settings button
@@ -120,16 +127,25 @@ public function adsforwp_settings_init(){
                             'adsforwp_general_section',							// Page slug
                             'adsforwp_general_section'							// Settings Section ID
                     );
-                    
+                 } 
                add_settings_section('adsforwp_general_section', 'Settings', '__return_false', 'adsforwp_general_section');		              
                     add_settings_field(
                             'adsforwp_ad_revenue_sharing',								// ID
-                            'Revenue Sharing',			// Title
+                            '',			// Title
                              array($this, 'adsforwp_ad_revenue_sharing_callback'),					// Callback
                             'adsforwp_general_section',							// Page slug
                             'adsforwp_general_section'							// Settings Section ID
-                    );     
-                }            		               
+                    );   
+                    
+                add_settings_section('adsforwp_support_section', 'Contact Us', '__return_false', 'adsforwp_support_section');		              
+                    add_settings_field(
+                            'adsforwp_contact_us_form',								// ID
+                            '',			// Title
+                             array($this, 'adsforwp_contact_us_form_callback'),					// Callback
+                            'adsforwp_support_section',							// Page slug
+                            'adsforwp_support_section'							// Settings Section ID
+                    );       
+                          		               
 }
 
 public function adsforwp_import_callback(){
@@ -193,6 +209,26 @@ public function adsforwp_ad_revenue_sharing_callback(){
         <div class="afw_revenue_divider"><p><?php echo esc_html__('How do you want to share this revenue (In every Minutes)', 'ads-for-wp') ?></p>
             <strong><?php echo esc_html__('Owner', 'ads-for-wp') ?></strong> <input type="number" placeholder="percentage" id="adsforwp_owner_revenue_per" name="adsforwp_settings[ad_owner_revenue_per]" value="<?php echo isset( $settings['ad_owner_revenue_per'] ) ? esc_attr( $settings['ad_owner_revenue_per']) : ''; ?>">
            <strong><?php echo esc_html__('Author', 'ads-for-wp') ?></strong> <input type="number"  placeholder="percentage" id="adsforwp_author_revenue_per" name="adsforwp_settings[ad_author_revenue_per]" value="<?php echo isset( $settings['ad_author_revenue_per'] ) ? esc_attr( $settings['ad_author_revenue_per']) : ''; ?>">
+        </div>
+	<?php        
+}
+
+public function adsforwp_contact_us_form_callback(){	        	        
+        ?>		
+        
+        <div class="afw_contact_us_div">
+        <strong><?php echo esc_html__('If you have any query, please write the query in below box. We will reply to your email address shortly', 'ads-for-wp') ?></strong>
+       
+            <ul>
+                <li>
+                    <textarea rows="5" cols="60" id="adsforwp_query_message" name="adsforwp_query_message"> </textarea>
+                    <br>
+                    <span class="afw-query-success afw_hide"><?php echo esc_html__('Message sent successfully, Please wait we will get back to you shortly', 'ads-for-wp'); ?></span>
+                    <span class="afw-query-error afw_hide"><?php echo esc_html__('Message not sent. please check your network connection', 'ads-for-wp'); ?></span>
+                </li> 
+                <li><button class="button afw-send-query"><?php echo esc_html('Send Message', 'ads-for-wp'); ?></button></li>
+            </ul>            
+                   
         </div>
 	<?php        
 }

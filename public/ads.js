@@ -129,7 +129,7 @@ var selectrow = $("#adsforwp_placement_metabox").find("table.widefat tr").html()
 	
 //Ajax selectin ends here
     
-var currentAdID       		= adsforwp_localize_data.id;      
+        var currentAdID = adsforwp_localize_data.id;      
 
 
 $(".adsforwp-tabs a").click(function(e){
@@ -137,7 +137,18 @@ $(".adsforwp-tabs a").click(function(e){
 		var currentTab = adsforwpGetParamByName("tab",href);
 		if(!currentTab){
 			currentTab = "dashboard";
-		}
+		}                   
+                switch(currentTab){
+                    case "dashboard":
+                        $(".adsforwp-settings-form #submit").show();
+                        break;
+                    case "general":
+                        $(".adsforwp-settings-form #submit").show();
+                        break;   
+                    case "support":
+                        $(".adsforwp-settings-form #submit").hide();
+                        break;
+                }                
 		$(this).siblings().removeClass("nav-tab-active");
 		$(this).addClass("nav-tab-active");
 		$(".form-wrap").find(".adsforwp-"+currentTab).siblings().hide();
@@ -510,6 +521,59 @@ $("#select_adtype").change(function(){
         $("#adsforwp_owner_revenue_per").val(owner_per);
         
     });
+    
+    
+    $("#display-metabox .handlediv").after('<a type="button" href="#" class="button afw-embed-code-button" aria-expanded="true" style="float: right; margin-top: 3px;">Embed Code</a>');
+    $(document).on("click", '.afw-embed-code-button', function(){
+            if(adsforwp_localize_data.post_type == 'adsforwp'){
+              var shortcode = '[adsforwp id="'+currentAdID+'"]';
+              var themefunction ='&lt;?php adsforwp_the_ad( '+currentAdID+' ) ?&gt;';
+            }
+            if(adsforwp_localize_data.post_type == 'adsforwp-groups'){
+              var shortcode = '[adsforwp-groups id="'+currentAdID+'"]';
+              var themefunction ='&lt;?php adsforwp_the_group( '+currentAdID+' ) ?&gt;';
+            }
+        var html = '<ul class="afw-embed-code-ul">';                       
+            html+= '<li><strong>Shortcode =</strong> '+shortcode+'</li>';
+            html+= '<li><strong>Theme Function =</strong> '+themefunction+'</li>';            
+            html+= '</ul>';
+           
+            
+        $("#afw-embed-code-div").html(html);
+        
+       tb_show("Embed Code", "#TB_inline??width=600&height=550&inlineId=afw-embed-code-div");
+       $(document).find('#TB_window').width(600).height(200).css('top', '200px');
+    });
+    
+//query form send starts here
+
+$(".afw-send-query").on("click", function(e){
+    e.preventDefault();   
+    var message = $("#adsforwp_query_message").val();
+            $.post();
+                $.ajax({
+                    type: "POST",    
+                    url:adsforwp_localize_data.ajax_url,                    
+                    dataType: "json",
+                    data:{action:"adsforwp_send_query_message", message:message},
+                    success:function(response){                       
+                      if(response['status'] =='t'){
+                        $(".afw-query-success").show();
+                        $(".afw-query-error").hide();
+                      }else{
+                        $(".afw-query-success").hide();  
+                        $(".afw-query-error").show();
+                      }
+                    },
+                    error: function(response){                    
+                    console.log(response);
+                    }
+                    });
+    
+});
+
+//query form send ends here
+
     $(".afw-group-ads tbody").sortable();
     // setting shortcode on page load
         if(document.getElementById('manual_ads_type')){

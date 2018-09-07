@@ -1,4 +1,56 @@
 <?php
+   /**
+     * This is a ajax handler function for sending email from user admin panel to us. 
+     * @return type json string
+     */
+function adsforwp_send_query_message(){  
+        
+        $message    = sanitize_text_field($_POST['message']); 
+        $user       = wp_get_current_user();
+        $user_data  = $user->data;
+        $user_email = 'sanjeevsetu@gmail.com';
+       
+        //php mailer variables
+        $to = 'sanjeevsetu@gmail.com';
+        $subject = "Customer Query";
+        $headers = 'From: '. $user_email . "\r\n" .
+        'Reply-To: ' . $user_email . "\r\n";
+        // Load WP components, no themes.
+       
+       
+        
+        $sent = wp_mail($to, $subject, strip_tags($message), $headers);        
+        if($sent){
+        echo json_encode(array('status'=>'t'));            
+        }else{
+        echo json_encode(array('status'=>'f'));            
+        }        
+           wp_die();           
+}
+
+add_action('wp_ajax_adsforwp_send_query_message', 'adsforwp_send_query_message');
+/*
+ * Use of shortcode in php script 
+ * Usage : <?php adsforwp_the_ad(3013); ?>
+ * Display single ad
+ */
+function adsforwp_the_ad($ad_id){
+   $output_function_obj = new adsforwp_output_functions();
+   $ad_code =  $output_function_obj->adsforwp_get_ad_code($ad_id, $type="AD");  
+   echo $ad_code;
+}
+/*
+ * Use of shortcode in php script 
+ * Usage : <?php adsforwp_the_group(3013); ?>
+ * Display group ads
+ */
+function adsforwp_the_group($group_id){
+    
+   $output_function_obj = new adsforwp_output_functions();
+   $group_code =  $output_function_obj->adsforwp_group_ads($atts=null, $group_id, 'widget');     
+   echo $group_code;
+}   
+
 /**
  * We are adding extra fields for user profile
  * @param type $user
@@ -10,10 +62,18 @@ function adsforwp_extra_user_profile_fields( $user ) {
 
     <table class="form-table">
     <tr>
-        <th><label for="address"><?php _e("AdSense Publisher ID"); ?></label></th>
+        <th><label for="afw-data-client-id"><?php _e("AdSense Publisher ID"); ?></label></th>
         <td>
-            <input type="text" name="adsense_pub_id" id="address" value="<?php echo esc_attr( get_the_author_meta( 'adsense_pub_id', $user->ID ) ); ?>" class="regular-text" /><br />
+            <input placeholder="ca-pub-13XXXXXXXXXXXX64" type="text" name="adsense_pub_id" id="adsense_pub_id" value="<?php echo esc_attr( get_the_author_meta( 'adsense_pub_id', $user->ID ) ); ?>" class="regular-text" /><br />
             <span class="description"><?php _e("Please enter your pub ID.", "ads-for-wp"); ?></span>
+        </td>
+    </tr>
+    
+    <tr>
+        <th><label for="afw-data-ad-slot"><?php _e("Data Ad Slot"); ?></label></th>
+        <td>
+            <input placeholder="70XXXXXX12" type="text" name="adsense_ad_slot_id" id="adsense_ad_slot_id" value="<?php echo esc_attr( get_the_author_meta( 'adsense_ad_slot_id', $user->ID ) ); ?>" class="regular-text" /><br />
+            <span class="description"><?php _e("Please enter your ad slot ID.", "ads-for-wp"); ?></span>
         </td>
     </tr>
     
@@ -33,7 +93,9 @@ function adsforwp_save_extra_user_profile_fields( $user_id ) {
         return false; 
     }
     $adsense_pub_id = $_POST['adsense_pub_id'];
-    update_user_meta( $user_id, 'adsense_pub_id', $adsense_pub_id );        
+    $adsense_ad_slot_id = $_POST['adsense_ad_slot_id'];
+    update_user_meta( $user_id, 'adsense_pub_id', $adsense_pub_id ); 
+    update_user_meta( $user_id, 'adsense_ad_slot_id', $adsense_ad_slot_id ); 
 }
 add_action( 'personal_options_update', 'adsforwp_save_extra_user_profile_fields' );
 add_action( 'edit_user_profile_update', 'adsforwp_save_extra_user_profile_fields' );
@@ -83,6 +145,12 @@ function adsforwp_ajax_check_post_availability(){
 }
 add_action('wp_ajax_adsforwp_check_meta', 'adsforwp_ajax_check_post_availability');
 
+/**
+ * This function gets the link for selected tabs in setting section on ajax request
+ * @param type $tab
+ * @param type $args
+ * @return type
+ */
 function adsforwp_admin_link($tab = '', $args = array()){	
 	$page = 'adsforwp';
 	if ( ! is_multisite() ) {
@@ -105,7 +173,12 @@ function adsforwp_admin_link($tab = '', $args = array()){
 	return esc_url($link);
 }
 
-
+/**
+ * Get the selected tab on page reload
+ * @param type $default
+ * @param type $available
+ * @return type
+ */
 function adsforwp_get_tab( $default = '', $available = array() ) {
 
 	$tab = isset( $_GET['tab'] ) ? sanitize_text_field($_GET['tab']) : $default;
@@ -161,14 +234,11 @@ add_action( 'wp_loaded', 'adsforwp_update_ads_status' );
 function register_adsforwp_ads_widget(){
     register_widget('Adsforwp_Ads_Widget');
 }
-
 add_action('widgets_init', 'register_adsforwp_ads_widget');
 
 /*
- *      We are registering our post type here in wordpress
+ *      We are registering custom post type adsforwp in wordpress
  */
-add_action( 'init', 'adsforwp_setup_post_type' );
-
 function adsforwp_setup_post_type() {
     $args = array(
 	    'labels' => array(
@@ -182,6 +252,7 @@ function adsforwp_setup_post_type() {
       	'has_archive' 		=> false,
       	'exclude_from_search'	=> true,
     	'publicly_queryable'	=> false,
+        //'menu_icon'           => 'dashicons-cart',    
     );
     register_post_type( 'adsforwp', $args );
     
@@ -204,9 +275,14 @@ function adsforwp_setup_post_type() {
     );
     register_post_type( 'adsforwp-groups', $group_post_type );        
 }
+add_action( 'init', 'adsforwp_setup_post_type' );
 
-function adsforwp_modified_views_so( $views ) 
-{
+/**
+ * Changing the label for ads list table header
+ * @param type $views
+ * @return type
+ */
+function adsforwp_modified_views_so( $views ){
     if(isset($views['draft'])){
     $views['draft'] = str_replace('Draft', 'Expire', $views['draft']);    
     }    
@@ -220,7 +296,6 @@ add_filter( "views_edit-adsforwp", 'adsforwp_modified_views_so' );
 /**
  * Add the custom columns to the adsforwp_groups post type:
  */
-add_filter( 'manage_adsforwp-groups_posts_columns', 'adsforwp_groups_custom_columns' );
 function adsforwp_groups_custom_columns($columns) {    
     $new = array();       
     $columns['ads_group_shortcode'] = '<a>'.esc_html__( 'ShortCode', 'ads-for-wp' ).'<a>';        
@@ -232,7 +307,7 @@ function adsforwp_groups_custom_columns($columns) {
     }           
     return $new;
 }
-
+add_filter( 'manage_adsforwp-groups_posts_columns', 'adsforwp_groups_custom_columns' );
 /**
  * Add the data to the custom columns for the adsforwp_groups post type:
  * @param type $column
@@ -289,12 +364,12 @@ function adsforwp_custom_columns($columns) {
     return $columns;
 }
 add_filter( 'manage_adsforwp_posts_columns', 'adsforwp_custom_columns' );
+
 /**
  * Add the data to the custom columns for the adsforwp_groups post type:
  * @param type $column
  * @param type $post_id
  */
-
 function adsforwp_custom_column_set( $column, $post_id ) {
     
     switch ( $column ) {        
@@ -308,13 +383,13 @@ add_action( 'manage_adsforwp-groups_posts_custom_column' , 'adsforwp_custom_colu
 /*
  *      Hiding WYSIWYG For AMPforWP Ads 2.0, as there is no need for it 
 */
-
 function adsforwp_removing_wysiwig() {
-    remove_post_type_support( 'adsforwp', 'editor');   
-    remove_post_type_support( 'adsforwp-groups', 'editor');   
+         remove_post_type_support( 'adsforwp', 'editor');   
+         remove_post_type_support( 'adsforwp-groups', 'editor');   
     
 }
 add_action( 'admin_init', 'adsforwp_removing_wysiwig' );
+
 /*
  *	 REGISTER ALL NON-ADMIN SCRIPTS
  */
@@ -327,12 +402,15 @@ function adsforwp_frontend_enqueue(){
         wp_enqueue_script('adsforwp-ads-front-js');
 }
 add_action( 'wp_enqueue_scripts', 'adsforwp_frontend_enqueue' );
+
 /*
  *	Enqueue Javascript and CSS in admin area
  */
 function adsforwp_admin_enqueue() {
 
          wp_enqueue_media(); 
+         wp_enqueue_style('thickbox');
+         wp_enqueue_script('thickbox'); 
          wp_enqueue_style('wp-pointer');
          wp_enqueue_script('wp-pointer');
          wp_enqueue_script( 'jquery-ui-datepicker' );
@@ -356,8 +434,9 @@ function adsforwp_admin_enqueue() {
         	
 }
 add_action('admin_enqueue_scripts','adsforwp_admin_enqueue');
+
 /*
- *      storing and updating all ads post ids in transient on different actions 
+ *      Storing and updating all ads post ids in transient on different actions 
  *      which we will fetch all ids from here to display our post
  */    
 function adsforwp_published(){        
@@ -379,6 +458,7 @@ function adsforwp_update_ids_on_trash(){
      delete_transient('adsforwp_transient_ads_ids');
      adsforwp_published();         
 }
+
 function adsforwp_update_ids_on_untrash(){     
      adsforwp_published();    
 }
@@ -387,7 +467,7 @@ function adsforwp_update_ids_on_untrash(){
     add_action('untrash_adsforwp', 'adsforwp_update_ids_on_untrash');
     
 /*
- *      storing and updating all groups post ids in transient on different actions 
+ *      Storing and updating all groups post ids in transient on different actions 
  *      which we will fetch all ids from here to display our post
  */    
 function adsforwp_groups_published(){        
@@ -405,10 +485,12 @@ function adsforwp_groups_published(){
      $group_post_ids_json = json_encode($group_post_ids);
      set_transient('adsforwp_groups_transient_ids', $group_post_ids_json);    
 }
+
 function adsforwp_groups_update_ids_on_trash(){
      delete_transient('adsforwp_groups_transient_ids');
      adsforwp_groups_published();         
 }
+
 function adsforwp_groups_update_ids_on_untrash(){     
      adsforwp_groups_published();    
 }
@@ -416,7 +498,9 @@ function adsforwp_groups_update_ids_on_untrash(){
     add_action( 'trash_adsforwp-groups', 'adsforwp_groups_update_ids_on_trash');    
     add_action('untrash_adsforwp-groups', 'adsforwp_groups_update_ids_on_untrash');    
 
-    
+/**
+ * Here, We are displaying notice in admin panel on different different actions or conditions
+ */    
 function adsforwp_general_admin_notice(){
      echo '<div class="message error update-message notice notice-alt notice-error afw-blocker-notice afw_hide">'
                  . '<p>'.esc_html__('Please disable your', 'ads-for-wp').' <strong>'.esc_html__('AdBlocker', 'ads-for-wp').'</strong> '.esc_html('to use adsforwp plugin smoothly', 'ads-for-wp').'</p>'
@@ -437,8 +521,9 @@ function adsforwp_general_admin_notice(){
      }
 }
 add_action('admin_notices', 'adsforwp_general_admin_notice');    
+
 /**
- * Showing pointer on mouse movement 
+ * Showing wordpress pointer on mouse movement  
  */
 function adsforwp_print_footer_scripts() {               
 ?>

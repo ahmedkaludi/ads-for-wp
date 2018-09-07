@@ -47,7 +47,6 @@ input[name=adsforwp_group_shortcode] {
 input[name=adsforwp_group_ref_interval_sec]{
     width: 100px; 
 }
-
 .afw-import table th{
     width: auto;
     font-weight: 600;
@@ -89,7 +88,6 @@ input[name=adsforwp_group_ref_interval_sec]{
     height:300px;
     padding-top: 10px;
 }
-
 .afw_ad_thumbnail img {
     width:100%;
     height:100%;
@@ -105,3 +103,26 @@ input[name=adsforwp_group_ref_interval_sec]{
     color: #fff;
     font-size: 20px;
     }
+    
+.afw_embed_span{
+    font-size: 16px;
+}
+
+.adsforwp-support table th{
+   width: 0px;
+   padding: 0px;
+}
+.afw-query-success{
+    color: #006600;
+}
+.afw-query-error{
+    color: #bf3322;
+}
+.afw-embed-code-ul{
+    padding-left: 50px;
+    padding-top: 30px;
+    
+}
+.afw-embed-code-ul li {
+    font-size: 20px;
+}

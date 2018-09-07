@@ -1,5 +1,4 @@
 <?php
-
 class adsforwp_ajax_selectbox{
     
 public function __construct() {
@@ -18,6 +17,13 @@ public function adsforwp_post_type_generator(){
     return $post_types;
 }
 
+/**
+ * Here, We are getting dynamic value for dropdown in conditions metabox
+ * @global type $wp_roles
+ * @param type $data
+ * @param type $saved_data
+ * @param type $current_number
+ */
 public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $current_number = '') {
  
     $response = $data;
@@ -256,6 +262,10 @@ public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $curre
 
 }
 
+/**
+ * Here, this function generate taxonomy
+ * @return type
+ */
 public function adsforwp_post_taxonomy_generator(){
     $taxonomies = '';  
     $choices    = array();
@@ -275,6 +285,12 @@ public function adsforwp_post_taxonomy_generator(){
 }
 
 
+/**
+ * Here, We are getting value for taxonomy
+ * @param type $selectedParentValue
+ * @param type $selectedValue
+ * @param type $current_number
+ */
 public function adsforwp_create_ajax_select_taxonomy($selectedParentValue = '',$selectedValue='', $current_number =''){
     $is_ajax = false;
     if( $_SERVER['REQUEST_METHOD']=='POST'){

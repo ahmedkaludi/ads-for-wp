@@ -16,6 +16,7 @@ class adsforwp_output_functions{
     public function adsforwp_hooks(){
         //Adsense Auto Ads hooks for amp and non amp starts here
         
+        //add_filter('widget_text', 'do_shortcode');        
         add_action('wp_head', array($this, 'adsforwp_adblocker_detector'));
         add_action('wp_head', array($this, 'adsforwp_adsense_auto_ads'));
         add_action('amp_post_template_head',array($this, 'adsforwp_adsense_auto_ads_amp_script'),1);
@@ -39,8 +40,8 @@ class adsforwp_output_functions{
                     $settings = adsforwp_defaultSettings();  
                     $ad_revenue_sharing ='';
                     $ad_owner_revenue_per='';
-                    $ad_author_revenue_per='';                    
-                    $author_pub_id ='';                    
+                    $ad_author_revenue_per='';                                                            
+                    $author_adsense_ids = array();
                     if(array_key_exists('ad_revenue_sharing', $settings)){
                     $ad_revenue_sharing    = $settings['ad_revenue_sharing'];  
                     $ad_owner_revenue_per  = $settings['ad_owner_revenue_per'];
@@ -49,10 +50,10 @@ class adsforwp_output_functions{
                     $owner_display_per_in_minute = (60*$ad_owner_revenue_per)/100;
                     $current_second = date("s"); 
                     if(!($current_second <= $owner_display_per_in_minute)){
-                      $author_pub_id =  get_the_author_meta( 'adsense_pub_id' );                     
-                    }  
-                    return $author_pub_id;
-                    
+                     $author_adsense_ids['author_pub_id'] =  get_the_author_meta( 'adsense_pub_id' );                     
+                     $author_adsense_ids['author_ad_slot_id'] =  get_the_author_meta( 'adsense_ad_slot_id' );                     
+                    }                      
+                    return $author_adsense_ids;                    
     }
     public function adsforwp_get_adsense_publisher_id(){                    
                     $data_ad_client ='';
@@ -68,10 +69,13 @@ class adsforwp_output_functions{
                     if($postdata->post_count >0){                   
                     
                     $data_ad_client = get_post_meta($auto_adsense_post[0]->ID,$key='data_client_id',true); 
-                    $author_pub_id = $this->adsforwp_get_pub_id_on_revenue_percentage();
+                    $author_adsense_ids = $this->adsforwp_get_pub_id_on_revenue_percentage();
+                    if($author_adsense_ids){
+                    $author_pub_id = $author_adsense_ids['author_pub_id'];
                     if($author_pub_id){
                     $data_ad_client = $author_pub_id;     
-                    }
+                    }   
+                    }                   
                     $response = array('post_id' => $auto_adsense_post[0]->ID, 'data_ad_client' => $data_ad_client);
                     }                    
                     return $response;
@@ -484,17 +488,25 @@ class adsforwp_output_functions{
            //adsense ads logic code starts here
             case 'adsense':
             $adsense_type = '';
+            $author_ad_slot_id ='';
             if(array_key_exists('adsense_type', $post_meta_dataset)){
              $adsense_type = $post_meta_dataset['adsense_type'][0];     
             }           
             $ad_client = $post_meta_dataset['data_client_id'][0];    
-            $author_pub_id = $this->adsforwp_get_pub_id_on_revenue_percentage();
+            $author_adsense_ids = $this->adsforwp_get_pub_id_on_revenue_percentage();
+            if($author_adsense_ids){
+            $author_pub_id = $author_adsense_ids['author_pub_id'];
+            $author_ad_slot_id = $author_adsense_ids['author_ad_slot_id'];   
             if($author_pub_id){
             $ad_client = $author_pub_id;     
-            }            
+            }
+            }                                    
             switch ($adsense_type) {
                 case 'normal':
-                    $ad_slot = $post_meta_dataset['data_ad_slot'][0];    
+                    $ad_slot = $post_meta_dataset['data_ad_slot'][0]; 
+                    if($author_ad_slot_id){
+                    $ad_slot = $author_ad_slot_id;     
+                    }
                     $width='200';
                     $height='200';
                     $banner_size = $post_meta_dataset['banner_size'][0]; 
