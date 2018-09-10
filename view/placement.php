@@ -25,7 +25,7 @@ class adsforwp_view_placement {
             if ( empty( $data_array ) ) {
               $data_array = array(
                     array(
-                        'key_1' => 'post_type',
+                        'key_1' => 'show_globally',
                         'key_2' => 'not_equal',
                         'key_3' => 'none',
                     )
@@ -38,6 +38,7 @@ class adsforwp_view_placement {
     // Type Select    
       $choices = array(
         esc_html__("Basic",'ads-for-wp') => array(        
+          'show_globally'   =>  esc_html__("Show Globally",'ads-for-wp'),  
           'post_type'   =>  esc_html__("Post Type",'ads-for-wp'),
           'user_type'   =>  esc_html__("Logged in User Type",'ads-for-wp'),
         ),
@@ -60,20 +61,35 @@ class adsforwp_view_placement {
         'equal'   =>  esc_html__( 'Equal to', 'ads-for-wp'), 
         'not_equal' =>  esc_html__( 'Not Equal to', 'ads-for-wp'),     
       );
-
-      $total_fields = count( $data_array ); ?>
-
-      <table class="widefat">
+      
+      if($data_array[0]['key_1'] == 'show_globally'){
+       $total_fields = 1;      
+      } else{
+       $total_fields = count( $data_array );     
+      } 
+      ?>
+      
+      <table class="widefat afw-widefat">
         <tbody id="afw-repeater-tbody" class="fields-wrapper-1">
         <?php  for ($i=0; $i < $total_fields; $i++) {  
-          $selected_val_key_1 = $data_array[$i]['key_1']; 
-          $selected_val_key_2 = $data_array[$i]['key_2']; 
-          $selected_val_key_3 = $data_array[$i]['key_3'];
+          $selected_val_key_2 ='';
+          $selected_val_key_3 ='';
           $selected_val_key_4 = '';
+          $selected_val_key_1 = $data_array[$i]['key_1'];          
+          if(isset($data_array[$i]['key_2'])){
+            $selected_val_key_2 = $data_array[$i]['key_2']; 
+          }         
+          if(isset($data_array[$i]['key_3'])){
+            $selected_val_key_3 = $data_array[$i]['key_3'];
+          }          
           if(isset($data_array[$i]['key_4'])){
             $selected_val_key_4 = $data_array[$i]['key_4'];
-          }
+          }          
+          if( ($i==0) ||($i>0 && $selected_val_key_1 != 'show_globally'))
+          { 
+              
           ?>
+            
           <tr class="toclone">
             <td style="width:31%" class="post_types"> 
               <select class="widefat afw-select-post-type <?php echo esc_attr( $i );?>" name="data_array[<?php echo esc_attr( $i) ?>][key_1]">    
@@ -89,7 +105,8 @@ class adsforwp_view_placement {
                 } ?>
               </select>
             </td>
-            <td style="width:31%">
+            
+            <td style="width:31%; <?php if (  $selected_val_key_1 =='show_globally' ) { echo 'display:none;'; }  ?>">
               <select class="widefat comparison" name="data_array[<?php echo esc_attr( $i )?>][key_2]"> <?php
                 foreach ($comparison as $key => $value) { 
                   $selcomp = '';
@@ -102,7 +119,7 @@ class adsforwp_view_placement {
                 } ?>
               </select>
             </td>
-            <td style="width:31%">
+            <td style="width:31%; <?php if (  $selected_val_key_1 =='show_globally' ) { echo 'display:none;'; }  ?>">
               <div class="afw-insert-ajax-select">              
                 <?php 
                 $ajax_select_box_obj = new adsforwp_ajax_selectbox();
@@ -115,15 +132,20 @@ class adsforwp_view_placement {
               </div>
             </td>
             
-            <td class="widefat placement-row-clone" style="width:3.5%">
+            <td class="widefat placement-row-clone" style="width:3.5%; <?php if (  $selected_val_key_1 =='show_globally' ) { echo 'display:none;'; }  ?>">
             <span> <button type="button"> <?php echo esc_html__('Add' ,'ads-for-wp');?> </button> </span> 
             </td>
             
-            <td class="widefat placement-row-delete" style="width:3.5%">
+            <td class="widefat placement-row-delete" style="width:3.5%; <?php if (  $selected_val_key_1 =='show_globally' ) { echo 'display:none;'; }  ?>">
             <span> <button  type="button"> <?php echo esc_html__( 'Remove' ,'ads-for-wp');?> </button> </span> 
-            </td>         
+            </td>       
+            
+            
+            
           </tr>
+          
           <?php 
+          }
         } ?>
         </tbody>
       </table>                 
@@ -173,6 +195,11 @@ class adsforwp_view_placement {
         switch ($type) {
         // Basic Controls ------------ 
           // Posts Type
+          
+          case 'show_globally':   
+               $result = true;      
+          break;
+          
           case 'post_type':   
                 $current_post_type  = $post->post_type;            
                   if ( $comparison == 'equal' ) {

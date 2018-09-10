@@ -16,7 +16,7 @@ class adsforwp_output_functions{
     public function adsforwp_hooks(){
         //Adsense Auto Ads hooks for amp and non amp starts here
         
-        //add_filter('widget_text', 'do_shortcode');        
+        add_filter('widget_text', 'do_shortcode');        
         add_action('wp_head', array($this, 'adsforwp_adblocker_detector'));
         add_action('wp_head', array($this, 'adsforwp_adsense_auto_ads'));
         add_action('amp_post_template_head',array($this, 'adsforwp_adsense_auto_ads_amp_script'),1);
@@ -469,6 +469,49 @@ class adsforwp_output_functions{
                     }                                                                                
             break;
             
+            case 'contentad':
+                    
+                    $contentad_id = $post_meta_dataset['contentad_id'][0];
+                    $contentad_id_d = $post_meta_dataset['contentad_id_d'][0];
+                    $contentad_widget_id = $post_meta_dataset['contentad_widget_id'][0];                     
+                    if($this->is_amp){
+                     if($amp_compatibility != 'disable'){
+                     $ad_code = '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
+							<amp-ad
+                                                                width=300
+                                                                height=250
+                                                                type="contentad"
+                                                                data-id="'.esc_attr($contentad_id).'"
+                                                                data-d="'.esc_attr($contentad_id_d).'"
+                                                                data-wid="'.esc_attr($contentad_widget_id).'">
+                                                              </amp-ad>
+							</div>';    
+                    }   
+                    }else{
+                    $ad_code = '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
+							<div id="contentad'.$contentad_widget_id.'"></div><!-- Load Widget Here --></div>
+                                                            <script type="text/javascript">
+                                                            (function(d) {
+                                                              var params =
+                                                              {
+                                                                id: "'.esc_attr($contentad_id).'",
+                                                                d: "'.esc_attr($contentad_id_d).'",
+                                                                wid: "'.esc_attr($contentad_widget_id).'",
+                                                                cb: (new Date()).getTime()
+                                                              };
+
+                                                              var qs=[];
+                                                              for(var key in params) qs.push(key+"="+encodeURIComponent(params[key]));
+                                                              var s = d.createElement("script");s.type="text/javascript";s.async=true;
+                                                              var p = "https:" == document.location.protocol ? "https" : "http";
+                                                              s.src = p + "://api.content.ad/Scripts/widget2.aspx?" + qs.join("&");
+                                                              d.getElementById("contentad'.esc_attr($contentad_widget_id).'").appendChild(s);
+                                                            })();
+                                                          </script>
+							</div>';        
+                    }                                                                                
+            break;
+            
             case 'ad_now':
                     
                     $ad_now_widget_id = $post_meta_dataset['ad_now_widget_id'][0];                    
@@ -485,6 +528,20 @@ class adsforwp_output_functions{
 				 </div>';        
                     }                                                                                
             break;
+            
+            case 'infolinks':
+                    
+                    $infolinks_pid = $post_meta_dataset['infolinks_pid'][0];
+                    $infolinks_wsid = $post_meta_dataset['infolinks_wsid'][0];
+                    if(!$this->is_amp){
+                     $ad_code = '<script type="text/javascript">
+                                    var infolinks_pid = '.esc_attr($infolinks_pid).';
+                                    var infolinks_wsid = '.esc_attr($infolinks_wsid).';
+                                </script>
+                                <script type="text/javascript" src="http://resources.infolinks.com/js/infolinks_main.js"></script>';        
+                    }                                                                                
+            break;
+            
            //adsense ads logic code starts here
             case 'adsense':
             $adsense_type = '';

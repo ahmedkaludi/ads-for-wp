@@ -19,6 +19,8 @@ class adsforwp_view_ads_type {
                                 'ad_now' =>'AdNow',
 				'custom' =>'Custom Code',
                                 'ad_image' =>'Image Ad',
+                                'contentad' =>'Content Ad',
+                                'infolinks' =>'Infolinks',
                             
 			),
                                 'attributes' => array(				
@@ -124,7 +126,32 @@ class adsforwp_view_ads_type {
 			'label' => 'AdNow Widget ID',
 			'id' => 'ad_now_widget_id',                        
 			'type' => 'text',
+		),            
+                array(
+			'label' => 'ID',
+			'id' => 'contentad_id',                        
+			'type' => 'text',
 		),
+                array(
+			'label' => 'D',
+			'id' => 'contentad_id_d',                        
+			'type' => 'text',
+		),
+                array(
+			'label' => 'Content Ad Widget ID',
+			'id' => 'contentad_widget_id',                        
+			'type' => 'text',
+		),             
+                array(
+			'label' => 'Infolinks P ID',
+			'id' => 'infolinks_pid',                        
+			'type' => 'text',
+		),
+                array(
+			'label' => 'Infolinks W S ID',
+			'id' => 'infolinks_wsid',                        
+			'type' => 'text',
+		),             
                 array(			
                             'id' => 'adsforwp_ad_img_height',                        
                             'type' => 'hidden',
@@ -237,10 +264,11 @@ class adsforwp_view_ads_type {
                                                 break;
                                 case 'hidden':                                                    
                                                 $input = sprintf(
-						'<input id="%s" name="%s" type="hidden" value="%s">',                                                
+						'<input id="%s" name="%s" type="hidden" value="%s"><span class="afw_hide afw-error afw-%s"></span>',                                                
 						$meta_field['id'],	
                                                 $meta_field['id'],	        
-						$meta_value
+						$meta_value,
+                                                $meta_field['id']        
 					);
                                                 break;            
 				default:

@@ -12,7 +12,7 @@ public function adsforwp_post_type_generator(){
     $post_types = '';
     $post_types = get_post_types( array( 'public' => true ), 'names' );
     
-    unset($post_types['attachment'], $post_types['amp_acf']);
+    unset($post_types['attachment'], $post_types['adsforwp'], $post_types['adsforwp-groups']);
 
     return $post_types;
 }
