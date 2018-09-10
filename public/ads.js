@@ -300,6 +300,7 @@ $("#select_adtype").change(function(){
                             $("#data_client_id").attr("required",true);
                             $("#banner_size, #data_ad_slot").attr("required",false);
                             $("#infolinks_pid, #infolinks_wsid, #contentad_id, #contentad_id_d, #contentad_widget_id, #custom_code, #data_cid, #data_crid, #adsforwp_ad_image, #adsforwp_ad_redirect_url, #ad_now_widget_id").parent().parent("tr").hide();
+                                                        
                           break;
                       default:
                           $("#display-metabox").show();
@@ -389,8 +390,18 @@ $("#select_adtype").change(function(){
                     $("#banner_size, #data_client_id, #data_ad_slot").parent().parent("tr").show();
                     $("#banner_size, #data_client_id, #data_ad_slot").attr("required",true);                    
                     $("#display-metabox").show();
+                    $(".afw-select-post-type option[value=post_type]").attr("selected", "selected");
+                            var tdindex = [1,2,3,4]; 
+                            $.each(tdindex, function(i,e){  
+                                $(".afw-select-post-type").closest('tr').find('td').eq(e).show();  
+                             });
                     break;
                 case "adsense_auto_ads":
+                   $(".afw-select-post-type option[value=show_globally]").attr("selected", "selected");
+                            var tdindex = [1,2,3,4]; 
+                            $.each(tdindex, function(i,e){  
+                                $(".afw-select-post-type").closest('tr').find('td').eq(e).hide();  
+                             }); 
                    $("#display-metabox").hide();
                    $("#data_client_id").parent().parent("tr").show();
                    $("#banner_size, #data_ad_slot").parent().parent("tr").hide();
