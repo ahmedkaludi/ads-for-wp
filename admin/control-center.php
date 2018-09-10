@@ -327,14 +327,20 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
                     echo html_entity_decode(esc_attr($post_title)); 
                     break; 
                 case 'adsforwp_ad_image_preview' :
-                    $post_meta = get_post_meta($post_id, $key='', true);
-                    if($post_meta['select_adtype'][0] == 'ad_image'){
-                    echo '<div><a href="'. esc_url(get_admin_url()).'post.php?post='.esc_attr($post_id).'&action=edit"><img width="150" src="'.$post_meta['adsforwp_ad_image'][0].'"></a></div>';    
-                    } 
+                    $post_meta = get_post_meta($post_id, $key='', true);                    
+                    if(isset($post_meta['select_adtype'])){
+                        if($post_meta['select_adtype'][0] == 'ad_image'){
+                        echo '<div><a href="'. esc_url(get_admin_url()).'post.php?post='.esc_attr($post_id).'&action=edit"><img width="150" src="'.$post_meta['adsforwp_ad_image'][0].'"></a></div>';    
+                        }   
+                    }
+                     
                     break; 
                 case 'adsforwp_expire_column' :
                     $post_meta = get_post_meta($post_id, $key='', true);
-                    $expire_date = $post_meta['adsforwp_ad_expire_to'][0];
+                    $expire_date ='';
+                    if(isset($post_meta['adsforwp_ad_expire_to'])){
+                    $expire_date = $post_meta['adsforwp_ad_expire_to'][0];    
+                    }                    
                     if($expire_date){
                         $current_date = date("Y-m-d");
                         if($current_date>$expire_date){

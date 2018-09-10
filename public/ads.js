@@ -261,13 +261,18 @@ $(".afw_group_ad_list").parent().parent().show();
 // Metaboxes field selection on different dropdown selection
 $("#paragraph_number").parent().parent("tr").addClass("afw_hide");
 $("#custom_code, #data_client_id, #data_ad_slot, #paragraph_number, #banner_size, #manual_ads_type, #data_cid, #data_crid, #adsforwp_ad_image, #adsforwp_ad_redirect_url, #adsense_type").parent().parent("tr").hide();
-
+afw_amp_status = $("#ads-for-wp_amp_compatibilty").val();
 $("#select_adtype").change(function(){        
       $(this).find("option:selected").each(function(){
           var optionValue = $(this).attr("value");
           var optionHtml = $(this).html().toLowerCase();          
           if(optionHtml){    
-              $(".afw-adsforwp_ad_img_height").addClass('afw_hide');              
+              $(".afw-amp-support").addClass('afw_hide'); 
+              $(".afw-amp-support").addClass('afw_hide');
+              $(".afw-amp-support span").text("");
+              $("#afw-amp-status-display").text(afw_amp_status);
+              $(".afw-amp-edit-post-status").show();
+              $("#ads-for-wp_amp_compatibilty").val(afw_amp_status);
               switch (optionValue) {
                   
                 case "custom":
@@ -331,8 +336,11 @@ $("#select_adtype").change(function(){
                   $("#infolinks_pid, #infolinks_wsid").attr("required",true);                                                      
                   $("#contentad_id, #contentad_id_d, #contentad_widget_id, #data_cid, #banner_size, #data_crid, #custom_code, #data_client_id, #data_ad_slot, #adsforwp_ad_image, #ad_now_widget_id").attr("required",false);  
                   $(".afw_pointer").hide();  
-                   $(".afw-adsforwp_ad_img_height").removeClass('afw_hide');
-                  $(".afw-adsforwp_ad_img_height").text("AMP does not support infolinks network, Once AMP starts supporting, we will also start.");
+                  $(".afw-amp-support").removeClass('afw_hide');
+                  $(".afw-amp-support span").text("Infolinks does not support AMP, Once Infolinks starts supporting, we will also start.");
+                  $("#afw-amp-status-display").text('disable');
+                  $(".afw-amp-edit-post-status").hide();
+                  $("#ads-for-wp_amp_compatibilty").val('disable');
                     break     
                   
                 case "ad_image":
@@ -351,8 +359,11 @@ $("#select_adtype").change(function(){
                   $("#ad_now_widget_id").parent().parent("tr").show();                                                      
                   $("#infolinks_pid, #infolinks_wsid, #contentad_id, #contentad_id_d, #contentad_widget_id, #custom_code, #data_ad_slot, #data_client_id, #banner_size, #data_crid, #data_cid, #adsense_type, #adsforwp_ad_image, #adsforwp_ad_redirect_url").parent().parent("tr").hide();              	                                                                                            
                   $(".afw_pointer").hide();
-                  $(".afw-adsforwp_ad_img_height").removeClass('afw_hide');
-                  $(".afw-adsforwp_ad_img_height").text("AMP does not support adnow network, Once AMP starts supporting, we will also start.");
+                  $(".afw-amp-support").removeClass('afw_hide');
+                  $(".afw-amp-support span").text("Adnow does not support AMP, Once Adnow starts supporting, we will also start.");
+                  $("#afw-amp-status-display").text('disable');
+                  $(".afw-amp-edit-post-status").hide();
+                  $("#ads-for-wp_amp_compatibilty").val('disable');
                     break     
                 default:
                   $("#display-metabox").show();
@@ -610,7 +621,54 @@ $(".afw-send-query").on("click", function(e){
                     });
     
 });
+    
+    $("#afw-amp-status-display").text(afw_amp_status);
+    $(".afw-amp-edit-post-status").on("click", function(e){
+        e.preventDefault();
+        $(this).hide();
+        $("#afw-amp-status-select").show();
+    });
+    $(".afw-amp-status-save").on("click", function(e){
+        e.preventDefault();
+        var select_val = $("#ads-for-wp_amp_compatibilty").val();
+        $("#afw-amp-status-display").text(select_val);
+        $("#afw-amp-status-select").hide();
+        $(".afw-amp-edit-post-status").show();
+    });
+    $(".afw-amp-status-cancel").on("click", function(e){
+        e.preventDefault();
+        $("#ads-for-wp_amp_compatibilty").val(afw_amp_status);
+        $("#afw-amp-status-display").text(afw_amp_status);
+        $("#afw-amp-status-select").hide();
+        $(".afw-amp-edit-post-status").show();
+    });
 
+
+    var afw_amp_status = $("#ads_for_wp_non_amp_visibility").val();
+    $("#afw-non-amp-visib-status-display").text(afw_amp_status);
+    $(".afw-non-amp-visib-status").on("click", function(e){
+        e.preventDefault();
+        $(this).hide();
+        $("#afw-non-amp-visib-status-select").show();
+    });
+    $(".afw-non-amp-visib-save").on("click", function(e){
+        e.preventDefault();
+        var select_val = $("#ads_for_wp_non_amp_visibility").val();
+        $("#afw-non-amp-visib-status-display").text(select_val);
+        $("#afw-non-amp-visib-status-select").hide();
+        $(".afw-non-amp-visib-status").show();
+    });
+    $(".afw-non-amp-visib-cancel").on("click", function(e){
+        e.preventDefault();
+        $("#ads_for_wp_non_amp_visibility").val(afw_amp_status);
+        $("#afw-non-amp-visib-status-display").text(afw_amp_status);
+        $("#afw-non-amp-visib-status-select").hide();
+        $(".afw-non-amp-visib-status").show();
+    });
+
+    if(adsforwp_localize_data.post_type === "adsforwp-groups" || adsforwp_localize_data.post_type === "adsforwp"){
+        $("#wp-admin-bar-view").hide();
+    }
 //query form send ends here
 
     $(".afw-group-ads tbody").sortable();

@@ -379,6 +379,7 @@ class adsforwp_output_functions{
             $amp_compatibility ="";              
             $adsforwp_ad_expire_enable ="";                        
             $adsforwp_ad_days_enable ="";
+            $adsforwp_non_amp_visibility ="";
             
             
             $ad_margin_top     = 0;
@@ -412,9 +413,7 @@ class adsforwp_output_functions{
             }
             if(array_key_exists('adsforwp_ad_redirect_url', $post_meta_dataset)){
             $ad_image_redirect_url = $post_meta_dataset['adsforwp_ad_redirect_url'][0];                          
-            }
-                        
-            
+            }                                    
             if(array_key_exists('select_adtype', $post_meta_dataset)){
             $ad_type = $post_meta_dataset['select_adtype'][0];      
             }
@@ -430,9 +429,13 @@ class adsforwp_output_functions{
             if(array_key_exists('adsforwp_ad_expire_day_enable', $post_meta_dataset)){
             $adsforwp_ad_days_enable = $post_meta_dataset['adsforwp_ad_expire_day_enable'][0];      
             }
+            if(array_key_exists('ads_for_wp_non_amp_visibility', $post_meta_dataset)){
+            $adsforwp_non_amp_visibility = $post_meta_dataset['ads_for_wp_non_amp_visibility'][0];      
+            }
             if(array_key_exists('adsforwp_ad_expire_days', $post_meta_dataset)){
             $adsforwp_ad_expire_days = get_post_meta($post_ad_id,$key='adsforwp_ad_expire_days',true);
-            }                                                          
+            }
+            
             if($ad_type !=""){                                        
             if(array_key_exists('ads-for-wp_amp_compatibilty', $post_meta_dataset)){
             $amp_compatibility = $post_meta_dataset['ads-for-wp_amp_compatibilty'][0];              
@@ -447,9 +450,11 @@ class adsforwp_output_functions{
 							</div>';    
                     }   
                     }else{
+                    if($adsforwp_non_amp_visibility !='hide'){
                     $ad_code = '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_custom afw_'.esc_attr($post_ad_id).'">
 							'.$custom_ad_code.'
-							</div>';        
+							</div>';     
+                    }                               
                     }                                                                                
             break;
             case 'ad_image':
@@ -463,10 +468,13 @@ class adsforwp_output_functions{
 							</div>';    
                     }   
                     }else{
-                    $ad_code = '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
+                        if($adsforwp_non_amp_visibility !='hide'){
+                         $ad_code = '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
 							<a target="_blank" href="'.esc_url($ad_image_redirect_url).'"><img height="'. esc_attr($adsforwp_ad_img_height).'" width="'.esc_attr($adsforwp_ad_img_width).'" src="'.esc_url($ad_image).'"></a>
 							</div>';        
-                    }                                                                                
+                    } 
+                    
+                   }                                                                               
             break;
             
             case 'contentad':
@@ -488,6 +496,7 @@ class adsforwp_output_functions{
 							</div>';    
                     }   
                     }else{
+                      if($adsforwp_non_amp_visibility !='hide'){  
                     $ad_code = '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
 							<div id="contentad'.$contentad_widget_id.'"></div><!-- Load Widget Here --></div>
                                                             <script type="text/javascript">
@@ -509,7 +518,8 @@ class adsforwp_output_functions{
                                                             })();
                                                           </script>
 							</div>';        
-                    }                                                                                
+                    }  
+                   }
             break;
             
             case 'ad_now':
@@ -585,7 +595,8 @@ class adsforwp_output_functions{
                                     </div>';
                         }                             
 
-                    }else{                
+                    }else{     
+                     if($adsforwp_non_amp_visibility !='hide'){   
                      $ad_code = '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw-ga afw_'.esc_attr($post_ad_id).'">
                                                                 <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
                                                                 </script>
@@ -595,6 +606,7 @@ class adsforwp_output_functions{
                                                                         (adsbygoogle = window.adsbygoogle || []).push({});
                                                                 </script>
                                                         </div>';   
+                    }
                     }
                     break;                
                 default:
@@ -629,7 +641,8 @@ class adsforwp_output_functions{
                             </div>';    
                 }                             
 				                
-            }else{                
+            }else{      
+            if($adsforwp_non_amp_visibility !='hide'){
              $ad_code = '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw-md afw_'.esc_attr($post_ad_id).'">
 						<script id="mNCC" language="javascript">
                                                             medianet_width = "'.esc_attr($width).'";
@@ -639,7 +652,8 @@ class adsforwp_output_functions{
                                                    </script>
                                                    <script src="//contextual.media.net/nmedianet.js?cid='.esc_attr($ad_data_cid).'"></script>		
 						</div>';   
-            }                                    
+            }       
+            }
             break;
             default:
             break;

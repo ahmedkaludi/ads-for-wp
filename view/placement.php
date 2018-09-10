@@ -9,11 +9,11 @@ class adsforwp_view_placement {
  public function adsforwp_placement_add_meta_box() {
 	add_meta_box(
 		'adsforwp_placement_metabox',
-		esc_html__( 'Conditions', 'ads-for-wp' ),
+		esc_html__( 'Advanced Display Conditions', 'ads-for-wp' ),
 		array( $this, 'adsforwp_meta_box_callback' ),
 		array('adsforwp', 'adsforwp-groups'),
 		'normal',
-		'high'
+		'low'
 	);
     }
         
@@ -25,8 +25,8 @@ class adsforwp_view_placement {
             if ( empty( $data_array ) ) {
               $data_array = array(
                     array(
-                        'key_1' => 'show_globally',
-                        'key_2' => 'not_equal',
+                        'key_1' => 'post_type',
+                        'key_2' => 'equal',
                         'key_3' => 'none',
                     )
               );
@@ -37,9 +37,9 @@ class adsforwp_view_placement {
     <?php 
     // Type Select    
       $choices = array(
-        esc_html__("Basic",'ads-for-wp') => array(        
-          'show_globally'   =>  esc_html__("Show Globally",'ads-for-wp'),  
+        esc_html__("Basic",'ads-for-wp') => array(                    
           'post_type'   =>  esc_html__("Post Type",'ads-for-wp'),
+          'show_globally'   =>  esc_html__("Show Globally",'ads-for-wp'),  
           'user_type'   =>  esc_html__("Logged in User Type",'ads-for-wp'),
         ),
         esc_html__("Post",'ads-for-wp') => array(

@@ -123,8 +123,8 @@ input[name=adsforwp_group_ref_interval_sec]{
     padding-top: 30px;    
 }
 .afw-embed-code-ul li {
-    font-size: 20px;
+    font-size: 17px;
 }
-.afw-select-post-type{
-    width: 227px;
+.afw-non-amp-visibility{
+    padding-top: 20px;
 }

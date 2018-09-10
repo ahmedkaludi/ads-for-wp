@@ -96,7 +96,7 @@ class adsforwp_view_display {
 				array( $this, 'adsforwp_meta_box_callback' ),
 				$single_screen,
 				'normal',
-				'low'
+				'high'
 			);
 		}
 	}

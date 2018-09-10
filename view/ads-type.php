@@ -16,11 +16,11 @@ class adsforwp_view_ads_type {
 				'' => 'Select Ad Type',
 				'adsense' =>'AdSense',
                                 'media_net' =>'Media.net',
-                                'ad_now' =>'AdNow',
-				'custom' =>'Custom Code',
-                                'ad_image' =>'Image Ad',
-                                'contentad' =>'Content Ad',
+                                'ad_now' =>'AdNow',				
+                                'ad_image' =>'Image Banner Ad',
+                                'contentad' =>'Content.ad',
                                 'infolinks' =>'Infolinks',
+                                'custom' =>'Custom Code',
                             
 			),
                                 'attributes' => array(				
@@ -173,7 +173,7 @@ class adsforwp_view_ads_type {
 				array( $this, 'adsforwp_meta_box_callback' ),
 				$single_screen,
 				'normal',
-				'default'
+				'high'
 			);
 		}
                 
@@ -264,11 +264,10 @@ class adsforwp_view_ads_type {
                                                 break;
                                 case 'hidden':                                                    
                                                 $input = sprintf(
-						'<input id="%s" name="%s" type="hidden" value="%s"><span class="afw_hide afw-error afw-%s"></span>',                                                
+						'<input id="%s" name="%s" type="hidden" value="%s">',                                                
 						$meta_field['id'],	
                                                 $meta_field['id'],	        
-						$meta_value,
-                                                $meta_field['id']        
+						$meta_value                                                     
 					);
                                                 break;            
 				default:
