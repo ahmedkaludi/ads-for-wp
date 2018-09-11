@@ -139,7 +139,7 @@ public function adsforwp_settings_init(){
                add_settings_section('adsforwp_general_section', 'Settings', '__return_false', 'adsforwp_general_section');		              
                     add_settings_field(
                             'adsforwp_ad_revenue_sharing',								// ID
-                            'Revenue Share Between',			// Title
+                            'Revenue Sharing',			// Title
                              array($this, 'adsforwp_ad_revenue_sharing_callback'),					// Callback
                             'adsforwp_general_section',							// Page slug
                             'adsforwp_general_section'							// Settings Section ID
@@ -219,7 +219,7 @@ public function adsforwp_ad_revenue_sharing_callback(){
             
             ?>		
 	</fieldset>
-        <div class="afw_revenue_divider"><p><?php echo esc_html__('How do you want to share this revenue (In every Minutes)', 'ads-for-wp') ?></p>
+        <div class="afw_revenue_divider"><p><?php echo esc_html__('Enter the percentage of revenue that you would like to share', 'ads-for-wp') ?></p>
             <strong><?php echo esc_html__('Owner', 'ads-for-wp') ?></strong> <input type="number" placeholder="percentage" id="adsforwp_owner_revenue_per" name="adsforwp_settings[ad_owner_revenue_per]" value="<?php echo isset( $settings['ad_owner_revenue_per'] ) ? esc_attr( $settings['ad_owner_revenue_per']) : ''; ?>">
            <strong><?php echo esc_html__('Author', 'ads-for-wp') ?></strong> <input type="number"  placeholder="percentage" id="adsforwp_author_revenue_per" name="adsforwp_settings[ad_author_revenue_per]" value="<?php echo isset( $settings['ad_author_revenue_per'] ) ? esc_attr( $settings['ad_author_revenue_per']) : ''; ?>">
         </div>
@@ -230,7 +230,7 @@ public function adsforwp_contact_us_form_callback(){
         ?>		
         
         <div class="afw_contact_us_div">
-        <strong><?php echo esc_html__('If you have any query, please write the query in below box. We will reply to your email address shortly', 'ads-for-wp') ?></strong>
+            <strong><?php echo esc_html__('If you have any query, please write the query in below box or email us at', 'ads-for-wp') ?> <a href="mailto:team@magazine3.com">team@magazine3.com</a>. <?php echo esc_html__('We will reply to your email address shortly', 'ads-for-wp') ?></strong>
        
             <ul>
                 <li>
