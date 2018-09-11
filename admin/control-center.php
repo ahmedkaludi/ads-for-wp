@@ -3,22 +3,17 @@
      * This is a ajax handler function for sending email from user admin panel to us. 
      * @return type json string
      */
-function adsforwp_send_query_message(){  
-        
+function adsforwp_send_query_message(){                  
         $message    = sanitize_text_field($_POST['message']); 
         $user       = wp_get_current_user();
-        $user_data  = $user->data;
-        $user_email = 'sanjeevsetu@gmail.com';
-       
+        $user_data  = $user->data;        
+        $user_email = $user_data->user_email;       
         //php mailer variables
-        $to = 'sanjeevsetu@gmail.com';
+        $to = 'team@magazine3.com';
         $subject = "Customer Query";
         $headers = 'From: '. $user_email . "\r\n" .
         'Reply-To: ' . $user_email . "\r\n";
-        // Load WP components, no themes.
-       
-       
-        
+        // Load WP components, no themes.                      
         $sent = wp_mail($to, $subject, strip_tags($message), $headers);        
         if($sent){
         echo json_encode(array('status'=>'t'));            

@@ -16,10 +16,10 @@ class adsforwp_view_ads_type {
 				'' => 'Select Ad Type',
 				'adsense' =>'AdSense',
                                 'media_net' =>'Media.net',
-                                'ad_now' =>'AdNow',				
-                                'ad_image' =>'Image Banner Ad',
+                                'ad_now' =>'AdNow',				                                
                                 'contentad' =>'Content.ad',
                                 'infolinks' =>'Infolinks',
+                                'ad_image' =>'Image Banner Ad',
                                 'custom' =>'Custom Code',
                             
 			),

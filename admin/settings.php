@@ -41,32 +41,27 @@ public function adsforwp_admin_interface_render(){
             
 		settings_errors();
 	}
-	       $tab = adsforwp_get_tab('dashboard', array('dashboard','general', 'support'));
+	       $tab = adsforwp_get_tab('general', array('general', 'support', 'tools'));
         
 	?>
 		                            
 		<h1><?php echo esc_html__('Ads for wp', 'ads-for-wp'); ?></h1>
 		<h2 class="nav-tab-wrapper adsforwp-tabs">
-			<?php
-
-			echo '<a href="' . esc_url(adsforwp_admin_link('dashboard')) . '" class="nav-tab ' . esc_attr( $tab == 'dashboard' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-dashboard"></span> ' . esc_html__('Dashboard', 'ads-for-wp') . '</a>';
-
+			<?php	
 			echo '<a href="' . esc_url(adsforwp_admin_link('general')) . '" class="nav-tab ' . esc_attr( $tab == 'general' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('General','ads-for-wp') . '</a>';
                         
                         echo '<a href="' . esc_url(adsforwp_admin_link('support')) . '" class="nav-tab ' . esc_attr( $tab == 'support' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('Support','ads-for-wp') . '</a>';
-			
+                        
+                        if ( is_plugin_active('advanced-ads/advanced-ads.php')) {
+                        echo '<a href="' . esc_url(adsforwp_admin_link('tools')) . '" class="nav-tab ' . esc_attr( $tab == 'tools' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-dashboard"></span> ' . esc_html__('Tools', 'ads-for-wp') . '</a>';    
+                        }                        			
 			?>
 		</h2>
                 <form action="options.php" method="post" enctype="multipart/form-data" class="adsforwp-settings-form">		
 			<div class="form-wrap">
 			<?php
 			// Output nonce, action, and option_page fields for a settings page.
-			settings_fields( 'adsforwp_setting_dashboard_group' );						
-			
-			echo "<div class='adsforwp-dashboard' ".( $tab != 'dashboard' ? 'style="display:none;"' : '').">";
-			// Status
-			do_settings_sections( 'adsforwp_dashboard_section' );	// Page slug
-			echo "</div>";
+			settings_fields( 'adsforwp_setting_dashboard_group' );												
 
 			echo "<div class='adsforwp-general' ".( $tab != 'general' ? 'style="display:none;"' : '').">";
 				// general Application Settings
@@ -76,6 +71,11 @@ public function adsforwp_admin_interface_render(){
                         echo "<div class='adsforwp-support' ".( $tab != 'support' ? 'style="display:none;"' : '').">";
 				// general Application Settings
 		        do_settings_sections( 'adsforwp_support_section' );	// Page slug
+			echo "</div>";
+                        
+                        echo "<div class='adsforwp-tools' ".( $tab != 'tools' ? 'style="display:none;"' : '').">";
+			// Status
+			do_settings_sections( 'adsforwp_tools_section' );	// Page slug
 			echo "</div>";
 
 			?>
@@ -97,7 +97,7 @@ public function adsforwp_admin_interface_render(){
 */
 public function adsforwp_settings_init(){
 	register_setting( 'adsforwp_setting_dashboard_group', 'adsforwp_settings' );
-	add_settings_section('adsforwp_dashboard_section', 'Import', '__return_false', 'adsforwp_dashboard_section');		        
+	add_settings_section('adsforwp_tools_section', 'Import', '__return_false', 'adsforwp_tools_section');		        
                 if ( is_plugin_active('advanced-ads/advanced-ads.php')) {
                     
                   
@@ -114,12 +114,20 @@ public function adsforwp_settings_init(){
                             'adsforwp_import_status',								// ID
                             'Advance Ads',			// Title
                              array($this, 'adsforwp_import_callback'),					// Callback
-                            'adsforwp_dashboard_section',							// Page slug
-                            'adsforwp_dashboard_section'							// Settings Section ID
+                            'adsforwp_tools_section',							// Page slug
+                            'adsforwp_tools_section'							// Settings Section ID
                     );              
-                    } 
-                    
-              add_settings_section('adsforwp_general_section', 'Settings', '__return_false', 'adsforwp_general_section');		              
+                    } else{
+                      add_settings_field(
+                            'adsforwp_imported_status',								// ID
+                            'Data Successfully Imported',			// Title
+                             array($this, 'adsforwp_imported_callback'),					// Callback
+                            'adsforwp_tools_section',							// Page slug
+                            'adsforwp_tools_section'							// Settings Section ID
+                    );  
+                    }                                  
+                 }
+               add_settings_section('adsforwp_general_section', 'Settings', '__return_false', 'adsforwp_general_section');		              
                     add_settings_field(
                             'adsforwp_ad_blocker_support',								// ID
                             'Ad Blocker Support',			// Title
@@ -127,11 +135,11 @@ public function adsforwp_settings_init(){
                             'adsforwp_general_section',							// Page slug
                             'adsforwp_general_section'							// Settings Section ID
                     );
-                 } 
+                    
                add_settings_section('adsforwp_general_section', 'Settings', '__return_false', 'adsforwp_general_section');		              
                     add_settings_field(
                             'adsforwp_ad_revenue_sharing',								// ID
-                            '',			// Title
+                            'Revenue Share Between',			// Title
                              array($this, 'adsforwp_ad_revenue_sharing_callback'),					// Callback
                             'adsforwp_general_section',							// Page slug
                             'adsforwp_general_section'							// Settings Section ID
@@ -170,6 +178,11 @@ public function adsforwp_import_callback(){
 
 	<?php
         
+}
+public function adsforwp_imported_callback(){	        
+	$settings = adsforwp_defaultSettings();          
+        ?>		
+	<?php        
 }
 public function adsforwp_ad_blocker_support_callback(){
 	        

@@ -414,8 +414,9 @@ class adsforwp_view_placement {
 
  public function adsforwp_get_post_conditions_status($post_id){
        
-
-          $result = $this->adsforwp_generate_field_data( $post_id );                
+          $unique_checker ='';
+          $result = $this->adsforwp_generate_field_data( $post_id ); 
+          if($result){
           $data = array_filter($result);          
           $number_of_fields = count($data);
           $unique_checker = 0;
@@ -426,7 +427,11 @@ class adsforwp_view_placement {
             if (  $array_is_false ) {
               $unique_checker = 0;
             }
-          }         
+          }    
+          }else{
+           $unique_checker ='notset';   
+          }
+                   
        return $unique_checker;
 }         
     

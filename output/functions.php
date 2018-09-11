@@ -40,14 +40,15 @@ class adsforwp_output_functions{
                     $settings = adsforwp_defaultSettings();  
                     $ad_revenue_sharing ='';
                     $ad_owner_revenue_per='';
-                    $ad_author_revenue_per='';                                                            
+                    $ad_author_revenue_per='';  
+                    $owner_display_per_in_minute ='';
                     $author_adsense_ids = array();
                     if(array_key_exists('ad_revenue_sharing', $settings)){
                     $ad_revenue_sharing    = $settings['ad_revenue_sharing'];  
                     $ad_owner_revenue_per  = $settings['ad_owner_revenue_per'];
                     $ad_author_revenue_per = $settings['ad_author_revenue_per'];
-                    }
                     $owner_display_per_in_minute = (60*$ad_owner_revenue_per)/100;
+                    }                    
                     $current_second = date("s"); 
                     if(!($current_second <= $owner_display_per_in_minute)){
                      $author_adsense_ids['author_pub_id'] =  get_the_author_meta( 'adsense_pub_id' );                     
@@ -364,7 +365,7 @@ class adsforwp_output_functions{
             $placement_obj = new adsforwp_view_placement();
             $condition_status = $placement_obj->adsforwp_get_post_conditions_status($post_ad_id);    
             }              
-            if(($condition_status ===1 || $condition_status === true) || $type=='GROUP' ){
+            if(($condition_status ===1 || $condition_status === true || $condition_status==='notset') || $type=='GROUP' ){
             if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {
             $this->is_amp = true;        
             }
@@ -396,13 +397,31 @@ class adsforwp_output_functions{
             $where_to_display = $post_meta_dataset['wheretodisplay'][0];  
             }
             if($type =="AD"){
+            $ad_margin_top ='';
+            $ad_margin_bottom ='';
+            $ad_margin_left ='';
+            $ad_margin_right ='';
+            
             $margin_post_meta  = get_post_meta($post_ad_id, $key='adsforwp_ad_margin',true);
-            $ad_margin_top     = $margin_post_meta['ad_margin_top'];
-            $ad_margin_bottom  = $margin_post_meta['ad_margin_bottom'];
-            $ad_margin_left    = $margin_post_meta['ad_margin_left'];
-            $ad_margin_right   = $margin_post_meta['ad_margin_right'];
+            if(isset($margin_post_meta['ad_margin_top'])){
+             $ad_margin_top     = $margin_post_meta['ad_margin_top'];   
+            }
+            
+            if(isset($margin_post_meta['ad_margin_bottom'])){
+             $ad_margin_bottom  = $margin_post_meta['ad_margin_bottom'];  
+            }
+            
+            if(isset($margin_post_meta['ad_margin_left'])){
+             $ad_margin_left    = $margin_post_meta['ad_margin_left'];  
+            }
+                        
+            if(isset($margin_post_meta['ad_margin_right'])){
+             $ad_margin_right    = $margin_post_meta['ad_margin_right'];  
+            }            
             if($where_to_display !='ad_shortcode'){
+            if(isset($post_meta_dataset['adsforwp_ad_align'])){
             $ad_alignment      = $post_meta_dataset['adsforwp_ad_align'][0];    
+            }                    
             }
             }                        
             if(array_key_exists('custom_code', $post_meta_dataset)){

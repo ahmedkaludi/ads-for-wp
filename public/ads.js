@@ -153,17 +153,18 @@ $(".adsforwp-tabs a").click(function(e){
 		var href = $(this).attr("href");
 		var currentTab = adsforwpGetParamByName("tab",href);
 		if(!currentTab){
-			currentTab = "dashboard";
+			currentTab = "general";
 		}                   
                 switch(currentTab){
-                    case "dashboard":
-                        $(".adsforwp-settings-form #submit").show();
-                        break;
+                    
                     case "general":
                         $(".adsforwp-settings-form #submit").show();
                         break;   
                     case "support":
                         $(".adsforwp-settings-form #submit").hide();
+                        break;
+                    case "tools":
+                        $(".adsforwp-settings-form #submit").show();
                         break;
                 }                
 		$(this).siblings().removeClass("nav-tab-active");
@@ -603,7 +604,7 @@ $("#select_adtype").change(function(){
         $("#afw-embed-code-div").html(html);
         
        tb_show("Embed Code", "#TB_inline??width=600&height=550&inlineId=afw-embed-code-div");
-       $(document).find('#TB_window').width(600).height(200).css('top', '200px');
+       $(document).find('#TB_window').width(600).height(200).css({'top':'200px', 'margin-top': '0px'});
     });
     
 //query form send starts here
