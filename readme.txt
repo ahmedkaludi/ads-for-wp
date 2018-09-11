@@ -49,6 +49,27 @@ Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp).
 
 == Changelog ==
 
+= 1.0.5 (11th September 2018) =
+* Full Release Post on: http://www.adsforwp.com/ads-for-wp-1-0-5-released/ 
+* Major Feature: AD blocker Support - https://github.com/ahmedkaludi/ads-for-wp/issues/57
+* Major Feature: Conditional Display to help you target ads on specific location. https://github.com/ahmedkaludi/ads-for-wp/issues/47
+* Major Feature: Ad Revenue Sharing that supports all the ad networks and AMP. https://github.com/ahmedkaludi/ads-for-wp/issues/58
+* Infolinks Support Added
+* Content.ad support added
+* Ad Now Support Added
+* New Feature: Ad Scheduling with expiration support. You can control when to run the ads and expire after certain time.
+* New Feature: Ads alignment Feature: You can set margin to each and every ad. https://github.com/ahmedkaludi/ads-for-wp/issues/39
+* New Feature: Contact form embeded directly you can easily get in touch with our support team.
+* New Feature: Emebed popup added which allows you to get the shortcode or PHP code for you to embed.
+* New Feature: Show only in AMP feature. https://github.com/ahmedkaludi/ads-for-wp/issues/38
+* New Feature: Ad Alignment feature
+* Ad Rotation with groups Improved with performance.
+* Bug Fix: Auto ads were not loading properly has been fixed. https://github.com/ahmedkaludi/ads-for-wp/issues/67
+* Bug Fix: Media upload didn't had the link version: https://github.com/ahmedkaludi/ads-for-wp/issues/33
+* Debug errors resolved
+* and many other improvements
+
+
 = 1.0.4 (23th August 2018) =
 * Major Feature: AdSense Auto Ads support added
 * Bug fix: Ad was not displaying #36 ( https://github.com/ahmedkaludi/ads-for-wp/issues/36 )
