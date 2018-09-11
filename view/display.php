@@ -1,6 +1,6 @@
 <?php
 //Metabox to create display areas for ads in ads admin post
-class adsforwp_metaboxes_display {
+class adsforwp_view_display {
     
     private $screen = array(
 		'adsforwp',
@@ -42,21 +42,61 @@ class adsforwp_metaboxes_display {
                                'class' => 'afw_manual_ads_type',
 			),
 		),
+            
+                array(
+			'label' => 'Alignment',
+			'id' => 'adsforwp_ad_align',
+			'type' => 'radio',
+			'options' => array(
+				'left'=>'Left',
+				'center'=>'Center',
+                                'right' => 'Right'
+			),
+		),
+                array(		
+                        'label' => 'Margin',
+			'id' => 'adsforwp_ad_margin',                        
+			'type' => 'multiple-text',
+                        'fields'=> array(
+                            array(	
+                            'label' => 'Top',    
+                            'id' => 'ad_margin_top',                        
+                            'type' => 'number',
+                          ),
+                            array(	
+                            'label' => 'Bottom',    
+                            'id' => 'ad_margin_bottom',                        
+                            'type' => 'number',
+                          ),
+                            array(	
+                            'label' => 'Left',    
+                            'id' => 'ad_margin_left',                        
+                            'type' => 'number',
+                          ),
+                            array(	
+                            'label' => 'Right',    
+                            'id' => 'ad_margin_right',                        
+                            'type' => 'number',
+                          ),
+                        )
+		)
+                                
 	);
 	public function __construct() {                                                                                                     
 		add_action( 'add_meta_boxes', array( $this, 'adsforwp_add_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'adsforwp_save_fields' ) );                               
                 
 	}
-	public function adsforwp_add_meta_boxes() {
-		foreach ( $this->screen as $single_screen ) {
+	public function adsforwp_add_meta_boxes() {                
+                $post_type = get_post_type();                
+		foreach ( $this->screen as $single_screen ) {                                                                    
 			add_meta_box(
 				'display-metabox',
 				esc_html__( 'Display', 'ads-for-wp' ),
 				array( $this, 'adsforwp_meta_box_callback' ),
 				$single_screen,
 				'normal',
-				'low'
+				'high'
 			);
 		}
 	}
@@ -91,6 +131,50 @@ class adsforwp_metaboxes_display {
 					}
 					$input .= '</select>';
 					break;
+                                        case 'multiple-text':                                        
+                                        $input ='<div class="afw_ad_img_margin">';                                       
+                                        foreach($meta_field['fields'] as $field){
+                                        $input.= sprintf(
+						'<input class="afw_input" %s id="%s" name="adsforwp_ad_margin[%s]" type="%s" placeholder="%s" value="%s">',
+						$meta_field['type'] !== 'color' ? '' : '',
+						$field['id'],
+						$field['id'],
+						$field['type'],
+						$field['label'],
+                                                $meta_value[$field['id']]                                                 
+                                             );                                        
+                                        }
+					$input .='</div>';
+                                    break;
+                                    case 'radio':
+					$input = '<fieldset class="afw_ads_margin_field">';
+					$input .= '<legend class="screen-reader-text">' . isset($meta_field['label']) . '</legend>';
+					$i = 0;
+					foreach ( $meta_field['options'] as $key => $value ) {
+						$meta_field_value = !is_numeric( $key ) ? $key : $value;
+                                                $checked ='';
+                                             
+                                                if($meta_value==''){
+                                                    
+                                                    if($key == 'left'){
+                                                     $checked = 'checked';   
+                                                    }
+                                                }else{
+                                                     $checked = $meta_value === $meta_field_value ? 'checked' : '';
+                                                }
+						$input .= sprintf(
+							'<label style="padding-right:10px;"><input %s id="%s" name="% s" type="radio" value="% s"> %s</label>%s',
+							$checked,
+							$meta_field['id'],
+							$meta_field['id'],
+							$meta_field_value,
+							esc_html__($value, 'ads-for-wp'),
+							$i < count( $meta_field['options'] ) - 1 ? '' : ''
+						);
+						$i++;
+					}
+					$input .= '</fieldset>';
+					break;
 				default:
                                     
                                          if(isset($meta_field['attributes'])){
@@ -121,10 +205,10 @@ class adsforwp_metaboxes_display {
                         $group_post = get_post($group);                        
                         $group_links .= '<span style="padding-right:5px;"><a href="?post='.esc_attr($group).'&action=edit"> '.esc_html__($group_post->post_title, 'ads-for-wp').'</a>,</span> ';    
                         }
-                        echo '<p>'.esc_html__('This ad is associated with groups. Go to the groups', 'ads-for-wp').' '.html_entity_decode(esc_html($group_links)).'</p>';   
-                        echo '<table class="form-table" style="display:none;"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table>';      
+                        echo '<p>'.esc_html__('This ad is associated with groups. Go to the groups', 'ads-for-wp').' '.html_entity_decode(esc_html($group_links)).' '.esc_html__('Use Shortcode', 'ads-for-wp').' <strong>[adsforwp id="'.$post->ID.'"]</strong></p>';   
+                        echo '<table class="form-table" style="display:none;"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table><div id="afw-embed-code-div"></div>';      
                 }else{
-                        echo '<table class="form-table"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table>';   
+                        echo '<table class="form-table"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table><div style="display:none;" id="afw-embed-code-div"></div>';   
                 }
 		                
 	}
@@ -139,7 +223,13 @@ class adsforwp_metaboxes_display {
 			return $post_id;
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 			return $post_id;
+                
+                $ad_margin = array();                     
+                $ad_margin = array_map('sanitize_text_field', $_POST['adsforwp_ad_margin']);                      
+                update_post_meta($post_id, 'adsforwp_ad_margin', $ad_margin);
+                
 		foreach ( $this->meta_fields as $meta_field ) {
+                    if($meta_field['id'] != 'adsforwp_ad_margin'){ 
 			if ( isset( $_POST[ $meta_field['id'] ] ) ) {
 				switch ( $meta_field['type'] ) {
 					case 'email':
@@ -153,10 +243,11 @@ class adsforwp_metaboxes_display {
 			} else if ( $meta_field['type'] === 'checkbox' ) {
 				update_post_meta( $post_id, $meta_field['id'], '0' );
 			}
+                    }
 		}  
                 
 	}
 }
-if (class_exists('adsforwp_metaboxes_display')) {
-	new adsforwp_metaboxes_display;
+if (class_exists('adsforwp_view_display')) {
+	new adsforwp_view_display;
 };

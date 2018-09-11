@@ -122,6 +122,7 @@
 				else {
 					setup ();
 				}
+                                
 			}) (jQuery);
 		</script>
  	<?php

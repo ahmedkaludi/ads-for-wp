@@ -3,7 +3,7 @@ Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
 Tags: Ads, Advanced Ads, Ad Inserter, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
 Tested up to: 4.9.7
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -13,20 +13,26 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy to Use, Unlimited Incontent Ads, Adsense, Premium Features and more
 
 = Features: =
-
-* NEW: AdSense Auto Ads Support
-* NEW: Ad Groups with AMP Support
-* NEW: Ad Widget added
-* NEW: Ad expiry and scheduling option added
+* NEW: Conditional Display to help you target ads.
+* NEW: AD blocker Support
+* NEW: Ad Revenue Sharing that supports all the ad networks and AMP.
+* NEW: Infolinks Support Added
+* NEW: Content.ad support added
+* NEW: Ad Now Support Added
+* AdSense Auto Ads Support
+* Ad Groups with AMP Support
+* Ad Widget added
+* Ad expiry and scheduling option added
 * AMP Compatibility: Seamless integration with AMP for WP & AMP by Automattic.
 * Unlimited Ads
 * Google Adsense Support
 * Custom Ad HTML support
-* NEW: Media.net Support
+* Media.net Support
 * Ads Shortcode
 * Post Specific Ads Control
 * Easily inject Between the content, After the content or Before the content.
-* NEW: Migrate from Advanced Ads plugin with One Click!
+* Migrate from Advanced Ads plugin with One Click!
+* NEW: Align and set margins easily 
 
 = Active Development: =
 We are actively developing this plugin and our aim is to make this plugin into the #1 solution in the world. You can [Request a Feature](http://www.adsforwp.com/contact/) or [Report a Bug](https://github.com/ahmedkaludi/ads-for-wp/issues). The code is hosted on [Github](https://github.com/ahmedkaludi/ads-for-wp).
@@ -48,6 +54,26 @@ Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp).
 
 
 == Changelog ==
+
+= 1.0.5 (11th September 2018) =
+* Full Release Post on: http://www.adsforwp.com/ads-for-wp-1-0-5-released/ 
+* Major Feature: AD blocker Support - https://github.com/ahmedkaludi/ads-for-wp/issues/57
+* Major Feature: Conditional Display to help you target ads on specific location. https://github.com/ahmedkaludi/ads-for-wp/issues/47
+* Major Feature: Ad Revenue Sharing that supports all the ad networks and AMP. https://github.com/ahmedkaludi/ads-for-wp/issues/58
+* Infolinks Support Added
+* Content.ad support added
+* Ad Now Support Added
+* New Feature: Ad Scheduling with expiration support. You can control when to run the ads and expire after certain time.
+* New Feature: Ads alignment Feature: You can set margin to each and every ad. https://github.com/ahmedkaludi/ads-for-wp/issues/39
+* New Feature: Contact form embeded directly you can easily get in touch with our support team.
+* New Feature: Emebed popup added which allows you to get the shortcode or PHP code for you to embed.
+* New Feature: Show only in AMP feature. https://github.com/ahmedkaludi/ads-for-wp/issues/38
+* New Feature: Ad Alignment feature
+* Ad Rotation with groups Improved with performance.
+* Bug Fix: Auto ads were not loading properly has been fixed. https://github.com/ahmedkaludi/ads-for-wp/issues/67
+* Bug Fix: Media upload didn't had the link version: https://github.com/ahmedkaludi/ads-for-wp/issues/33
+* Debug errors resolved
+* and many other improvements
 
 = 1.0.4 (23th August 2018) =
 * Major Feature: AdSense Auto Ads support added

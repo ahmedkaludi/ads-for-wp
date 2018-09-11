@@ -42,14 +42,15 @@ class Adsforwp_Ads_Widget extends WP_Widget {
                 foreach($all_ads as $ad){
                     if($ad->ID == $instance['ads']){   
                             $output_function_obj = new adsforwp_output_functions();
-                            $ad_code =  $output_function_obj->adsforwp_get_ad_code($instance['ads']);          
+                            $ad_code =  $output_function_obj->adsforwp_get_ad_code($instance['ads'], $type="AD");          
                             echo $ad_code;                                        
                     }     
                 }
                 foreach($all_groups as $group){
                  if($group->ID == $instance['ads']){   
                         $output_function_obj = new adsforwp_output_functions();
-                        $ad_code =  $output_function_obj->adsforwp_group_ads($atts=null, $instance['ads'], $widget=true);                   
+                        $widget = 'widget';
+                        $ad_code =  $output_function_obj->adsforwp_group_ads($atts=null, $instance['ads'], $widget);                   
                         echo $ad_code;                        
                 }    
                 }

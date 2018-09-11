@@ -2,7 +2,8 @@
 /*
   Metabox to show ads type such as custom and adsense 
  */
-class adsforwp_metaboxes_ads_type {
+class adsforwp_view_ads_type {
+        
 	private $screen = array(		
             'adsforwp'                                                      
 	);
@@ -15,8 +16,11 @@ class adsforwp_metaboxes_ads_type {
 				'' => 'Select Ad Type',
 				'adsense' =>'AdSense',
                                 'media_net' =>'Media.net',
-				'custom' =>'Custom Code',
-                                'ad_image' =>'Image Ad',
+                                'ad_now' =>'AdNow',				                                
+                                'contentad' =>'Content.ad',
+                                'infolinks' =>'Infolinks',
+                                'ad_image' =>'Image Banner Ad',
+                                'custom' =>'Custom Code',
                             
 			),
                                 'attributes' => array(				
@@ -118,11 +122,41 @@ class adsforwp_metaboxes_ads_type {
 			'id' => 'adsforwp_ad_redirect_url',                        
 			'type' => 'text',
 		),
-            array(			
-			'id' => 'adsforwp_ad_img_height',                        
-			'type' => 'hidden',
+                array(
+			'label' => 'AdNow Widget ID',
+			'id' => 'ad_now_widget_id',                        
+			'type' => 'text',
+		),            
+                array(
+			'label' => 'ID',
+			'id' => 'contentad_id',                        
+			'type' => 'text',
 		),
-            array(			
+                array(
+			'label' => 'D',
+			'id' => 'contentad_id_d',                        
+			'type' => 'text',
+		),
+                array(
+			'label' => 'Content Ad Widget ID',
+			'id' => 'contentad_widget_id',                        
+			'type' => 'text',
+		),             
+                array(
+			'label' => 'Infolinks P ID',
+			'id' => 'infolinks_pid',                        
+			'type' => 'text',
+		),
+                array(
+			'label' => 'Infolinks W S ID',
+			'id' => 'infolinks_wsid',                        
+			'type' => 'text',
+		),             
+                array(			
+                            'id' => 'adsforwp_ad_img_height',                        
+                            'type' => 'hidden',
+                    ),
+                array(			
 			'id' => 'adsforwp_ad_img_width',                        
 			'type' => 'hidden',
 		),
@@ -139,7 +173,7 @@ class adsforwp_metaboxes_ads_type {
 				array( $this, 'adsforwp_meta_box_callback' ),
 				$single_screen,
 				'normal',
-				'default'
+				'high'
 			);
 		}
                 
@@ -149,7 +183,7 @@ class adsforwp_metaboxes_ads_type {
 		$this->adsforwp_field_generator( $post );
 	}
 	public function adsforwp_field_generator( $post ) {
-		$output = '';                                        
+		$output = '';                     
 		foreach ( $this->meta_fields as $meta_field ) {
                     $attributes ='';
                     $label ='';
@@ -207,14 +241,25 @@ class adsforwp_metaboxes_ads_type {
 					); 
                                     break;
                                 case 'media':
+                                                $imageprev ='';
+                                                if($meta_value){
+                                                 $imageprev .='<br><div class="afw_ad_thumbnail">';
+                                                 $imageprev .='<img class="afw_ad_image_prev" src="'.esc_url($meta_value).'"/>';
+                                                 $imageprev .='<a href="#" class="afw_ad_prev_close">X</a>';
+                                                 $imageprev .='</div>';
+                                                 
+                                                }
                                                 $input = sprintf(
 						'<input class="afw_input adsforwp-icon" type="text" name="%s" id="%s" value="%s"/>'
                                                 . '<button type="button" class="button adsforwp-ad-img-upload" data-editor="content">'
                                                 . '<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> Upload Image'
-                                                . '</button>',
+                                                . '</button>'
+                                                . '<div class="afw_ad_img_div">%s'
+                                                . '</div>',
 						$meta_field['id'],
 						$meta_field['id'],
-						$meta_value
+						$meta_value,
+                                                $imageprev        
 					);
                                                 break;
                                 case 'hidden':                                                    
@@ -222,7 +267,7 @@ class adsforwp_metaboxes_ads_type {
 						'<input id="%s" name="%s" type="hidden" value="%s">',                                                
 						$meta_field['id'],	
                                                 $meta_field['id'],	        
-						$meta_value
+						$meta_value                                                     
 					);
                                                 break;            
 				default:
@@ -263,7 +308,9 @@ class adsforwp_metaboxes_ads_type {
 			return $post_id;
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 			return $post_id;
+                    
 		foreach ( $this->meta_fields as $meta_field ) {
+                    
 			if ( isset( $_POST[ $meta_field['id'] ] ) ) {
 				switch ( $meta_field['type'] ) {
 					case 'email':
@@ -277,9 +324,10 @@ class adsforwp_metaboxes_ads_type {
 			} else if ( $meta_field['type'] === 'checkbox' ) {
 				update_post_meta( $post_id, $meta_field['id'], '0' );
 			}
+                   
 		}
 	}
 }
-if (class_exists('adsforwp_metaboxes_ads_type')) {
-	new adsforwp_metaboxes_ads_type;
+if (class_exists('adsforwp_view_ads_type')) {
+	new adsforwp_view_ads_type;
 };
