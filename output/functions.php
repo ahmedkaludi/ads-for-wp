@@ -50,10 +50,10 @@ class adsforwp_output_functions{
                     $owner_display_per_in_minute = (60*$ad_owner_revenue_per)/100;
                     }                    
                     $current_second = date("s"); 
-                    if(!($current_second <= $owner_display_per_in_minute)){
+                    if((!($current_second <= $owner_display_per_in_minute)) && isset($settings['ad_revenue_sharing'])){
                      $author_adsense_ids['author_pub_id'] =  get_the_author_meta( 'adsense_pub_id' );                     
                      $author_adsense_ids['author_ad_slot_id'] =  get_the_author_meta( 'adsense_ad_slot_id' );                     
-                    }                      
+                    }                           
                     return $author_adsense_ids;                    
     }
     public function adsforwp_get_adsense_publisher_id(){                    
@@ -464,7 +464,7 @@ class adsforwp_output_functions{
             case 'custom':
                     if($this->is_amp){
                      if($amp_compatibility != 'disable'){
-                     $ad_code = '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_custom afw_'.esc_attr($post_ad_id).'">
+                     $ad_code = '<div style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_custom afw_'.esc_attr($post_ad_id).'">
 							'.$custom_ad_code.'
 							</div>';    
                     }   
@@ -482,7 +482,7 @@ class adsforwp_output_functions{
                     $adsforwp_ad_img_height = $post_meta_dataset['adsforwp_ad_img_height'][0];                     
                     if($this->is_amp){
                      if($amp_compatibility != 'disable'){
-                     $ad_code = '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
+                     $ad_code = '<div style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
 							<a target="_blank" href="'.esc_url($ad_image_redirect_url).'"><amp-img src="'.esc_url($ad_image).'" height="'. esc_attr($adsforwp_ad_img_height).'" width="'.esc_attr($adsforwp_ad_img_width).'"></amp-img></a>
 							</div>';    
                     }   
@@ -503,7 +503,7 @@ class adsforwp_output_functions{
                     $contentad_widget_id = $post_meta_dataset['contentad_widget_id'][0];                     
                     if($this->is_amp){
                      if($amp_compatibility != 'disable'){
-                     $ad_code = '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
+                     $ad_code = '<div style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
 							<amp-ad
                                                                 width=300
                                                                 height=250
@@ -545,7 +545,7 @@ class adsforwp_output_functions{
                     
                     $ad_now_widget_id = $post_meta_dataset['ad_now_widget_id'][0];                    
                     if(!$this->is_amp){
-                     $ad_code = '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
+                     $ad_code = '<div style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_'.esc_attr($post_ad_id).'">
 				 <div id="SC_TBlock_'.$ad_now_widget_id.'" class="SC_TBlock">loading...</div>
                                  <script type="text/javascript">
                                       (sc_adv_out = window.sc_adv_out || []).push({
@@ -603,7 +603,7 @@ class adsforwp_output_functions{
                     }            
                     if($this->is_amp){
                         if($amp_compatibility != 'disable'){
-                         $ad_code = '<div style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw-ga afw_'.esc_attr($post_ad_id).'">
+                         $ad_code = '<div style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw-ga afw_'.esc_attr($post_ad_id).'">
                                         <amp-ad 
                                         type="adsense"
                                         width="'. esc_attr($width) .'"
@@ -755,7 +755,7 @@ class adsforwp_output_functions{
         
         $placement_obj = new adsforwp_view_placement();
         $condition_status = $placement_obj->adsforwp_get_post_conditions_status($post_group_id);    
-        if($condition_status === 1 || $condition_status === true){
+        if($condition_status ===1 || $condition_status === true || $condition_status==='notset'){
         if($this->visibility != 'hide') {
         
         $post_group_data   = get_post_meta($post_group_id,$key='adsforwp_ads',true);
