@@ -169,6 +169,34 @@ function adsforwp_admin_link($tab = '', $args = array()){
 }
 
 /**
+ * This function gets the link for selected tabs in setting section on ajax request
+ * @param type $tab
+ * @param type $args
+ * @return type
+ */
+function adsforwp_analytics_admin_link($tab = '', $args = array()){	
+	$page = 'analytics';
+	if ( ! is_multisite() ) {
+		$link = admin_url( 'admin.php?page=' . $page );
+	}
+	else {
+		$link = network_admin_url( 'admin.php?page=' . $page );
+	}
+
+	if ( $tab ) {
+		$link .= '&tab=' . $tab;
+	}
+
+	if ( $args ) {
+		foreach ( $args as $arg => $value ) {
+			$link .= '&' . $arg . '=' . urlencode( $value );
+		}
+	}
+
+	return esc_url($link);
+}
+
+/**
  * Get the selected tab on page reload
  * @param type $default
  * @param type $available
@@ -327,9 +355,18 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
                         if($post_meta['select_adtype'][0] == 'ad_image'){
                         echo '<div><a href="'. esc_url(get_admin_url()).'post.php?post='.esc_attr($post_id).'&action=edit"><img width="150" src="'.$post_meta['adsforwp_ad_image'][0].'"></a></div>';    
                         }   
-                    }
-                     
-                    break; 
+                    }                     
+                    break;
+                case 'adsforwp_ad_impression_column' :
+                    $post_meta = get_post_meta($post_id, $key='ad_impression_count', true);                                          
+                        echo '<div><span>'.esc_attr($post_meta).'<span></div>';                               
+                                         
+                    break;
+                case 'adsforwp_ad_clicks_column' :
+                    $post_meta = get_post_meta($post_id, $key='ad_clicks', true);                                          
+                        echo '<div><span>'.esc_attr($post_meta).'<span></div>';                               
+                                         
+                    break;
                 case 'adsforwp_expire_column' :
                     $post_meta = get_post_meta($post_id, $key='', true);
                     $expire_date ='';
@@ -360,6 +397,8 @@ function adsforwp_custom_columns($columns) {
     $columns['adsforwp_ad_image_preview'] = '<a>'.esc_html__( 'Preview', 'ads-for-wp' ).'<a>';
     $columns['adsforwp_expire_column'] = '<a>'.esc_html__( 'Expire On', 'ads-for-wp' ).'<a>';
     $columns['adsforwp_group_column'] = '<a>'.esc_html__( 'Groups', 'ads-for-wp' ).'<a>';
+    $columns['adsforwp_ad_impression_column'] = '<a>'.esc_html__( 'Ad Impression', 'ads-for-wp' ).'<a>';
+    $columns['adsforwp_ad_clicks_column'] = '<a>'.esc_html__( 'Ad Clicks', 'ads-for-wp' ).'<a>';
     
     
     return $columns;
@@ -400,7 +439,9 @@ function adsforwp_frontend_enqueue(){
             'ajax_url' => admin_url( 'admin-ajax.php' ),            
         );
         wp_localize_script('adsforwp-ads-front-js', 'adsforwp_obj', $object_name);
-        wp_enqueue_script('adsforwp-ads-front-js');
+        wp_enqueue_script('adsforwp-ads-front-js');        
+        
+        
 }
 add_action( 'wp_enqueue_scripts', 'adsforwp_frontend_enqueue' );
 
@@ -421,6 +462,7 @@ function adsforwp_admin_enqueue() {
     
         wp_enqueue_style( 'ads-for-wp-admin', ADSFORWP_PLUGIN_DIR_URI . 'public/ads.css', false , ADSFORWP_VERSION );
         wp_register_script( 'ads-for-wp-admin-js', ADSFORWP_PLUGIN_DIR_URI . 'public/ads.js', array('jquery'), ADSFORWP_VERSION , true );
+        wp_register_script( 'ads-for-wp-admin-analytics-js', ADSFORWP_PLUGIN_DIR_URI . 'public/analytics.js', array('jquery'), ADSFORWP_VERSION , true );
             // Localize the script with new data
         $data = array(
             'ajax_url'  => admin_url( 'admin-ajax.php' ),
@@ -432,6 +474,15 @@ function adsforwp_admin_enqueue() {
         wp_localize_script( 'ads-for-wp-admin-js', 'adsforwp_localize_data', $data );	
         // Enqueued script with localized data.
         wp_enqueue_script( 'ads-for-wp-admin-js' );        
+        
+        //Analytics js
+        $analytics_data = array(
+            'ajax_url'  => admin_url( 'admin-ajax.php' ),
+            'id'		=> get_the_ID(),            
+            'post_type'		=> get_post_type()
+        );
+        wp_localize_script( 'ads-for-wp-admin-analytics-js', 'adsforwp_localize_analytics_data', $analytics_data );
+        wp_enqueue_script( 'ads-for-wp-admin-analytics-js' );        
         	
 }
 add_action('admin_enqueue_scripts','adsforwp_admin_enqueue');

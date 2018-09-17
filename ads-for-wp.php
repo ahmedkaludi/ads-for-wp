@@ -29,6 +29,8 @@ require  ADSFORWP_PLUGIN_DIR.'/admin/common-functions.php';
 require  ADSFORWP_PLUGIN_DIR.'/admin/settings.php';
 require  ADSFORWP_PLUGIN_DIR.'/admin/ajax-selectbox.php';
 require  ADSFORWP_PLUGIN_DIR.'/admin/file-creation.php';
+require  ADSFORWP_PLUGIN_DIR.'/admin/analytics-settings.php';
+require  ADSFORWP_PLUGIN_DIR.'/admin/analytics.php';
 
 /* Loading Metaboxes*/
 require  ADSFORWP_PLUGIN_DIR.'/view/ads-type.php';

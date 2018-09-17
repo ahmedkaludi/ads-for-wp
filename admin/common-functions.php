@@ -558,10 +558,24 @@ class adsforwp_admin_common_functions {
                     'multiple' => array(),
                     'style' => array(),
             );
+            
+            $my_allowed['iframe'] = array(
+                    'class'  => array(),
+                    'id'     => array(),
+                    'src'   => array(),
+                    'height'  => array(),
+                    'width'   => array(),                                                            
+            );
+            
+            
             $my_allowed['tr'] = array(
                     'class'  => array(),
                     'id'     => array(),
                     'name'   => array(),                    
+            );
+            $my_allowed['div'] = array(
+                    'class'  => array(),
+                    'data-id'     => array(),                                    
             );
             //  options
             $my_allowed['option'] = array(

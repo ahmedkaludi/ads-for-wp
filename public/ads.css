@@ -128,3 +128,48 @@ input[name=adsforwp_group_ref_interval_sec]{
 .afw-non-amp-visibility{
     padding-top: 20px;
 }
+
+/* Analytics page css starts here! */
+.afw-analytic_container{
+   display: flex; 
+}
+.adsforwp-analytics-tabs{
+    width: 40%;
+    border-bottom: 0px;
+}
+.adsforwp-analytics-tabs a{
+    margin-left: 0px;
+    padding: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.afw-analytics-title{
+    width: 30%;
+}
+.afw-analytics-days{
+    width: 30%;
+    padding-top: 9px;
+    text-align: center;
+}
+.afw-analytics_track_report-div{
+    margin-top: 40px;
+    display: flex;
+}
+.afw-analytics_track_report-div div{
+    width: 25%;
+    
+}
+.afw-diff-precentage{
+    font-size: 17px;
+    font-weight: 400;
+    color: green;
+}
+.afw-token-div{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: inline-grid;
+}
+.afw-token-div input{
+    margin-bottom: 20px;
+}
+/* Analytics page css ends here! */

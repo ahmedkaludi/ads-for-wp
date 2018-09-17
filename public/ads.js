@@ -611,8 +611,7 @@ $("#select_adtype").change(function(){
 
 $(".afw-send-query").on("click", function(e){
     e.preventDefault();   
-    var message = $("#adsforwp_query_message").val();
-            $.post();
+    var message = $("#adsforwp_query_message").val();           
                 $.ajax({
                     type: "POST",    
                     url:adsforwp_localize_data.ajax_url,                    
