@@ -8,12 +8,26 @@ public function __construct() {
     }
 public function adsforwp_add_analytics_menu_links() {	
 	// Settings page - Same as main menu page
-                add_submenu_page( 'edit.php?post_type=adsforwp',
+               
+        $settingsLink = null;
+        $adsforwp_google_token = get_option( 'adsforwp_google_token' );
+        if (! $adsforwp_google_token ) {
+            $settingsLink = 'edit.php?post_type=adsforwp';    
+        }else{
+             add_submenu_page( 'edit.php?post_type=adsforwp',
                 esc_html__( 'Ads for wp', 'ads-for-wp' ),
                 esc_html__( 'Analytics', 'ads-for-wp' ),
                 'manage_options',
                 'analytics',
-                array($this, 'adsforwp_admin_analytics_interface_render'));	
+                array($this, 'adsforwp_admin_analytics_interface_render')); 
+        }
+                add_submenu_page( $settingsLink,
+                    esc_html__( 'Ads for wp Analytics', 'ads-for-wp' ),
+                    esc_html__( 'Analytics Settings', 'ads-for-wp' ),
+                    'manage_options',
+                    'adsforwp-analytics',
+                    array($this , 'adsforwp_admin_analytics_render')
+                );
 }
 
 
@@ -40,68 +54,294 @@ public function adsforwp_admin_analytics_interface_render(){
             }                
         
 	       $tab = adsforwp_get_tab('all', array('mobile','desktop', 'amp', 'tablets'));
-        
             
+            $start_date_val = strtotime( 'now' );//strtotime( '-1 month' );
+            $end_date_val   = strtotime( 'now' );
+            $start_date     = date( 'Y-m-d', $start_date_val );
+            $end_date       = date( 'Y-m-d', $end_date_val );
+
+
+            //$_differ = get_option( 'adsforwp_date_differ' );
+            $_differ =  'today';
+            if(isset($_REQUEST['view_data'])){
+                $_differ = $_REQUEST['view_data'];
+            }
+            if ( $_differ ) {
+                if ( $_differ == 'last_7_days' ) {
+                    $start_date = date( 'Y-m-d', strtotime( '-7 days' ) );
+                }elseif ( $_differ == 'last_14_days' ) {
+                    $start_date = date( 'Y-m-d', strtotime( '-14 days' ) );
+                }elseif ( $_differ == 'last_30_days' ) {
+                    $start_date = date( 'Y-m-d', strtotime( '-1 month' ) );
+                }elseif (  $_differ == 'this_month' ) {
+                    $start_date =  date('Y-m-01') ;
+                }elseif ( $_differ == 'last_month' ) {
+                    $start_date =  date('Y-m-01', strtotime('-1 month') );
+                    $end_date =  date('Y-m-t', strtotime('-1 month') );
+                }elseif ( $_differ == 'last_3_months' ) {
+                    $start_date =  date('Y-m-01', strtotime('-3 month') );
+                    $end_date =  date('Y-m-t', strtotime('-1 month') );
+                }elseif ( $_differ == 'last_6_months' ) {
+                    $start_date =  date('Y-m-01', strtotime('-6 month') );
+                    $end_date =  date('Y-m-t', strtotime('-1 month') );
+                }elseif ( $_differ == 'last_year' ) {
+                    $start_date =  date('Y-m-01', strtotime('-1 year') );
+                    $end_date =  date('Y-m-t', strtotime('-1 month') );
+                }
+
+            }
+            /*if ( isset( $_POST['view_data'] ) ) {
+
+            $s_date   = sanitize_text_field( wp_unslash( $_POST['st_date'] ) );
+            $ed_date  = sanitize_text_field( wp_unslash( $_POST['ed_date'] ) );
+        }
+
+        if ( isset( $s_date ) ) {
+            $start_date = $s_date ;
+        }
+
+        if ( isset( $ed_date ) ) {
+            $end_date = $ed_date;
+        }*/
+        $date1 = date_create( $start_date );
+        $date2 = date_create( $end_date );
+        $diff  = date_diff( $date2, $date1 );
+
+        $compare_start_date = strtotime( $start_date . $diff->format( '%R%a days' ) );
+        $compare_start_date = date( 'Y-m-d', $compare_start_date );
+        $compare_end_date   = $start_date;
+
+        $settingOpt = get_option('adsforwp_analytics');
+        $dashboard_profile_ID = $settingOpt['profile_for_dashboard'];
+        if($dashboard_profile_ID!=''){
+            $allinfo =  adsforwp_show_default_overall_dashboard($dashboard_profile_ID,$start_date,$end_date, $compare_start_date, $compare_end_date);
+        }
+
+    //ADS Click & impressions
+        $overallStats = array();
+        $datediff = strtotime($end_date) - strtotime($start_date);
+        $date_different     = round($datediff / (60 * 60 * 24));
+        if($date_different == 0){    
+            $optionDetails = get_option("adsforwp_ads-".date('Y-m-d'));
+            $overallStats = $optionDetails['complete'];
+        }else{
+            $periods = new DatePeriod(
+                             new DateTime($start_date),
+                             new DateInterval('P1D'),
+                             new DateTime($end_date)
+                        );
+            foreach ($periods as $key => $value) {
+                $optionDetails = get_option("adsforwp_ads-".$value->format('Y-m-d'));
+                if($optionDetails){
+                    foreach ($optionDetails['complete'] as $key => $value) {
+                        if(isset($overallStats[$key]['impression'])){
+                            $overallStats[$key]['impression'] = $value['impression'];
+                        }else{
+                            @$overallStats[$key]['impression'] += $value['impression'];
+                        }
+                        if(isset($overallStats[$key]['click'])){
+                            $overallStats[$key]['click'] += $value['click'];
+                        }else{
+                            @$overallStats[$key]['click'] += $value['click'];
+                        }
+                    }//Device foreach closed
+
+                }//If closed
+            }//Foreach closed
+        }
+
+    //ALL
+    if($overallStats){
+        $allDeviceAds = array("impression" => 0, "click"=>0);
+        foreach ($overallStats as $key => $value) {
+            $allDeviceAds['click'] +=  $value['click'];
+            $allDeviceAds['impression'] +=  $value['impression'];
+        }
+    }
+    $overallStats['all'] = $allDeviceAds;
 	?>
         
 <div class="afw-analytic_container">	                            
                 <div class="afw-analytics-title"><h1><?php echo esc_html__('Analytics', 'ads-for-wp'); ?></h1></div>
 		<div class="nav-tab-wrapper adsforwp-analytics-tabs">
-			<?php
+            <?php
 
-			echo '<a href="' . esc_url(adsforwp_analytics_admin_link('all')) . '" class="nav-tab ' . esc_attr( $tab == 'all' ? 'nav-tab-active' : '') . '"><span class=""></span> ' . esc_html__('ALL', 'ads-for-wp') . '</a>';
+            echo '<a href="' . esc_url(adsforwp_analytics_admin_link('all')) . '" class="nav-tab ' . esc_attr( $tab == 'all' ? 'nav-tab-active' : '') . '"><span class=""></span> ' . esc_html__('ALL', 'ads-for-wp') . '</a>';
 
-			echo '<a href="' . esc_url(adsforwp_analytics_admin_link('mobile')) . '" class="nav-tab ' . esc_attr( $tab == 'mobile' ? 'nav-tab-active' : '') . '"><span class=""></span> ' . esc_html__('Mobile','ads-for-wp') . '</a>';
+            echo '<a href="' . esc_url(adsforwp_analytics_admin_link('mobile')) . '" class="nav-tab ' . esc_attr( $tab == 'mobile' ? 'nav-tab-active' : '') . '"><span class=""></span> ' . esc_html__('Mobile','ads-for-wp') . '</a>';
                         
-                        echo '<a href="' . esc_url(adsforwp_analytics_admin_link('desktop')) . '" class="nav-tab ' . esc_attr( $tab == 'desktop' ? 'nav-tab-active' : '') . '"><span class=""></span> ' . esc_html__('Desktop','ads-for-wp') . '</a>';
-                        
-                        echo '<a href="' . esc_url(adsforwp_analytics_admin_link('amp')) . '" class="nav-tab ' . esc_attr( $tab == 'amp' ? 'nav-tab-active' : '') . '"><span class=""></span> ' . esc_html__('AMP','ads-for-wp') . '</a>';
-                        
-                        echo '<a href="' . esc_url(adsforwp_analytics_admin_link('tablets')) . '" class="nav-tab ' . esc_attr( $tab == 'tablets' ? 'nav-tab-active' : '') . '"><span class=""></span> ' . esc_html__('Tablets','ads-for-wp') . '</a>';
-			
-			?>
-		</div>
-                <div class="afw-analytics-days">
-                    <select>
-                        <option value="last_30_days"> <?php echo esc_html__('Real Time','ads-for-wp'); ?></option>                         
-                        <option value="last_30_days"> <?php echo esc_html__('Today','ads-for-wp'); ?></option>
-                        <option value="last_30_days"> <?php echo esc_html__('Yesterday','ads-for-wp'); ?></option>
-                        <option value="last_30_days"> <?php echo esc_html__('Last 7 days','ads-for-wp'); ?></option> 
-                        <option value="last_30_days"> <?php echo esc_html__('Last 14 days','ads-for-wp'); ?></option>
-                        <option value="last_30_days"> <?php echo esc_html__('Last 30 days','ads-for-wp'); ?></option>
-                        <option value="last_30_days"> <?php echo esc_html__('Last 90 days','ads-for-wp'); ?></option>                       
+            echo '<a href="' . esc_url(adsforwp_analytics_admin_link('desktop')) . '" class="nav-tab ' . esc_attr( $tab == 'desktop' ? 'nav-tab-active' : '') . '"><span class=""></span> ' . esc_html__('Desktop','ads-for-wp') . '</a>';
+            
+            echo '<a href="' . esc_url(adsforwp_analytics_admin_link('amp')) . '" class="nav-tab ' . esc_attr( $tab == 'amp' ? 'nav-tab-active' : '') . '"><span class=""></span> ' . esc_html__('AMP','ads-for-wp') . '</a>';
+            
+            echo '<a href="' . esc_url(adsforwp_analytics_admin_link('tablets')) . '" class="nav-tab ' . esc_attr( $tab == 'tablets' ? 'nav-tab-active' : '') . '"><span class=""></span> ' . esc_html__('Tablets','ads-for-wp') . '</a>';
+            
+            ?>
+        </div>
+        <div class="view_old_data" style="display: inline-block;">
+            <form method="get">
+                <div class="afw-analytics-days" style="display: inline-block;">
+                    <input type="hidden" name="page" value="analytics">
+                    <select name="view_data">
+                        <option value="today" <?php if($_differ=='today'){echo "selected"; } ?>> <?php echo esc_html__('Today','ads-for-wp'); ?></option>
+                        <option value="last_7_days" <?php if($_differ=='last_7_days'){echo "selected"; } ?> > <?php echo esc_html__('Last 7 days','ads-for-wp'); ?></option>
+                        <option value="last_14_days" <?php if($_differ=='last_14_days'){echo "selected"; } ?>> <?php echo esc_html__('Last 14 days','ads-for-wp'); ?></option> 
+                        <option value="last_30_days" <?php if($_differ=='last_30_days'){echo "selected"; } ?>> <?php echo esc_html__('Last 30 days','ads-for-wp'); ?></option>
+                        <option value="this_month" <?php if($_differ=='this_month'){echo "selected"; } ?>> <?php echo esc_html__('This month','ads-for-wp'); ?></option>
+                        <option value="last_month" <?php if($_differ=='last_month'){echo "selected"; } ?>> <?php echo esc_html__('Last month','ads-for-wp'); ?></option>                       
+                        <option value="last_3_months" <?php if($_differ=='last_3_months'){echo "selected"; } ?>> <?php echo esc_html__('Last 3 month','ads-for-wp'); ?></option>                       
+                        <option value="last_6_months" <?php if($_differ=='last_6_months'){echo "selected"; } ?>> <?php echo esc_html__('Last 6 month','ads-for-wp'); ?></option>                       
+                        <option value="last_year" <?php if($_differ=='last_year'){echo "selected"; } ?>> <?php echo esc_html__('Last year','ads-for-wp'); ?></option>                       
                     </select>    
+                    <button type="submit" class="btn btn-success button-primary" style="display: inline-block;
+                        background: #444444;
+                        border-radius: 5px;
+                        border: 0;
+                        color: #fff;
+                        font-size: 14px;
+                        padding: 0 13px;
+                        height: 30px;
+                        cursor: pointer;"> >> <?php echo esc_html__('view','ads-for-wp'); ?>  </button>
                 </div>
-                
+            </form>
+        </div>
+        <div class="view_settings_option" style="display: inline-block;">
+            <a href="<?php echo esc_url( admin_url('edit.php?post_type=adsforwp&page=adsforwp-analytics') ); ?>"><i class="dashicons-before dashicons-admin-generic"></i></a></div>
+
 </div>
-<div class="afw-analytics_track_report-div">
-    <div>
-        <h3> <?php echo esc_html__('Visitors','ads-for-wp'); ?></h3>
-        <h1>390 <span class="afw-diff-precentage">+13%</span></h1>
-    </div>    
-    <div>
-      <h3> <?php echo esc_html__('Pageview','ads-for-wp'); ?></h3> 
-      <h1>500 <span class="afw-diff-precentage">+13%</span></h1>
-    </div>    
-    <div>
-     <h3> <?php echo esc_html__('AD impressions','ads-for-wp'); ?></h3> 
-     <h1><?php echo $total_ads_impression; ?><span class="afw-diff-precentage">+13%</span></h1>
-    </div>    
-    <div>
-      <h3> <?php echo esc_html__('Total Clicks','ads-for-wp'); ?></h3> 
-      <h1><?php echo $total_ads_clicks; ?> <span class="afw-diff-precentage">+13%</span></h1>
-      
-    </div> 
-    <div>
-      <h3> <?php echo esc_html__('CTR','ads-for-wp'); ?></h3> 
-      <h1>2.5%</h1>
-    </div> 
+<div class="form-wrap">
+    <div class="adsforwp-all afw-analytics_track_report-div">
+        <div>
+            <h3> <?php echo esc_html__('Visitors','ads-for-wp'); ?></h3>
+            <h1><?php echo @$allinfo['vistors'] ?><span class="afw-diff-precentage"><?php echo @$allinfo['vistors_cmp']; ?> </span></h1>
+        </div>    
+        <div>
+          <h3> <?php echo esc_html__('Pageview','ads-for-wp'); ?></h3> 
+          <h1><?php echo @$allinfo['pageviews']; ?> <span class="afw-diff-precentage"><?php echo @$allinfo['pageviews_cmp']; ?> </span></h1>
+        </div>    
+        <div>
+         <h3> <?php echo esc_html__('AD impressions','ads-for-wp'); ?></h3> 
+         <h1><?php echo (isset($overallStats['all']['impression'])? $overallStats['all']['impression']: 0); ?><span class="afw-diff-precentage"> </span></h1>
+        </div>    
+        <div>
+          <h3> <?php echo esc_html__('Total Clicks','ads-for-wp'); ?></h3> 
+          <h1><?php echo (isset($overallStats['all']['click'])? $overallStats['all']['click']: 0); ?> <span class="afw-diff-precentage"> </span></h1>
+          
+        </div> 
+        <div>
+          <h3> <?php echo esc_html__('CTR','ads-for-wp'); ?></h3> 
+          <h1><?php echo $this->two_decimal_places(((isset($overallStats['all']['click'])? $overallStats['all']['click']: 0)/(isset($overallStats['all']['impression'])? $overallStats['all']['impression']: 0))*100); ?>%</h1>
+        </div> 
+    </div>
+
+    <div class="adsforwp-mobile afw-analytics_track_report-div" style="display: none;">
+        <div>
+            <h3> <?php echo esc_html__('Visitors','ads-for-wp'); ?></h3>
+            <h1><?php echo @$allinfo['otherDeviceData']['mobile']['vistors'] ?><span class="afw-diff-precentage"><?php echo @$allinfo['otherDeviceData']['mobile']['vistors_cmp']; ?> </span></h1>
+        </div>    
+        <div>
+          <h3> <?php echo esc_html__('Pageview','ads-for-wp'); ?></h3> 
+          <h1><?php echo @$allinfo['otherDeviceData']['mobile']['pageviews']; ?> <span class="afw-diff-precentage"><?php echo @$allinfo['otherDeviceData']['mobile']['pageviews_cmp']; ?> </span></h1>
+        </div>    
+        <div>
+         <h3> <?php echo esc_html__('AD impressions','ads-for-wp'); ?></h3> 
+         <h1><?php echo (isset($overallStats['mobile']['impression'])? $overallStats['mobile']['impression']: 0); ?><span class="afw-diff-precentage"> </span></h1>
+        </div>    
+        <div>
+          <h3> <?php echo esc_html__('Total Clicks','ads-for-wp'); ?></h3> 
+          <h1><?php echo (isset($overallStats['mobile']['click'])? $overallStats['mobile']['click']: 0); ?> <span class="afw-diff-precentage"> </span></h1>
+          
+        </div> 
+        <div>
+          <h3> <?php echo esc_html__('CTR','ads-for-wp'); ?></h3> 
+          <h1><?php echo $this->two_decimal_places(((isset($overallStats['mobile']['click'])? $overallStats['mobile']['click']: 0)/(isset($overallStats['mobile']['impression'])? $overallStats['mobile']['impression']: 0))*100); ?>%</h1>
+        </div>
+    </div>
+
+    <div class="adsforwp-desktop afw-analytics_track_report-div" style="display: none;">
+        <div>
+            <h3> <?php echo esc_html__('Visitors','ads-for-wp'); ?></h3>
+            <h1><?php echo @$allinfo['otherDeviceData']['desktop']['vistors'] ?><span class="afw-diff-precentage"><?php echo @$allinfo['otherDeviceData']['desktop']['vistors_cmp']; ?> </span></h1>
+        </div>    
+        <div>
+          <h3> <?php echo esc_html__('Pageview','ads-for-wp'); ?></h3> 
+          <h1><?php echo @$allinfo['otherDeviceData']['desktop']['pageviews']; ?> <span class="afw-diff-precentage"><?php echo @$allinfo['otherDeviceData']['desktop']['pageviews_cmp']; ?> </span></h1>
+        </div>    
+        <div>
+         <h3> <?php echo esc_html__('AD impressions','ads-for-wp'); ?></h3> 
+         <h1><?php echo (isset($overallStats['desktop']['impression'])? $overallStats['desktop']['impression']: 0); ?><span class="afw-diff-precentage"> </span></h1>
+        </div>    
+        <div>
+          <h3> <?php echo esc_html__('Total Clicks','ads-for-wp'); ?></h3> 
+          <h1><?php echo (isset($overallStats['desktop']['click'])? $overallStats['desktop']['click']: 0); ?> <span class="afw-diff-precentage"> </span></h1>
+          
+        </div> 
+        <div>
+          <h3> <?php echo esc_html__('CTR','ads-for-wp'); ?></h3> 
+          <h1><?php echo $this->two_decimal_places(((isset($overallStats['desktop']['click'])? $overallStats['desktop']['click']: 0)/(isset($overallStats['desktop']['impression'])? $overallStats['desktop']['impression']: 0))*100); ?>%</h1>
+        </div>
+    </div>
+
+    <div class="adsforwp-amp afw-analytics_track_report-div" style="display: none;">
+        <div>
+            <h3> <?php echo esc_html__('Visitors','ads-for-wp'); ?></h3>
+            <h1><?php echo @$allinfo['amp_pages']['visitors'] ?><span class="afw-diff-precentage"><?php echo @$allinfo['amp_pages']['vistors_cmp']; ?> </span></h1>
+        </div>    
+        <div>
+          <h3> <?php echo esc_html__('Pageview','ads-for-wp'); ?></h3> 
+          <h1><?php echo @$allinfo['amp_pages']['pageviews']; ?> <span class="afw-diff-precentage"><?php echo @$allinfo['amp_pages']['pageviews_cmp']; ?> </span></h1>
+        </div>    
+        <div>
+         <h3> <?php echo esc_html__('AD impressions','ads-for-wp'); ?></h3> 
+         <h1><?php echo (isset($overallStats['amp']['impression'])? $overallStats['amp']['impression']: 0); ?> <span class="afw-diff-precentage"> </span></h1>
+        </div>    
+        <div>
+          <h3> <?php echo esc_html__('Total Clicks','ads-for-wp'); ?></h3> 
+          <h1><?php echo  (isset($overallStats['amp']['impression'])? $overallStats['amp']['click']: 0); ?> <span class="afw-diff-precentage"> </span></h1>
+          
+        </div> 
+        <div>
+          <h3> <?php echo esc_html__('CTR','ads-for-wp'); ?></h3> 
+          <h1><?php echo $this->two_decimal_places(((isset($overallStats['amp']['impression'])? $overallStats['amp']['click']: 0)/(isset($overallStats['amp']['impression'])? $overallStats['amp']['impression']: 0))*100) ?>%</h1>
+        </div>
+    </div>
+
+    <div class="adsforwp-tablets afw-analytics_track_report-div" style="display: none;">
+        <div>
+            <h3> <?php echo esc_html__('Visitors','ads-for-wp'); ?></h3>
+            <h1><?php echo @$allinfo['otherDeviceData']['tablet']['vistors'] ?><span class="afw-diff-precentage"><?php echo @$allinfo['otherDeviceData']['tablet']['vistors_cmp']; ?> </span></h1>
+        </div>    
+        <div>
+          <h3> <?php echo esc_html__('Pageview','ads-for-wp'); ?></h3> 
+          <h1><?php echo $allinfo['otherDeviceData']['tablet']['pageviews']; ?> <span class="afw-diff-precentage"><?php echo @$allinfo['otherDeviceData']['tablet']['pageviews_cmp']; ?> </span></h1>
+        </div>    
+        <div>
+         <h3> <?php echo esc_html__('AD impressions','ads-for-wp'); ?></h3> 
+         <h1><?php echo (isset($overallStats['tablet']['impression'])? $overallStats['tablet']['impression']: 0); ?><span class="afw-diff-precentage"> </span></h1>
+        </div>    
+        <div>
+          <h3> <?php echo esc_html__('Total Clicks','ads-for-wp'); ?></h3> 
+          <h1><?php echo (isset($overallStats['tablet']['click'])? $overallStats['tablet']['click']: 0); ?> <span class="afw-diff-precentage"> </span></h1>
+          
+        </div> 
+        <div>
+          <h3> <?php echo esc_html__('CTR','ads-for-wp'); ?></h3> 
+          <h1><?php echo $this->two_decimal_places(((isset($overallStats['tablet']['click'])? $overallStats['tablet']['click']: 0)/(isset($overallStats['tablet']['impression'])? $overallStats['tablet']['impression']: 0))*100); ?>%</h1>
+        </div>
+    </div>
 </div>        
 	<?php         
 }
 /*
 	WP Settings API
 */
+	function adsforwp_admin_analytics_render(){
+       global $GLOBALS;
+        $GLOBALS['ADSFORWP']->authentication();
+    }
+    function two_decimal_places($num){
+        return number_format((float)$num, 2, '.', '');
+    }
 }
 if (class_exists('adsforwp_admin_analytics_settings')) {
 	new adsforwp_admin_analytics_settings;

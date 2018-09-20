@@ -25,5 +25,15 @@ $(".adsforwp-analytics-tabs a").click(function(e){
 		window.history.pushState("", "", href);
 		return false;
 	});
-        
+	
+	var href = window.location.href;
+	var currentTab = adsforwpGetParamByTabName("tab",href);
+	if(!currentTab){
+		currentTab = "all";
+	}                     
+	$(this).siblings().removeClass("nav-tab-active");
+	$(this).addClass("nav-tab-active");
+	$(".form-wrap").find(".adsforwp-"+currentTab).siblings().hide();
+	$(".form-wrap .adsforwp-"+currentTab).show();
+	window.history.pushState("", "", href);
 });

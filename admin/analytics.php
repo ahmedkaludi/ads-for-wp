@@ -102,7 +102,20 @@ public function __construct() {
                  //Device specific count
                  $device_impression_count = get_post_meta($ad_id, $key=$key_name, true );          
                  $device_impression_count++;         
-                 update_post_meta( $ad_id, $key_name, $device_impression_count);                      
+                 update_post_meta( $ad_id, $key_name, $device_impression_count);
+
+                 $optionDetails = get_option("adsforwp_ads-".date('Y-m-d'));
+                 if($optionDetails){
+                    if(!isset($optionDetails[$device_name][$ad_id]['impression'])){
+                        $optionDetails[$device_name][$ad_id]['impression'] = 1;
+                    }else{
+                        $optionDetails[$device_name][$ad_id]['impression'] += 1;
+                    }
+                 }else{
+                    $optionDetails[$device_name][$ad_id]['impression'] = 1;
+                 }
+                 $optionDetails['complete'][$device_name]['impression'] = (isset($optionDetails['complete'][$device_name]['impression'])? $optionDetails['complete'][$device_name]['impression']: 0)+1;
+                 update_option("adsforwp_ads-".date('Y-m-d'), $optionDetails);                      
             }    
            wp_die();           
     }
@@ -125,7 +138,21 @@ public function __construct() {
                  $device_impression_count = get_post_meta($ad_id, $key=$key_name, true );          
                  $device_impression_count++;         
                  update_post_meta( $ad_id, $key_name, $device_impression_count);  
-                }     
+
+                 //option save
+                 $optionDetails = get_option("adsforwp_ads-".date('Y-m-d'));
+                 if($optionDetails){
+                    if(!isset($optionDetails[$device_name][$ad_id]['impression'])){
+                        $optionDetails[$device_name][$ad_id]['impression'] = 1;
+                    }else{
+                        $optionDetails[$device_name][$ad_id]['impression'] += 1;
+                    }
+                 }else{
+                    $optionDetails[$device_name][$ad_id]['impression'] = 1;
+                 }
+                 $optionDetails['complete'][$device_name]['impression'] = (isset($optionDetails['complete'][$device_name]['impression'])? $optionDetails['complete'][$device_name]['impression']: 0)+1;
+                 update_option("adsforwp_ads-".date('Y-m-d'), $optionDetails);
+                }//Foreach closed     
             }        
            wp_die();           
     }
@@ -144,6 +171,20 @@ public function __construct() {
                 $ad_clicks_count = get_post_meta($ad_id, $key=$key_name, true );          
                 $ad_clicks_count++;         
                 update_post_meta( $ad_id, $key_name, $ad_clicks_count);   
+
+                //option save
+                 $optionDetails = get_option("adsforwp_ads-".date('Y-m-d'));
+                 if($optionDetails){
+                    if(!isset($optionDetails[$device_name][$ad_id]['click'])){
+                        $optionDetails[$device_name][$ad_id]['click'] = 1;
+                    }else{
+                        $optionDetails[$device_name][$ad_id]['click'] += 1;
+                    }
+                 }else{
+                    $optionDetails[$device_name][$ad_id]['click'] = 1;
+                 }
+                 $optionDetails['complete'][$device_name]['click'] = (isset($optionDetails['complete'][$device_name]['click'])? $optionDetails['complete'][$device_name]['click']: 0)+1;
+                 update_option("adsforwp_ads-".date('Y-m-d'), $optionDetails);
               
             }                           
            wp_die();           
@@ -162,6 +203,19 @@ public function __construct() {
                 $ad_clicks_count++;         
                 update_post_meta( $ad_id, $key_name, $ad_clicks_count);   
               
+                //option save
+                $optionDetails = get_option("adsforwp_ads-".date('Y-m-d'));
+                 if($optionDetails){
+                    if(!isset($optionDetails[$device_name][$ad_id]['click'])){
+                        $optionDetails[$device_name][$ad_id]['click'] = 1;
+                    }else{
+                        $optionDetails[$device_name][$ad_id]['click'] += 1;
+                    }
+                 }else{
+                    $optionDetails[$device_name][$ad_id]['click'] = 1;
+                 }
+                 $optionDetails['complete'][$device_name]['click'] = (isset($optionDetails['complete'][$device_name]['click'])? $optionDetails['complete'][$device_name]['click']: 0)+1;
+                 update_option("adsforwp_ads-".date('Y-m-d'), $optionDetails);
             }                           
            wp_die();           
     }

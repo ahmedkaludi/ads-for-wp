@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 define('ADSFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('ADSFORWP_PLUGIN_DIR_URI', plugin_dir_url(__FILE__));
-
+define( 'ADSFORWP_LIB_PATH', dirname( __FILE__ ) . '/admin/inc/' );
 if ( ! defined( 'ADSFORWP_VERSION' ) ) {
 	define( 'ADSFORWP_VERSION', '1.0.5' );
 }
@@ -27,6 +27,10 @@ require  ADSFORWP_PLUGIN_DIR.'/admin/ads-newsletter.php';
 require  ADSFORWP_PLUGIN_DIR.'/admin/ads-widget.php';
 require  ADSFORWP_PLUGIN_DIR.'/admin/common-functions.php';
 require  ADSFORWP_PLUGIN_DIR.'/admin/settings.php';
+
+ require  ADSFORWP_PLUGIN_DIR.'/admin/inc/analytics-settings.php';
+require  ADSFORWP_PLUGIN_DIR.'/admin/inc/analytics-common-functions.php';
+
 require  ADSFORWP_PLUGIN_DIR.'/admin/ajax-selectbox.php';
 require  ADSFORWP_PLUGIN_DIR.'/admin/file-creation.php';
 require  ADSFORWP_PLUGIN_DIR.'/admin/analytics-settings.php';

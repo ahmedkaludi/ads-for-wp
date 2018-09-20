@@ -141,15 +141,18 @@ input[name=adsforwp_group_ref_interval_sec]{
     margin-left: 0px;
     padding: 0px;
     padding-left: 20px;
+    height:30px;
     padding-right: 20px;
 }
 .afw-analytics-title{
-    width: 30%;
+    width: 25%;
 }
 .afw-analytics-days{
-    width: 30%;
     padding-top: 9px;
     text-align: center;
+}
+.afw-analytics-days select{
+    height:30px;
 }
 .afw-analytics_track_report-div{
     margin-top: 40px;
@@ -172,4 +175,10 @@ input[name=adsforwp_group_ref_interval_sec]{
 .afw-token-div input{
     margin-bottom: 20px;
 }
+.view_settings_option{    width: 15%;
+    display: inline-block;
+    text-align: right;
+    vertical-align: middle;
+    padding-top: 15px;}
+
 /* Analytics page css ends here! */
