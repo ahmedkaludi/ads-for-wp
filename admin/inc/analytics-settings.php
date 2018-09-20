@@ -1,10 +1,10 @@
 <?php
 //namespace Adsforwp\analytics;
-class analyticsSettings{
-	public $ClientID = '1706137883-ipl56al6rkgaud76038t7tvit6rq2r8b.apps.googleusercontent.com';
-	public $ClientSecret = 'uX7KsPRsbXVT_Z8oIHyqw-aM';
+class Adsforwp_analyticsSettings{
+	public $ClientID = '615474230703-50bpfep5sehi7aff3721jfcugogj0c8v.apps.googleusercontent.com';
+	public $ClientSecret = 'KitbAxJMqJ__wwgKUMICNNGh';
 	public $scope = 'https://www.googleapis.com/auth/analytics.readonly' ; // Readonly scope.
-	public $redirect = 'http://my-field.000webhostapp.com/api/';
+	public $redirect = 'http://www.adsforwp.com/analtyics/index.php';
 
 	public $settings;
 	protected $state_data;
@@ -263,5 +263,5 @@ class analyticsSettings{
 }
 if(is_admin() && current_user_can( 'manage_options' ) ){
 	//$GLOBALS['ADSFORWP'] = new \Adsforwp\analytics\analyticsSettings();
-	$GLOBALS['ADSFORWP'] = new analyticsSettings();
+	$GLOBALS['ADSFORWP'] = new Adsforwp_analyticsSettings();
 }

@@ -240,7 +240,7 @@ function adsforwp_get_analytics_dashboard( $metrics, $start_date, $end_date, $di
 				// Show error message only for logged in users.
 				if ( current_user_can( 'manage_options' ) ) {
 
-					echo sprintf( esc_html__( '%1$s Oops, Try to %3$s Reset %4$s Authentication. %2$s %7$s %2$s %5$s Don\'t worry, This error message is only visible to Administrators. %6$s %2$s', 'ads-for-wp' ), '<br /><br />', '<br />', '<a href=' . esc_url( admin_url( 'edit.php?post_type=adsforwp&page=adsforwp-analytics">', '</a>', '<i>', '</i>', esc_html( $e->getMessage() ) );
+					echo sprintf( esc_html__( '%1$s Oops, Try to %3$s Reset %4$s Authentication. %2$s %7$s %2$s %5$s Don\'t worry, This error message is only visible to Administrators. %6$s %2$s', 'ads-for-wp' ), '<br /><br />', '<br />', '<a href=' . esc_url( admin_url( 'edit.php?post_type=adsforwp&page=adsforwp-analytics')), '</a>', '<i>', '</i>', esc_html( $e->getMessage() ) );
 				}
 			} catch ( Adsforwp_Google_IO_Exception $e ) {
 
