@@ -108,7 +108,6 @@ function adsforwp_show_default_overall_dashboard($dashboard_profile_ID,$start_da
 									'pageviews_comp'=>adsforwp_get_compare_stats( $pageviews, $compare_pageviews, $date_different ),
 								);
 			}
-		print_r($device_data);die;
 
 			$returnstats = array(
 						"sessions" => adsforwp_beautify_number($results['ga:sessions']),
