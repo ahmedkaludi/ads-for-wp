@@ -65,6 +65,7 @@ class Adsforwp_analyticsSettings{
 				$savedOpt['profile_for_post'] = $profile_for_dashboard;
 				$savedOpt['profile_for_dashboard'] = $profile_for_dashboard;
 				update_option( 'adsforwp_analytics', $savedOpt );
+				wp_redirect(admin_url('edit.php?post_type=adsforwp&page=analytics'));
 			}
 			if(isset($_POST['wp_adsforwp_analytics_log_out'])){
 				
@@ -80,12 +81,19 @@ class Adsforwp_analyticsSettings{
 		</div>
 		<?php
 		$adsforwp_google_token = get_option( 'adsforwp_google_token' );
-		if ( $adsforwp_google_token ) { ?>
-				<div style="float:right;padding-right: 2%;"><a class="button" href="<?php echo esc_url( admin_url('edit.php?post_type=adsforwp&page=analytics') ); ?>"><?php esc_html_e( 'Go to dashboard.', 'ads-for-wp' ); ?></a></div>
+		if ( $adsforwp_google_token ) { 
+			$analyticsSettings = get_option('adsforwp_analytics');
+			$profile_for_post_value = $analyticsSettings['profile_for_dashboard'];
+			if($profile_for_post_value){
+		?>
+				<div style="float:right;padding-right: 2%;">
+					<a class="button" href="<?php echo esc_url( admin_url('edit.php?post_type=adsforwp&page=analytics') ); ?>"><?php esc_html_e( 'Go to dashboard.', 'ads-for-wp' ); ?></a>
+				</div>
+			<?php } ?>
 				<form action="" method="post">
 				<table>
 					<tr>
-							<p class="inside"><?php esc_html_e( 'You have allowed your site to access the Analytics data from Google. Logout below to disconnect it.', 'ads-for-wp' ); ?></p>
+						<p class="inside"><?php esc_html_e( 'You have allowed your site to access the Analytics data from Google. Logout below to disconnect it.', 'ads-for-wp' ); ?></p>
 					</tr>
 					<tr>
 						<td colspan="2">
@@ -99,6 +107,7 @@ class Adsforwp_analyticsSettings{
 				$this->siteSettings();
 			} else {
 				?>
+				<p class="inside"><?php esc_html_e( 'For Analytics You need to allow your site to access the Analytics data from Google. Logout below to disconnect it.', 'ads-for-wp' ); ?></p>
 				<a title="Log in with your Google Analytics Account" class="button-primary authentication_btn" href="https://accounts.google.com/o/oauth2/auth?<?php echo $this->generate_login_url(); ?>"><?php esc_html_e( 'Log in with Google Analytics Account', 'ads-for-wp' ); ?></a>
 				<?php
 			}
@@ -144,7 +153,7 @@ class Adsforwp_analyticsSettings{
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2"><input type="submit" class="btn button-primary" name="adsforwp_profile_entry" value="Save Settings"></td>
+					<td colspan="2"><input type="submit" class="btn button-primary" name="adsforwp_profile_entry" value="View Report"></td>
 				</tr>
 			</table>
 		</form>

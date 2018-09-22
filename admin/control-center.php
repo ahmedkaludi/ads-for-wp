@@ -177,10 +177,10 @@ function adsforwp_admin_link($tab = '', $args = array()){
 function adsforwp_analytics_admin_link($tab = '', $args = array()){	
 	$page = 'analytics';
 	if ( ! is_multisite() ) {
-		$link = admin_url( 'admin.php?page=' . $page );
+		$link = admin_url( 'edit.php?post_type=adsforwp&page=' . $page );
 	}
 	else {
-		$link = network_admin_url( 'admin.php?page=' . $page );
+		$link = network_admin_url( 'edit.php?post_type=adsforwp&page=' . $page );
 	}
 
 	if ( $tab ) {

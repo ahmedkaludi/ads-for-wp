@@ -8,7 +8,9 @@ function adsforwp_show_default_overall_dashboard($dashboard_profile_ID,$start_da
 	$stats = get_transient( md5( 'adsforwp-show-default-overall-dashboard' . $dashboard_profile_ID . $start_date . $end_date ) );
 	if( $stats === false ) {
 		$stats = adsforwp_get_analytics_dashboard( 'ga:sessions,ga:users,ga:pageviews,ga:avgSessionDuration,ga:bounceRate,ga:pageviewsPerSession,ga:percentNewSessions,ga:newUsers,ga:sessionDuration', $start_date, $end_date );
-		set_transient( md5( 'adsforwp-show-default-overall-dashboard' . $dashboard_profile_ID . $start_date . $end_date ) , $stats, 60 * 60 * 20 );
+		if($date_different && $stats){
+			set_transient( md5( 'adsforwp-show-default-overall-dashboard' . $dashboard_profile_ID . $start_date . $end_date ) , $stats, 60 * 60 * 20 );
+		}
 
 	}
 
@@ -16,20 +18,29 @@ function adsforwp_show_default_overall_dashboard($dashboard_profile_ID,$start_da
 	$compare_stats =  get_transient( md5( 'adsforwp-show-default-overall-dashboard-compare' . $dashboard_profile_ID . $compare_start_date . $compare_end_date ) );
 	if ( false === $compare_stats ) {
 		$compare_stats = adsforwp_get_analytics_dashboard( 'ga:sessions,ga:users,ga:pageviews,ga:avgSessionDuration,ga:bounceRate,ga:pageviewsPerSession,ga:percentNewSessions,ga:newUsers', $compare_start_date, $compare_end_date );
-		set_transient( md5( 'adsforwp-show-default-overall-dashboard-compare' . $dashboard_profile_ID . $compare_start_date . $compare_end_date ) , $compare_stats, 60 * 60 * 20 );
+
+		if($date_different && $compare_stats){
+			set_transient( md5( 'adsforwp-show-default-overall-dashboard-compare' . $dashboard_profile_ID . $compare_start_date . $compare_end_date ) , $compare_stats, 60 * 60 * 20 );
+		}
 	}
 
 	// Device Category Stats
 	$device_category_stats = get_transient( md5( 'adsforwp-show-default-overall-device-dashboard' . $dashboard_profile_ID . $start_date . $end_date ) );
 	if ( $device_category_stats === false ) {
 		$device_category_stats = adsforwp_get_analytics_dashboard( 'ga:sessions,ga:users,ga:pageviews', $start_date, $end_date, 'ga:deviceCategory', '-ga:sessions' );
-		set_transient( md5( 'adsforwp-show-default-overall-device-dashboard' . $dashboard_profile_ID . $start_date . $end_date ) , $device_category_stats, 60 * 60 * 20 );
+
+		if($date_different && $device_category_stats){
+			set_transient( md5( 'adsforwp-show-default-overall-device-dashboard' . $dashboard_profile_ID . $start_date . $end_date ) , $device_category_stats, 60 * 60 * 20 );
+		}
 	}
 	//compare Device Category Stats
 	$compare_device_category_stats =  get_transient( md5( 'adsforwp-show-default-overall-device-compare' . $dashboard_profile_ID . $compare_start_date . $compare_end_date ) );
 	if ( false === $compare_device_category_stats ) {
 		$compare_device_category_stats = adsforwp_get_analytics_dashboard( 'ga:sessions,ga:users,ga:pageviews', $compare_start_date, $compare_end_date,'ga:deviceCategory', '-ga:sessions' );
-		set_transient( md5( 'adsforwp-show-default-overall-device-compare' . $dashboard_profile_ID . $compare_start_date . $compare_end_date ) , $compare_device_category_stats, 60 * 60 * 20 );
+
+		if($date_different && $compare_device_category_stats){
+			set_transient( md5( 'adsforwp-show-default-overall-device-compare' . $dashboard_profile_ID . $compare_start_date . $compare_end_date ) , $compare_device_category_stats, 60 * 60 * 20 );
+		}
 	}
 
 	// Include Top Pages Statistics
@@ -37,7 +48,10 @@ function adsforwp_show_default_overall_dashboard($dashboard_profile_ID,$start_da
 
 	if ( $top_page_stats === false ) {
 		$top_page_stats = adsforwp_get_analytics_dashboard( 'ga:pageviews,ga:avgTimeOnPage,ga:bounceRate,ga:users', $start_date, $end_date, 'ga:PageTitle,ga:pagePath', '-ga:pageviews', false, 40 );
-		set_transient( md5( 'adsforwp-show-default-top-pages-dashboard' . $dashboard_profile_ID . $start_date . $end_date ) , $top_page_stats, 60 * 60 * 20 );
+		
+		if($date_different && $top_page_stats){
+			set_transient( md5( 'adsforwp-show-default-top-pages-dashboard' . $dashboard_profile_ID . $start_date . $end_date ) , $top_page_stats, 60 * 60 * 20 );
+		}
 	}
 	$ampPages = array('visitors'=>0, "pageviews"=>0);
 	if ( isset( $top_page_stats['rows'] ) && $top_page_stats['rows'] > 0 ) {
@@ -64,19 +78,37 @@ function adsforwp_show_default_overall_dashboard($dashboard_profile_ID,$start_da
 			$compare_results = $compare_stats->totalsForAllResults;
 			$results = $stats->totalsForAllResults;
 
-			$device_data = array('desktop');
+			$device_data = array();
 			$compare_device_stats = $compare_device_category_stats->rows;
 			foreach( $device_category_stats->rows as $key=>$row ){
+				$session = $row[1];
+				$compare_session = $compare_device_stats[$key][1];
+				$vistors = $row[2];
+				$compare_vistors = $compare_device_stats[$key][2];
+				$pageviews = $row[3];
+				$compare_pageviews = $compare_device_stats[$key][3];
+				if($row[0]=='mobile'){
+					$session += $device_category_stats->rows[2][1];
+					$compare_session += $compare_device_stats[2][1];
+
+					$vistors += $device_category_stats->rows[2][2];
+					$compare_vistors += $compare_device_stats[2][2];
+
+					$pageviews += $device_category_stats->rows[2][3];
+					$compare_pageviews += $compare_device_stats[2][3];
+
+				}
+
 				$device_data[$row[0]] = array(
-									'sessions'=>$row[1],
-									'session_comp'=>adsforwp_get_compare_stats( $row[1], $compare_device_stats[$key][1], $date_different ),
-									'vistors'=>$row[2],
-									'vistors_comp'=>adsforwp_get_compare_stats( $row[2], $compare_device_stats[$key][2], $date_different ),
-									'pageviews'=>$row[3],
-									'pageviews_comp'=>adsforwp_get_compare_stats( $row[3], $compare_device_stats[$key][3], $date_different ),
+									'sessions'=>$session,
+									'session_comp'=>adsforwp_get_compare_stats($session, $compare_session, $date_different ),
+									'vistors'=>$vistors,
+									'vistors_comp'=>adsforwp_get_compare_stats($vistors, $compare_vistors, $date_different ),
+									'pageviews'=>$pageviews,
+									'pageviews_comp'=>adsforwp_get_compare_stats( $pageviews, $compare_pageviews, $date_different ),
 								);
 			}
-	
+		print_r($device_data);die;
 
 			$returnstats = array(
 						"sessions" => adsforwp_beautify_number($results['ga:sessions']),
@@ -119,9 +151,10 @@ function adsforwp_get_compare_stats( $results, $compare_results, $date_different
 	} else {
 		$class   = $compare > 0 ? 'adsforwp_green' : 'adsforwp_red';
 	}
-
+	$compare = $compare>0 ? '+'.$compare : $compare;
+	//' . $date_different . __( ' ago', 'ads-for-wp' ) . '
 	return '<div class="adsforwp_general_status_footer_info">
-			<span class="' . $class . '  adsforwp_info_value"> ' . $compare . ' %</span> ' . $date_different . __( ' ago', 'ads-for-wp' ) . '
+			<span class="' . $class . '  adsforwp_info_value"> ' . $compare . ' %</span> 
 	</div>';
 }
 function adsforwp_beautify_number($num){

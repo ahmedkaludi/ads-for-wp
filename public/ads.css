@@ -159,8 +159,8 @@ input[name=adsforwp_group_ref_interval_sec]{
     display: flex;
 }
 .afw-analytics_track_report-div div{
-    width: 25%;
-    
+    width: 75%;
+    padding-left: 10px; 
 }
 .afw-diff-precentage{
     font-size: 17px;
@@ -180,5 +180,10 @@ input[name=adsforwp_group_ref_interval_sec]{
     text-align: right;
     vertical-align: middle;
     padding-top: 15px;}
-
+.adsforwp_red{
+    color: red;
+} 
+.adsforwp_green{
+    color: green;
+} 
 /* Analytics page css ends here! */

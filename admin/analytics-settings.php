@@ -23,7 +23,7 @@ public function adsforwp_add_analytics_menu_links() {
         }
                 add_submenu_page( $settingsLink,
                     esc_html__( 'Ads for wp Analytics', 'ads-for-wp' ),
-                    esc_html__( 'Analytics Settings', 'ads-for-wp' ),
+                    esc_html__( 'Analytics', 'ads-for-wp' ),
                     'manage_options',
                     'adsforwp-analytics',
                     array($this , 'adsforwp_admin_analytics_render')
@@ -174,13 +174,13 @@ public function adsforwp_admin_analytics_interface_render(){
             
             echo '<a href="' . esc_url(adsforwp_analytics_admin_link('amp')) . '" class="nav-tab ' . esc_attr( $tab == 'amp' ? 'nav-tab-active' : '') . '"><span class=""></span> ' . esc_html__('AMP','ads-for-wp') . '</a>';
             
-            echo '<a href="' . esc_url(adsforwp_analytics_admin_link('tablets')) . '" class="nav-tab ' . esc_attr( $tab == 'tablets' ? 'nav-tab-active' : '') . '"><span class=""></span> ' . esc_html__('Tablets','ads-for-wp') . '</a>';
             
             ?>
         </div>
         <div class="view_old_data" style="display: inline-block;">
             <form method="get">
                 <div class="afw-analytics-days" style="display: inline-block;">
+                    <input type="hidden" name="post_type" value="adsforwp">
                     <input type="hidden" name="page" value="analytics">
                     <select name="view_data">
                         <option value="today" <?php if($_differ=='today'){echo "selected"; } ?>> <?php echo esc_html__('Today','ads-for-wp'); ?></option>
@@ -201,12 +201,12 @@ public function adsforwp_admin_analytics_interface_render(){
                         font-size: 14px;
                         padding: 0 13px;
                         height: 30px;
-                        cursor: pointer;"> >> <?php echo esc_html__('view','ads-for-wp'); ?>  </button>
+                        cursor: pointer;"> <?php echo esc_html__('View Report','ads-for-wp'); ?>  </button>
                 </div>
             </form>
         </div>
         <div class="view_settings_option" style="display: inline-block;">
-            <a href="<?php echo esc_url( admin_url('edit.php?post_type=adsforwp&page=adsforwp-analytics') ); ?>"><i class="dashicons-before dashicons-admin-generic"></i></a></div>
+            <a href="<?php echo esc_url( admin_url('edit.php?post_type=adsforwp&page=adsforwp-analytics') ); ?>"><i class="dashicons-before dashicons-admin-generic"></i> Settings</a></div>
 
 </div>
 <div class="form-wrap">
@@ -306,29 +306,7 @@ public function adsforwp_admin_analytics_interface_render(){
         </div>
     </div>
 
-    <div class="adsforwp-tablets afw-analytics_track_report-div" style="display: none;">
-        <div>
-            <h3> <?php echo esc_html__('Visitors','ads-for-wp'); ?></h3>
-            <h1><?php echo @$allinfo['otherDeviceData']['tablet']['vistors'] ?><span class="afw-diff-precentage"><?php echo @$allinfo['otherDeviceData']['tablet']['vistors_cmp']; ?> </span></h1>
-        </div>    
-        <div>
-          <h3> <?php echo esc_html__('Pageview','ads-for-wp'); ?></h3> 
-          <h1><?php echo $allinfo['otherDeviceData']['tablet']['pageviews']; ?> <span class="afw-diff-precentage"><?php echo @$allinfo['otherDeviceData']['tablet']['pageviews_cmp']; ?> </span></h1>
-        </div>    
-        <div>
-         <h3> <?php echo esc_html__('AD impressions','ads-for-wp'); ?></h3> 
-         <h1><?php echo (isset($overallStats['tablet']['impression'])? $overallStats['tablet']['impression']: 0); ?><span class="afw-diff-precentage"> </span></h1>
-        </div>    
-        <div>
-          <h3> <?php echo esc_html__('Total Clicks','ads-for-wp'); ?></h3> 
-          <h1><?php echo (isset($overallStats['tablet']['click'])? $overallStats['tablet']['click']: 0); ?> <span class="afw-diff-precentage"> </span></h1>
-          
-        </div> 
-        <div>
-          <h3> <?php echo esc_html__('CTR','ads-for-wp'); ?></h3> 
-          <h1><?php echo $this->two_decimal_places(((isset($overallStats['tablet']['click'])? $overallStats['tablet']['click']: 0)/(isset($overallStats['tablet']['impression'])? $overallStats['tablet']['impression']: 0))*100); ?>%</h1>
-        </div>
-    </div>
+    
 </div>        
 	<?php         
 }
