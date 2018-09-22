@@ -695,5 +695,3 @@ $(".afw-send-query").on("click", function(e){
 	document.getElementById('adsforwp_group_shortcode').value = '[adsforwp-group id="'+currentAdID+'"]';
         }
 });
-
- 

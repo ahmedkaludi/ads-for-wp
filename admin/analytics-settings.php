@@ -2,8 +2,8 @@
 class adsforwp_admin_analytics_settings{
             
 public function __construct() {
-                add_action( 'admin_menu', array($this, 'adsforwp_add_analytics_menu_links'));        
-                
+        add_action( 'admin_enqueue_scripts', array($this, 'adsforwp_chart_register_scripts') );
+        add_action( 'admin_menu', array($this, 'adsforwp_add_analytics_menu_links'),true);
                 
     }
 public function adsforwp_add_analytics_menu_links() {	
@@ -305,9 +305,26 @@ public function adsforwp_admin_analytics_interface_render(){
           <h1><?php echo $this->two_decimal_places(((isset($overallStats['amp']['impression'])? $overallStats['amp']['click']: 0)/(isset($overallStats['amp']['impression'])? $overallStats['amp']['impression']: 0))*100) ?>%</h1>
         </div>
     </div>
+    
 
     
-</div>        
+</div>  
+<section style="margin-top:30px; background: #fff;padding:10px;">
+    <div id="canvas-holder" style="width:40%;padding:10px;display: inline-block;">
+        <h3>Mobile vs Desktop</h3>
+        <canvas  id="chart-stats" ></canvas>      
+    </div>
+    <div id="canvas-holder" style="width:40%;padding:10px;display: inline-block;">
+        <h3>AMP vs Non AMP</h3>
+        <canvas  id="chart-amp-mobile" ></canvas>      
+    </div>
+</section>
+<script>
+   var piechart = <?php echo json_encode(array("mobile"=>(isset($overallStats['mobile']['impression'])? $overallStats['mobile']['impression']: 0),
+         "desktop"=> (isset($overallStats['desktop']['impression'])? $overallStats['desktop']['impression']: 0),
+        "AMP"=>(isset($overallStats['amp']['impression'])? $overallStats['amp']['impression']: 0) ,
+     ));?>
+</script>
 	<?php         
 }
 /*
@@ -320,6 +337,32 @@ public function adsforwp_admin_analytics_interface_render(){
     function two_decimal_places($num){
         return number_format((float)$num, 2, '.', '');
     }
+
+    function adsforwp_chart_register_scripts($hook){
+        //if("adsforwp_page_analytics"==$hook){
+            wp_register_script(
+                    'highCharts',
+                    ADSFORWP_PLUGIN_DIR_URI . 'public/Chart.bundle.js',
+                    array( 'jquery' ),
+                    '3.0',
+                    true
+                );
+                wp_register_script(
+                    'adminCharts',
+                    ADSFORWP_PLUGIN_DIR_URI . 'public/admin_charts.js',
+                    array( 'highCharts' ),
+                    '1.0',
+                    true
+                );
+               /*wp_register_style(
+                    'adminChartsStyles',
+                    ADSFORWP_PLUGIN_DIR_URI . 'css/admin_chart.css'
+                );*/
+                wp_enqueue_script( 'highCharts' );
+                wp_enqueue_script( 'adminCharts' );
+       // }
+    }
+
 }
 if (class_exists('adsforwp_admin_analytics_settings')) {
 	new adsforwp_admin_analytics_settings;
