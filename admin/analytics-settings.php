@@ -151,8 +151,8 @@ public function adsforwp_admin_analytics_interface_render(){
         }
 
     //ALL
+    $allDeviceAds = array("impression" => 0, "click"=>0);
     if($overallStats){
-        $allDeviceAds = array("impression" => 0, "click"=>0);
         foreach ($overallStats as $key => $value) {
             $allDeviceAds['click'] +=  $value['click'];
             $allDeviceAds['impression'] +=  $value['impression'];
@@ -230,7 +230,11 @@ public function adsforwp_admin_analytics_interface_render(){
         </div> 
         <div>
           <h3> <?php echo esc_html__('CTR','ads-for-wp'); ?></h3> 
-          <h1><?php echo $this->two_decimal_places(((isset($overallStats['all']['click'])? $overallStats['all']['click']: 0)/(isset($overallStats['all']['impression'])? $overallStats['all']['impression']: 0))*100); ?>%</h1>
+          <h1><?php
+          $all_impression = (isset($overallStats['all']['impression'])? $overallStats['all']['impression']: 0);
+            if($all_impression){
+                echo $this->two_decimal_places(((isset($overallStats['all']['click'])? $overallStats['all']['click']: 0)/$all_impression)*100);
+            }else{echo "0"; } ?>%</h1>
         </div> 
     </div>
 
@@ -254,7 +258,11 @@ public function adsforwp_admin_analytics_interface_render(){
         </div> 
         <div>
           <h3> <?php echo esc_html__('CTR','ads-for-wp'); ?></h3> 
-          <h1><?php echo $this->two_decimal_places(((isset($overallStats['mobile']['click'])? $overallStats['mobile']['click']: 0)/(isset($overallStats['mobile']['impression'])? $overallStats['mobile']['impression']: 0))*100); ?>%</h1>
+          <h1><?php 
+          $mobile_impression = (isset($overallStats['mobile']['impression'])? $overallStats['mobile']['impression']: 0);
+          if($mobile_impression){
+            echo $this->two_decimal_places(((isset($overallStats['mobile']['click'])? $overallStats['mobile']['click']: 0)/$mobile_impression)*100);
+          }else{echo "0"; } ?>%</h1>
         </div>
     </div>
 
@@ -278,7 +286,11 @@ public function adsforwp_admin_analytics_interface_render(){
         </div> 
         <div>
           <h3> <?php echo esc_html__('CTR','ads-for-wp'); ?></h3> 
-          <h1><?php echo $this->two_decimal_places(((isset($overallStats['desktop']['click'])? $overallStats['desktop']['click']: 0)/(isset($overallStats['desktop']['impression'])? $overallStats['desktop']['impression']: 0))*100); ?>%</h1>
+          <h1><?php
+          $desktop_impression = (isset($overallStats['desktop']['impression'])? $overallStats['desktop']['impression']: 0);
+          if($desktop_impression){
+           echo $this->two_decimal_places(((isset($overallStats['desktop']['click'])? $overallStats['desktop']['click']: 0)/$desktop_impression)*100);
+           }else{echo "0"; } ?>%</h1>
         </div>
     </div>
 
@@ -302,7 +314,10 @@ public function adsforwp_admin_analytics_interface_render(){
         </div> 
         <div>
           <h3> <?php echo esc_html__('CTR','ads-for-wp'); ?></h3> 
-          <h1><?php echo $this->two_decimal_places(((isset($overallStats['amp']['impression'])? $overallStats['amp']['click']: 0)/(isset($overallStats['amp']['impression'])? $overallStats['amp']['impression']: 0))*100) ?>%</h1>
+          <h1><?php
+          $amp_impression = (isset($overallStats['amp']['impression'])? $overallStats['amp']['impression']: 0); 
+          if($amp_impression){
+          echo $this->two_decimal_places(((isset($overallStats['amp']['impression'])? $overallStats['amp']['click']: 0)/$amp_impression)*100); }else{echo "0"; } ?>%</h1>
         </div>
     </div>
     
