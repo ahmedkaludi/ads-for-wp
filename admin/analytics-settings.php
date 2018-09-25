@@ -309,7 +309,7 @@ public function adsforwp_admin_analytics_interface_render(){
         </div>    
         <div>
           <h3> <?php echo esc_html__('Total Clicks','ads-for-wp'); ?></h3> 
-          <h1><?php echo  (isset($overallStats['amp']['impression'])? $overallStats['amp']['click']: 0); ?> <span class="afw-diff-precentage"> </span></h1>
+          <h1><?php echo  (isset($overallStats['amp']['click'])? $overallStats['amp']['click']: 0); ?> <span class="afw-diff-precentage"> </span></h1>
           
         </div> 
         <div>
@@ -354,7 +354,7 @@ public function adsforwp_admin_analytics_interface_render(){
     }
 
     function adsforwp_chart_register_scripts($hook){
-        //if("adsforwp_page_analytics"==$hook){
+        if("adsforwp_page_analytics"==$hook){
             wp_register_script(
                     'highCharts',
                     ADSFORWP_PLUGIN_DIR_URI . 'public/Chart.bundle.js',
@@ -375,7 +375,7 @@ public function adsforwp_admin_analytics_interface_render(){
                 );*/
                 wp_enqueue_script( 'highCharts' );
                 wp_enqueue_script( 'adminCharts' );
-       // }
+       }
     }
 
 }
