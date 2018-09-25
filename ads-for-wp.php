@@ -54,6 +54,12 @@ function adsforwp_check_plugin() {
     require ADSFORWP_PLUGIN_DIR.'/view/amp-compatibility.php';	
   }
 }
-
+add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'adsforwp_action_links' );
+function adsforwp_action_links ( $links ) {
+ $mylinks = array(
+ '<a href="' . admin_url( 'edit.php?post_type=adsforwp&page=adsforwp' ) . '">Settings</a>',
+ );
+return array_merge( $links, $mylinks );
+}
 
 
