@@ -28,7 +28,7 @@ require  ADSFORWP_PLUGIN_DIR.'/admin/ads-widget.php';
 require  ADSFORWP_PLUGIN_DIR.'/admin/common-functions.php';
 require  ADSFORWP_PLUGIN_DIR.'/admin/settings.php';
 
- require  ADSFORWP_PLUGIN_DIR.'/admin/inc/analytics-settings.php';
+require  ADSFORWP_PLUGIN_DIR.'/admin/inc/analytics-settings.php';
 require  ADSFORWP_PLUGIN_DIR.'/admin/inc/analytics-common-functions.php';
 
 require  ADSFORWP_PLUGIN_DIR.'/admin/ajax-selectbox.php';
@@ -47,9 +47,24 @@ require  ADSFORWP_PLUGIN_DIR.'/view/placement.php';
 /* Loading frontend files*/
 require  ADSFORWP_PLUGIN_DIR.'/output/functions.php';
 
+
+register_activation_hook( __FILE__, 'adsforwp_on_activation' );
+function adsforwp_on_activation() {    
+    add_option('adsforwp_do_activation_redirect', true);           
+}
 /* Function to check other plugin is install or not*/
 add_action( 'admin_init', 'adsforwp_check_plugin' );
 function adsforwp_check_plugin() {
+    
+    if (get_option('adsforwp_do_activation_redirect', false)) {
+        delete_option('adsforwp_do_activation_redirect');
+        if(!isset($_GET['activate-multi']))
+        {
+            $url = esc_url( admin_url( 'edit.php?post_type=adsforwp' ) );
+            wp_redirect($url);
+            exit;
+        }
+    }      
   if ( is_plugin_active('accelerated-mobile-pages/accelerated-moblie-pages.php') ) {
     require ADSFORWP_PLUGIN_DIR.'/view/amp-compatibility.php';	
   }

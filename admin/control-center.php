@@ -1,4 +1,21 @@
 <?php
+/**
+* Remove Add new menu
+**/
+function adsforwp_disable_new_posts() {
+	// Hide sidebar link
+	global $submenu;
+	unset($submenu['edit.php?post_type=adsforwp'][10]);
+
+	// Hide link on listing page
+	if (isset($_GET['post_type']) && $_GET['post_type'] == 'adsforwp') {
+	    return '<style type="text/css">
+	    #favorite-actions, .add-new-h2, .tablenav { display:none; }
+	    </style>';
+	}
+}
+add_action('admin_menu', 'adsforwp_disable_new_posts');
+
    /**
      * This is a ajax handler function for sending email from user admin panel to us. 
      * @return type json string
@@ -263,19 +280,21 @@ add_action('widgets_init', 'register_adsforwp_ads_widget');
  *      We are registering custom post type adsforwp in wordpress
  */
 function adsforwp_setup_post_type() {
+    $not_found_button = '<div><p style="float:left;margin-right:5px;">'.esc_html__('Welcome to Ads for WP. It looks like you don\'t have any ads.', 'ads-for-wp').'</p> <a href="'.esc_url( admin_url( 'post-new.php?post_type=adsforwp' ) ).'" class="button button-primary">'.esc_html('Let\'s create a new Ad', 'ads-for-wp').'</a></div>';
     $args = array(
 	    'labels' => array(
 	        'name' 			=> esc_html__( 'Ads', 'ads-for-wp' ),
 	        'singular_name' 	=> esc_html__( 'Ad', 'ads-for-wp' ),
 	        'add_new' 		=> esc_html__( 'Add New Ad', 'ads-for-wp' ),
 	        'add_new_item'  	=> esc_html__( 'Add New Ad', 'ads-for-wp' ),
-                'edit_item'             => esc_html__( 'Edit AD','ads-for-wp'),                
+                'edit_item'             => esc_html__( 'Edit AD','ads-for-wp'),   
+                'not_found'             => $not_found_button,
 	    ),
       	'public' 		=> true,
       	'has_archive' 		=> false,
       	'exclude_from_search'	=> true,
     	'publicly_queryable'	=> false,
-        //'menu_icon'           => 'dashicons-cart',    
+        'menu_position'         => 100  
     );
     register_post_type( 'adsforwp', $args );
     
@@ -284,7 +303,7 @@ function adsforwp_setup_post_type() {
 	        'name' 			=> esc_html__( 'Groups', 'ads-for-wp' ),	        
 	        'add_new' 		=> esc_html__( 'Add New Groups', 'ads-for-wp' ),
 	        'add_new_item'  	=> esc_html__( 'Edit Groups', 'ads-for-wp' ),
-                'edit_item'             => esc_html__('Edit AD','ads-for-wp')
+                'edit_item'             => esc_html__('Edit AD','ads-for-wp'),                
 	    ),
       	'public' 		=> true,
       	'has_archive' 		=> false,
@@ -294,7 +313,7 @@ function adsforwp_setup_post_type() {
         'show_ui'           => true,
 	'show_in_nav_menus' => false,			
         'show_admin_column' => true,        
-	'rewrite'           => false,
+	'rewrite'           => false,        
     );
     register_post_type( 'adsforwp-groups', $group_post_type );        
 }

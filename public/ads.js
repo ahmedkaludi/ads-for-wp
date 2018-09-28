@@ -231,7 +231,12 @@ $('#adsforwp_ad_expire_to').focus();
  }).change();
  
 
-    
+$(".adsforwp-general table tr").on("click", function(){    
+    $(this).find("input[type=checkbox]").click();   
+});
+
+$("#adsforwp_ad_img_width").parent().parent("tr").hide();  
+$("#adsforwp_ad_img_height").parent().parent("tr").hide();    
 $(".adsforwp-ad-img-upload").click(function(e) {	// Application Icon upload
 		e.preventDefault();
 		var pwaforwpMediaUploader = wp.media({
