@@ -3,7 +3,7 @@ class adsforwp_admin_analytics_settings{
             
 public function __construct() {
         add_action( 'admin_enqueue_scripts', array($this, 'adsforwp_chart_register_scripts') );
-        add_action( 'admin_menu', array($this, 'adsforwp_add_analytics_menu_links'),true);
+        add_action( 'admin_menu', array($this, 'adsforwp_add_analytics_menu_links'),20);
                 
     }
 public function adsforwp_add_analytics_menu_links() {	
@@ -358,11 +358,26 @@ public function adsforwp_admin_analytics_interface_render(){
     <h2>Ad performance</h2><hr/>
     <div id="canvas-holder" style="width:40%;padding:10px;display: inline-block;">
         <h3><?php echo esc_html__('Mobile vs Desktop', 'ads-for-wp'); ?></h3>
-        <canvas  id="chart-stats" ></canvas>      
+        <?php
+        if(isset($overallStats['mobile']['impression']) && $overallStats['mobile']['impression']!=0 && isset($overallStats['desktop']['impression']) && $overallStats['desktop']['impression']!=0){
+            echo '<canvas  id="chart-stats" ></canvas>';      
+        }else{
+            echo esc_html__("Not enough data at the moment, Please check back soon", 'ads-for-wp');
+            
+        }
+        ?>
     </div>
-    <div id="canvas-holder" style="width:40%;padding:10px;display: inline-block;">
+    <div id="canvas-holder" style="width:40%;padding:10px;display: inline-block;min-height: 350px;">
         <h3><?php echo esc_html__('AMP vs Non AMP', 'ads-for-wp'); ?></h3>
-        <canvas  id="chart-amp-mobile" ></canvas>      
+        <?php
+        if(isset($overallStats['amp']['impression']) && $overallStats['amp']['impression']!=0 && isset($overallStats['desktop']['impression']) && $overallStats['desktop']['impression']!=0){
+            echo '<canvas  id="chart-amp-mobile" ></canvas>';      
+        }else{
+            echo esc_html__("Not enough data at the moment, Please check back soon", 'ads-for-wp');
+            
+        }
+         ?>
+              
     </div>
 </section>
 <script>
