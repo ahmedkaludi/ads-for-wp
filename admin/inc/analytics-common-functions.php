@@ -144,9 +144,10 @@ function adsforwp_show_default_overall_dashboard($dashboard_profile_ID,$start_da
 
 function adsforwp_get_compare_stats( $results, $compare_results, $date_different, $name='' ) {
 	if ( $date_different == 0 ) { return; }
-
-	$compare = number_format( ( ( $results - $compare_results ) / $compare_results ) * 100, 2 );
-
+        $compare='';
+        if($compare_results !=0){
+        $compare = number_format( ( ( $results - $compare_results ) / $compare_results ) * 100, 2 );    
+        }    	
 	if ( 'bounce_rate' === $name ) {
 		$class   = $compare < 0 ? 'adsforwp_green' : 'adsforwp_red';
 	} else {

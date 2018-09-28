@@ -34,11 +34,9 @@ public function adsforwp_add_analytics_menu_links() {
 public function adsforwp_admin_analytics_interface_render(){
     
 	// Authentication
-	if ( ! current_user_can( 'manage_options' ) ) {
-		return;
-	}     	       
-	
-        
+            if ( ! current_user_can( 'manage_options' ) ) {
+                    return;
+            }     	       	        
             $all_ads_post = json_decode(get_transient('adsforwp_transient_ads_ids'), true);  
             $total_ads_impression = 0;
             $total_ads_clicks = 0;
@@ -46,14 +44,14 @@ public function adsforwp_admin_analytics_interface_render(){
                 
             foreach($all_ads_post as $ad_id){                               
                 $ad_impression_count = get_post_meta($ad_id, $key='ad_impression_count', true );
-                $ad_clicks_count = get_post_meta($ad_id, $key='ad_clicks', true );   
+                $ad_clicks_count = get_post_meta($ad_id, $key='ad_clicks', true );                 
                 $total_ads_impression = ((int)$total_ads_impression+ (int)$ad_impression_count);
-                $total_ads_clicks = ($total_ads_clicks+$ad_clicks_count);
+                $total_ads_clicks = ((int)$total_ads_clicks+(int)$ad_clicks_count);
             }
             
             }                
         
-	       $tab = adsforwp_get_tab('all', array('mobile','desktop', 'amp', 'tablets'));
+	    $tab = adsforwp_get_tab('all', array('mobile','desktop', 'amp', 'tablets'));
             
             $start_date_val = strtotime( 'now' );//strtotime( '-1 month' );
             $end_date_val   = strtotime( 'now' );
@@ -206,7 +204,7 @@ public function adsforwp_admin_analytics_interface_render(){
             </form>
         </div>
         <div class="view_settings_option" style="display: inline-block;">
-            <a href="<?php echo esc_url( admin_url('edit.php?post_type=adsforwp&page=adsforwp-analytics') ); ?>"><i class="dashicons-before dashicons-admin-generic"></i> Settings</a></div>
+            <a href="<?php echo esc_url( admin_url('edit.php?post_type=adsforwp&page=adsforwp-analytics') ); ?>"><i class="dashicons-before dashicons-admin-generic"></i> <?php echo esc_html__('Settings', 'ads-for-wp'); ?></a></div>
 
 </div>
 <div class="form-wrap">
@@ -241,11 +239,28 @@ public function adsforwp_admin_analytics_interface_render(){
     <div class="adsforwp-mobile afw-analytics_track_report-div" style="display: none;">
         <div>
             <h3> <?php echo esc_html__('Visitors','ads-for-wp'); ?></h3>
-            <h1><?php echo @$allinfo['otherDeviceData']['mobile']['vistors'] ?><span class="afw-diff-precentage"><?php echo @$allinfo['otherDeviceData']['mobile']['vistors_cmp']; ?> </span></h1>
+            <h1>
+                <?php echo 
+                $mobile_visitor = @$allinfo['otherDeviceData']['mobile']['vistors'];
+                if(isset($mobile_visitor)){
+                  echo $mobile_visitor;  
+                }else{
+                    echo "0";
+                }
+                 ?>
+            <span class="afw-diff-precentage"><?php echo @$allinfo['otherDeviceData']['mobile']['vistors_cmp']; ?> </span></h1>
         </div>    
         <div>
           <h3> <?php echo esc_html__('Pageview','ads-for-wp'); ?></h3> 
-          <h1><?php echo @$allinfo['otherDeviceData']['mobile']['pageviews']; ?> <span class="afw-diff-precentage"><?php echo @$allinfo['otherDeviceData']['mobile']['pageviews_cmp']; ?> </span></h1>
+          <h1><?php 
+               $mobile_page_views = @$allinfo['otherDeviceData']['mobile']['pageviews'];
+               if(isset($mobile_page_views)){
+                   echo $mobile_page_views;
+               }else{
+                   echo "0";
+               }
+          ?>               
+              <span class="afw-diff-precentage"><?php echo @$allinfo['otherDeviceData']['mobile']['pageviews_cmp']; ?> </span></h1>
         </div>    
         <div>
          <h3> <?php echo esc_html__('AD impressions','ads-for-wp'); ?></h3> 
@@ -269,11 +284,26 @@ public function adsforwp_admin_analytics_interface_render(){
     <div class="adsforwp-desktop afw-analytics_track_report-div" style="display: none;">
         <div>
             <h3> <?php echo esc_html__('Visitors','ads-for-wp'); ?></h3>
-            <h1><?php echo @$allinfo['otherDeviceData']['desktop']['vistors'] ?><span class="afw-diff-precentage"><?php echo @$allinfo['otherDeviceData']['desktop']['vistors_cmp']; ?> </span></h1>
+            <h1><?php 
+                $desktop_vistors =  @$allinfo['otherDeviceData']['desktop']['vistors'];
+                if(isset($desktop_vistors)){
+                    echo $desktop_vistors;
+                }else{
+                    echo "0";
+                }
+                    ?>
+                <span class="afw-diff-precentage"><?php echo @$allinfo['otherDeviceData']['desktop']['vistors_cmp']; ?> </span></h1>
         </div>    
         <div>
           <h3> <?php echo esc_html__('Pageview','ads-for-wp'); ?></h3> 
-          <h1><?php echo @$allinfo['otherDeviceData']['desktop']['pageviews']; ?> <span class="afw-diff-precentage"><?php echo @$allinfo['otherDeviceData']['desktop']['pageviews_cmp']; ?> </span></h1>
+          <h1><?php
+          $desktop_page_view = @$allinfo['otherDeviceData']['desktop']['pageviews'];
+          if(isset($desktop_page_view)){
+              echo $desktop_page_view;
+          }else{
+              echo "0";
+          }
+          ?> <span class="afw-diff-precentage"><?php echo @$allinfo['otherDeviceData']['desktop']['pageviews_cmp']; ?> </span></h1>
         </div>    
         <div>
          <h3> <?php echo esc_html__('AD impressions','ads-for-wp'); ?></h3> 
@@ -326,11 +356,11 @@ public function adsforwp_admin_analytics_interface_render(){
 </div>  
 <section style="margin-top:30px; background: #fff;padding:10px;">
     <div id="canvas-holder" style="width:40%;padding:10px;display: inline-block;">
-        <h3>Mobile vs Desktop</h3>
+        <h3><?php echo esc_html__('Mobile vs Desktop', 'ads-for-wp'); ?></h3>
         <canvas  id="chart-stats" ></canvas>      
     </div>
     <div id="canvas-holder" style="width:40%;padding:10px;display: inline-block;">
-        <h3>AMP vs Non AMP</h3>
+        <h3><?php echo esc_html__('AMP vs Non AMP', 'ads-for-wp'); ?></h3>
         <canvas  id="chart-amp-mobile" ></canvas>      
     </div>
 </section>
@@ -377,7 +407,6 @@ public function adsforwp_admin_analytics_interface_render(){
                 wp_enqueue_script( 'adminCharts' );
        }
     }
-
 }
 if (class_exists('adsforwp_admin_analytics_settings')) {
 	new adsforwp_admin_analytics_settings;

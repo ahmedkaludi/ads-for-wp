@@ -38,7 +38,8 @@ public function __construct() {
         $ad_clicks_url = admin_url('admin-ajax.php?action=adsforwp_insert_ad_clicks_amp&event=${eventId}');                              
         $ad_impression_script = ''; 
         $ad_clicks_script = '';
-        foreach($amp_ads_id as $ad_id){
+        if($amp_ads_id){
+         foreach($amp_ads_id as $ad_id){
             $ad_impression_script .= '<amp-analytics><script type="application/json">
                   {
                     "requests": {
@@ -82,10 +83,12 @@ public function __construct() {
                                 </script>
                               </amp-analytics>';                        
             
-           }
+           }   
+        }                   
           echo $ad_impression_script; 
           echo $ad_clicks_script;
          }
+         
     }
     
     
