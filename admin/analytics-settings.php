@@ -240,7 +240,7 @@ public function adsforwp_admin_analytics_interface_render(){
         <div>
             <h3> <?php echo esc_html__('Visitors','ads-for-wp'); ?></h3>
             <h1>
-                <?php echo 
+                <?php
                 $mobile_visitor = @$allinfo['otherDeviceData']['mobile']['vistors'];
                 if(isset($mobile_visitor)){
                   echo $mobile_visitor;  
@@ -354,7 +354,8 @@ public function adsforwp_admin_analytics_interface_render(){
 
     
 </div>  
-<section style="margin-top:30px; background: #fff;padding:10px;">
+<section style="margin-top:30px; background: #fff;padding:10px;margin-right: 20px;">
+    <h2>Ad performance</h2><hr/>
     <div id="canvas-holder" style="width:40%;padding:10px;display: inline-block;">
         <h3><?php echo esc_html__('Mobile vs Desktop', 'ads-for-wp'); ?></h3>
         <canvas  id="chart-stats" ></canvas>      

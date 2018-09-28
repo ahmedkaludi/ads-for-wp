@@ -102,15 +102,15 @@ function adsforwp_show_default_overall_dashboard($dashboard_profile_ID,$start_da
 
 					$device_data[$row[0]] = array(
 										'sessions'=>$session,
-										'session_comp'=>adsforwp_get_compare_stats($session, $compare_session, $date_different ),
+										'session_cmp'=>adsforwp_get_compare_stats($session, $compare_session, $date_different ),
 										'vistors'=>$vistors,
-										'vistors_comp'=>adsforwp_get_compare_stats($vistors, $compare_vistors, $date_different ),
+										'vistors_cmp'=>adsforwp_get_compare_stats($vistors, $compare_vistors, $date_different ),
 										'pageviews'=>$pageviews,
-										'pageviews_comp'=>adsforwp_get_compare_stats( $pageviews, $compare_pageviews, $date_different ),
+										'pageviews_cmp'=>adsforwp_get_compare_stats( $pageviews, $compare_pageviews, $date_different ),
 									);
+
 				}
 			}
-
 			$returnstats = array(
 						"sessions" => adsforwp_beautify_number($results['ga:sessions']),
 						"sessions_cmp"=>adsforwp_get_compare_stats( $results['ga:sessions'],  $compare_results['ga:sessions'], $date_different ),
