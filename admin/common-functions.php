@@ -566,8 +566,7 @@ class adsforwp_admin_common_functions {
                     'height'  => array(),
                     'width'   => array(),                                                            
             );
-            
-            
+                        
             $my_allowed['tr'] = array(
                     'class'  => array(),
                     'id'     => array(),
@@ -586,6 +585,24 @@ class adsforwp_admin_common_functions {
             $my_allowed['style'] = array(
                     'types' => array(),
             );
+            // allow script
+            $my_allowed['script'] = array(
+                    'src' => array(),
+                    'type' => array(),
+                    'data-width' => array(),
+                    'data-height' => array(),                                
+                    'async' => array(),
+                    'crossorigin' => array(),
+                    'defer' => array(),
+                    'importance' => array(),
+                    'integrity' => array(),
+                    'nomodule' => array(),
+                    'nonce' => array(),                   
+                    'text' => array(),
+                    'charset' => array(),
+                    'language' => array(),                                                
+            );
+                        
             return $my_allowed;
         }    
 }
