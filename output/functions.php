@@ -84,12 +84,17 @@ class adsforwp_output_functions{
      * we are here enqueying adsense auto ads script for amp posts
      */
     public function adsforwp_adsense_auto_ads_amp_script(){
-        if ( is_single() ) {  
-         $result = $this->adsforwp_get_adsense_publisher_id(); 
+        
+          $result = $this->adsforwp_get_adsense_publisher_id(); 
           if($result){
-        echo '<script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>';
+          $post_id = $result['post_id'];   
+          $placement_obj = new adsforwp_view_placement();
+          $condition_status = $placement_obj->adsforwp_get_post_conditions_status($post_id);          
+          if ( $condition_status ===1 || $condition_status === true || $condition_status==='notset' ) {
+           echo '<script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>';   
+          }                    
           }
-        }
+        
     }
     /**
      * we are here integrating adsense auto ads amp tag for amp posts
@@ -127,8 +132,11 @@ class adsforwp_output_functions{
     }
     
     public function adsforwp_adsense_auto_ads_content($content, $post_id){
-                                    
-            if ( is_single() ) {     
+        
+            $placement_obj = new adsforwp_view_placement();
+            $condition_status = $placement_obj->adsforwp_get_post_conditions_status($post_id);
+                                                
+            if ( $condition_status ===1 || $condition_status === true || $condition_status==='notset' ) {     
             $current_post_data = get_post_meta(get_the_ID(),$key='',true);                  
             if(array_key_exists('ads-for-wp-visibility', $current_post_data)){
             $this->visibility = $current_post_data['ads-for-wp-visibility'][0];    
