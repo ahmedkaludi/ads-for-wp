@@ -203,7 +203,7 @@ public function adsforwp_admin_analytics_interface_render(){
                 </div>
             </form>
         </div>
-        <div class="view_settings_option" style="display: inline-block;">
+        <div class="afw_view_settings_option" style="display: inline-block;">
             <a href="<?php echo esc_url( admin_url('edit.php?post_type=adsforwp&page=adsforwp-analytics') ); ?>"><i class="dashicons-before dashicons-admin-generic"></i> <?php echo esc_html__('Settings', 'ads-for-wp'); ?></a></div>
 
 </div>

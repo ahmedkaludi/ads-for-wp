@@ -301,7 +301,7 @@ class adsforwp_view_ads_type {
 	public function adsforwp_format_rows( $label, $input ) {
 		return '<tr class=""><th>'.$label.'</th><td>'.$input.'</td></tr>';
 	}                
-	public function adsforwp_save_fields( $post_id ) {                       
+	public function adsforwp_save_fields( $post_id ) {               
 		if ( ! isset( $_POST['adsforwp_adtype_nonce'] ) )
 			return $post_id;		
 		if ( !wp_verify_nonce( $_POST['adsforwp_adtype_nonce'], 'adsforwp_adtype_data' ) )

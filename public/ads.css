@@ -175,7 +175,7 @@ input[name=adsforwp_group_ref_interval_sec]{
 .afw-token-div input{
     margin-bottom: 20px;
 }
-.view_settings_option{    width: 15%;
+.afw_view_settings_option{    width: 15%;
     display: inline-block;
     text-align: right;
     vertical-align: middle;
@@ -185,5 +185,19 @@ input[name=adsforwp_group_ref_interval_sec]{
 } 
 .adsforwp_green{
     color: green;
-} 
+}
+.afw-widefat{
+        border: 0px !important;
+}
+.afw-placement-groups{
+       border: 1px solid #e5e5e5;   
+}
+.afw-placement-button{
+    padding: 3px 10px; 
+    color: #0d0d0d; 
+    font-size: 14px; 
+    border: 1px solid #aaa; 
+    border-radius: 2px; 
+    background: linear-gradient(#ededed, #ffffff);
+}
 /* Analytics page css ends here! */

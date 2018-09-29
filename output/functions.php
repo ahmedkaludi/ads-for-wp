@@ -194,8 +194,7 @@ class adsforwp_output_functions{
      * @param type $content
      * @return type string
      */
-    public function adsforwp_display_ads($content){        
-        
+    public function adsforwp_display_ads($content){                
          delete_transient('adsforwp_transient_amp_ids');        
         if ( is_single() || is_page()) {                       
         $current_post_data = get_post_meta(get_the_ID(),$key='',true);                  
@@ -205,10 +204,9 @@ class adsforwp_output_functions{
         if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {
             $this->is_amp = true;        
         }         
-        if($this->visibility != 'hide') {
-            
+        if($this->visibility != 'hide') {            
             //Ads positioning starts here
-            $all_ads_post = json_decode(get_transient('adsforwp_transient_ads_ids'), true);  
+            $all_ads_post = json_decode(get_transient('adsforwp_transient_ads_ids'), true);              
             if($all_ads_post){
                 
             foreach($all_ads_post as $ads){                               

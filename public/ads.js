@@ -7,20 +7,31 @@ document.body.appendChild(e);
 
 
 //Ajax selection starts here
-var clone = function(){
-		jQuery(".placement-row-clone").off("click").click(function(){
+var adsforwpclone = function(){
+		jQuery(".placement-row-clone").off("click").click(function(){                        
+                        var group_index = jQuery(this).closest(".afw-placement-group").attr('data-id');                         
 			var selectrow = jQuery(document).find("#call_html_template_afw").html();
 			nextId = jQuery(this).parents("tbody").find("tr").length;
 			selectrow = selectrow.replace(/\[0\]/g, "["+nextId+"]");
-			console.log(selectrow);
-			jQuery(this).parents("tr").after(selectrow);removeHtml();clone();
+                        selectrow = selectrow.replace(/\[group-0\]/g, "[group-"+group_index+"]");
+			jQuery(this).parents("tr").after(selectrow);adsforwpremoveHtml();adsforwpclone();
 		});
 	}
-	var removeHtml = function(){
+	var adsforwpremoveHtml = function(){
 		jQuery(".placement-row-delete").off("click").click(function(){
-			if(jQuery(this).parents("tbody").find("tr").length>1){
-				jQuery(this).parents("tr").remove();
-			}
+                        var class_count = jQuery(".afw-placement-group").length; 
+                        
+                        if(class_count==1){
+                            if(jQuery(this).parents("tbody").find("tr").length>1){
+                                     jQuery(this).parents("tr").remove();
+                             }   
+                           }else{
+                              if(jQuery(this).parents("tbody").find("tr").length == 1){
+                                     jQuery(this).parents(".afw-placement-group").remove();
+                             } else{
+                                     jQuery(this).parents("tr").remove();
+                             }
+                      }
 		});
 	}
  function taxonomyDataCall(){
@@ -37,6 +48,7 @@ var clone = function(){
 			parentSelector.children(".spinner").addClass("show");
 			
 			var ajaxURL = adsforwp_localize_data.ajax_url;
+                        var group_index = jQuery(this).closest(".afw-placement-group").attr('data-id'); 
 			//ajax call
 			jQuery.ajax({
 	        url : ajaxURL,
@@ -45,6 +57,7 @@ var clone = function(){
 	          action: "adsforwp_ajax_select_taxonomy", 
 	          id: selectedValue,
 	          number : currentFiledNumber,
+                  group_number : group_index,
                   adsforwp_call_nonce: adsforwp_call_nonce
 	        },
 	        beforeSend: function(){ 
@@ -84,10 +97,36 @@ jQuery( document ).ready(function($) {
     
 //Ajax selectin starts here
 
+
+    $(".afw-placement-or-group").on("click", function(e){
+            e.preventDefault();
+            var group_index ='';
+            var group_index = $(".afw-placement-group").length;             
+           
+            
+          var selectrow = jQuery(document).find("#call_html_template_afw").html();
+              selectrow = selectrow.replace(/\[group-0\]/g, "[group-"+group_index+"]");
+          var placement_group_html = '';
+              placement_group_html +='<table class="widefat afw-placement-table" style="border:0px;">';
+              placement_group_html += selectrow; 
+              placement_group_html +='</table>';  
+                              
+          var html='';  
+              html +='<div class="afw-placement-group" name="data_group_array['+group_index+']" data-id="'+group_index+'">';
+              html +='<span style="margin-left:10px;font-weight:600">Or</span>';
+              html +=placement_group_html;
+              html +='</div>';                
+           $(".afw-placement-group[data-id="+(group_index-1)+"]").after(html); 
+           group_index++;
+           adsforwpclone();
+           adsforwpremoveHtml();
+        });
+
+
 var selectrow = $("#adsforwp_placement_metabox").find("table.widefat tr").html();
 	$("body").append("<script type='template/html' id='call_html_template_afw'><tr class='toclone cloneya'>"+selectrow+"</tr>");
-	clone();
-	removeHtml();
+	adsforwpclone();
+	adsforwpremoveHtml();
 	$(document).on("change", ".afw-select-post-type", function(){
             
                 var current_change = $(this);
@@ -108,6 +147,7 @@ var selectrow = $("#adsforwp_placement_metabox").find("table.widefat tr").html()
 		parent.find(".spinner").attr("style","visibility:visible");
 		parent.children(".spinner").addClass("show");
 		var ajaxURL = adsforwp_localize_data.ajax_url;
+                var group_index = jQuery(this).closest(".afw-placement-group").attr('data-id'); 
 		//ajax call
               $.ajax({
         url : ajaxURL,
@@ -116,6 +156,7 @@ var selectrow = $("#adsforwp_placement_metabox").find("table.widefat tr").html()
           action: "adsforwp_create_ajax_select_box", 
           id: selectedValue,
           number : currentFiledNumber,
+          group_number : group_index,
           adsforwp_call_nonce : adsforwp_call_nonce
         },
         beforeSend: function(){ 

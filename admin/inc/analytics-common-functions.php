@@ -70,8 +70,7 @@ function adsforwp_show_default_overall_dashboard($dashboard_profile_ID,$start_da
 			
 			$i++;
 		}
-	}
-	//print_r( $top_page_stats['rows']);die;
+	}	
 
 	$returnstats = array();
 	if ( isset( $stats->totalsForAllResults ) ) {
@@ -257,7 +256,7 @@ function adsforwp_get_analytics_dashboard( $metrics, $start_date, $end_date, $di
 				if ( current_user_can( 'manage_options' ) ) {
 
 					echo "<div class=\"error-msg\">
-				<div class=\"wpb-error-box\">
+				        <div class=\"wpb-error-box\">
 					<span class=\"blk\">
 						<span class=\"line\"></span>
 						<span class=\"dot\"></span>
@@ -289,7 +288,7 @@ function adsforwp_get_analytics_dashboard( $metrics, $start_date, $end_date, $di
 
 function adsforwp_get_analytics_setiings($settingname){
 	$settingOpt = get_option('adsforwp_analytics');
-    $dashboard_profile_ID = $settingOpt['profile_for_dashboard'];
+       $dashboard_profile_ID = $settingOpt['profile_for_dashboard'];
     if($settingname!=''){
     	if(isset($settingOpt[$settingname])){
     		return $settingOpt[$settingname];

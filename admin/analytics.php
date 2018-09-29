@@ -19,9 +19,7 @@ public function __construct() {
          add_action('wp_ajax_adsforwp_insert_ad_impression_amp', array($this, 'adsforwp_insert_ad_impression_amp'));
                   
          add_action('amp_post_template_head',array($this, 'adsforwp_enque_analytics_amp_script'));                  
-         add_filter('amp_post_template_footer', array($this, 'adsforwp_add_analytics_amp_tags'));            
-        
-         
+         add_filter('amp_post_template_footer', array($this, 'adsforwp_add_analytics_amp_tags'));                             
     }
 
 
