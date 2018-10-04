@@ -19,17 +19,18 @@ class adsforwp_view_placement {
         
  public function adsforwp_meta_box_callback( $post) {   
      
-            $data_array    = esc_sql ( get_post_meta($post->ID, 'data_array', true)  );                          
-            $data_array = is_array($data_array)? array_values($data_array): array();      
-            
-            if ( empty( $data_array ) ) {
-              $data_array = array(
-                    array(
-                        'key_1' => 'post_type',
-                        'key_2' => 'equal',
-                        'key_3' => 'none',
-                    )
-              );
+            $data_group_array =  esc_sql ( get_post_meta($post->ID, 'data_group_array', true)  );                             
+            $data_group_array = is_array($data_group_array)? array_values($data_group_array): array();      
+            if ( empty( $data_group_array ) ) {
+                       $data_group_array[0] =array(
+                           'data_array' => array(
+                                    array(
+                                    'key_1' => 'post_type',
+                                    'key_2' => 'equal',
+                                    'key_3' => 'none',
+                                    )
+                       )               
+                   );
             }
     //security check
     wp_nonce_field( 'adsforwp_select_action_nonce', 'adsforwp_select_name_nonce' );?>
@@ -61,38 +62,37 @@ class adsforwp_view_placement {
         'equal'   =>  esc_html__( 'Equal to', 'ads-for-wp'), 
         'not_equal' =>  esc_html__( 'Not Equal to', 'ads-for-wp'),     
       );
-      
-      if($data_array[0]['key_1'] == 'show_globally'){
-       $total_fields = 1;      
-      } else{
-       $total_fields = count( $data_array );     
-      } 
+      $total_group_fields = count( $data_group_array );       
       ?>
+<div class="afw-placement-groups">
       
-      <table class="widefat afw-widefat">
+    <?php for ($j=0; $j < $total_group_fields; $j++) {
+        $data_array = $data_group_array[$j]['data_array'];
+        
+        $total_fields = count( $data_array );
+        ?>
+    <div class="afw-placement-group" name="data_group_array[<?php echo esc_attr( $j) ?>]" data-id="<?php echo esc_attr($j); ?>">           
+     <?php 
+     if($j>0){
+     echo '<span style="margin-left:10px;font-weight:600">Or</span>';    
+     }     
+     ?>   
+     <table class="widefat afw-widefat">
         <tbody id="afw-repeater-tbody" class="fields-wrapper-1">
         <?php  for ($i=0; $i < $total_fields; $i++) {  
-          $selected_val_key_2 ='';
-          $selected_val_key_3 ='';
+          $selected_val_key_1 = $data_array[$i]['key_1']; 
+          $selected_val_key_2 = $data_array[$i]['key_2']; 
+          $selected_val_key_3 = $data_array[$i]['key_3'];
           $selected_val_key_4 = '';
-          $selected_val_key_1 = $data_array[$i]['key_1'];          
-          if(isset($data_array[$i]['key_2'])){
-            $selected_val_key_2 = $data_array[$i]['key_2']; 
-          }         
-          if(isset($data_array[$i]['key_3'])){
-            $selected_val_key_3 = $data_array[$i]['key_3'];
-          }          
           if(isset($data_array[$i]['key_4'])){
             $selected_val_key_4 = $data_array[$i]['key_4'];
           }          
-          if( ($i==0) ||($i>0 && $selected_val_key_1 != 'show_globally'))
-          { 
-              
+            
           ?>
             
           <tr class="toclone">
             <td style="width:31%" class="post_types"> 
-              <select class="widefat afw-select-post-type <?php echo esc_attr( $i );?>" name="data_array[<?php echo esc_attr( $i) ?>][key_1]">    
+              <select class="widefat afw-select-post-type <?php echo esc_attr( $i );?>" name="data_group_array[group-<?php echo esc_attr( $j) ?>][data_array][<?php echo esc_attr( $i) ?>][key_1]">    
                 <?php 
                 foreach ($choices as $choice_key => $choice_value) { ?>         
                   <optgroup label="<?php echo esc_attr($choice_key);?>">                      
@@ -107,7 +107,7 @@ class adsforwp_view_placement {
             </td>
             
             <td style="width:31%; <?php if (  $selected_val_key_1 =='show_globally' ) { echo 'display:none;'; }  ?>">
-              <select class="widefat comparison" name="data_array[<?php echo esc_attr( $i )?>][key_2]"> <?php
+              <select class="widefat comparison" name="data_group_array[group-<?php echo esc_attr( $j) ?>][data_array][<?php echo esc_attr( $i )?>][key_2]"> <?php
                 foreach ($comparison as $key => $value) { 
                   $selcomp = '';
                   if($key == $selected_val_key_2){
@@ -123,32 +123,34 @@ class adsforwp_view_placement {
               <div class="afw-insert-ajax-select">              
                 <?php 
                 $ajax_select_box_obj = new adsforwp_ajax_selectbox();
-                $ajax_select_box_obj->adsforwp_ajax_select_creator($selected_val_key_1, $selected_val_key_3, $i );
+                $ajax_select_box_obj->adsforwp_ajax_select_creator($selected_val_key_1, $selected_val_key_3, $i, $j );
                 if($selected_val_key_1 == 'ef_taxonomy'){
-                  $ajax_select_box_obj->adsforwp_create_ajax_select_taxonomy($selected_val_key_3, $selected_val_key_4, $i);
+                  $ajax_select_box_obj->adsforwp_create_ajax_select_taxonomy($selected_val_key_3, $selected_val_key_4, $i, $j);
                 }
                 ?>
-                <div class="spinner"></div>
+                  <div style="display:none;" class="spinner"></div>
               </div>
             </td>
             
             <td class="widefat placement-row-clone" style="width:3.5%; <?php if (  $selected_val_key_1 =='show_globally' ) { echo 'display:none;'; }  ?>">
-            <span> <button type="button"> <?php echo esc_html__('Add' ,'ads-for-wp');?> </button> </span> 
+                <span> <button type="button" class="afw-placement-button"> <?php echo esc_html__('And' ,'ads-for-wp');?> </button> </span> 
             </td>
             
             <td class="widefat placement-row-delete" style="width:3.5%; <?php if (  $selected_val_key_1 =='show_globally' ) { echo 'display:none;'; }  ?>">
-            <span> <button  type="button"> <?php echo esc_html__( 'Remove' ,'ads-for-wp');?> </button> </span> 
-            </td>       
-            
-            
-            
+                <button  type="button"><span class="dashicons dashicons-trash"></span> </button>
+            </td>                                           
           </tr>
           
           <?php 
-          }
+          
         } ?>
         </tbody>
-      </table>                 
+      </table> 
+    </div>
+    <?php } ?>
+    
+    <a style="margin-left: 8px; margin-bottom: 8px;" class="button afw-placement-or-group afw-placement-button" href="#">Or</a>
+</div>    
     <?php                                                      
                                 
         }
@@ -162,23 +164,33 @@ class adsforwp_view_placement {
       
       // if our current user can't edit this post, bail
       if( !current_user_can( 'edit_post' ) ) return;  
-                      
-         $post_data_array = array();      
-         foreach($_POST['data_array'] as $post){
-             
-         $post_data_array[] = array_map('sanitize_text_field', $post);  
-         
-         }          
-           
-      if(isset($_POST['data_array'])){
-          update_post_meta(
-            $post_id, 
-            'data_array', 
-            $post_data_array 
-        );
-           
-          }  
-    }  
+            $post_data_group_array = array();  
+            $temp_condition_array  = array();
+            $show_globally =false;             
+            if(isset($_POST['data_group_array'])){        
+            $post_data_group_array = $_POST['data_group_array'];    
+                foreach($post_data_group_array as $groups){        
+                      foreach($groups['data_array'] as $group ){              
+                        if(array_search('show_globally', $group))
+                        {
+                          $temp_condition_array[0] =  $group;  
+                          $show_globally = true;              
+                        }
+                      }
+                   }    
+                if($show_globally){
+                unset($post_data_group_array);
+                $post_data_group_array['group-0']['data_array'] = $temp_condition_array;       
+                }      
+            }
+            if(isset($_POST['data_group_array'])){
+                update_post_meta(
+                  $post_id, 
+                  'data_group_array', 
+                  $post_data_group_array 
+                );     
+              }
+         }  
     
     
     
@@ -404,30 +416,46 @@ class adsforwp_view_placement {
 } 
 
  public function adsforwp_generate_field_data( $post_id ){
-      $conditions = get_post_meta( $post_id, 'data_array', true);       
+      $data_group_array = get_post_meta( $post_id, 'data_group_array', true);  
       $output = array();
-      if ( $conditions ) { 
-        $output = array_map(array($this, 'adsforwp_comparison_logic_checker'), $conditions); 
-      }      
+      if($data_group_array){          
+      foreach ($data_group_array as $gropu){
+         $output[] = array_map(array($this, 'adsforwp_comparison_logic_checker'), $gropu['data_array']);     
+      }   
+      
+      }         
       return $output;
 }   
 
  public function adsforwp_get_post_conditions_status($post_id){
        
           $unique_checker ='';
-          $result = $this->adsforwp_generate_field_data( $post_id ); 
-          if($result){
-          $data = array_filter($result);          
-          $number_of_fields = count($data);
-          $unique_checker = 0;
+          $resultset = $this->adsforwp_generate_field_data( $post_id ); 
+          if($resultset){
+              
+          $condition_array = array(); 
           
-          if ( $number_of_fields > 0 ) {                    
-            $unique_checker = count( array_unique($data) );             
-            $array_is_false =  in_array(false, $result);           
+          foreach ($resultset as $result){
+          
+             $data = array_filter($result);          
+             $number_of_fields = count($data);
+             $checker = 0;
+             
+             if ( $number_of_fields > 0 ) {                    
+                $checker = count( array_unique($data) );             
+                $array_is_false =  in_array(false, $result);           
             if (  $array_is_false ) {
-              $unique_checker = 0;
+                $checker = 0;
             }
-          }    
+           }
+             
+          $condition_array[] = $checker;    
+          }
+          
+          $array_is_true = in_array(true,$condition_array);
+          if($array_is_true){
+          $unique_checker = 1;    
+          }          
           }else{
            $unique_checker ='notset';   
           }

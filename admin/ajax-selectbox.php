@@ -24,7 +24,7 @@ public function adsforwp_post_type_generator(){
  * @param type $saved_data
  * @param type $current_number
  */
-public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $current_number = '') {
+public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $current_number = '', $current_group_number  = '') {
  
     $response = $data;
     $is_ajax = false;
@@ -37,6 +37,9 @@ public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $curre
             }
             if ( isset( $_POST["number"] ) ) {
               $current_number   = intval($_POST["number"]);
+            }
+            if ( isset( $_POST["group_number"] ) ) {
+              $current_group_number   = intval($_POST["group_number"]);
             }
         }else{
             exit;
@@ -223,7 +226,7 @@ public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $curre
      //  echo $current_number;
     // echo $saved_data;
 
-      $output = '<select  class="widefat ajax-output" name="data_array['. esc_attr($current_number) .'][key_3]">'; 
+      $output = '<select  class="widefat ajax-output" name="data_group_array[group-'.esc_attr($current_group_number).'][data_array]['. esc_attr($current_number) .'][key_3]">'; 
 
         // Generate Options for Posts
         if ( $options['param'] == 'post' ) {
@@ -291,7 +294,7 @@ public function adsforwp_post_taxonomy_generator(){
  * @param type $selectedValue
  * @param type $current_number
  */
-public function adsforwp_create_ajax_select_taxonomy($selectedParentValue = '',$selectedValue='', $current_number =''){
+public function adsforwp_create_ajax_select_taxonomy($selectedParentValue = '',$selectedValue='', $current_number ='', $current_group_number  = ''){
     $is_ajax = false;
     if( $_SERVER['REQUEST_METHOD']=='POST'){
         $is_ajax = true;
@@ -301,6 +304,10 @@ public function adsforwp_create_ajax_select_taxonomy($selectedParentValue = '',$
               }
               if(isset($_POST['number'])){
                 $current_number = intval($_POST['number']);
+              }
+              
+              if ( isset( $_POST["group_number"] ) ) {
+              $current_group_number   = intval($_POST["group_number"]);
               }
         }else{
             exit;
@@ -326,7 +333,7 @@ public function adsforwp_create_ajax_select_taxonomy($selectedParentValue = '',$
     }
     $common_function_obj = new adsforwp_admin_common_functions();  
     $allowed_html = $common_function_obj->adsforwp_expanded_allowed_tags();    
-    echo '<select  class="widefat afw-ajax-output-child" name="data_array['. esc_attr($current_number) .'][key_4]">'. wp_kses($choices, $allowed_html).'</select>';
+    echo '<select  class="widefat afw-ajax-output-child" name="data_group_array[group-'. esc_attr($current_group_number) .'][data_array]['.esc_attr($current_number).'][key_4]">'. wp_kses($choices, $allowed_html).'</select>';
     if($is_ajax){
       die;
     }

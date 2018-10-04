@@ -45,7 +45,7 @@ public function adsforwp_admin_interface_render(){
         
 	?>
 		                            
-		<h1><?php echo esc_html__('Ads for wp', 'ads-for-wp'); ?></h1>
+		<h1><?php echo esc_html__('Ads for WP Settings', 'ads-for-wp'); ?></h1>
 		<h2 class="nav-tab-wrapper adsforwp-tabs">
 			<?php	
 			echo '<a href="' . esc_url(adsforwp_admin_link('general')) . '" class="nav-tab ' . esc_attr( $tab == 'general' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('General','ads-for-wp') . '</a>';

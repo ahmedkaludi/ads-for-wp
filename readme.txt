@@ -2,8 +2,8 @@
 Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
 Tags: Ads, Advanced Ads, Ad Inserter, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
-Tested up to: 4.9.7
-Stable tag: 1.0.5
+Tested up to: 4.9.8
+Stable tag: 1.0.6
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -13,6 +13,8 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy to Use, Unlimited Incontent Ads, Adsense, Premium Features and more
 
 = Features: =
+* NEW: Ads Performance Analytics with reports & insights (supports AMP as well)
+* NEW: View Deep Insights of your traffic and Revenue with reports and data. It gives an overview of Mobile VS Desktop, AMP vs Non-AMP of your Traffic & Ad revenue including the comparision of previous time. 
 * NEW: Conditional Display to help you target ads.
 * NEW: AD blocker Support
 * NEW: Ad Revenue Sharing that supports all the ad networks and AMP.
@@ -38,14 +40,11 @@ ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy t
 We are actively developing this plugin and our aim is to make this plugin into the #1 solution in the world. You can [Request a Feature](http://www.adsforwp.com/contact/) or [Report a Bug](https://github.com/ahmedkaludi/ads-for-wp/issues). The code is hosted on [Github](https://github.com/ahmedkaludi/ads-for-wp).
 
 = Development Roadmap: =
-* <strong>Display Conditions</strong>: A way to show/hide ads individually on based on posts, pages, taxonomies, custom post types, device, location, cookie, parameter, etc.
 * <strong>Visitor Conditions</strong>: Find out if the user is coming from a Device, Website, date, a URL, location, language, Parameter, User Agent and many more.
-* <strong>Reports / Stats</strong>: View the detailed statistics of the Ad reports and earnings right from your dashboard.
 * <strong>A/B Testing</strong>: Find out which ads perform the most and how you can improve the ad revenue further.
 * <strong>GDPR & Privacy tools</strong>: We have got the GDPR and other privacy tools planned so that you don’t have to worry about complying with privacy laws.
 * <strong>Click Fraud Protection</strong>: Helps you fight the click fraud and helps you stabilize the ad revenue.
 * <strong>Responsive Ads</strong>: We will be adding the responsive support to Ads to give the best viewability to ads on devices.
-* <strong>Ad Blocker</strong>: Help you fight Ad blocker users and help you improve monetization.
 * <strong>Innovation & Disruption</strong>: We are constantly evolving our product and going to introduce new features which are not being used by anyone in the world.
 * [View Full Development Roadmap](http://www.adsforwp.com/#roadmap)
 
@@ -54,6 +53,12 @@ Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp).
 
 
 == Changelog ==
+
+= 1.0.6 (03th October 2018) =
+* Full Release Post on http://www.adsforwp.com/ad-analytics-performance-reports/
+* Major Milestone Feature: Ads Performance Analytics with reports & insights (supports AMP as well)
+* Bug Fix: Ads not working in the Widgets #79  
+* Bug Fix: Auto Ads were appearing only on Single, not Globally. #81 
 
 = 1.0.5 (11th September 2018) =
 * Full Release Post on: http://www.adsforwp.com/ads-for-wp-1-0-5-released/ 
