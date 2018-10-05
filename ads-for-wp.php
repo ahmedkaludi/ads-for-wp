@@ -43,6 +43,7 @@ require  ADSFORWP_PLUGIN_DIR.'/view/ads-visibility.php';
 require  ADSFORWP_PLUGIN_DIR.'/view/ad-groups.php';
 require  ADSFORWP_PLUGIN_DIR.'/view/ads-expire.php';
 require  ADSFORWP_PLUGIN_DIR.'/view/placement.php';
+require  ADSFORWP_PLUGIN_DIR.'/view/visitor-condition.php';
 
 /* Loading frontend files*/
 require  ADSFORWP_PLUGIN_DIR.'/output/functions.php';

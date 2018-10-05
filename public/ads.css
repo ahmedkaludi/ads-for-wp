@@ -199,6 +199,7 @@ input[name=adsforwp_group_ref_interval_sec]{
     border: 1px solid #aaa; 
     border-radius: 2px; 
     background: linear-gradient(#ededed, #ffffff);
+    cursor: pointer;
 }
 /* Analytics page css ends here! */
 
@@ -256,4 +257,16 @@ Tooltip css ends here
 }
 .adsforwp-tools .form-table td{
     padding: 0px;
+}
+.adsforwp-visitor-condition-widefat{
+        border: 0px !important;
+}
+.adsforwp-visitor-condition-groups{
+       border: 1px solid #e5e5e5;   
+}
+.adsforwp-center{
+    text-align: center;
+}
+.adsforwp-visitor-condition-div{
+    padding-top: 10px;
 }
