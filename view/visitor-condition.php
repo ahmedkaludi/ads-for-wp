@@ -33,8 +33,7 @@ class adsforwp_view_visitor_condition {
                                     )
                        )               
                    );
-            }
-            //print_r($visitor_conditions_array);die;
+            }            
     //security check
     wp_nonce_field( 'adsforwp_visitor_condition_action_nonce', 'adsforwp_visitor_condition_name_nonce' );?>
 
