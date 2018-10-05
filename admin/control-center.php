@@ -1,4 +1,32 @@
 <?php
+   /**
+     * This is a ajax handler function for importing plugins data. 
+     * @return type json string
+     */
+function adsforwp_import_plugin_data(){                  
+        $plugin_name   = sanitize_text_field($_GET['plugin_name']); 
+        $common_function_obj = new adsforwp_admin_common_functions();
+        $result = '';
+        switch ($plugin_name) {
+            case 'advanced_ads':
+                if ( is_plugin_active('advanced-ads/advanced-ads.php')) {
+                 $result = $common_function_obj->adsforwp_import_all_advanced_ads();      
+                }                
+                break;
+
+            default:
+                break;
+        }                             
+        if($result){
+        echo json_encode(array('status'=>'t', 'message'=>esc_html__('Data has been imported succeessfully','ads-for-wp')));            
+        }else{
+        echo json_encode(array('status'=>'f', 'message'=>esc_html__('Plugin data is not available or it is not activated','ads-for-wp')));            
+        }        
+           wp_die();           
+}
+
+add_action('wp_ajax_adsforwp_import_plugin_data', 'adsforwp_import_plugin_data');
+
 /**
 * Remove Add new menu
 **/

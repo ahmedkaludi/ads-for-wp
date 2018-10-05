@@ -201,3 +201,59 @@ input[name=adsforwp_group_ref_interval_sec]{
     background: linear-gradient(#ededed, #ffffff);
 }
 /* Analytics page css ends here! */
+
+/*
+Tooltip css starts here
+
+*/
+.adsforwp-tooltip {
+    position: relative;
+    display: inline-block;   
+}
+.adsforwp-tooltip .adsforwp-tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -25px;
+}
+.adsforwp-tooltip:hover .adsforwp-tooltiptext {
+    visibility: visible;
+}
+
+.adsforwp-tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 10%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+/*
+Tooltip css ends here
+
+*/
+.adsforwp-error{
+    color: #ff0000 !important;
+}
+.adsforwp-tools th{
+    width: auto;
+    padding: 0px;
+}
+.adsforwp-tools-field-title strong {
+    padding-right: 130px;
+}
+.adsforwp-tools .form-table td{
+    padding: 0px;
+}

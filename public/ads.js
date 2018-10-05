@@ -272,8 +272,8 @@ $('#adsforwp_ad_expire_to').focus();
  }).change();
  
 
-$(".adsforwp-general table tr").on("click", function(){    
-    $(this).find("input[type=checkbox]").click();   
+$(".adsforwp-general table th").on("click", function(){    
+    $(this).parent().find("input[type=checkbox]").click();   
 });
 
 $("#adsforwp_ad_img_width").parent().parent("tr").hide();  
@@ -678,6 +678,28 @@ $(".afw-send-query").on("click", function(e){
                     });
     
 });
+
+
+    //Importer from schema plugin starts here
+
+        $(".adsforwp-import-plugins").on("click", function(e){
+            e.preventDefault();   
+            var plugin_name = $(this).attr('data-id');                      
+                         $.get(ajaxurl, 
+                             { action:"adsforwp_import_plugin_data", plugin_name:plugin_name},
+                              function(response){                                  
+                              if(response['status'] =='t'){                                  
+                                  $(".adsforwp-imported-message").text(response['message']);
+                                  $(".adsforwp-imported-message").removeClass('adsforwp-error');
+                                   setTimeout(function(){ location.reload(); }, 2000);
+                              }else{
+                                  $(".adsforwp-imported-message").addClass('adsforwp-error');
+                                  $(".adsforwp-imported-message").text(response['message']);                                  
+                              }       		   		
+                             },'json');
+        });
+
+
     
     $("#afw-amp-status-display").text(afw_amp_status);
     $(".afw-amp-edit-post-status").on("click", function(e){
