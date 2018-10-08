@@ -47,6 +47,7 @@ require  ADSFORWP_PLUGIN_DIR.'/view/visitor-condition.php';
 
 /* Loading frontend files*/
 require  ADSFORWP_PLUGIN_DIR.'/output/functions.php';
+require  ADSFORWP_PLUGIN_DIR.'/output/amp-condition-display.php';
 
 
 register_activation_hook( __FILE__, 'adsforwp_on_activation' );

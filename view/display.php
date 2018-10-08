@@ -8,7 +8,7 @@ class adsforwp_view_display {
 	);
 	private $meta_fields = array(
 		array(
-			'label' => 'Where to display',
+			'label' => 'Where to display (Non AMP/AMP)',
 			'id' => 'wheretodisplay',
 			'type' => 'select',
 			'options' => array(
@@ -17,7 +17,7 @@ class adsforwp_view_display {
 				'before_the_content'  => 'Before the content',
                                 'ad_shortcode'  => 'Ad Shortcode',
 			),
-		),
+		),                
 		array(
 			'label' => 'Position',
 			'id' => 'adposition',
@@ -42,7 +42,25 @@ class adsforwp_view_display {
                                'class' => 'afw_manual_ads_type',
 			),
 		),
-            
+                
+                array(
+			'label' => 'Where to display (AMP)',
+			'id' => 'wheretodisplayamp',
+			'type' => 'select',
+			'options' => array(
+                                '' =>'Select Condition',
+				'after_featured_image' =>'Ad after Featured Image',
+				'below_the_header'   => 'Below the Header (SiteWide)',
+				'below_the_footer'  => 'Below the Footer (SiteWide)',
+                                'above_the_footer'  => 'Above the Footer (SiteWide)',
+                                'above_the_post_content'  => 'Above the Post Content (Single Post)',
+                                'below_the_post_content'  => 'Below the Post Content (Single Post)',
+                                'below_the_title'  => 'Below the Title (Single Post)',
+                                'above_related_post'  => 'Above Related Posts (Single Post)',
+                                'below_author_box'  => 'Below the Author Box (Single Post)',
+                                'ads_in_loops'  => 'Ads Inbetween Loop',
+			),
+		),
                 array(
 			'label' => 'Alignment',
 			'id' => 'adsforwp_ad_align',

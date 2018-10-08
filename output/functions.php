@@ -4,11 +4,23 @@
  */
 class adsforwp_output_functions{
     
+    private $_amp_conditions = array();
     private $is_amp = false;     
     public  $visibility = null;
     public  $amp_ads_id = array();
     public function __construct() {  
-        
+         $this->_amp_conditions = array(
+                    'after_featured_image',
+                    'below_the_header',
+                    'below_the_footer',
+                    'above_the_footer',
+                    'above_the_post_content',
+                    'below_the_post_content',
+                    'below_the_title',
+                    'above_related_post',
+                    'below_author_box',
+                    'ads_in_loops'
+                    );
     }
     /**
      * We are here calling all required hooks
@@ -222,6 +234,10 @@ class adsforwp_output_functions{
             $in_group = $common_function_obj->adsforwp_check_ads_in_group($post_ad_id);
            
             if(empty($in_group)){                
+            $amp_display_condition = get_post_meta($post_ad_id,$key='wheretodisplayamp',true);
+            if(in_array($amp_display_condition, $this->_amp_conditions) && $this->is_amp){
+                return ;
+            }                    
             $where_to_display=""; 
             $adposition="";    
             $post_meta_dataset = array();
@@ -295,7 +311,11 @@ class adsforwp_output_functions{
                 
             foreach($all_group_post as $group){                               
             $post_group_id = $group;             
-                                                 
+            
+            $amp_display_condition = get_post_meta($post_group_id,$key='wheretodisplayamp',true);
+            if(in_array($amp_display_condition, $this->_amp_conditions) && $this->is_amp){
+                return ;
+            }                        
             $where_to_display=""; 
             $adposition="";    
             $post_meta_dataset = array();
@@ -377,7 +397,7 @@ class adsforwp_output_functions{
             
             $visitor_condition_status ='';
             $condition_status ='';
-            if($type =="AD"){                
+            if($type =="AD"){                                                
             $placement_obj = new adsforwp_view_placement();
             $condition_status = $placement_obj->adsforwp_get_post_conditions_status($post_ad_id);
             
