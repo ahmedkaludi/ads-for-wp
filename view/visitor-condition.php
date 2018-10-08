@@ -42,7 +42,11 @@ class adsforwp_view_visitor_condition {
       $choices = array(
         esc_html__("Basic",'ads-for-wp') => array(                               
           'device'   =>  esc_html__("Device",'ads-for-wp'),           
+          'browser_language'   =>  esc_html__("Browser Language",'ads-for-wp'),  
           'logged_in_visitor'   =>  esc_html__("Logged In Visitor",'ads-for-wp'),
+          'user_agent'   =>  esc_html__("User Agent",'ads-for-wp'),  
+          'user_type'   =>  esc_html__("User Can (Capabilities)",'ads-for-wp'),
+            
         )        
       ); 
 
@@ -202,8 +206,7 @@ class adsforwp_view_visitor_condition {
 
         switch ($type) {
                    
-          case 'device':   
-                   //wp_is_mobile();
+          case 'device':                      
                     $device_name  = 'desktop'; 
                     if(wp_is_mobile()){
                     $device_name  = 'mobile';                
@@ -215,6 +218,20 @@ class adsforwp_view_visitor_condition {
                   }
                     if ( $comparison == 'not_equal') {              
                         if ( $device_name != $data ) {
+                          $result = true;
+                        }
+                    }            
+          break;
+          
+          case 'browser_language':                      
+                   $browser_language = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);                                                                     
+                  if ( $comparison == 'equal' ) {
+                        if ( $browser_language == $data ) {
+                          $result = true;
+                        }
+                  }
+                    if ( $comparison == 'not_equal') {              
+                        if ( $browser_language != $data ) {
                           $result = true;
                         }
                     }            
@@ -240,6 +257,55 @@ class adsforwp_view_visitor_condition {
             }
 
         break;
+        
+        case 'user_agent': 
+           $user_agent_name ='others';
+            if (    strpos($_SERVER['HTTP_USER_AGENT'], 'Opera') || strpos($user_agent, 'OPR/')) $user_agent_name = 'opera';
+            elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'Edge'))    $user_agent_name = 'edge';
+            elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome'))  $user_agent_name = 'chrome';
+            elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'Safari'))  $user_agent_name = 'safari';
+            elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'Firefox')) $user_agent_name ='firefox';
+            elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') || strpos($user_agent, 'Trident/7')) $user_agent_name = 'internet_explorer';
+                                                               
+            if ( $comparison == 'equal' ) {
+                if ( $user_agent_name == $data ) {
+                  $result = true;
+                }
+            }
+            if ( $comparison == 'not_equal') {              
+                if ( $user_agent_name != $data ) {
+                  $result = true;
+                }
+            }
+
+        break;
+        
+        case 'user_type':            
+            if ( $comparison == 'equal') {
+                if ( in_array( $data, (array) $user->roles ) ) {
+                    $result = true;
+                }
+            }            
+            if ( $comparison == 'not_equal') {
+                require_once ABSPATH . 'wp-admin/includes/user.php';
+                // Get all the registered user roles
+                $roles = get_editable_roles();                
+                $all_user_types = array();
+                foreach ($roles as $key => $value) {
+                  $all_user_types[] = $key;
+                }
+                // Flip the array so we can remove the user that is selected from the dropdown
+                $all_user_types = array_flip( $all_user_types );
+                // User Removed
+                unset( $all_user_types[$data] );
+
+                // Check and make the result true that user is not found 
+                if ( in_array( $data, (array) $all_user_types ) ) {
+                    $result = true;
+                }
+            }
+            
+           break;
          
       default:
         $result = false;
