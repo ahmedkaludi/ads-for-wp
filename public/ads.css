@@ -254,9 +254,14 @@ Tooltip css ends here
 }
 .adsforwp-tools-field-title strong {
     padding-right: 130px;
+    width: 300px;
+   
 }
 .adsforwp-tools .form-table td{
     padding: 0px;
+}
+.adsforwp-tools .adsforwp-tooltip {
+    width: 25%;
 }
 .adsforwp-visitor-condition-widefat{
         border: 0px !important;

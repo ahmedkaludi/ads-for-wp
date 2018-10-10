@@ -13,6 +13,13 @@ function adsforwp_import_plugin_data(){
                  $result = $common_function_obj->adsforwp_import_all_advanced_ads();      
                 }                
                 break;
+                
+            case 'ampforwp_ads':
+               
+                if ( is_plugin_active('accelerated-mobile-pages/accelerated-moblie-pages.php')) {                     
+                 $result = $common_function_obj->adsforwp_import_all_amp_ads();      
+                }                
+                break;
 
             default:
                 break;

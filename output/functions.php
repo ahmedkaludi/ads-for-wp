@@ -384,8 +384,7 @@ class adsforwp_output_functions{
             
          }         
         return $content;    
-    }
-    
+    }    
     /**
      * we are generating html or amp code for ads which will be displayed in post content.
      * @param type $post_ad_id

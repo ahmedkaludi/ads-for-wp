@@ -800,18 +800,19 @@ jQuery( document ).ready(function($) {
     //Importer from schema plugin starts here
 
     $(".adsforwp-import-plugins").on("click", function(e){
-            e.preventDefault();   
+            e.preventDefault(); 
+            var current_selection = $(this);
             var plugin_name = $(this).attr('data-id');                      
                          $.get(ajaxurl, 
                              { action:"adsforwp_import_plugin_data", plugin_name:plugin_name},
                               function(response){                                  
                               if(response['status'] =='t'){                                  
-                                  $(".adsforwp-imported-message").text(response['message']);
-                                  $(".adsforwp-imported-message").removeClass('adsforwp-error');
+                                  $(current_selection).parent().find(".adsforwp-imported-message").text(response['message']);
+                                  $(current_selection).parent().find(".adsforwp-imported-message").removeClass('adsforwp-error');
                                    setTimeout(function(){ location.reload(); }, 2000);
                               }else{
-                                  $(".adsforwp-imported-message").addClass('adsforwp-error');
-                                  $(".adsforwp-imported-message").text(response['message']);                                  
+                                  $(current_selection).parent().find(".adsforwp-imported-message").addClass('adsforwp-error');
+                                  $(current_selection).parent().find(".adsforwp-imported-message").text(response['message']);                                 
                               }       		   		
                              },'json');
         });

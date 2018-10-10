@@ -1,8 +1,6 @@
 <?php
 class adsforwp_admin_settings{
     
-    private $_imported_current_status = false;
-    
 public function __construct() {
       add_action( 'admin_menu', array($this, 'adsforwp_add_menu_links'));        
       add_action('admin_init', array($this, 'adsforwp_settings_init'));
@@ -134,25 +132,42 @@ public function adsforwp_settings_init(){
                           		               
 }
 
-public function adsforwp_import_callback(){
-	$import_message = '';
-        $cc_args = array(
+
+public function adsforwp_check_data_imported_from($plugin_post_type_name){
+       $cc_args = array(
                         'posts_per_page'   => -1,
                         'post_type'        => 'adsforwp',
                         'meta_key'         => 'imported_from',
-                        'meta_value'       => 'advance_ads',
+                        'meta_value'         => $plugin_post_type_name,
                     );					
-	$imported_from = new WP_Query( $cc_args );   					
-	if($imported_from->post_count !=0){
-         $import_message ='<p>'.esc_html__('This plugin\'s data already has been imported. Do you want to import again?. click on button','ads-for-wp').'</p>';   
+	$imported_from = new WP_Query( $cc_args ); 
+        return $imported_from;
+}
+
+public function adsforwp_import_callback(){
+	$message = '<p>'.esc_html__('This plugin\'s data already has been imported. Do you want to import again?. click on button above button.','schema-and-structured-data-for-wp').'</p>';
+        $schema_message = '';
+        $schema_pro_message = '';
+        $schema_plugin = $this->adsforwp_check_data_imported_from('advance_ads'); 
+        $schema_pro_plugin = $this->adsforwp_check_data_imported_from('ampforwp_ads'); 
+	if($schema_plugin->post_count !=0){
+         $schema_message =$message;
+        }
+        if($schema_pro_plugin->post_count !=0){
+         $schema_pro_message =$message;   
         }            	
         ?>	
             <ul>
                 <li><div class="adsforwp-tools-field-title"><div class="adsforwp-tooltip"><strong><?php echo esc_html__('Advanced Ads Plugin','ads-for-wp'); ?></strong></div><button data-id="advanced_ads" class="button adsforwp-import-plugins"><?php echo esc_html__('Start Importing','ads-for-wp'); ?></button>
                         <p class="adsforwp-imported-message"></p>
-                        <?php echo $import_message; ?>    
+                        <?php echo $schema_message; ?>    
                     </div>
-                </li>               
+                </li> 
+                <li><div class="adsforwp-tools-field-title"><div class="adsforwp-tooltip"><strong><?php echo esc_html__('AMP for WP Ads','ads-for-wp'); ?></strong></div><button data-id="ampforwp_ads" class="button adsforwp-import-plugins"><?php echo esc_html__('Start Importing','ads-for-wp'); ?></button>
+                        <p class="adsforwp-imported-message"></p>
+                        <?php echo $schema_pro_message; ?>    
+                    </div>
+                </li> 
             </ul>                   
 	<?php  
         
