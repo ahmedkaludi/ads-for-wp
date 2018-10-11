@@ -249,6 +249,7 @@ class adsforwp_admin_common_functions {
      */
     
     public function adsforwp_migrate_ampforwp_ads(){
+        $result ='';
         $adforwp_meta_key = array();
         $amp_options = get_option('redux_builder_amp'); 
         $user_id = get_current_user_id();
@@ -282,19 +283,19 @@ class adsforwp_admin_common_functions {
                 $conditions = array();
                 if($i==3){
                 if(isset($amp_options['made-amp-ad-3-global'])){                
-                $conditions = $amp_options['made-amp-ad-3-global'];
-               
-                if(!in_array(2, $conditions)){                  
-                foreach($conditions as $conditon){                    
+                $conditions = $amp_options['made-amp-ad-3-global'];                
+                if(!in_array(4, $conditions)){ 
+                   
+                for($i = 0; $i <count($conditions); $i++){                    
                     $displayon ='';                    
-                    if($condition ==1){
+                    if($conditions[$i] ==1){
                       $displayon = 'post';  
-                    }else if($condition ==3){
+                    }else if($conditions[$i] ==3){
                       $displayon = 'post';  
-                    }else if ($condition ==4){
+                    }else if ($conditions[$i] ==2){
                       $displayon = 'page';  
                     }                                        
-                    $data_group_array['group-'.$conditon-1] =array(
+                    $data_group_array['group-'.$i] =array(
                                     'data_array' => array(
                                                         array(
                                                         'key_1' => 'post_type',
@@ -303,7 +304,7 @@ class adsforwp_admin_common_functions {
                                                         )
                                                      )               
                                                  );                     
-                }                
+                }                 
                 }
                 }    
                 }else{                                                      
@@ -329,16 +330,18 @@ class adsforwp_admin_common_functions {
                     'data_group_array' => $data_group_array
                 );
                 foreach ($adforwp_meta_key as $key => $val){                     
-                   update_post_meta($post_id, $key, $val);  
+                $result =  update_post_meta($post_id, $key, $val);  
                 }                                     
                  }
         
             }
              
         }
+        return $result;
     }
     
     public function adsforwp_migrate_advanced_auto_ads(){
+        $result ='';
         $adforwp_meta_key = array();
         $amp_options = get_option('redux_builder_amp');        
         $user_id = get_current_user_id();
@@ -370,12 +373,14 @@ class adsforwp_admin_common_functions {
                     'data_group_array' => $data_group_array
                 );
                 foreach ($adforwp_meta_key as $key => $val){                     
-                   update_post_meta($post_id, $key, $val);  
+                 $result =  update_post_meta($post_id, $key, $val);  
                 }
         }
+        return $result;
     }
     
     public function adsforwp_migrate_advanced_amp_ads_incontent(){
+        $result ='';
         $adforwp_meta_key = array();
         $amp_options = get_option('redux_builder_amp');        
         $user_id = get_current_user_id();
@@ -454,14 +459,18 @@ class adsforwp_admin_common_functions {
 
                   );     
               }
+              if($amp_options['ampforwp-advertisement-type-incontent-ad-'.$i] != 2){
               $post_id = wp_insert_post($ads_post);
               foreach ($adforwp_meta_key as $key => $val){                     
-                   update_post_meta($post_id, $key, $val);  
-                }                             
+                $result = update_post_meta($post_id, $key, $val);  
+                }    
+              }                                           
         }
+        return $result;
     }
 
     public function adsforwp_migrate_advanced_amp_ads_after_feature(){
+        $result ='';
         $adforwp_meta_key = array();
         $amp_options = get_option('redux_builder_amp');        
         $user_id = get_current_user_id();
@@ -517,11 +526,76 @@ class adsforwp_admin_common_functions {
                             }
                             
                 foreach ($adforwp_meta_key as $key => $val){                     
-                  update_post_meta($post_id, $key, $val);  
+                $result = update_post_meta($post_id, $key, $val);  
                 }            
         }
+        return $result;
+    }
+    public function adsforwp_migrate_advanced_amp_ads_inloop(){
+        $result ='';
+        $adforwp_meta_key = array();
+        $amp_options = get_option('redux_builder_amp');   
+       
+        $user_id = get_current_user_id();
+         if(isset($amp_options['ampforwp-after-featured-image-ad-type'])){
+            
+            $ads_post = array(
+                    'post_author' => $user_id,                                                            
+                    'post_title' => 'After Featured Image (Migrated from Advanced AMP Ads)',                    
+                    'post_status' => 'publish',                                                            
+                    'post_name' =>  'After Featured Image (Migrated from Advanced AMP Ads)',                    
+                    'post_type' => 'adsforwp',
+                    
+                );
+              $post_id = wp_insert_post($ads_post);
+              $data_group_array['group-0'] =array(
+                                    'data_array' => array(
+                                                        array(
+                                                        'key_1' => 'post_type',
+                                                        'key_2' => 'equal',
+                                                        'key_3' => 'post',
+                                                        )
+                                                     )               
+                                                 ); 
+              
+                            switch ($amp_options['ampforwp-after-featured-image-ad-type']) {
+                                case 1:
+                                    $adforwp_meta_key = array(
+                                        'select_adtype'     => 'adsense',  
+                                        'adsense_type'      => 'normal',                    
+                                        'data_client_id'    => $amp_options['ampforwp-after-featured-image-ad-type-1-data-ad-client'],                     
+                                        'data_ad_slot'      => $amp_options['ampforwp-after-featured-image-ad-type-1-data-ad-slot'],                     
+                                        'banner_size'       => $amp_options['ampforwp-after-featured-image-ad-type-1-width'].'x'.$amp_options['ampforwp-after-featured-image-ad-type-1-height'],                     
+                                        'wheretodisplay'    => 'between_the_content',
+                                        'wheretodisplayamp' => 'after_featured_image',
+                                        'imported_from'     => 'ampforwp_ads',
+                                        'data_group_array'  => $data_group_array
+                                      );                                 
+                                    break;
+                                case 2:
+                                    $adforwp_meta_key = array(
+                                        'select_adtype'   => 'custom',                                                                                                                                     
+                                        'wheretodisplay'  => 'between_the_content',
+                                        'wheretodisplayamp' => 'after_featured_image',                                         
+                                        'custom_code'=> $amp_options['ampforwp-after-featured-image-ad-custom-advertisement'],  
+                                        'imported_from'   => 'ampforwp_ads',
+                                        'data_group_array'=> $data_group_array
+                                     );
+
+                                    break;
+
+                                default:
+                                break;
+                            }
+                            
+                foreach ($adforwp_meta_key as $key => $val){                     
+                $result = update_post_meta($post_id, $key, $val);  
+                }            
+        }
+        return $result;
     }
     public function adsforwp_migrate_advanced_amp_ads_standard(){
+        $result ='';
         $adforwp_meta_key = array();
         $amp_options = get_option('redux_builder_amp');        
         $user_id = get_current_user_id();
@@ -590,14 +664,20 @@ class adsforwp_admin_common_functions {
 
                   );     
               }
+              if($amp_options['ampforwp-advertisement-type-standard-'.$i] !=2){
               $post_id = wp_insert_post($ads_post);
               foreach ($adforwp_meta_key as $key => $val){                     
-                   update_post_meta($post_id, $key, $val);  
-                }                             
-            }   
+                 $result = update_post_meta($post_id, $key, $val);  
+               }    
+              }                                           
+            }  
+            return $result;
     }
     public function adsforwp_import_all_amp_ads(){    
                         
+        global $wpdb;
+        $wpdb->query('START TRANSACTION');
+                
         $result = $this->adsforwp_migrate_ampforwp_ads();
         
         $result = $this->adsforwp_migrate_advanced_auto_ads();
@@ -607,8 +687,15 @@ class adsforwp_admin_common_functions {
         $result = $this->adsforwp_migrate_advanced_amp_ads_after_feature();    
         
         $result = $this->adsforwp_migrate_advanced_amp_ads_standard();                                 
-        
-       return $result;                     
+
+ //     $result = $this->adsforwp_migrate_advanced_amp_ads_inloop();  
+          if (is_wp_error($result) ){
+              echo $result->get_error_message();              
+              $wpdb->query('ROLLBACK');             
+            }else{
+              $wpdb->query('COMMIT'); 
+             return $result;     
+            }                         
     }
     /**
      * We are here importing all fetched groups from advanced ads to adsforwp plugin

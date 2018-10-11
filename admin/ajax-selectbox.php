@@ -58,6 +58,20 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
             );                       
             break;
           
+          case "referrer_url":
+               $choices = array(
+                'https://www.google.com/' => 'Google',
+                'https://www.bing.com/'   => 'Bing',
+                'https://www.yahoo.com/'  => 'Yahoo',   
+            );
+            break;
+      
+          case "geo_location":
+               $choices = array(
+                'usa' => 'USA',
+                'ind'   => 'India',                
+            );
+            break;
            case "logged_in_visitor":
 
             $choices = array(
