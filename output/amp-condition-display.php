@@ -6,6 +6,9 @@ class adsforwp_output_amp_condition_display{
         
     public function __construct() {     
     }
+    /**
+     * List of all hooks which are used in this class
+     */
     public function adsforwp_amp_condition_hooks(){
        // Below the Header 
         add_action( 'ampforwp_after_header', array($this, 'adsforwp_display_ads_below_the_header') );
@@ -40,8 +43,7 @@ class adsforwp_output_amp_condition_display{
     
     public function adsforwp_display_ads_between_loop($count){        
             $this->adsforwp_amp_condition_ad_code('ads_in_loops', $count);                                   
-    }
-    
+    }    
     public function adsforwp_display_ads_below_author_box(){        
             $this->adsforwp_amp_condition_ad_code('below_author_box');                                   
     }
@@ -68,7 +70,12 @@ class adsforwp_output_amp_condition_display{
     public function adsforwp_display_ads_below_the_header(){                   
             $this->adsforwp_amp_condition_ad_code('below_the_header');                                             
     }
-    
+    /**
+     *  Here, we are fetching ads html markup.
+     * @param type $ad_id
+     * @param type $count
+     * @return type
+     */
     public function adsforwp_in_loop_ads_code($ad_id, $count){                         
         $displayed_posts = get_option('posts_per_page');
         $in_between = round(abs($displayed_posts / 2));
@@ -79,7 +86,13 @@ class adsforwp_output_amp_condition_display{
         }   
         return $ad_code;
     }
-    
+    /**
+     * Here, we are fetching group ads html markup.
+     * @param type $group_id
+     * @param type $count
+     * @param type $widget
+     * @return type
+     */
     public function adsforwp_in_loop_group_ads_code($group_id, $count, $widget){                         
         $displayed_posts = get_option('posts_per_page');
         $in_between = round(abs($displayed_posts / 2));
@@ -91,6 +104,11 @@ class adsforwp_output_amp_condition_display{
         return $ad_code;
     }
     
+    /**
+     * Here, We are displaying ads or group ads according to amp where to display condition
+     * @param type $condition
+     * @param type $count
+     */
     public function adsforwp_amp_condition_ad_code($condition, $count=null){
         
         

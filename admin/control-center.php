@@ -9,6 +9,7 @@ function adsforwp_import_plugin_data(){
         $result = '';
         switch ($plugin_name) {
             case 'advanced_ads':
+                
                 if ( is_plugin_active('advanced-ads/advanced-ads.php')) {
                  $result = $common_function_obj->adsforwp_import_all_advanced_ads();      
                 }                

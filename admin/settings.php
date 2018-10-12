@@ -238,14 +238,3 @@ public function adsforwp_contact_us_form_callback(){
 if (class_exists('adsforwp_admin_settings')) {
 	new adsforwp_admin_settings;
 };
-
-
-
-
-
-
-
-
-/**
- * Enqueue CSS and JS
- */
