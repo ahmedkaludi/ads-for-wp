@@ -4,8 +4,7 @@ e.id = 'adsforwp-hidden-block';
 e.style.display = 'none';
 document.body.appendChild(e);
 
-jQuery( document ).ready(function($) {    
-    
+jQuery( document ).ready(function($) {        
     /**
      * We are here fetching ads by their id from database via ajax call
      * @param {type} ads_group_id
@@ -16,7 +15,7 @@ jQuery( document ).ready(function($) {
     function adsforwpShowAdsById(ads_group_id, ads_group_type, adbyindex, j){                   
             var container = $(".afw_ad_container[data-id='"+ads_group_id+"']");  
             var container_pre = $(".afw_ad_container_pre[data-id='"+ads_group_id+"']");  
-            var content ='';
+            var content ='';            
             switch(adbyindex.ad_type){
                 case "adsense":
                     var bannersize =(adbyindex.ad_banner_size).split("x");
@@ -56,8 +55,7 @@ jQuery( document ).ready(function($) {
                 case "ad_image":
                     content +='<div class="afw afw_ad_image afw_'+adbyindex.ad_id+'">';
                     content +='<a target="_blank" href="'+adbyindex.ad_redirect_url+'"><img src="'+adbyindex.ad_image+'"></a>';
-                    content +='</div>';  
-                    
+                    content +='</div>';                      
                     if(j==1){
                     container.html(content);       
                     }                    
@@ -71,10 +69,7 @@ jQuery( document ).ready(function($) {
                     
                     break;
                     
-            }            
-            var now = new Date(Date.now());
-            var formatted = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();            
-               console.log(formatted);         
+            }                             
             }
     /**
      * we are here iterating on each group div to display all ads 

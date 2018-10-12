@@ -676,6 +676,17 @@ jQuery( document ).ready(function($) {
       });
     }).change();  
     
+     $("#wheretodisplayamp").change(function(){        
+      $(this).find("option:selected").each(function(){  
+          var optionValue = $(this).attr("value");                           
+              if("ads_in_loops" === optionValue){
+          	$(".adsforwp-how-many-post").show();
+              }else{
+               $(".adsforwp-how-many-post").hide();   
+              }                                                                     
+       });
+    }).change(); 
+    
     $(document).on("click",'.afw-ads-group-button', function(){
         var adsval = $("#adsforwp_group_ad_list option:selected").val();
         var adstext = $("#adsforwp_group_ad_list option:selected").text();        
@@ -868,6 +879,10 @@ jQuery( document ).ready(function($) {
         $("#afw-non-amp-visib-status-select").hide();
         $(".afw-non-amp-visib-status").show();
     });
+    
+    
+    
+    
 
     if(adsforwp_localize_data.post_type === "adsforwp-groups" || adsforwp_localize_data.post_type === "adsforwp"){
         $("#wp-admin-bar-view").hide();

@@ -22,32 +22,32 @@ if ( ! defined( 'ADSFORWP_VERSION' ) ) {
 }
 require_once ABSPATH . "wp-includes/pluggable.php";
 /* Loading Backend files files*/
-require  ADSFORWP_PLUGIN_DIR.'/admin/control-center.php';
-require  ADSFORWP_PLUGIN_DIR.'/admin/ads-newsletter.php';
-require  ADSFORWP_PLUGIN_DIR.'/admin/ads-widget.php';
-require  ADSFORWP_PLUGIN_DIR.'/admin/common-functions.php';
-require  ADSFORWP_PLUGIN_DIR.'/admin/settings.php';
+require_once  ADSFORWP_PLUGIN_DIR.'/admin/control-center.php';
+require_once  ADSFORWP_PLUGIN_DIR.'/admin/ads-newsletter.php';
+require_once  ADSFORWP_PLUGIN_DIR.'/admin/ads-widget.php';
+require_once  ADSFORWP_PLUGIN_DIR.'/admin/common-functions.php';
+require_once  ADSFORWP_PLUGIN_DIR.'/admin/settings.php';
 
-require  ADSFORWP_PLUGIN_DIR.'/admin/inc/analytics-settings.php';
-require  ADSFORWP_PLUGIN_DIR.'/admin/inc/analytics-common-functions.php';
+require_once  ADSFORWP_PLUGIN_DIR.'/admin/inc/analytics-settings.php';
+require_once  ADSFORWP_PLUGIN_DIR.'/admin/inc/analytics-common-functions.php';
 
-require  ADSFORWP_PLUGIN_DIR.'/admin/ajax-selectbox.php';
-require  ADSFORWP_PLUGIN_DIR.'/admin/file-creation.php';
-require  ADSFORWP_PLUGIN_DIR.'/admin/analytics-settings.php';
-require  ADSFORWP_PLUGIN_DIR.'/admin/analytics.php';
+require_once  ADSFORWP_PLUGIN_DIR.'/admin/ajax-selectbox.php';
+require_once  ADSFORWP_PLUGIN_DIR.'/admin/file-creation.php';
+require_once  ADSFORWP_PLUGIN_DIR.'/admin/analytics-settings.php';
+require_once  ADSFORWP_PLUGIN_DIR.'/admin/analytics.php';
 
 /* Loading Metaboxes*/
-require  ADSFORWP_PLUGIN_DIR.'/view/ads-type.php';
-require  ADSFORWP_PLUGIN_DIR.'/view/display.php';
-require  ADSFORWP_PLUGIN_DIR.'/view/ads-visibility.php';
-require  ADSFORWP_PLUGIN_DIR.'/view/ad-groups.php';
-require  ADSFORWP_PLUGIN_DIR.'/view/ads-expire.php';
-require  ADSFORWP_PLUGIN_DIR.'/view/placement.php';
-require  ADSFORWP_PLUGIN_DIR.'/view/visitor-condition.php';
+require_once  ADSFORWP_PLUGIN_DIR.'/view/ads-type.php';
+require_once  ADSFORWP_PLUGIN_DIR.'/view/display.php';
+require_once  ADSFORWP_PLUGIN_DIR.'/view/ads-visibility.php';
+require_once  ADSFORWP_PLUGIN_DIR.'/view/ad-groups.php';
+require_once  ADSFORWP_PLUGIN_DIR.'/view/ads-expire.php';
+require_once  ADSFORWP_PLUGIN_DIR.'/view/placement.php';
+require_once  ADSFORWP_PLUGIN_DIR.'/view/visitor-condition.php';
 
 /* Loading frontend files*/
-require  ADSFORWP_PLUGIN_DIR.'/output/functions.php';
-require  ADSFORWP_PLUGIN_DIR.'/output/amp-condition-display.php';
+require_once  ADSFORWP_PLUGIN_DIR.'/output/functions.php';
+require_once  ADSFORWP_PLUGIN_DIR.'/output/amp-condition-display.php';
 
 
 register_activation_hook( __FILE__, 'adsforwp_on_activation' );
@@ -74,7 +74,7 @@ function adsforwp_check_plugin() {
 add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'adsforwp_action_links' );
 function adsforwp_action_links ( $links ) {
  $mylinks = array(
- '<a href="' . admin_url( 'edit.php?post_type=adsforwp&page=adsforwp' ) . '">Settings</a>',
+ '<a href="' . admin_url( 'edit.php?post_type=adsforwp&page=adsforwp' ) . '">'.esc_html__('Settings', 'ads-for-wp').'</a>',
  );
 return array_merge( $links, $mylinks );
 }

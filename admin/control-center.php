@@ -494,8 +494,7 @@ function adsforwp_frontend_enqueue(){
         );
         wp_localize_script('adsforwp-ads-front-js', 'adsforwp_obj', $object_name);
         wp_enqueue_script('adsforwp-ads-front-js');        
-        
-        
+                
 }
 add_action( 'wp_enqueue_scripts', 'adsforwp_frontend_enqueue' );
 
@@ -514,8 +513,8 @@ function adsforwp_admin_enqueue() {
          wp_enqueue_style( 'jquery-ui' );
          add_action('admin_print_footer_scripts', 'adsforwp_print_footer_scripts' );
     
-        wp_enqueue_style( 'ads-for-wp-admin', ADSFORWP_PLUGIN_DIR_URI . 'public/ads.css', false , ADSFORWP_VERSION );
-        wp_register_script( 'ads-for-wp-admin-js', ADSFORWP_PLUGIN_DIR_URI . 'public/ads.js', array('jquery'), ADSFORWP_VERSION , true );
+        wp_enqueue_style( 'ads-for-wp-admin', ADSFORWP_PLUGIN_DIR_URI . 'public/adsforwp.css', false , ADSFORWP_VERSION );
+        wp_register_script( 'ads-for-wp-admin-js', ADSFORWP_PLUGIN_DIR_URI . 'public/adsforwp.js', array('jquery'), ADSFORWP_VERSION , true );
         wp_register_script( 'ads-for-wp-admin-analytics-js', ADSFORWP_PLUGIN_DIR_URI . 'public/analytics.js', array('jquery'), ADSFORWP_VERSION , true );
             // Localize the script with new data
         $data = array(

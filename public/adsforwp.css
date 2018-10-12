@@ -280,3 +280,12 @@ Tooltip css ends here
 .adsforwp-general table td{
     padding: 8px 13px;
 }
+.adsforwp-amp-box{
+padding-top: 20px;
+}
+.adsforwp-amp-box span{
+font-size: 15px; 
+}
+.adsforwp-amp-box input{
+width: 100%;
+}
