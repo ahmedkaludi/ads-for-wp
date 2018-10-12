@@ -534,16 +534,15 @@ class adsforwp_admin_common_functions {
     public function adsforwp_migrate_advanced_amp_ads_inloop(){
         $result ='';
         $adforwp_meta_key = array();
-        $amp_options = get_option('redux_builder_amp');   
-       
+        $amp_options = get_option('redux_builder_amp');        
         $user_id = get_current_user_id();
-         if(isset($amp_options['ampforwp-after-featured-image-ad-type'])){
+         if(isset($amp_options['ampforwp-inbetween-loop'])){
             
             $ads_post = array(
                     'post_author' => $user_id,                                                            
-                    'post_title' => 'After Featured Image (Migrated from Advanced AMP Ads)',                    
+                    'post_title' => 'In Loop Ad (Migrated from Advanced AMP Ads)',                    
                     'post_status' => 'publish',                                                            
-                    'post_name' =>  'After Featured Image (Migrated from Advanced AMP Ads)',                    
+                    'post_name' =>  'In Loop Ad (Migrated from Advanced AMP Ads)',                    
                     'post_type' => 'adsforwp',
                     
                 );
@@ -558,16 +557,17 @@ class adsforwp_admin_common_functions {
                                                      )               
                                                  ); 
               
-                            switch ($amp_options['ampforwp-after-featured-image-ad-type']) {
+                            switch ($amp_options['ampforwp-inbetween-type']) {
                                 case 1:
                                     $adforwp_meta_key = array(
                                         'select_adtype'     => 'adsense',  
                                         'adsense_type'      => 'normal',                    
-                                        'data_client_id'    => $amp_options['ampforwp-after-featured-image-ad-type-1-data-ad-client'],                     
-                                        'data_ad_slot'      => $amp_options['ampforwp-after-featured-image-ad-type-1-data-ad-slot'],                     
-                                        'banner_size'       => $amp_options['ampforwp-after-featured-image-ad-type-1-width'].'x'.$amp_options['ampforwp-after-featured-image-ad-type-1-height'],                     
+                                        'data_client_id'    => $amp_options['ampforwp-inbetween-adsense-ad-data-ad-client'],                     
+                                        'data_ad_slot'      => $amp_options['ampforwp-inbetween-adsense-ad-data-ad-slot'],                     
+                                        'banner_size'       => $amp_options['ampforwp-inbetween-adsense-ad-width'].'x'.$amp_options['ampforwp-inbetween-adsense-ad-height'],                     
                                         'wheretodisplay'    => 'between_the_content',
-                                        'wheretodisplayamp' => 'after_featured_image',
+                                        'wheretodisplayamp' => 'ads_in_loops',
+                                        'after_how_many_post' => $amp_options['ampforwp-inbetween-loop-post-num'], 
                                         'imported_from'     => 'ampforwp_ads',
                                         'data_group_array'  => $data_group_array
                                       );                                 
@@ -576,8 +576,8 @@ class adsforwp_admin_common_functions {
                                     $adforwp_meta_key = array(
                                         'select_adtype'   => 'custom',                                                                                                                                     
                                         'wheretodisplay'  => 'between_the_content',
-                                        'wheretodisplayamp' => 'after_featured_image',                                         
-                                        'custom_code'=> $amp_options['ampforwp-after-featured-image-ad-custom-advertisement'],  
+                                        'wheretodisplayamp' => 'ads_in_loops',                                         
+                                        'custom_code'=> $amp_options['ampforwp-inbetween-custom-advertisement'],  
                                         'imported_from'   => 'ampforwp_ads',
                                         'data_group_array'=> $data_group_array
                                      );
@@ -675,21 +675,22 @@ class adsforwp_admin_common_functions {
     }
     public function adsforwp_import_all_amp_ads(){    
                         
-        global $wpdb;
-        $wpdb->query('START TRANSACTION');
-                
-        $result = $this->adsforwp_migrate_ampforwp_ads();
-        
-        $result = $this->adsforwp_migrate_advanced_auto_ads();
-        
-        $result = $this->adsforwp_migrate_advanced_amp_ads_incontent();        
-        
-        $result = $this->adsforwp_migrate_advanced_amp_ads_after_feature();    
-        
-        $result = $this->adsforwp_migrate_advanced_amp_ads_standard();                                 
+            global $wpdb;
+            $wpdb->query('START TRANSACTION');
 
- //     $result = $this->adsforwp_migrate_advanced_amp_ads_inloop();  
-          if (is_wp_error($result) ){
+            $result = $this->adsforwp_migrate_ampforwp_ads();
+
+            $result = $this->adsforwp_migrate_advanced_auto_ads();
+
+            $result = $this->adsforwp_migrate_advanced_amp_ads_incontent();        
+
+            $result = $this->adsforwp_migrate_advanced_amp_ads_after_feature();    
+
+            $result = $this->adsforwp_migrate_advanced_amp_ads_standard();                                 
+
+            $result = $this->adsforwp_migrate_advanced_amp_ads_inloop();  
+            
+            if (is_wp_error($result) ){
               echo $result->get_error_message();              
               $wpdb->query('ROLLBACK');             
             }else{
