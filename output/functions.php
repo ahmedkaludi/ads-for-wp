@@ -655,7 +655,7 @@ class adsforwp_output_functions{
                         if($amp_compatibility != 'disable'){
                          $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                      <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'">
-                                       ss<amp-ad 
+                                       <amp-ad 
                                         class="afw_ad_amp_'.esc_attr($post_ad_id).'"
                                         type="adsense"
                                         width="'. esc_attr($width) .'"
