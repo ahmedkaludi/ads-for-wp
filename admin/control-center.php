@@ -658,6 +658,21 @@ function adsforwp_print_footer_scripts() {
             case 'afw_media_net_pointer':
                 content = '<?php echo '<h3>'.esc_html__( 'Help', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'You can find Data CID id and Data CRID from media.net code.', 'ads-for-wp' ).'</p>'; ?>';
                 break;           
+            case 'afw_ad_now_pointer':
+                content = '<?php echo '<h3>'.esc_html__( 'Help', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'You can find Widget ID from adnow code', 'ads-for-wp' ).'</p>'; ?>';
+                break; 
+            case 'afw_contentad_pointer':
+                content = '<?php echo '<h3>'.esc_html__( 'Help', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'You can find ID id, D and Ad Widget ID from content.ad code.', 'ads-for-wp' ).'</p>'; ?>';
+                break;
+            case 'afw_infolinks_pointer':
+                content = '<?php echo '<h3>'.esc_html__( 'Help', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'You can find P ID and W S ID from infolinks code.', 'ads-for-wp' ).'</p>'; ?>';
+                break; 
+            case 'afw_ad_image_pointer':
+                content = '<?php echo '<h3>'.esc_html__( 'Help', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'Upload a banner which you want to display as an ad and anchor link which will redirect users to that link on click.', 'ads-for-wp' ).'</p>'; ?>';
+                break; 
+            case 'afw_custom_pointer':
+                content = '<?php echo '<h3>'.esc_html__( 'Help', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'Insert the ad code or script', 'ads-for-wp' ).'</p>'; ?>';
+                break;     
             default:
                 break;
         }         

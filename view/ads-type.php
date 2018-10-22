@@ -296,7 +296,7 @@ class adsforwp_view_ads_type {
                 
                 $common_function_obj = new adsforwp_admin_common_functions();
                 $allowed_html = $common_function_obj->adsforwp_expanded_allowed_tags();                                                		                                
-		echo '<table class="form-table"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table>';
+		echo '<table class="form-table adsforwp-ad-type-table"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table>';
 	}
 	public function adsforwp_format_rows( $label, $input ) {
 		return '<tr class=""><th>'.$label.'</th><td>'.$input.'</td></tr>';

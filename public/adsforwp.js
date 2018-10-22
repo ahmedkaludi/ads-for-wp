@@ -423,9 +423,7 @@ jQuery( document ).ready(function($) {
     $(".afw_group_ad_list").parent().parent().show(); 
     });
 
-// Metaboxes field selection on different dropdown selection
-    $("#paragraph_number").parent().parent("tr").addClass("afw_hide");
-    $("#custom_code, #data_client_id, #data_ad_slot, #paragraph_number, #banner_size, #manual_ads_type, #data_cid, #data_crid, #adsforwp_ad_image, #adsforwp_ad_redirect_url, #adsense_type").parent().parent("tr").hide();
+// Metaboxes field selection on different dropdown selection       
     afw_amp_status = $("#ads-for-wp_amp_compatibilty").val();
     $("#select_adtype").change(function(){        
           $(this).find("option:selected").each(function(){
@@ -438,15 +436,22 @@ jQuery( document ).ready(function($) {
                   $("#afw-amp-status-display").text(afw_amp_status);
                   $(".afw-amp-edit-post-status").show();
                   $("#ads-for-wp_amp_compatibilty").val(afw_amp_status);
+                  
+                  $('.adsforwp-ad-type-table tbody tr').not(':first').hide();
+                  
+                  $('.adsforwp-ad-type-table select').attr("required",false);
+                  $('.adsforwp-ad-type-table input').attr("required",false);
+                  $('#select_adtype').attr("required",true);  
+                  $("#custom_code").attr("required",false);  
+                  $(".afw_pointer").show();
+                  $(".afw_pointer").attr("id", "afw_"+optionValue+"_pointer");
+                      
                   switch (optionValue) {
 
                     case "custom":
-                       $("#display-metabox").show();
-                       $(".afw_pointer").hide(); 
-                       $("#custom_code").parent().parent("tr").show();                                       
-                       $("#infolinks_pid, #infolinks_wsid, #contentad_id, #contentad_id_d, #contentad_widget_id, #data_client_id, #data_ad_slot, #banner_size, #data_cid, #data_crid, #adsforwp_ad_image, #adsforwp_ad_redirect_url, #adsense_type, #ad_now_widget_id").parent().parent("tr").hide();                                          
-                       $("#custom_code").attr("required",true);                    
-                       $("#infolinks_pid, #infolinks_wsid, #contentad_id, #contentad_id_d, #contentad_widget_id, #banner_size, #data_client_id, #data_ad_slot, #data_cid, #data_crid, #adsforwp_ad_image, #ad_now_widget_id").attr("required",false);                    
+                       $("#display-metabox").show();                       
+                       $("#custom_code").parent().parent("tr").show();                                                             
+                       $("#custom_code").attr("required",true);                                           
                         break;
                     case "adsense":
                       $("#adsense_type").parent().parent("tr").show();
@@ -456,52 +461,35 @@ jQuery( document ).ready(function($) {
                                $("#display-metabox").show(); 
                                $("#banner_size, #data_client_id, #data_ad_slot").parent().parent("tr").show();
                                $("#banner_size, #data_client_id, #data_ad_slot").attr("required",true);
-                               $("#infolinks_pid, #infolinks_wsid, #contentad_id, #contentad_id_d, #contentad_widget_id, #custom_code, #data_cid, #data_crid, #adsforwp_ad_image, #adsforwp_ad_redirect_url, #ad_now_widget_id").parent().parent("tr").hide();
+                              
                               break;
                           case "adsense_auto_ads":
                                 $("#display-metabox").hide();
-                                $("#data_client_id").parent().parent("tr").show();
-                                $("#banner_size, #data_ad_slot").parent().parent("tr").hide();
-                                $("#data_client_id").attr("required",true);
-                                $("#banner_size, #data_ad_slot").attr("required",false);
-                                $("#infolinks_pid, #infolinks_wsid, #contentad_id, #contentad_id_d, #contentad_widget_id, #custom_code, #data_cid, #data_crid, #adsforwp_ad_image, #adsforwp_ad_redirect_url, #ad_now_widget_id").parent().parent("tr").hide();
+                                $("#data_client_id").parent().parent("tr").show();                                
+                                $("#data_client_id").attr("required",true);                               
 
                               break;
                           default:
                               $("#display-metabox").show();
-                              $("#banner_size, #data_client_id, #data_ad_slot").parent().parent("tr").hide();
-                              $("#banner_size, #data_client_id, #data_ad_slot").attr("required",false);
+                                                            
                               break;
                       }                                     
-
-                      $("#infolinks_pid, #infolinks_wsid, #contentad_id, #contentad_id_d, #contentad_widget_id, #data_cid, #data_crid, #custom_code, #adsforwp_ad_image, #ad_now_widget_id").attr("required",false);
-                      $(".afw_pointer").show();
-                      $(".afw_pointer").attr("id", "afw_adsense_pointer");
+                                                               
                         break
                     case "media_net":
                       $("#display-metabox").show();
-                      $("#data_cid, #banner_size, #data_crid").parent().parent("tr").show();                                                      
-                      $("#infolinks_pid, #infolinks_wsid, #contentad_id, #contentad_id_d, #contentad_widget_id, #custom_code, #data_ad_slot, #data_client_id, #adsforwp_ad_image, #adsforwp_ad_redirect_url, #adsense_type, #ad_now_widget_id").parent().parent("tr").hide();              	                                      
-                      $("#banner_size, #data_crid, #data_cid").attr("required",true);                                                      
-                      $("#infolinks_pid, #infolinks_wsid, #contentad_id, #contentad_id_d, #contentad_widget_id, #custom_code, #data_client_id, #data_ad_slot, #adsforwp_ad_image, #ad_now_widget_id").attr("required",false);  
-                      $(".afw_pointer").show();
-                      $(".afw_pointer").attr("id", "afw_media_net_pointer");
+                      $("#data_cid, #banner_size, #data_crid").parent().parent("tr").show();                                                                            
+                      $("#banner_size, #data_crid, #data_cid").attr("required",true);                                                                                                 
                         break 
                     case "contentad":
                       $("#display-metabox").show();
-                      $("#contentad_id, #contentad_id_d, #contentad_widget_id").parent().parent("tr").show();                                                                                           
-                      $("#infolinks_pid, #infolinks_wsid, #data_cid, #banner_size, #data_crid, #custom_code, #data_ad_slot, #data_client_id, #adsforwp_ad_image, #adsforwp_ad_redirect_url, #adsense_type, #ad_now_widget_id").parent().parent("tr").hide();              	                                      
-                      $("#contentad_id, #contentad_id_d, #contentad_widget_id").attr("required",true);                                                      
-                      $("#infolinks_pid, #infolinks_wsid, #data_cid, #banner_size, #data_crid, #custom_code, #data_client_id, #data_ad_slot, #adsforwp_ad_image, #ad_now_widget_id").attr("required",false);  
-                      $(".afw_pointer").hide();                 
+                      $("#contentad_id, #contentad_id_d, #contentad_widget_id").parent().parent("tr").show();                                                                                                                 
+                      $("#contentad_id, #contentad_id_d, #contentad_widget_id").attr("required",true);                                                                                                                 
                         break     
                     case "infolinks":
                       $("#display-metabox").show();
-                      $("#infolinks_pid, #infolinks_wsid").parent().parent("tr").show();                   
-                      $("#contentad_id, #contentad_id_d, #contentad_widget_id, #data_cid, #banner_size, #data_crid, #custom_code, #data_ad_slot, #data_client_id, #adsforwp_ad_image, #adsforwp_ad_redirect_url, #adsense_type, #ad_now_widget_id").parent().parent("tr").hide();              	                                      
-                      $("#infolinks_pid, #infolinks_wsid").attr("required",true);                                                      
-                      $("#contentad_id, #contentad_id_d, #contentad_widget_id, #data_cid, #banner_size, #data_crid, #custom_code, #data_client_id, #data_ad_slot, #adsforwp_ad_image, #ad_now_widget_id").attr("required",false);  
-                      $(".afw_pointer").hide();  
+                      $("#infolinks_pid, #infolinks_wsid").parent().parent("tr").show();                                         
+                      $("#infolinks_pid, #infolinks_wsid").attr("required",true);                                                                                                  
                       $(".afw-amp-support").removeClass('afw_hide');
                       $(".afw-amp-support span").text("Infolinks does not support AMP, Once Infolinks starts supporting, we will also start.");
                       $("#afw-amp-status-display").text('disable');
@@ -512,19 +500,13 @@ jQuery( document ).ready(function($) {
                     case "ad_image":
                       $("#display-metabox").show();
                       $("#adsforwp_ad_image").attr("required",true); 
-                      $("#adsforwp_ad_image").attr("readonly",true); 
-                      $("#infolinks_pid, #infolinks_wsid, #contentad_id, #contentad_id_d, #contentad_widget_id, #banner_size, #data_client_id, #data_ad_slot, #data_cid, #data_crid, #custom_code, #ad_now_widget_id").attr("required",false);
-                      $("#adsforwp_ad_image, #adsforwp_ad_redirect_url").parent().parent("tr").show();                                                      
-                      $("#infolinks_pid, #infolinks_wsid, #contentad_id, #contentad_id_d, #contentad_widget_id, #custom_code, #data_ad_slot, #data_client_id, #banner_size, #data_crid, #data_cid, #adsense_type, #ad_now_widget_id").parent().parent("tr").hide();              	                                                                                            
-                      $(".afw_pointer").hide();
+                      $("#adsforwp_ad_image").attr("readonly",true);                      
+                      $("#adsforwp_ad_image, #adsforwp_ad_redirect_url").parent().parent("tr").show();                                                                                                
                         break 
                     case "ad_now":
                       $("#display-metabox").show();
-                      $("#ad_now_widget_id").attr("required",true);                   
-                      $("#infolinks_pid, #infolinks_wsid, #contentad_id, #contentad_id_d, #contentad_widget_id, #banner_size, #data_client_id, #data_ad_slot, #data_cid, #data_crid, #custom_code, #adsforwp_ad_image").attr("required",false);
-                      $("#ad_now_widget_id").parent().parent("tr").show();                                                      
-                      $("#infolinks_pid, #infolinks_wsid, #contentad_id, #contentad_id_d, #contentad_widget_id, #custom_code, #data_ad_slot, #data_client_id, #banner_size, #data_crid, #data_cid, #adsense_type, #adsforwp_ad_image, #adsforwp_ad_redirect_url").parent().parent("tr").hide();              	                                                                                            
-                      $(".afw_pointer").hide();
+                      $("#ad_now_widget_id").attr("required",true);                                        
+                      $("#ad_now_widget_id").parent().parent("tr").show();                                                                                                 
                       $(".afw-amp-support").removeClass('afw_hide');
                       $(".afw-amp-support span").text("Adnow does not support AMP, Once Adnow starts supporting, we will also start.");
                       $("#afw-amp-status-display").text('disable');
@@ -532,11 +514,10 @@ jQuery( document ).ready(function($) {
                       $("#ads-for-wp_amp_compatibilty").val('disable');
                         break     
                     default:
-                      $("#display-metabox").show();
-                      $("#infolinks_pid, #infolinks_wsid, #contentad_id, #contentad_id_d, #contentad_widget_id, #custom_code, #data_client_id, #data_ad_slot, #paragraph_number, #banner_size, #manual_ads_type, #data_cid, #data_crid, #adsforwp_ad_image, #adsforwp_ad_redirect_url, #adsense_type, #ad_now_widget_id").parent().parent("tr").hide();
+                      $("#display-metabox").show();                      
                       $(".afw_pointer").hide();
                       break;   
-                    }                                                        
+                    }                                                     
               }      
           });
           var id = $(".afw_pointer").attr('id');          
@@ -599,44 +580,27 @@ jQuery( document ).ready(function($) {
       $(this).find("option:selected").each(function(){     
           var optionValue = $(this).attr("value");          
           if(optionValue){
-              
+              $('.adsforwp-display-table tbody tr').not(':first').hide();
+              $(".afw_ad_img_margin").parent().parent("tr").show();
               switch (optionValue) {
                  case "between_the_content":
                     var pragraph_no = $("#adposition").val();
                     if(pragraph_no ==='number_of_paragraph'){
                      $("#paragraph_number").parent().parent("tr").show();   
-                    }else{
-                     $("#paragraph_number").parent().parent("tr").hide();   
                     }
-                    $("#adposition").parent().parent("tr").show();
-                    $("#manual_ads_type").parent().parent("tr").hide(); 
+                    $("#adposition").parent().parent("tr").show();                    
                     $(".afw_ads_margin_field").parent().parent("tr").show();
                     break;
                 case "ad_shortcode":
-                    $("#manual_ads_type").parent().parent("tr").show();
-                    $("#adposition").parent().parent("tr").hide(); 
-                    $("#paragraph_number").parent().parent("tr").addClass("afw_hide");                    
-                    $("#paragraph_number").parent().parent("tr").hide();
-                    $(".afw_ads_margin_field").parent().parent("tr").hide();
+                    $("#manual_ads_type").parent().parent("tr").show();                   
                     break
-                case "after_the_content":   
-                    $("#adposition").parent().parent("tr").hide(); 
-                    $("#manual_ads_type").parent().parent("tr").hide();
-                    $("#paragraph_number").parent().parent("tr").hide();
+                case "after_the_content":                      
                     $(".afw_ads_margin_field").parent().parent("tr").show();
                     break;
-                case "before_the_content":   
-                    $("#adposition").parent().parent("tr").hide(); 
-                    $("#manual_ads_type").parent().parent("tr").hide();
-                    $("#paragraph_number").parent().parent("tr").hide();
+                case "before_the_content":                      
                     $(".afw_ads_margin_field").parent().parent("tr").show();
-                    break;    
-                
-                default:
-                    $("#adposition").parent().parent("tr").hide(); 
-                    $("#manual_ads_type").parent().parent("tr").hide();
-                    $("#paragraph_number").parent().parent("tr").addClass("afw_hide");
-                    $(".afw_ads_margin_field").parent().parent("tr").hide();
+                    break;                    
+                default:                                      
                   break;   
                 }                          
           }      
@@ -664,11 +628,11 @@ jQuery( document ).ready(function($) {
             
     $("#adposition").change(function(){        
       $(this).find("option:selected").each(function(){  
-          var optionValue = $(this).attr("value");                 
+          var optionValue = $(this).attr("value");    
+          var wheretodisplay = $("#wheretodisplay").val();
           if(optionValue){                                 
-              if("number_of_paragraph" === optionValue){
-          	$("#paragraph_number").parent().parent("tr").show();
-                $("#paragraph_number").parent().parent("tr").removeClass("afw_hide");
+              if("number_of_paragraph" === optionValue && wheretodisplay ==='between_the_content'){
+          	$("#paragraph_number").parent().parent("tr").show();                
               }else{
                $("#paragraph_number").parent().parent("tr").hide();   
               }                                                      
