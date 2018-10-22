@@ -71,72 +71,51 @@ function adsforwp_check_plugin() {
         }
     }      
   if ( is_plugin_active('accelerated-mobile-pages/accelerated-moblie-pages.php') ) {
-    require ADSFORWP_PLUGIN_DIR.'/view/amp-compatibility.php';	
+         require ADSFORWP_PLUGIN_DIR.'/view/amp-compatibility.php';	
   }
 }
 add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'adsforwp_action_links' );
 function adsforwp_action_links ( $links ) {
- $mylinks = array(
- '<a href="' . admin_url( 'edit.php?post_type=adsforwp&page=adsforwp' ) . '">'.esc_html__('Settings', 'ads-for-wp').'</a>',
- );
+        $mylinks = array(
+        '<a href="' . admin_url( 'edit.php?post_type=adsforwp&page=adsforwp' ) . '">'.esc_html__('Settings', 'ads-for-wp').'</a>',
+        );
 return array_merge( $links, $mylinks );
 }
-
-
-
 /**
  * set user defined message on plugin activate
  */
-
 add_action( 'admin_notices', 'adsforwp_admin_notice' );
 
-function adsforwp_admin_notice(){
-    ?>
-       <div class="updated notice is-dismissible message notice notice-alt adsforwp-setup-notice afw_hide">
-         <p><span class="dashicons dashicons-thumbs-up"></span> <?php echo esc_html__('Thank you for using Ads For WP plugin!', 'ads-for-wp') ?>                
-             <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=adsforwp' ) ); ?>"> <?php echo esc_html__('Start adding ads', 'schema-and-structured-data-for-wp') ?></a>
-            </p>
-        </div>
-     
-        <div class="updated notice is-dismissible message notice notice-alt adsforwp-feedback-notice afw_hide">
-            <p><span class="dashicons dashicons-thumbs-up"></span> <?php echo esc_html__('You have been using the Ads For WP plugin for some time now, do you like it?, If so,', 'ads-for-wp') ?>
-                <a target="_blank" href="https://wordpress.org/plugins/ads-for-wp/#reviews"> <?php echo esc_html__('please write us a review', 'ads-for-wp') ?></a>
-            </p>
-        </div>
-    <?php
+function adsforwp_admin_notice(){    
     /* Check transient, if available display notice */
     if( get_transient( 'adsforwp_admin_notice_transient' ) ){
-        ?>
-        <script type="text/javascript">  
-             jQuery(document).ready( function($) {
-                 $(".adsforwp-setup-notice").show(); 
-             });
-        </script> 
-        <?php
+        echo '<div class="updated notice is-dismissible message notice notice-alt adsforwp-setup-notice">
+             <p><span class="dashicons dashicons-thumbs-up"></span>'.esc_html__('Thank you for using Ads For WP plugin!', 'ads-for-wp').'               
+             <a href="'.esc_url( admin_url( 'edit.php?post_type=adsforwp' ) ).'"> '.esc_html__('Start adding ads', 'schema-and-structured-data-for-wp') .'</a>
+             </p></div>';             
         /* Delete transient, only display this notice once. */
         delete_transient( 'adsforwp_admin_notice_transient' );
     }             
      //Feedback notice
-    $activation_date =  get_option("adsforwp_activation_date");  
-    
-    $one_day    = date('Y-m-d',strtotime("+1 day", strtotime($activation_date))); 
-    $seven_days = date('Y-m-d',strtotime("+7 day", strtotime($activation_date)));
-    $one_month  = date('Y-m-d',strtotime("+30 day", strtotime($activation_date)));
-    $sixty_days = date('Y-m-d',strtotime("+60 day", strtotime($activation_date)));
-    $six_month  = date('Y-m-d',strtotime("+180 day", strtotime($activation_date)));
-    $one_year   = date('Y-m-d',strtotime("+365 day", strtotime($activation_date))); 
-    
-    $current_date = date("Y-m-d");    
-    $list_of_date = array($one_day, $seven_days, $one_month, $sixty_days, $six_month, $one_year);
+        $activation_date =  get_option("adsforwp_activation_date");  
+
+        $one_day    = date('Y-m-d',strtotime("+1 day", strtotime($activation_date))); 
+        $seven_days = date('Y-m-d',strtotime("+7 day", strtotime($activation_date)));
+        $one_month  = date('Y-m-d',strtotime("+30 day", strtotime($activation_date)));
+        $sixty_days = date('Y-m-d',strtotime("+60 day", strtotime($activation_date)));
+        $six_month  = date('Y-m-d',strtotime("+180 day", strtotime($activation_date)));
+        $one_year   = date('Y-m-d',strtotime("+365 day", strtotime($activation_date))); 
+
+        $current_date = date("Y-m-d");    
+        $list_of_date = array($one_day, $seven_days, $one_month, $sixty_days, $six_month, $one_year);
     
     if(in_array($current_date,$list_of_date)){
-      ?>
-         <script type="text/javascript">  
-             jQuery(document).ready( function($) {
-                 $(".adsforwp-feedback-notice").show();                
-             });
-        </script> 
-        <?php
+        echo '<div class="updated notice is-dismissible message notice notice-alt adsforwp-feedback-notice">
+            <p><span class="dashicons dashicons-thumbs-up"></span> 
+            '.esc_html__('You have been using the Ads For WP plugin for some time now, do you like it?, If so,', 'ads-for-wp').'						
+            <a target="_blank" href="https://wordpress.org/plugins/ads-for-wp/#reviews">				
+	    '.esc_html__('please write us a review', 'ads-for-wp').'
+	    </a></p> </div>';                       
     }  
 }
 
