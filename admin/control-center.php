@@ -316,7 +316,7 @@ add_action('widgets_init', 'register_adsforwp_ads_widget');
  *      We are registering custom post type adsforwp in wordpress
  */
 function adsforwp_setup_post_type() {
-    $not_found_button = '<div><p style="float:left;margin-right:5px;">'.esc_html__('Welcome to Ads for WP. It looks like you don\'t have any ads.', 'ads-for-wp').'</p> <a href="'.esc_url( admin_url( 'post-new.php?post_type=adsforwp' ) ).'" class="button button-primary">'.esc_html('Let\'s create a new Ad', 'ads-for-wp').'</a></div>';
+    $not_found_button = '<div><p style="float:left;margin-right:5px;">'.esc_html__('Welcome to Ads for WP. It looks like you don\'t have any ads.', 'ads-for-wp').'</p> <a href="'.esc_url( admin_url( 'post-new.php?post_type=adsforwp' ) ).'" class="button button-primary">'.esc_html__('Let\'s create a new Ad', 'ads-for-wp').'</a></div>';
     $args = array(
 	    'labels' => array(
 	        'name' 			=> esc_html__( 'Ads', 'ads-for-wp' ),
@@ -514,16 +514,20 @@ function adsforwp_admin_enqueue() {
          wp_enqueue_style( 'jquery-ui' );
          add_action('admin_print_footer_scripts', 'adsforwp_print_footer_scripts' );
     
-        wp_enqueue_style( 'ads-for-wp-admin', ADSFORWP_PLUGIN_DIR_URI . 'public/adsforwp.css', false , ADSFORWP_VERSION );
-        wp_register_script( 'ads-for-wp-admin-js', ADSFORWP_PLUGIN_DIR_URI . 'public/adsforwp.js', array('jquery'), ADSFORWP_VERSION , true );
-        wp_register_script( 'ads-for-wp-admin-analytics-js', ADSFORWP_PLUGIN_DIR_URI . 'public/analytics.js', array('jquery'), ADSFORWP_VERSION , true );
+         wp_enqueue_style( 'ads-for-wp-admin', ADSFORWP_PLUGIN_DIR_URI . 'public/adsforwp.css', false , ADSFORWP_VERSION );
+         wp_register_script( 'ads-for-wp-admin-js', ADSFORWP_PLUGIN_DIR_URI . 'public/adsforwp.js', array('jquery'), ADSFORWP_VERSION , true );
+         wp_register_script( 'ads-for-wp-admin-analytics-js', ADSFORWP_PLUGIN_DIR_URI . 'public/analytics.js', array('jquery'), ADSFORWP_VERSION , true );
             // Localize the script with new data
         $data = array(
-            'ajax_url'  => admin_url( 'admin-ajax.php' ),
-            'id'		=> get_the_ID(),
-            'uploader_title'		=> 'Ad Image',
-            'uploader_button'		=> 'Select',
-            'post_type'		=> get_post_type()
+            'ajax_url'                  => admin_url( 'admin-ajax.php' ),
+            'id'                        => get_the_ID(),
+            'uploader_title'		=> esc_html__( 'Ad Image', 'ads-for-wp' ),
+            'uploader_button'		=> esc_html__( 'Select', 'ads-for-wp' ),
+            'post_type'                 => get_post_type(),
+            'adnow_note'                => esc_html__( 'Adnow does not support AMP, Once Adnow starts supporting, we will also start.', 'ads-for-wp' ),
+            'infolinks_note'            => esc_html__( 'Infolinks does not support AMP, Once Infolinks starts supporting, we will also start.', 'ads-for-wp' ),
+            'embed_code_button_text'    => esc_html__( 'Embed Code', 'ads-for-wp' ),
+            
         );
         wp_localize_script( 'ads-for-wp-admin-js', 'adsforwp_localize_data', $data );	
         // Enqueued script with localized data.
@@ -609,7 +613,7 @@ function adsforwp_groups_update_ids_on_untrash(){
  */    
 function adsforwp_general_admin_notice(){
      echo '<div class="message error update-message notice notice-alt notice-error afw-blocker-notice afw_hide">'
-                 . '<p>'.esc_html__('Please disable your', 'ads-for-wp').' <strong>'.esc_html__('AdBlocker', 'ads-for-wp').'</strong> '.esc_html('to use adsforwp plugin smoothly', 'ads-for-wp').'</p>'
+                 . '<p>'.esc_html__('Please disable your', 'ads-for-wp').' <strong>'.esc_html__('AdBlocker', 'ads-for-wp').'</strong> '.esc_html__('to use adsforwp plugin smoothly', 'ads-for-wp').'</p>'
                  . '</div>'; 
      $post_type = get_post_type();     
      if($post_type == 'adsforwp'){

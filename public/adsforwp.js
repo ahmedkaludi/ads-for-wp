@@ -491,7 +491,7 @@ jQuery( document ).ready(function($) {
                       $("#infolinks_pid, #infolinks_wsid").parent().parent("tr").show();                                         
                       $("#infolinks_pid, #infolinks_wsid").attr("required",true);                                                                                                  
                       $(".afw-amp-support").removeClass('afw_hide');
-                      $(".afw-amp-support span").text("Infolinks does not support AMP, Once Infolinks starts supporting, we will also start.");
+                      $(".afw-amp-support span").text(adsforwp_localize_data.infolinks_note);
                       $("#afw-amp-status-display").text('disable');
                       $(".afw-amp-edit-post-status").hide();
                       $("#ads-for-wp_amp_compatibilty").val('disable');
@@ -508,7 +508,7 @@ jQuery( document ).ready(function($) {
                       $("#ad_now_widget_id").attr("required",true);                                        
                       $("#ad_now_widget_id").parent().parent("tr").show();                                                                                                 
                       $(".afw-amp-support").removeClass('afw_hide');
-                      $(".afw-amp-support span").text("Adnow does not support AMP, Once Adnow starts supporting, we will also start.");
+                      $(".afw-amp-support span").text(adsforwp_localize_data.adnow_note);
                       $("#afw-amp-status-display").text('disable');
                       $(".afw-amp-edit-post-status").hide();
                       $("#ads-for-wp_amp_compatibilty").val('disable');
@@ -676,16 +676,7 @@ jQuery( document ).ready(function($) {
             $(".afw-add-new-note").show();  
           }
                 
-    });
-    $("input[name='ads-for-wp_amp_compatibilty']").change(function(){
-        var checked = $("input[name=ads-for-wp_amp_compatibilty]:checked").val();        
-        if(checked =='enable'){
-          $(".afw_amp_comp_check").text("AMP compatibility has been activated");  
-        }else{
-          $(".afw_amp_comp_check").text("AMP compatibility has been deactivated");  
-        }
-    }).change();
-    
+    });        
     $(document).on("click", ".afw-remove-ad-from-group", function(){
         var ad_id = $(this).parent().parent().find('input[type="hidden"]').attr('name');
         var ad_title = $(this).parent().parent().find('input[type="hidden"]').val();
@@ -724,7 +715,7 @@ jQuery( document ).ready(function($) {
     });
     
     
-    $("#display-metabox .handlediv").after('<a type="button" href="#" class="button afw-embed-code-button" aria-expanded="true" style="float: right; margin-top: 3px;">Embed Code</a>');
+    $("#display-metabox .handlediv").after('<a type="button" href="#" class="button afw-embed-code-button" aria-expanded="true" style="float: right; margin-top: 3px;">'+adsforwp_localize_data.embed_code_button_text+'</a>');
     $(document).on("click", '.afw-embed-code-button', function(){
             if(adsforwp_localize_data.post_type == 'adsforwp'){
               var shortcode = '[adsforwp id="'+currentAdID+'"]';

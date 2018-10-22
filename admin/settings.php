@@ -227,7 +227,7 @@ public function adsforwp_contact_us_form_callback(){
                     <span class="afw-query-success afw_hide"><?php echo esc_html__('Message sent successfully, Please wait we will get back to you shortly', 'ads-for-wp'); ?></span>
                     <span class="afw-query-error afw_hide"><?php echo esc_html__('Message not sent. please check your network connection', 'ads-for-wp'); ?></span>
                 </li> 
-                <li><button class="button afw-send-query"><?php echo esc_html('Send Message', 'ads-for-wp'); ?></button></li>
+                <li><button class="button afw-send-query"><?php echo esc_html__('Send Message', 'ads-for-wp'); ?></button></li>
             </ul>            
                    
         </div>
