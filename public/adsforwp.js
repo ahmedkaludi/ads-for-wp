@@ -746,7 +746,7 @@ jQuery( document ).ready(function($) {
                     type: "POST",    
                     url:adsforwp_localize_data.ajax_url,                    
                     dataType: "json",
-                    data:{action:"adsforwp_send_query_message", message:message},
+                    data:{action:"adsforwp_send_query_message", message:message, security_nonce:adsforwp_localize_data.security_nonce},
                     success:function(response){                       
                       if(response['status'] =='t'){
                         $(".afw-query-success").show();
@@ -770,7 +770,7 @@ jQuery( document ).ready(function($) {
             var current_selection = $(this);
             var plugin_name = $(this).attr('data-id');                      
                          $.get(ajaxurl, 
-                             { action:"adsforwp_import_plugin_data", plugin_name:plugin_name},
+                             { action:"adsforwp_import_plugin_data", plugin_name:plugin_name, security_nonce:adsforwp_localize_data.security_nonce},
                               function(response){                                  
                               if(response['status'] =='t'){                                  
                                   $(current_selection).parent().find(".adsforwp-imported-message").text(response['message']);

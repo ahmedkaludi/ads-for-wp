@@ -3,8 +3,15 @@
      * This is a ajax handler function for importing plugins data. 
      * @return type json string
      */
-function adsforwp_import_plugin_data(){                  
-        $plugin_name   = sanitize_text_field($_GET['plugin_name']); 
+function adsforwp_import_plugin_data(){   
+        
+        if ( ! isset( $_GET['security_nonce'] ) ){
+           return; 
+        }
+        if ( !wp_verify_nonce( $_GET['security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
+           return;  
+        }        
+        $plugin_name   = sanitize_text_field($_GET['plugin_name']);        
         $common_function_obj = new adsforwp_admin_common_functions();
         $result = '';
         switch ($plugin_name) {
@@ -56,8 +63,15 @@ add_action('admin_menu', 'adsforwp_disable_new_posts');
      * This is a ajax handler function for sending email from user admin panel to us. 
      * @return type json string
      */
-function adsforwp_send_query_message(){                  
-        $message    = sanitize_text_field($_POST['message']); 
+function adsforwp_send_query_message(){    
+    
+        if ( ! isset( $_POST['security_nonce'] ) ){
+           return; 
+        }
+        if ( !wp_verify_nonce( $_POST['security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
+           return;  
+        }					    
+        $message    = sanitize_text_field($_POST['message']);        
         $user       = wp_get_current_user();
         $user_data  = $user->data;        
         $user_email = $user_data->user_email;       
@@ -518,6 +532,8 @@ function adsforwp_admin_enqueue() {
          wp_register_script( 'ads-for-wp-admin-js', ADSFORWP_PLUGIN_DIR_URI . 'public/adsforwp.js', array('jquery'), ADSFORWP_VERSION , true );
          wp_register_script( 'ads-for-wp-admin-analytics-js', ADSFORWP_PLUGIN_DIR_URI . 'public/analytics.js', array('jquery'), ADSFORWP_VERSION , true );
             // Localize the script with new data
+         
+         
         $data = array(
             'ajax_url'                  => admin_url( 'admin-ajax.php' ),
             'id'                        => get_the_ID(),
@@ -527,6 +543,7 @@ function adsforwp_admin_enqueue() {
             'adnow_note'                => esc_html__( 'Adnow does not support AMP, Once Adnow starts supporting, we will also start.', 'ads-for-wp' ),
             'infolinks_note'            => esc_html__( 'Infolinks does not support AMP, Once Infolinks starts supporting, we will also start.', 'ads-for-wp' ),
             'embed_code_button_text'    => esc_html__( 'Embed Code', 'ads-for-wp' ),
+            'security_nonce'            => wp_create_nonce('adsforwp_ajax_check_nonce')
             
         );
         wp_localize_script( 'ads-for-wp-admin-js', 'adsforwp_localize_data', $data );	
