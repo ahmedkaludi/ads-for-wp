@@ -27,7 +27,7 @@ require_once ADSFORWP_LIB_PATH . "Google/Http/Request.php";
  */
 class Adsforwp_Google_Auth_Simple extends Adsforwp_Google_Auth_Abstract
 {
-  private $key = null;
+  
   private $client;
 
   public function __construct(Adsforwp_Google_Client $client, $config = null)

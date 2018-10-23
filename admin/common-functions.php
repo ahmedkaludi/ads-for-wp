@@ -249,9 +249,9 @@ class adsforwp_admin_common_functions {
      */
     
     public function adsforwp_migrate_ampforwp_ads(){
-        $result ='';
+        $result =array();
         $adforwp_meta_key = array();
-        $amp_options = get_option('redux_builder_amp'); 
+        $amp_options = get_option('redux_builder_amp');         
         $user_id = get_current_user_id();
                
         $placement = array('1'=> 'Single','2'=> 'Global','3'=> 'Custom Post Types','4'=> 'Pages');
@@ -277,8 +277,8 @@ class adsforwp_admin_common_functions {
                     'post_type' => 'adsforwp',
                     
                 );  
-        if(isset($amp_options['enable-amp-ads-select-'.$i])){
-         $post_id = wp_insert_post($ads_post);
+        if($amp_options['enable-amp-ads-'.$i] ==1){            
+                $post_id = wp_insert_post($ads_post);
                 $data_group_array = array();
                 $conditions = array();
                 if($i==3){
@@ -330,7 +330,7 @@ class adsforwp_admin_common_functions {
                     'data_group_array' => $data_group_array
                 );
                 foreach ($adforwp_meta_key as $key => $val){                     
-                $result =  update_post_meta($post_id, $key, $val);  
+                $result[] =  update_post_meta($post_id, $key, $val);  
                 }                                     
                  }
         
@@ -341,7 +341,7 @@ class adsforwp_admin_common_functions {
     }
     
     public function adsforwp_migrate_advanced_auto_ads(){
-        $result ='';
+        $result =array();
         $adforwp_meta_key = array();
         $amp_options = get_option('redux_builder_amp');        
         $user_id = get_current_user_id();
@@ -373,14 +373,14 @@ class adsforwp_admin_common_functions {
                     'data_group_array' => $data_group_array
                 );
                 foreach ($adforwp_meta_key as $key => $val){                     
-                 $result =  update_post_meta($post_id, $key, $val);  
+                 $result[] =  update_post_meta($post_id, $key, $val);  
                 }
         }
         return $result;
     }
     
     public function adsforwp_migrate_advanced_amp_ads_incontent(){
-        $result ='';
+        $result = array();
         $adforwp_meta_key = array();
         $amp_options = get_option('redux_builder_amp');        
         $user_id = get_current_user_id();
@@ -462,7 +462,7 @@ class adsforwp_admin_common_functions {
               if($amp_options['ampforwp-advertisement-type-incontent-ad-'.$i] != 2){
               $post_id = wp_insert_post($ads_post);
               foreach ($adforwp_meta_key as $key => $val){                     
-                $result = update_post_meta($post_id, $key, $val);  
+                $result[] = update_post_meta($post_id, $key, $val);  
                 }    
               }                                           
         }
@@ -470,7 +470,7 @@ class adsforwp_admin_common_functions {
     }
 
     public function adsforwp_migrate_advanced_amp_ads_after_feature(){
-        $result ='';
+        $result = array();
         $adforwp_meta_key = array();
         $amp_options = get_option('redux_builder_amp');        
         $user_id = get_current_user_id();
@@ -526,13 +526,13 @@ class adsforwp_admin_common_functions {
                             }
                             
                 foreach ($adforwp_meta_key as $key => $val){                     
-                $result = update_post_meta($post_id, $key, $val);  
+                $result[] = update_post_meta($post_id, $key, $val);  
                 }            
         }
         return $result;
     }
     public function adsforwp_migrate_advanced_amp_ads_inloop(){
-        $result ='';
+        $result = array();
         $adforwp_meta_key = array();
         $amp_options = get_option('redux_builder_amp');        
         $user_id = get_current_user_id();
@@ -589,13 +589,13 @@ class adsforwp_admin_common_functions {
                             }
                             
                 foreach ($adforwp_meta_key as $key => $val){                     
-                $result = update_post_meta($post_id, $key, $val);  
+                $result[] = update_post_meta($post_id, $key, $val);  
                 }            
         }
         return $result;
     }
     public function adsforwp_migrate_advanced_amp_ads_standard(){
-        $result ='';
+        $result = array();
         $adforwp_meta_key = array();
         $amp_options = get_option('redux_builder_amp');        
         $user_id = get_current_user_id();
@@ -667,7 +667,7 @@ class adsforwp_admin_common_functions {
               if($amp_options['ampforwp-advertisement-type-standard-'.$i] !=2){
               $post_id = wp_insert_post($ads_post);
               foreach ($adforwp_meta_key as $key => $val){                     
-                 $result = update_post_meta($post_id, $key, $val);  
+                 $result[] = update_post_meta($post_id, $key, $val);  
                }    
               }                                           
             }  
@@ -677,19 +677,18 @@ class adsforwp_admin_common_functions {
                         
             global $wpdb;
             $wpdb->query('START TRANSACTION');
+              $result = array();  
+              $result[] = $this->adsforwp_migrate_ampforwp_ads();
 
-            $result = $this->adsforwp_migrate_ampforwp_ads();
+              $result[] = $this->adsforwp_migrate_advanced_auto_ads();
 
-            $result = $this->adsforwp_migrate_advanced_auto_ads();
+              $result[] = $this->adsforwp_migrate_advanced_amp_ads_incontent();        
 
-            $result = $this->adsforwp_migrate_advanced_amp_ads_incontent();        
+              $result[] = $this->adsforwp_migrate_advanced_amp_ads_after_feature();    
 
-            $result = $this->adsforwp_migrate_advanced_amp_ads_after_feature();    
+              $result[] = $this->adsforwp_migrate_advanced_amp_ads_standard();                                 
 
-            $result = $this->adsforwp_migrate_advanced_amp_ads_standard();                                 
-
-            $result = $this->adsforwp_migrate_advanced_amp_ads_inloop();  
-            
+              $result[] = $this->adsforwp_migrate_advanced_amp_ads_inloop();                
             if (is_wp_error($result) ){
               echo $result->get_error_message();              
               $wpdb->query('ROLLBACK');             

@@ -266,8 +266,7 @@ class Adsforwp_Google_Http_MediaFileUpload
   }
 
   private function getResumeUri()
-  {
-    $result = null;
+  {        
     $body = $this->request->getPostBody();
     if ($body) {
       $headers = array(

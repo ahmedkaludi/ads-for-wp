@@ -18,8 +18,7 @@
 		<style type="text/css" media="screen"> #pointer-primary { margin: 0 5px 0 0; } </style>
 		<?php }
 	function adsforwp_admin_print_footer_scripts () {
-             
-		global $pagenow;                                
+             		                        
 		global $current_user;                
 		$tour = array ();
                 $tab = isset($_GET['tab']) ? $_GET['tab'] : '';                   

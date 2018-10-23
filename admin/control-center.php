@@ -13,7 +13,7 @@ function adsforwp_import_plugin_data(){
         }        
         $plugin_name   = sanitize_text_field($_GET['plugin_name']);           
         $common_function_obj = new adsforwp_admin_common_functions();
-        $result = '';
+        $result =  array();
         switch ($plugin_name) {
             case 'advanced_ads':
                 
@@ -25,14 +25,16 @@ function adsforwp_import_plugin_data(){
             case 'ampforwp_ads':
                
                 if ( is_plugin_active('accelerated-mobile-pages/accelerated-moblie-pages.php')) {                     
-                 $result = $common_function_obj->adsforwp_import_all_amp_ads();      
+                 $result = $common_function_obj->adsforwp_import_all_amp_ads();
+                
                 }                
                 break;
 
             default:
                 break;
-        }                             
-        if($result){
+        }  
+        $result = array_filter($result);
+        if($result){           
         echo json_encode(array('status'=>'t', 'message'=>esc_html__('Data has been imported succeessfully','ads-for-wp')));            
         }else{
         echo json_encode(array('status'=>'f', 'message'=>esc_html__('Plugin data is not available or it is not activated','ads-for-wp')));            

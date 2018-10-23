@@ -403,7 +403,8 @@ jQuery( document ).ready(function($) {
                             button: {
                                     text: adsforwp_localize_data.uploader_button
                             },
-                            multiple: false  // Set this to true to allow multiple files to be selected
+                            multiple: false,  // Set this to true to allow multiple files to be selected
+                            library:{type : 'image'}
                     })
                     .on("select", function() {
                             var attachment = pwaforwpMediaUploader.state().get("selection").first().toJSON();                        
