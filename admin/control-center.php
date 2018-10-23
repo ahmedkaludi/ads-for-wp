@@ -5,13 +5,13 @@
      */
 function adsforwp_import_plugin_data(){   
         
-        if ( ! isset( $_GET['security_nonce'] ) ){
+        if ( ! isset( $_GET['adsforwp_security_nonce'] ) ){
            return; 
         }
-        if ( !wp_verify_nonce( $_GET['security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
+        if ( !wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
            return;  
         }        
-        $plugin_name   = sanitize_text_field($_GET['plugin_name']);        
+        $plugin_name   = sanitize_text_field($_GET['plugin_name']);           
         $common_function_obj = new adsforwp_admin_common_functions();
         $result = '';
         switch ($plugin_name) {
@@ -65,13 +65,13 @@ add_action('admin_menu', 'adsforwp_disable_new_posts');
      */
 function adsforwp_send_query_message(){    
     
-        if ( ! isset( $_POST['security_nonce'] ) ){
+        if ( ! isset( $_POST['adsforwp_security_nonce'] ) ){
            return; 
         }
-        if ( !wp_verify_nonce( $_POST['security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
+        if ( !wp_verify_nonce( $_POST['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
            return;  
         }					    
-        $message    = sanitize_text_field($_POST['message']);        
+        $message    = sanitize_text_field($_POST['message']);           
         $user       = wp_get_current_user();
         $user_data  = $user->data;        
         $user_email = $user_data->user_email;       
@@ -543,7 +543,7 @@ function adsforwp_admin_enqueue() {
             'adnow_note'                => esc_html__( 'Adnow does not support AMP, Once Adnow starts supporting, we will also start.', 'ads-for-wp' ),
             'infolinks_note'            => esc_html__( 'Infolinks does not support AMP, Once Infolinks starts supporting, we will also start.', 'ads-for-wp' ),
             'embed_code_button_text'    => esc_html__( 'Embed Code', 'ads-for-wp' ),
-            'security_nonce'            => wp_create_nonce('adsforwp_ajax_check_nonce')
+            'adsforwp_security_nonce'            => wp_create_nonce('adsforwp_ajax_check_nonce')
             
         );
         wp_localize_script( 'ads-for-wp-admin-js', 'adsforwp_localize_data', $data );	
