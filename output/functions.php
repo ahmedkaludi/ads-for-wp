@@ -429,8 +429,7 @@ class adsforwp_output_functions{
             $ad_alignment      = '';
             
             $adsforwp_ad_expire_days =array();
-            $post_meta_dataset = array();
-            
+            $post_meta_dataset = array();                      
             $post_meta_dataset = get_post_meta($post_ad_id,$key='',true);             
             if(array_key_exists('wheretodisplay', $post_meta_dataset)){
             $where_to_display = $post_meta_dataset['wheretodisplay'][0];  
@@ -498,8 +497,7 @@ class adsforwp_output_functions{
             if(array_key_exists('ads-for-wp_amp_compatibilty', $post_meta_dataset)){
             $amp_compatibility = $post_meta_dataset['ads-for-wp_amp_compatibilty'][0];              
             }
-                              
-            
+                                         
             switch ($ad_type) {
             case 'custom':
                     if($this->is_amp){
@@ -596,7 +594,7 @@ class adsforwp_output_functions{
 				 <div id="SC_TBlock_'.$ad_now_widget_id.'" class="SC_TBlock">loading...</div>
                                  <script type="text/javascript">
                                       (sc_adv_out = window.sc_adv_out || []).push({
-                                        id : "'.$ad_now_widget_id.'",
+                                        id : "'.esc_attr($ad_now_widget_id).'",
                                         domain : "n.ads1-adnow.com"
                                        });
                                  </script>
@@ -876,11 +874,17 @@ class adsforwp_output_functions{
            
         $ad_code ="";  
         $group_ad_code="";
+        $filter_group_ids = array();    
         if($this->is_amp){            
         
         if($amp_compatibility != 'disable'){    
         if($post_group_data){
-        $ad_code =  $this->adsforwp_get_ad_code(array_rand($post_group_data), $type="GROUP");              
+           foreach ($post_group_data as $group_id=>$value){
+            if(get_post_status($group_id) == 'publish'){
+              $filter_group_ids[$group_id] = $value; 
+            }
+         } 
+        $ad_code =  $this->adsforwp_get_ad_code(array_rand($filter_group_ids), $type="GROUP");              
         }  
         
         }
@@ -891,7 +895,9 @@ class adsforwp_output_functions{
         $adsresultset = array();  
         $response = array();           
         foreach($post_group_data as $post_ad_id => $post){
-        $ad_detail = get_post_meta($post_ad_id,$key='',true);        
+        $ad_detail = get_post_meta($post_ad_id,$key='',true);  
+        
+        if(!empty($ad_detail) && $ad_detail['select_adtype'][0] !='' && get_post_status($post_ad_id) == 'publish'){
         $adsresultset[] = array(
                 'ad_id' => $post_ad_id,
                 'ad_type' => $ad_detail['select_adtype'][0],
@@ -907,6 +913,7 @@ class adsforwp_output_functions{
                 'ad_img_height' => $ad_detail['adsforwp_ad_img_height'][0],
                 'ad_img_width' => $ad_detail['adsforwp_ad_img_width'][0],                
         ) ; 
+        }
         
         }
         $response['afw_group_id'] = $post_group_id;
@@ -924,8 +931,17 @@ class adsforwp_output_functions{
         
         
         }else{
-        $post_group_data = get_post_meta($post_group_id,$key='adsforwp_ads',true);         
-        $ad_code =  $this->adsforwp_get_ad_code(array_rand($post_group_data), $type="GROUP");   
+                
+        $post_group_data = get_post_meta($post_group_id,$key='adsforwp_ads',true);  
+        
+        foreach ($post_group_data as $group_id=>$value){
+            if(get_post_status($group_id) == 'publish'){
+              $filter_group_ids[$group_id] = $value; 
+            }
+        }       
+        $ad_code =  $this->adsforwp_get_ad_code(array_rand($filter_group_ids), $type="GROUP"); 
+        
+        
         }        
         }
         }                           
@@ -986,4 +1002,4 @@ class adsforwp_output_functions{
 if (class_exists('adsforwp_output_functions')) {
 	$adsforwp_function_obj = new adsforwp_output_functions;
         $adsforwp_function_obj->adsforwp_hooks();
-};
+}

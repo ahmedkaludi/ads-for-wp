@@ -230,7 +230,7 @@ function adsforwp_admin_link($tab = '', $args = array()){
 
 	if ( $args ) {
 		foreach ( $args as $arg => $value ) {
-			$link .= '&' . $arg . '=' . urlencode( $value );
+		$link .= '&' . $arg . '=' . urlencode( $value );
 		}
 	}
 
@@ -545,7 +545,7 @@ function adsforwp_admin_enqueue() {
             'adnow_note'                => esc_html__( 'Adnow does not support AMP, Once Adnow starts supporting, we will also start.', 'ads-for-wp' ),
             'infolinks_note'            => esc_html__( 'Infolinks does not support AMP, Once Infolinks starts supporting, we will also start.', 'ads-for-wp' ),
             'embed_code_button_text'    => esc_html__( 'Embed Code', 'ads-for-wp' ),
-            'adsforwp_security_nonce'            => wp_create_nonce('adsforwp_ajax_check_nonce')
+            'adsforwp_security_nonce'   => wp_create_nonce('adsforwp_ajax_check_nonce')
             
         );
         wp_localize_script( 'ads-for-wp-admin-js', 'adsforwp_localize_data', $data );	

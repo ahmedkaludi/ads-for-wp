@@ -46,8 +46,7 @@ class adsforwp_view_visitor_condition {
           'logged_in_visitor'   =>  esc_html__("Logged In Visitor",'ads-for-wp'),
           'user_agent'   =>  esc_html__("User Agent",'ads-for-wp'),  
           'user_type'   =>  esc_html__("User Can (Capabilities)",'ads-for-wp'),
-          'referrer_url'   =>  esc_html__("Referrer URL",'ads-for-wp'),  
-         // 'geo_location'   =>  esc_html__("Geo Location",'ads-for-wp'),                
+          'referrer_url'   =>  esc_html__("Referrer URL",'ads-for-wp')                         
         )        
       ); 
 
@@ -143,12 +142,11 @@ class adsforwp_view_visitor_condition {
     </div>
     <?php } ?>
     
-    <a style="margin-left: 8px; margin-bottom: 8px;" class="button adsforwp-visitor-condition-or-group afw-placement-button" href="#">Or</a>
+    <a style="margin-left: 8px; margin-bottom: 8px;" class="button adsforwp-visitor-condition-or-group afw-placement-button" href="#"><?php echo esc_html__( 'Or', 'ads-for-wp') ?></a>
 </div>    
 </div>
-    <?php                                                      
-                                
-        }
+    <?php                                                                                      
+    }
    
  public function adsforwp_visitor_condition_save( $post_id ) {     
      
@@ -236,26 +234,7 @@ class adsforwp_view_visitor_condition {
                         }
                     }            
           break;
-          
-//          case 'geo_location':      
-//              
-//                    $ip = '192.168.0.124';
-//                    $dataArray = json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip));
-//                    print_r($dataArray);die;
-//                    $geo_location  = esc_url($_SERVER['HTTP_REFERER']);                                       
-//                    if ( $comparison == 'equal' ) {
-//                        if ( $geo_location == $data ) {
-//                          $result = true;
-//                        }
-//                    }
-//                    if ( $comparison == 'not_equal') {              
-//                        if ( $geo_location != $data ) {
-//                          $result = true;
-//                        }
-//                    }            
-//          break;
-          
-          
+                   
           case 'browser_language':                      
                    $browser_language = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);                                                                     
                   if ( $comparison == 'equal' ) {
