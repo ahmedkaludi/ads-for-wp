@@ -3,7 +3,7 @@ Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
 Tags: Ads, Advanced Ads, Ad Inserter, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
 Tested up to: 4.9.8
-Stable tag: 1.0.6
+Stable tag: 1.0.7
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -53,6 +53,17 @@ Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp).
 
 
 == Changelog ==
+
+= 1.0.7 (24th October 2018) =
+* New Feature: Visitor Conditions 
+* New Feature: Review Notifcations
+* New Feature: AMPforwp Advertisement Section Of Ads 
+* New Feature: AMPforwp Ads & AMPforwp Advanced Ads Migration tool
+* Bug Fix: In Image Banner Ad, Anchor link is not working in AMP. #85  
+* Bug Fix: Group ads are showing deleted ad as blank on page. #97  
+* Bug Fix: Amp analytics js appears twice. #94
+* Bug Fix: Extra character "ss" is coming with amp normal ad. #93  
+
 
 = 1.0.6 (03th October 2018) =
 * Full Release Post on http://www.adsforwp.com/ad-analytics-performance-reports/
