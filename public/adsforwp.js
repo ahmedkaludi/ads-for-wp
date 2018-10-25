@@ -124,7 +124,7 @@ function adsforwpGetParamByName(name, url) {
 jQuery( document ).ready(function($) {
     
     
-   /* Visitor condition jquery starts here */
+   /* Visitor condition jquery starts here */   
    
    $(".adsforwp-visitor-condition-or-group").on("click", function(e){
             e.preventDefault();
@@ -737,7 +737,15 @@ jQuery( document ).ready(function($) {
        tb_show("Embed Code", "#TB_inline??width=600&height=550&inlineId=afw-embed-code-div");
        $(document).find('#TB_window').width(600).height(200).css({'top':'200px', 'margin-top': '0px'});
     });
-    
+    var tb_unload_count = 1;
+    $(window).bind('tb_unload', function () {
+        if (tb_unload_count > 1) {
+            tb_unload_count = 1;
+        } else {
+           $("#afw-embed-code-div").hide();
+            tb_unload_count = tb_unload_count + 1;
+        }
+    });
    //query form send starts here
 
     $(".afw-send-query").on("click", function(e){
@@ -765,6 +773,26 @@ jQuery( document ).ready(function($) {
 });
 
     //Importer from schema plugin starts here
+    
+    
+     $(".adsforwp-feedback-notice-close").on("click", function(e){
+      e.preventDefault();               
+                $.ajax({
+                    type: "POST",    
+                    url:adsforwp_localize_data.ajax_url,                    
+                    dataType: "json",
+                    data:{action:"adsforwp_review_notice_close", adsforwp_security_nonce:adsforwp_localize_data.adsforwp_security_nonce},
+                    success:function(response){                       
+                      if(response['status'] =='t'){
+                       $(".adsforwp-feedback-notice").hide();
+                      }
+                    },
+                    error: function(response){                    
+                    console.log(response);
+                    }
+                    });
+    
+});
 
     $(".adsforwp-import-plugins").on("click", function(e){
             e.preventDefault(); 

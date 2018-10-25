@@ -369,7 +369,7 @@ class adsforwp_admin_common_functions {
                     'select_adtype' => 'adsense',  
                     'adsense_type' => 'adsense_auto_ads',                    
                     'data_client_id' =>$explodestr[3],                     
-                    'imported_from' => 'ampforwp_ads',
+                    'imported_from' => 'ampforwp_advanced_ads',
                     'data_group_array' => $data_group_array
                 );
                 foreach ($adforwp_meta_key as $key => $val){                     
@@ -419,7 +419,7 @@ class adsforwp_admin_common_functions {
                             'wheretodisplay'  => 'between_the_content',
                             'adposition'      => $adposition,
                             'paragraph_number'=> $paragraph_number,    
-                            'imported_from'   => 'ampforwp_ads',
+                            'imported_from'   => 'ampforwp_advanced_ads',
                             'data_group_array'=> $data_group_array
                         );
 
@@ -442,7 +442,7 @@ class adsforwp_admin_common_functions {
                             'adposition'      => $adposition,
                             'paragraph_number'=> $paragraph_number,  
                             'custom_code'=> $amp_options['ampforwp-custom-advertisement-incontent-ad-'.$i],  
-                            'imported_from'   => 'ampforwp_ads',
+                            'imported_from'   => 'ampforwp_advanced_ads',
                             'data_group_array'=> $data_group_array
                         );
                         break;
@@ -505,7 +505,7 @@ class adsforwp_admin_common_functions {
                                         'banner_size'       => $amp_options['ampforwp-after-featured-image-ad-type-1-width'].'x'.$amp_options['ampforwp-after-featured-image-ad-type-1-height'],                     
                                         'wheretodisplay'    => 'between_the_content',
                                         'wheretodisplayamp' => 'after_featured_image',
-                                        'imported_from'     => 'ampforwp_ads',
+                                        'imported_from'     => 'ampforwp_advanced_ads',
                                         'data_group_array'  => $data_group_array
                                       );                                 
                                     break;
@@ -515,7 +515,7 @@ class adsforwp_admin_common_functions {
                                         'wheretodisplay'  => 'between_the_content',
                                         'wheretodisplayamp' => 'after_featured_image',                                         
                                         'custom_code'=> $amp_options['ampforwp-after-featured-image-ad-custom-advertisement'],  
-                                        'imported_from'   => 'ampforwp_ads',
+                                        'imported_from'   => 'ampforwp_advanced_ads',
                                         'data_group_array'=> $data_group_array
                                      );
 
@@ -568,7 +568,7 @@ class adsforwp_admin_common_functions {
                                         'wheretodisplay'    => 'between_the_content',
                                         'wheretodisplayamp' => 'ads_in_loops',
                                         'after_how_many_post' => $amp_options['ampforwp-inbetween-loop-post-num'], 
-                                        'imported_from'     => 'ampforwp_ads',
+                                        'imported_from'     => 'ampforwp_advanced_ads',
                                         'data_group_array'  => $data_group_array
                                       );                                 
                                     break;
@@ -578,7 +578,7 @@ class adsforwp_admin_common_functions {
                                         'wheretodisplay'  => 'between_the_content',
                                         'wheretodisplayamp' => 'ads_in_loops',                                         
                                         'custom_code'=> $amp_options['ampforwp-inbetween-custom-advertisement'],  
-                                        'imported_from'   => 'ampforwp_ads',
+                                        'imported_from'   => 'ampforwp_advanced_ads',
                                         'data_group_array'=> $data_group_array
                                      );
 
@@ -634,7 +634,7 @@ class adsforwp_admin_common_functions {
                             'banner_size'     => $amp_options['ampforwp-adsense-ad-width-standard-'.$i].'x'.$amp_options['ampforwp-adsense-ad-height-standard-'.$i],                     
                             'wheretodisplay'  => 'between_the_content',                            
                             'wheretodisplayamp'  => $placement_position[$i],    
-                            'imported_from'   => 'ampforwp_ads',
+                            'imported_from'   => 'ampforwp_advanced_ads',
                             'data_group_array'=> $data_group_array
                         );
 
@@ -648,7 +648,7 @@ class adsforwp_admin_common_functions {
                             'wheretodisplay'  => 'between_the_content',
                             'wheretodisplayamp'  => $placement_position[$i],
                             'custom_code'=> $amp_options['ampforwp-custom-advertisement-standard-'.$i],  
-                            'imported_from'   => 'ampforwp_ads',
+                            'imported_from'   => 'ampforwp_advanced_ads',
                             'data_group_array'=> $data_group_array
                         );
                         break;
@@ -676,10 +676,23 @@ class adsforwp_admin_common_functions {
     public function adsforwp_import_all_amp_ads(){    
                         
             global $wpdb;
-            $wpdb->query('START TRANSACTION');
+              $wpdb->query('START TRANSACTION');
               $result = array();  
-              $result[] = $this->adsforwp_migrate_ampforwp_ads();
-
+              $result[] = $this->adsforwp_migrate_ampforwp_ads();                              
+            if (is_wp_error($result) ){
+              echo $result->get_error_message();              
+              $wpdb->query('ROLLBACK');             
+            }else{
+              $wpdb->query('COMMIT'); 
+             return $result;     
+            }                         
+    }
+    public function adsforwp_import_all_advanced_amp_ads(){    
+                        
+            global $wpdb;
+            $wpdb->query('START TRANSACTION');
+              $result = array();                
+              
               $result[] = $this->adsforwp_migrate_advanced_auto_ads();
 
               $result[] = $this->adsforwp_migrate_advanced_amp_ads_incontent();        

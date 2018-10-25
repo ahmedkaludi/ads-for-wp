@@ -62,7 +62,7 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
                $choices = array(
                 'https://www.google.com/' => 'Google',
                 'https://www.bing.com/'   => 'Bing',
-                'https://www.yahoo.com/'  => 'Yahoo',   
+                'https://www.yahoo.com/'  => 'Yahoo',                   
             );
             break;
       
@@ -203,7 +203,7 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
             $output .= '<option '. esc_attr($selected) .' value="' . esc_attr($key) .'"> ' .  esc_html__($value, 'ads-for-wp') .'  </option>';            
           } 
         
-    $output .= ' </select> '; 
+    $output .= ' </select> ';     
     $common_function_obj = new adsforwp_admin_common_functions();  
     $allowed_html = $common_function_obj->adsforwp_expanded_allowed_tags();
     echo wp_kses($output, $allowed_html); 

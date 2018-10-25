@@ -1,4 +1,22 @@
 <?php
+function adsforwp_review_notice_close(){   
+        
+        if ( ! isset( $_POST['adsforwp_security_nonce'] ) ){
+           return; 
+        }
+        if ( !wp_verify_nonce( $_POST['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
+           return;  
+        }                    
+        $result =  update_option( "review_notice_bar_close_date", date("Y-m-d"));               
+        if($result){           
+        echo json_encode(array('status'=>'t'));            
+        }else{
+        echo json_encode(array('status'=>'f'));            
+        }        
+           wp_die();           
+}
+
+add_action('wp_ajax_adsforwp_review_notice_close', 'adsforwp_review_notice_close');
    /**
      * This is a ajax handler function for importing plugins data. 
      * @return type json string
@@ -29,6 +47,12 @@ function adsforwp_import_plugin_data(){
                 
                 }                
                 break;
+            case 'ampforwp_advanced_ads':              
+                if ( is_plugin_active('accelerated-mobile-pages/accelerated-moblie-pages.php')) {                     
+                 $result = $common_function_obj->adsforwp_import_all_advanced_amp_ads();
+                
+                }                
+                break;    
 
             default:
                 break;
