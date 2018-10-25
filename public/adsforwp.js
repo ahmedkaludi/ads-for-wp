@@ -126,6 +126,17 @@ jQuery( document ).ready(function($) {
     
    /* Visitor condition jquery starts here */   
    
+   $(document).on("change",".adsforwp-visitor-condition-ajax-output",function(){
+      var value = $(this).val();     
+      $(this).parent().find(".adsforwp_user_agent_custom").hide();
+      $(this).parent().find(".adsforwp_url_custom").hide();   
+     if(value =='url_custom'){
+      $(this).parent().find(".adsforwp_url_custom").show();   
+     }
+     if(value =='user_agent_custom'){
+      $(this).parent().find(".adsforwp_user_agent_custom").show();
+     }
+   });
    $(".adsforwp-visitor-condition-or-group").on("click", function(e){
             e.preventDefault();
           var group_index ='';
@@ -171,6 +182,8 @@ jQuery( document ).ready(function($) {
                 var adsforwp_visitor_condition_call_nonce = $("#adsforwp_visitor_condition_name_nonce").val();
 		
 		parent.find(".adsforwp-visitor-condition-ajax-output").remove();
+                parent.find(".adsforwp_user_agent_custom").remove();
+                parent.find(".adsforwp_url_custom").remove();
 		//parent.find(".afw-ajax-output-child").remove();
 		parent.find(".spinner").attr("style","visibility:visible");
 		parent.children(".spinner").addClass("show");

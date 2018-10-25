@@ -20,15 +20,14 @@ public function adsforwp_post_type_generator(){
 }
 
 
-public function adsforwp_visitor_condition_type_values($data = '', $saved_data= '', $current_number = '', $current_group_number  = '') {
+public function adsforwp_visitor_condition_type_values($data = '', $saved_data= '',$selected_val_key_4='',$selected_val_key_5='', $current_number = '', $current_group_number  = '') {
    
     
     $response = $data;
     $is_ajax = false;
     if( $_SERVER['REQUEST_METHOD']=='POST'){
         $is_ajax = true;
-        if(wp_verify_nonce($_POST["adsforwp_visitor_condition_call_nonce"],'adsforwp_visitor_condition_action_nonce')){
-             
+        if(wp_verify_nonce($_POST["adsforwp_visitor_condition_call_nonce"],'adsforwp_visitor_condition_action_nonce')){             
             if ( isset( $_POST["id"] ) ) {
               $response = sanitize_text_field(wp_unslash($_POST["id"]));
             }
@@ -62,7 +61,8 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
                $choices = array(
                 'https://www.google.com/' => 'Google',
                 'https://www.bing.com/'   => 'Bing',
-                'https://www.yahoo.com/'  => 'Yahoo',                   
+                'https://www.yahoo.com/'  => 'Yahoo',
+                'url_custom' => 'Custom',   
             );
             break;
       
@@ -88,7 +88,8 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
                 'chrome' => 'Chrome',
                 'safari' => 'Safari',
                 'firefox' => 'Firefox',
-                'internet_explorer' => 'MSIE',                
+                'internet_explorer' => 'MSIE',
+                'user_agent_custom' => 'Custom',
             );                       
             break; 
         
@@ -203,7 +204,41 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
             $output .= '<option '. esc_attr($selected) .' value="' . esc_attr($key) .'"> ' .  esc_html__($value, 'ads-for-wp') .'  </option>';            
           } 
         
-    $output .= ' </select> ';     
+    $output .= ' </select> '; 
+   
+    //foreach ($choices as $key => $value) { 
+       
+                if ( $saved_data ==  'url_custom' || $response =='referrer_url') {
+                 if($selected_val_key_4 && $saved_data ==  'url_custom'){
+                  $output .= ' <input type="text" class="widefat adsforwp_url_custom" value="'.esc_attr($selected_val_key_4).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_4]"> ';                           
+                 }else{
+                  $output .= ' <input placeholder ="https://www.example.com/" type="text" class="widefat afw_hide adsforwp_url_custom" value="'.esc_attr($selected_val_key_4).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_4]"> ';                           
+                 }   
+                 
+                } 
+                if ( $saved_data ==  'user_agent_custom' || $response =='user_agent') {   
+                 if($selected_val_key_5 && $saved_data ==  'user_agent_custom'){
+                 $output .= ' <input type="text" class="widefat adsforwp_user_agent_custom" value="'.esc_attr($selected_val_key_5).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_5]"> ';        
+                 } else{
+                 $output .= ' <input placeholder ="Android" type="text" class="widefat afw_hide adsforwp_user_agent_custom" value="'.esc_attr($selected_val_key_5).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_5]"> ';        
+                 }  
+                 
+                } 
+            
+        //  }
+    //if($saved_data =='url_custom'){
+    
+   // }
+//    else{
+//     $output .= ' <input type="text" class="widefat afw_hide adsforwp_url_custom" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_4]"> ';    
+//    }
+    //if($saved_data =='user_agent_custom'){
+     
+//    }else{
+//     $output .= ' <input type="text" class="widefat afw_hide adsforwp_user_agent_custom" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_5]"> ';    
+//    }
+    
+    
     $common_function_obj = new adsforwp_admin_common_functions();  
     $allowed_html = $common_function_obj->adsforwp_expanded_allowed_tags();
     echo wp_kses($output, $allowed_html); 

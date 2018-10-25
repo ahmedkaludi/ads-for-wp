@@ -83,7 +83,15 @@ class adsforwp_view_visitor_condition {
         <?php  for ($i=0; $i < $total_fields; $i++) {  
           $selected_val_key_1 = $visitor_conditions[$i]['key_1']; 
           $selected_val_key_2 = $visitor_conditions[$i]['key_2'];                     
-          $selected_val_key_3 = $visitor_conditions[$i]['key_3'];                                                               
+          $selected_val_key_3 = $visitor_conditions[$i]['key_3'];
+          $selected_val_key_4 ='';
+          $selected_val_key_5 ='';
+          if(isset($visitor_conditions[$i]['key_4'])){
+          $selected_val_key_4 = $visitor_conditions[$i]['key_4'];    
+          }
+          if(isset($visitor_conditions[$i]['key_5'])){
+          $selected_val_key_5 = $visitor_conditions[$i]['key_5'];    
+          }                    
           ?>
             
           <tr class="adsforwp-toclone">
@@ -119,7 +127,7 @@ class adsforwp_view_visitor_condition {
               <div class="adsforwp-insert-condition-select">              
                 <?php 
                 $ajax_select_box_obj = new adsforwp_ajax_selectbox();
-                $ajax_select_box_obj->adsforwp_visitor_condition_type_values($selected_val_key_1, $selected_val_key_3, $i,$j);                
+                $ajax_select_box_obj->adsforwp_visitor_condition_type_values($selected_val_key_1, $selected_val_key_3,$selected_val_key_4,$selected_val_key_5, $i,$j);                
                 ?>
                   <div style="display:none;" class="spinner"></div>
               </div>
@@ -195,9 +203,11 @@ class adsforwp_view_visitor_condition {
          }              
  public function adsforwp_visitor_condition_logic_checker($input){
         global $post;        
-        $type       = $input['key_1'];
-        $comparison = $input['key_2'];
-        $data       = $input['key_3'];
+        $type               = $input['key_1'];
+        $comparison         = $input['key_2'];
+        $data               = $input['key_3'];       
+        
+        
         $result             = ''; 
        
         // Get all the users registered
@@ -221,8 +231,13 @@ class adsforwp_view_visitor_condition {
                         }
                     }            
           break;
-          case 'referrer_url':                      
-                    $referrer_url  = esc_url($_SERVER['HTTP_REFERER']);                                       
+          case 'referrer_url':    
+                                        
+                    $referrer_url  = esc_url($_SERVER['HTTP_REFERER']);                      
+                    if(isset($input['key_4']) && $input['key_3']=='url_custom'){
+                    $data = $input['key_4'];   
+                    }
+                    
                     if ( $comparison == 'equal' ) {
                         if ( $referrer_url == $data ) {
                           $result = true;
@@ -232,7 +247,10 @@ class adsforwp_view_visitor_condition {
                         if ( $referrer_url != $data ) {
                           $result = true;
                         }
-                    }            
+                    }    
+                    
+                    
+                              
           break;
                    
           case 'browser_language':                      
@@ -271,25 +289,28 @@ class adsforwp_view_visitor_condition {
         break;
         
         case 'user_agent': 
-           $user_agent_name ='others';
+            
+            $user_agent_name ='others';
             if (    strpos($_SERVER['HTTP_USER_AGENT'], 'Opera') || strpos($user_agent, 'OPR/')) $user_agent_name = 'opera';
             elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'Edge'))    $user_agent_name = 'edge';
             elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome'))  $user_agent_name = 'chrome';
             elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'Safari'))  $user_agent_name = 'safari';
             elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'Firefox')) $user_agent_name ='firefox';
             elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') || strpos($user_agent, 'Trident/7')) $user_agent_name = 'internet_explorer';
-                                                               
-            if ( $comparison == 'equal' ) {
+            
+             if(isset($input['key_5']) && $input['key_3']=='user_agent_custom'){
+                 $data = $input['key_5'];
+             }
+                if ( $comparison == 'equal' ) {
                 if ( $user_agent_name == $data ) {
                   $result = true;
                 }
-            }
-            if ( $comparison == 'not_equal') {              
+               }
+                if ( $comparison == 'not_equal') {              
                 if ( $user_agent_name != $data ) {
                   $result = true;
                 }
-            }
-
+               }                         
         break;
         
         case 'user_type':            
