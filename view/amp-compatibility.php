@@ -64,9 +64,9 @@ class adsforwp_amp_compatibility {
                         
                     </div> 
                     <div class="adsforwp-amp-box">
-                       <span><?php echo esc_html__('Where to display (AMP)', 'ads-for-wp') ?></span><br> 
+                       <span><?php echo esc_html__('AMP Display Positioning', 'ads-for-wp') ?></span><br> 
                        <select style="margin-top: 5px;" id="wheretodisplayamp" name="wheretodisplayamp">
-                           <option value=""><?php echo esc_html__('Select Condition', 'ads-for-wp') ?></option>
+                           <option value=""><?php echo esc_html__('Select Location', 'ads-for-wp') ?></option>
                            <option value="after_featured_image" <?php echo ($this->adsforwp_amp_comp_get_meta( 'wheretodisplayamp' ) === 'after_featured_image' ) ? 'selected' : '' ?>><?php echo esc_html__('Ad after Featured Image', 'ads-for-wp') ?></option>
                            <option value="below_the_header" <?php echo ($this->adsforwp_amp_comp_get_meta( 'wheretodisplayamp' ) === 'below_the_header' ) ? 'selected' : '' ?>><?php echo esc_html__('Below the Header (SiteWide)', 'ads-for-wp') ?></option>
                            <option value="below_the_footer" <?php echo ($this->adsforwp_amp_comp_get_meta( 'wheretodisplayamp' ) === 'below_the_footer' ) ? 'selected' : '' ?>><?php echo esc_html__('Below the Footer (SiteWide)', 'ads-for-wp') ?></option>

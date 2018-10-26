@@ -54,9 +54,9 @@ Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp).
 
 == Changelog ==
 
-= 1.0.7 (24th October 2018) =
+= 1.0.7 (26th October 2018) =
 * New Feature: Visitor Conditions (limit the number of users who can see your ad) 
-* New Feature: Added Where to display conditons on AMP pages.
+* New Feature: AMP Display Positioning
 * New Feature: AMPforWP Ads Migration tool
 * New Feature: AMPforWP Advanced Ads Migration tool
 * Added notifcations to review on day interval

@@ -89,6 +89,10 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
                 'safari' => 'Safari',
                 'firefox' => 'Firefox',
                 'internet_explorer' => 'MSIE',
+                'android' => 'Android',               
+                'iphone' => 'iPhone',
+                'ipad' => 'iPad',
+                'ipod' => 'iPod',                                
                 'user_agent_custom' => 'Custom',
             );                       
             break; 
@@ -184,15 +188,13 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
           
         }        
     
-    $choices = $choices; 
-
+        $choices = $choices; 
    
-    if ( empty( $choices) ) {
-      $choices = array('none' => esc_html__('No Items', 'ads-for-wp') );
-    }
+        if ( empty( $choices) ) {
+          $choices = array('none' => esc_html__('No Items', 'ads-for-wp') );
+        }
     
-
-      $output = '<select  class="widefat adsforwp-visitor-condition-ajax-output" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_3]">'; 
+       $output = '<select  class="widefat adsforwp-visitor-condition-ajax-output" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_3]">'; 
       
           foreach ($choices as $key => $value) { 
                 if ( $saved_data ==  $key ) {
@@ -204,10 +206,8 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
             $output .= '<option '. esc_attr($selected) .' value="' . esc_attr($key) .'"> ' .  esc_html__($value, 'ads-for-wp') .'  </option>';            
           } 
         
-    $output .= ' </select> '; 
-   
-    //foreach ($choices as $key => $value) { 
-       
+        $output .= ' </select> '; 
+              
                 if ( $saved_data ==  'url_custom' || $response =='referrer_url') {
                  if($selected_val_key_4 && $saved_data ==  'url_custom'){
                   $output .= ' <input type="text" class="widefat adsforwp_url_custom" value="'.esc_attr($selected_val_key_4).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_4]"> ';                           
@@ -223,22 +223,7 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
                  $output .= ' <input placeholder ="Android" type="text" class="widefat afw_hide adsforwp_user_agent_custom" value="'.esc_attr($selected_val_key_5).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_5]"> ';        
                  }  
                  
-                } 
-            
-        //  }
-    //if($saved_data =='url_custom'){
-    
-   // }
-//    else{
-//     $output .= ' <input type="text" class="widefat afw_hide adsforwp_url_custom" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_4]"> ';    
-//    }
-    //if($saved_data =='user_agent_custom'){
-     
-//    }else{
-//     $output .= ' <input type="text" class="widefat afw_hide adsforwp_user_agent_custom" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_5]"> ';    
-//    }
-    
-    
+                }                
     $common_function_obj = new adsforwp_admin_common_functions();  
     $allowed_html = $common_function_obj->adsforwp_expanded_allowed_tags();
     echo wp_kses($output, $allowed_html); 

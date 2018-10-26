@@ -290,9 +290,12 @@ class adsforwp_view_visitor_condition {
         
         case 'user_agent':            
                 $user_agent_name =$this->adsforwp_detect_user_agent();                               
-                if(isset($input['key_5']) && $input['key_3']=='user_agent_custom'){
-                    $data = strtolower($input['key_5']);
-                }
+                if(isset($input['key_5']) && $input['key_3']=='user_agent_custom'){                                        
+                    if(stripos($_SERVER['HTTP_USER_AGENT'], $input['key_5'])){
+                     $user_agent_name = $input['key_5'];   
+                    }
+                    $data = $input['key_5'];
+                }               
                 if ( $comparison == 'equal' ) {
                 if ( $user_agent_name == $data ) {
                   $result = true;
