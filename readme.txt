@@ -55,10 +55,12 @@ Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp).
 == Changelog ==
 
 = 1.0.7 (24th October 2018) =
-* New Feature: Visitor Conditions 
-* New Feature: Review Notifcations
-* New Feature: AMPforwp Advertisement Section Of Ads 
-* New Feature: AMPforwp Ads & AMPforwp Advanced Ads Migration tool
+* New Feature: Visitor Conditions (limit the number of users who can see your ad) 
+* New Feature: Added Where to display conditons on AMP pages.
+* New Feature: AMPforWP Ads Migration tool
+* New Feature: AMPforWP Advanced Ads Migration tool
+* Added notifcations to review on day interval
+* Advanced Ads migration tool button will remain visible whether Advanced Ads install or not.
 * Bug Fix: In Image Banner Ad, Anchor link is not working in AMP. #85  
 * Bug Fix: Group ads are showing deleted ad as blank on page. #97  
 * Bug Fix: Amp analytics js appears twice. #94
