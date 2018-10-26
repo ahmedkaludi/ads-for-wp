@@ -4,6 +4,8 @@ class adsforwp_ajax_selectbox{
 public function __construct() {
       add_action('wp_ajax_adsforwp_create_ajax_select_box',array($this,'adsforwp_ajax_select_creator')); 
       add_action('wp_ajax_adsforwp_ajax_select_taxonomy',array($this,'adsforwp_create_ajax_select_taxonomy'));
+      
+      add_action('wp_ajax_adsforwp_visitor_condition_type_values',array($this,'adsforwp_visitor_condition_type_values'));
 }
     
 
@@ -15,6 +17,221 @@ public function adsforwp_post_type_generator(){
     unset($post_types['attachment'], $post_types['adsforwp'], $post_types['adsforwp-groups']);
 
     return $post_types;
+}
+
+
+public function adsforwp_visitor_condition_type_values($data = '', $saved_data= '',$selected_val_key_4='',$selected_val_key_5='', $current_number = '', $current_group_number  = '') {
+   
+    
+    $response = $data;
+    $is_ajax = false;
+    if( $_SERVER['REQUEST_METHOD']=='POST'){
+        $is_ajax = true;
+        if(wp_verify_nonce($_POST["adsforwp_visitor_condition_call_nonce"],'adsforwp_visitor_condition_action_nonce')){             
+            if ( isset( $_POST["id"] ) ) {
+              $response = sanitize_text_field(wp_unslash($_POST["id"]));
+            }
+            if ( isset( $_POST["number"] ) ) {
+              $current_number   = intval($_POST["number"]);
+            }
+            if ( isset( $_POST["group_number"] ) ) {
+              $current_group_number   = intval($_POST["group_number"]);
+            }
+        }else{            
+            exit;
+        }
+       
+    }        
+        // send the response back to the front end
+       // vars
+    $choices = array();        
+    $options['param'] = $response;
+      
+        switch($options['param'])
+        {
+          case "device":
+
+            $choices = array(
+                'desktop' => 'Desktop',
+                'mobile' => 'Mobile or Tablet',                             
+            );                       
+            break;
+          
+          case "referrer_url":
+               $choices = array(
+                'https://www.google.com/' => 'Google',
+                'https://www.bing.com/'   => 'Bing',
+                'https://www.yahoo.com/'  => 'Yahoo',
+                'url_custom' => 'Custom',   
+            );
+            break;
+      
+          case "geo_location":
+               $choices = array(
+                'usa' => 'USA',
+                'ind'   => 'India',                
+            );
+            break;
+           case "logged_in_visitor":
+
+            $choices = array(
+                'true' => 'True',
+                'false' => 'False',                                
+            );                       
+            break; 
+            
+            case "user_agent":
+
+            $choices = array(
+                'opera' => 'Opera',
+                'edge' => 'Edge',
+                'chrome' => 'Chrome',
+                'safari' => 'Safari',
+                'firefox' => 'Firefox',
+                'internet_explorer' => 'MSIE',
+                'android' => 'Android',               
+                'iphone' => 'iPhone',
+                'ipad' => 'iPad',
+                'ipod' => 'iPod',                                
+                'user_agent_custom' => 'Custom',
+            );                       
+            break; 
+        
+           case "user_type" :
+           global $wp_roles;
+            $choices = $wp_roles->get_names();
+
+            if( is_multisite() )
+            {
+              $choices['super_admin'] = esc_html__('Super Admin','ads-for-wp');
+            }
+
+            break;
+            
+            case "browser_language" :
+            $choices = array(
+                    'af' => 'Afrikanns',
+                    'sq' => 'Albanian',
+                    'ar' => 'Arabic',
+                    'hy' => 'Armenian',
+                    'eu' => 'Basque',
+                    'bn' => 'Bengali',
+                    'bg' => 'Bulgarian',
+                    'ca' => 'Catalan',
+                    'km' => 'Cambodian',
+                    'zh' => 'Chinese (Mandarin)',
+                    'hr' => 'Croation',
+                    'cs' => 'Czech',
+                    'da' => 'Danish',
+                    'nl' => 'Dutch',
+                    'en' => 'English',
+                    'et' => 'Estonian',
+                    'fj' => 'Fiji',
+                    'fi' => 'Finnish',
+                    'fr' => 'French',
+                    'ka' => 'Georgian',
+                    'de' => 'German',
+                    'el' => 'Greek',
+                    'gu' => 'Gujarati',
+                    'he' => 'Hebrew',
+                    'hi' => 'Hindi',
+                    'hu' => 'Hungarian',
+                    'is' => 'Icelandic',
+                    'id' => 'Indonesian',
+                    'ga' => 'Irish',
+                    'it' => 'Italian',
+                    'ja' => 'Japanese',
+                    'jw' => 'Javanese',
+                    'ko' => 'Korean',
+                    'la' => 'Latin',
+                    'lv' => 'Latvian',
+                    'lt' => 'Lithuanian',
+                    'mk' => 'Macedonian',
+                    'ms' => 'Malay',
+                    'ml' => 'Malayalam',
+                    'mt' => 'Maltese',
+                    'mi' => 'Maori',
+                    'mr' => 'Marathi',
+                    'mn' => 'Mongolian',
+                    'ne' => 'Nepali',
+                    'no' => 'Norwegian',
+                    'fa' => 'Persian',
+                    'pl' => 'Polish',
+                    'pt' => 'Portuguese',
+                    'pa' => 'Punjabi',
+                    'qu' => 'Quechua',
+                    'ro' => 'Romanian',
+                    'ru' => 'Russian',
+                    'sm' => 'Samoan',
+                    'sr' => 'Serbian',
+                    'sk' => 'Slovak',
+                    'sl' => 'Slovenian',
+                    'es' => 'Spanish',
+                    'sw' => 'Swahili',
+                    'sv' => 'Swedish ',
+                    'ta' => 'Tamil',
+                    'tt' => 'Tatar',
+                    'te' => 'Telugu',
+                    'th' => 'Thai',
+                    'bo' => 'Tibetan',
+                    'to' => 'Tonga',
+                    'tr' => 'Turkish',
+                    'uk' => 'Ukranian',
+                    'ur' => 'Urdu',
+                    'uz' => 'Uzbek',
+                    'vi' => 'Vietnamese',
+                    'cy' => 'Welsh',
+                    'xh' => 'Xhosa'
+            );
+
+            break;
+          
+        }        
+    
+        $choices = $choices; 
+   
+        if ( empty( $choices) ) {
+          $choices = array('none' => esc_html__('No Items', 'ads-for-wp') );
+        }
+    
+       $output = '<select  class="widefat adsforwp-visitor-condition-ajax-output" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_3]">'; 
+      
+          foreach ($choices as $key => $value) { 
+                if ( $saved_data ==  $key ) {
+                    $selected = 'selected="selected"';
+                } else {
+                  $selected = '';
+                }
+
+            $output .= '<option '. esc_attr($selected) .' value="' . esc_attr($key) .'"> ' .  esc_html__($value, 'ads-for-wp') .'  </option>';            
+          } 
+        
+        $output .= ' </select> '; 
+              
+                if ( $saved_data ==  'url_custom' || $response =='referrer_url') {
+                 if($selected_val_key_4 && $saved_data ==  'url_custom'){
+                  $output .= ' <input type="text" class="widefat adsforwp_url_custom" value="'.esc_attr($selected_val_key_4).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_4]"> ';                           
+                 }else{
+                  $output .= ' <input placeholder ="https://www.example.com/" type="text" class="widefat afw_hide adsforwp_url_custom" value="'.esc_attr($selected_val_key_4).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_4]"> ';                           
+                 }   
+                 
+                } 
+                if ( $saved_data ==  'user_agent_custom' || $response =='user_agent') {   
+                 if($selected_val_key_5 && $saved_data ==  'user_agent_custom'){
+                 $output .= ' <input type="text" class="widefat adsforwp_user_agent_custom" value="'.esc_attr($selected_val_key_5).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_5]"> ';        
+                 } else{
+                 $output .= ' <input placeholder ="Android" type="text" class="widefat afw_hide adsforwp_user_agent_custom" value="'.esc_attr($selected_val_key_5).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_5]"> ';        
+                 }  
+                 
+                }                
+    $common_function_obj = new adsforwp_admin_common_functions();  
+    $allowed_html = $common_function_obj->adsforwp_expanded_allowed_tags();
+    echo wp_kses($output, $allowed_html); 
+    
+    if ( $is_ajax ) {
+      die();
+    }
+
 }
 
 /**

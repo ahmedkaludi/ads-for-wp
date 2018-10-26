@@ -31,8 +31,7 @@ require_once ADSFORWP_LIB_PATH . "Google/Http/Request.php";
 class Adsforwp_Google_Auth_AppIdentity extends Adsforwp_Google_Auth_Abstract
 {
   const CACHE_PREFIX = "Adsforwp_Google_Auth_AppIdentity::";
-  const CACHE_LIFETIME = 1500;
-  private $key = null;
+  const CACHE_LIFETIME = 1500;  
   private $client;
   private $token = false;
   private $tokenScopes = false;

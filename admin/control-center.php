@@ -1,4 +1,73 @@
 <?php
+function adsforwp_review_notice_close(){   
+        
+        if ( ! isset( $_POST['adsforwp_security_nonce'] ) ){
+           return; 
+        }
+        if ( !wp_verify_nonce( $_POST['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
+           return;  
+        }                    
+        $result =  update_option( "review_notice_bar_close_date", date("Y-m-d"));               
+        if($result){           
+        echo json_encode(array('status'=>'t'));            
+        }else{
+        echo json_encode(array('status'=>'f'));            
+        }        
+           wp_die();           
+}
+
+add_action('wp_ajax_adsforwp_review_notice_close', 'adsforwp_review_notice_close');
+   /**
+     * This is a ajax handler function for importing plugins data. 
+     * @return type json string
+     */
+function adsforwp_import_plugin_data(){   
+        
+        if ( ! isset( $_GET['adsforwp_security_nonce'] ) ){
+           return; 
+        }
+        if ( !wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
+           return;  
+        }        
+        $plugin_name   = sanitize_text_field($_GET['plugin_name']);           
+        $common_function_obj = new adsforwp_admin_common_functions();
+        $result =  array();
+        switch ($plugin_name) {
+            case 'advanced_ads':
+                
+                if ( is_plugin_active('advanced-ads/advanced-ads.php')) {
+                 $result = $common_function_obj->adsforwp_import_all_advanced_ads();      
+                }                
+                break;
+                
+            case 'ampforwp_ads':
+               
+                if ( is_plugin_active('accelerated-mobile-pages/accelerated-moblie-pages.php')) {                     
+                 $result = $common_function_obj->adsforwp_import_all_amp_ads();
+                
+                }                
+                break;
+            case 'ampforwp_advanced_ads':              
+                if ( is_plugin_active('accelerated-mobile-pages/accelerated-moblie-pages.php')) {                     
+                 $result = $common_function_obj->adsforwp_import_all_advanced_amp_ads();
+                
+                }                
+                break;    
+
+            default:
+                break;
+        }  
+        $result = array_filter($result);
+        if($result){           
+        echo json_encode(array('status'=>'t', 'message'=>esc_html__('Data has been imported succeessfully','ads-for-wp')));            
+        }else{
+        echo json_encode(array('status'=>'f', 'message'=>esc_html__('Plugin data is not available or it is not activated','ads-for-wp')));            
+        }        
+           wp_die();           
+}
+
+add_action('wp_ajax_adsforwp_import_plugin_data', 'adsforwp_import_plugin_data');
+
 /**
 * Remove Add new menu
 **/
@@ -20,8 +89,15 @@ add_action('admin_menu', 'adsforwp_disable_new_posts');
      * This is a ajax handler function for sending email from user admin panel to us. 
      * @return type json string
      */
-function adsforwp_send_query_message(){                  
-        $message    = sanitize_text_field($_POST['message']); 
+function adsforwp_send_query_message(){    
+    
+        if ( ! isset( $_POST['adsforwp_security_nonce'] ) ){
+           return; 
+        }
+        if ( !wp_verify_nonce( $_POST['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
+           return;  
+        }					    
+        $message    = sanitize_text_field($_POST['message']);           
         $user       = wp_get_current_user();
         $user_data  = $user->data;        
         $user_email = $user_data->user_email;       
@@ -178,7 +254,7 @@ function adsforwp_admin_link($tab = '', $args = array()){
 
 	if ( $args ) {
 		foreach ( $args as $arg => $value ) {
-			$link .= '&' . $arg . '=' . urlencode( $value );
+		$link .= '&' . $arg . '=' . urlencode( $value );
 		}
 	}
 
@@ -280,7 +356,7 @@ add_action('widgets_init', 'register_adsforwp_ads_widget');
  *      We are registering custom post type adsforwp in wordpress
  */
 function adsforwp_setup_post_type() {
-    $not_found_button = '<div><p style="float:left;margin-right:5px;">'.esc_html__('Welcome to Ads for WP. It looks like you don\'t have any ads.', 'ads-for-wp').'</p> <a href="'.esc_url( admin_url( 'post-new.php?post_type=adsforwp' ) ).'" class="button button-primary">'.esc_html('Let\'s create a new Ad', 'ads-for-wp').'</a></div>';
+    $not_found_button = '<div><p style="float:left;margin-right:5px;">'.esc_html__('Welcome to Ads for WP. It looks like you don\'t have any ads.', 'ads-for-wp').'</p> <a href="'.esc_url( admin_url( 'post-new.php?post_type=adsforwp' ) ).'" class="button button-primary">'.esc_html__('Let\'s create a new Ad', 'ads-for-wp').'</a></div>';
     $args = array(
 	    'labels' => array(
 	        'name' 			=> esc_html__( 'Ads', 'ads-for-wp' ),
@@ -459,8 +535,7 @@ function adsforwp_frontend_enqueue(){
         );
         wp_localize_script('adsforwp-ads-front-js', 'adsforwp_obj', $object_name);
         wp_enqueue_script('adsforwp-ads-front-js');        
-        
-        
+                
 }
 add_action( 'wp_enqueue_scripts', 'adsforwp_frontend_enqueue' );
 
@@ -479,16 +554,23 @@ function adsforwp_admin_enqueue() {
          wp_enqueue_style( 'jquery-ui' );
          add_action('admin_print_footer_scripts', 'adsforwp_print_footer_scripts' );
     
-        wp_enqueue_style( 'ads-for-wp-admin', ADSFORWP_PLUGIN_DIR_URI . 'public/ads.css', false , ADSFORWP_VERSION );
-        wp_register_script( 'ads-for-wp-admin-js', ADSFORWP_PLUGIN_DIR_URI . 'public/ads.js', array('jquery'), ADSFORWP_VERSION , true );
-        wp_register_script( 'ads-for-wp-admin-analytics-js', ADSFORWP_PLUGIN_DIR_URI . 'public/analytics.js', array('jquery'), ADSFORWP_VERSION , true );
+         wp_enqueue_style( 'ads-for-wp-admin', ADSFORWP_PLUGIN_DIR_URI . 'public/adsforwp.css', false , ADSFORWP_VERSION );
+         wp_register_script( 'ads-for-wp-admin-js', ADSFORWP_PLUGIN_DIR_URI . 'public/adsforwp.js', array('jquery'), ADSFORWP_VERSION , true );
+         wp_register_script( 'ads-for-wp-admin-analytics-js', ADSFORWP_PLUGIN_DIR_URI . 'public/analytics.js', array('jquery'), ADSFORWP_VERSION , true );
             // Localize the script with new data
+         
+         
         $data = array(
-            'ajax_url'  => admin_url( 'admin-ajax.php' ),
-            'id'		=> get_the_ID(),
-            'uploader_title'		=> 'Ad Image',
-            'uploader_button'		=> 'Select',
-            'post_type'		=> get_post_type()
+            'ajax_url'                  => admin_url( 'admin-ajax.php' ),
+            'id'                        => get_the_ID(),
+            'uploader_title'		=> esc_html__( 'Ad Image', 'ads-for-wp' ),
+            'uploader_button'		=> esc_html__( 'Select', 'ads-for-wp' ),
+            'post_type'                 => get_post_type(),
+            'adnow_note'                => esc_html__( 'Adnow does not support AMP, Once Adnow starts supporting, we will also start.', 'ads-for-wp' ),
+            'infolinks_note'            => esc_html__( 'Infolinks does not support AMP, Once Infolinks starts supporting, we will also start.', 'ads-for-wp' ),
+            'embed_code_button_text'    => esc_html__( 'Embed Code', 'ads-for-wp' ),
+            'adsforwp_security_nonce'   => wp_create_nonce('adsforwp_ajax_check_nonce')
+            
         );
         wp_localize_script( 'ads-for-wp-admin-js', 'adsforwp_localize_data', $data );	
         // Enqueued script with localized data.
@@ -574,7 +656,7 @@ function adsforwp_groups_update_ids_on_untrash(){
  */    
 function adsforwp_general_admin_notice(){
      echo '<div class="message error update-message notice notice-alt notice-error afw-blocker-notice afw_hide">'
-                 . '<p>'.esc_html__('Please disable your', 'ads-for-wp').' <strong>'.esc_html__('AdBlocker', 'ads-for-wp').'</strong> '.esc_html('to use adsforwp plugin smoothly', 'ads-for-wp').'</p>'
+                 . '<p>'.esc_html__('Please disable your', 'ads-for-wp').' <strong>'.esc_html__('AdBlocker', 'ads-for-wp').'</strong> '.esc_html__('to use adsforwp plugin smoothly', 'ads-for-wp').'</p>'
                  . '</div>'; 
      $post_type = get_post_type();     
      if($post_type == 'adsforwp'){
@@ -623,6 +705,21 @@ function adsforwp_print_footer_scripts() {
             case 'afw_media_net_pointer':
                 content = '<?php echo '<h3>'.esc_html__( 'Help', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'You can find Data CID id and Data CRID from media.net code.', 'ads-for-wp' ).'</p>'; ?>';
                 break;           
+            case 'afw_ad_now_pointer':
+                content = '<?php echo '<h3>'.esc_html__( 'Help', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'You can find Widget ID from adnow code', 'ads-for-wp' ).'</p>'; ?>';
+                break; 
+            case 'afw_contentad_pointer':
+                content = '<?php echo '<h3>'.esc_html__( 'Help', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'You can find ID id, D and Ad Widget ID from content.ad code.', 'ads-for-wp' ).'</p>'; ?>';
+                break;
+            case 'afw_infolinks_pointer':
+                content = '<?php echo '<h3>'.esc_html__( 'Help', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'You can find P ID and W S ID from infolinks code.', 'ads-for-wp' ).'</p>'; ?>';
+                break; 
+            case 'afw_ad_image_pointer':
+                content = '<?php echo '<h3>'.esc_html__( 'Help', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'Upload a banner which you want to display as an ad and anchor link which will redirect users to that link on click.', 'ads-for-wp' ).'</p>'; ?>';
+                break; 
+            case 'afw_custom_pointer':
+                content = '<?php echo '<h3>'.esc_html__( 'Help', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'Insert the ad code or script', 'ads-for-wp' ).'</p>'; ?>';
+                break;     
             default:
                 break;
         }         

@@ -240,6 +240,476 @@ class adsforwp_admin_common_functions {
         }
                              
     }
+    
+    /**
+     * We are here fetching all ads from advanced ads plugin
+     * note: Transaction is applied on this function, if any error occure all the data will be rollbacked
+     * @global type $wpdb
+     * @return boolean
+     */
+    
+    public function adsforwp_migrate_ampforwp_ads(){
+        $result =array();
+        $adforwp_meta_key = array();
+        $amp_options = get_option('redux_builder_amp');         
+        $user_id = get_current_user_id();
+               
+        $placement = array('1'=> 'Single','2'=> 'Global','3'=> 'Custom Post Types','4'=> 'Pages');
+        $wheretodisplayamp = array(                    
+                    '1'=>'below_the_header',
+                    '2'=>'below_the_footer',                   
+                    '3'=>'above_the_post_content',
+                    '4'=>'below_the_post_content',
+                    '5'=>'below_the_title',
+                    '6'=>'above_related_post',                    
+                    );
+        if($amp_options){
+            for($i=1;$i<=6; $i++){
+              $amp_options['enable-amp-ads-select-'.$i];   
+              $amp_options['enable-amp-ads-text-feild-client-'.$i]; 
+              $amp_options['enable-amp-ads-text-feild-slot-'.$i];              
+                            
+        $ads_post = array(
+                    'post_author' => $user_id,                                                            
+                    'post_title' => 'Adsense Ad '.$i.' (Migrated from AMP)',                    
+                    'post_status' => 'publish',                                                            
+                    'post_name' =>  'Adsense Ad '.$i.' (Migrated from AMP)',                    
+                    'post_type' => 'adsforwp',
+                    
+                );  
+        if($amp_options['enable-amp-ads-'.$i] ==1){            
+                $post_id = wp_insert_post($ads_post);
+                $data_group_array = array();
+                $conditions = array();
+                if($i==3){
+                if(isset($amp_options['made-amp-ad-3-global'])){                
+                $conditions = $amp_options['made-amp-ad-3-global'];                
+                if(!in_array(4, $conditions)){ 
+                   
+                for($i = 0; $i <count($conditions); $i++){                    
+                    $displayon ='';                    
+                    if($conditions[$i] ==1){
+                      $displayon = 'post';  
+                    }else if($conditions[$i] ==3){
+                      $displayon = 'post';  
+                    }else if ($conditions[$i] ==2){
+                      $displayon = 'page';  
+                    }                                        
+                    $data_group_array['group-'.$i] =array(
+                                    'data_array' => array(
+                                                        array(
+                                                        'key_1' => 'post_type',
+                                                        'key_2' => 'equal',
+                                                        'key_3' => $displayon,
+                                                        )
+                                                     )               
+                                                 );                     
+                }                 
+                }
+                }    
+                }else{                                                      
+                 $data_group_array['group-0'] =array(
+                                    'data_array' => array(
+                                                        array(
+                                                        'key_1' => 'show_globally',
+                                                        'key_2' => 'equal',
+                                                        'key_3' => 'post',
+                                                        )
+                                                     )               
+                                                 );  
+                }                                                
+                $adforwp_meta_key = array(
+                    'select_adtype' => 'adsense',  
+                    'adsense_type' => 'normal',                    
+                    'data_client_id' =>$amp_options['enable-amp-ads-text-feild-client-'.$i], 
+                    'data_ad_slot' =>$amp_options['enable-amp-ads-text-feild-slot-'.$i],                     
+                    'banner_size' =>$placement[$amp_options['enable-amp-ads-select-'.$i]],                     
+                    'wheretodisplay' =>'after_the_content',
+                    'wheretodisplayamp' =>$wheretodisplayamp[$i],
+                    'imported_from' => 'ampforwp_ads',
+                    'data_group_array' => $data_group_array
+                );
+                foreach ($adforwp_meta_key as $key => $val){                     
+                $result[] =  update_post_meta($post_id, $key, $val);  
+                }                                     
+                 }
+        
+            }
+             
+        }
+        return $result;
+    }
+    
+    public function adsforwp_migrate_advanced_auto_ads(){
+        $result =array();
+        $adforwp_meta_key = array();
+        $amp_options = get_option('redux_builder_amp');        
+        $user_id = get_current_user_id();
+        if(isset($amp_options['ampforwp-amp-auto-ads-code'])){
+          $explodestr = explode('"', $amp_options['ampforwp-amp-auto-ads-code']);         
+          $ads_post = array(
+                    'post_author' => $user_id,                                                            
+                    'post_title' => 'Adsense Auto Ads '.$i.' (Migrated from Advanced AMP Ads)',                    
+                    'post_status' => 'publish',                                                            
+                    'post_name' =>  'Adsense Auto Ads '.$i.' (Migrated from Advanced AMP Ads)',                    
+                    'post_type' => 'adsforwp',
+                    
+                );
+              $post_id = wp_insert_post($ads_post);
+              $data_group_array['group-0'] =array(
+                                    'data_array' => array(
+                                                        array(
+                                                        'key_1' => 'show_globally',
+                                                        'key_2' => 'equal',
+                                                        'key_3' => 'post',
+                                                        )
+                                                     )               
+                                                 ); 
+              $adforwp_meta_key = array(
+                    'select_adtype' => 'adsense',  
+                    'adsense_type' => 'adsense_auto_ads',                    
+                    'data_client_id' =>$explodestr[3],                     
+                    'imported_from' => 'ampforwp_advanced_ads',
+                    'data_group_array' => $data_group_array
+                );
+                foreach ($adforwp_meta_key as $key => $val){                     
+                 $result[] =  update_post_meta($post_id, $key, $val);  
+                }
+        }
+        return $result;
+    }
+    
+    public function adsforwp_migrate_advanced_amp_ads_incontent(){
+        $result = array();
+        $adforwp_meta_key = array();
+        $amp_options = get_option('redux_builder_amp');        
+        $user_id = get_current_user_id();
+         for($i=1;$i<=4;$i++){              
+              $adposition = '';
+              $paragraph_number ='';
+              $post_title ='';
+              $data_group_array['group-0'] =array(
+                                    'data_array' => array(
+                                                        array(
+                                                        'key_1' => 'post_type',
+                                                        'key_2' => 'equal',
+                                                        'key_3' => 'post',
+                                                        )
+                                                     )               
+                                                 );                            
+              if(isset($amp_options['ampforwp-advertisement-type-incontent-ad-'.$i])){                  
+                switch ($amp_options['ampforwp-advertisement-type-incontent-ad-'.$i]) {
+                    case 1: // Adsense
+                        $post_title = 'Adsense Normal Ad '.$i. '(Migrated from Advanced AMP Ads)';
+                        if($amp_options['ampforwp-adsense-ad-position-incontent-ad-'.$i] =='50-percent'){
+                            $adposition ='50_of_the_content';  
+                        }else if($amp_options['ampforwp-adsense-ad-position-incontent-ad-'.$i] =='custom'){
+                            $adposition ='number_of_paragraph'; 
+                            $paragraph_number =$amp_options['ampforwp-custom-adsense-ad-position-incontent-ad-'.$i]; 
+                        }else{
+                            $adposition ='number_of_paragraph'; 
+                            $paragraph_number = $amp_options['ampforwp-adsense-ad-position-incontent-ad-'.$i];
+                        }                        
+                        $adforwp_meta_key = array(
+                            'select_adtype'   => 'adsense',  
+                            'adsense_type'    => 'normal',                    
+                            'data_client_id'  => $amp_options['ampforwp-adsense-ad-data-ad-client-incontent-ad-'.$i],                     
+                            'data_ad_slot'    => $amp_options['ampforwp-adsense-ad-data-ad-slot-incontent-ad-'.$i],                     
+                            'banner_size'     => $amp_options['ampforwp-adsense-ad-width-incontent-ad-'.$i].'x'.$amp_options['ampforwp-adsense-ad-height-incontent-ad-'.$i],                     
+                            'wheretodisplay'  => 'between_the_content',
+                            'adposition'      => $adposition,
+                            'paragraph_number'=> $paragraph_number,    
+                            'imported_from'   => 'ampforwp_advanced_ads',
+                            'data_group_array'=> $data_group_array
+                        );
+
+                        break;
+                    
+                    case 3: //Custom Advertisement
+                        $post_title = 'Custom Ad '.$i. '(Migrated from Advanced AMP Ads)';
+                        if($amp_options['ampforwp-custom-ads-ad-position-incontent-ad-'.$i] =='50-percent'){
+                            $adposition ='50_of_the_content';  
+                        }else if($amp_options['ampforwp-custom-ads-ad-position-incontent-ad-'.$i] =='custom'){
+                            $adposition ='number_of_paragraph'; 
+                            $paragraph_number =$amp_options['ampforwp-custom-custom-ads-ad-position-incontent-ad-'.$i]; 
+                        }else{
+                            $adposition ='number_of_paragraph'; 
+                            $paragraph_number = $amp_options['ampforwp-custom-ads-ad-position-incontent-ad-'.$i];
+                        }                        
+                        $adforwp_meta_key = array(
+                            'select_adtype'   => 'custom',                                                                                                                                     
+                            'wheretodisplay'  => 'between_the_content',
+                            'adposition'      => $adposition,
+                            'paragraph_number'=> $paragraph_number,  
+                            'custom_code'=> $amp_options['ampforwp-custom-advertisement-incontent-ad-'.$i],  
+                            'imported_from'   => 'ampforwp_advanced_ads',
+                            'data_group_array'=> $data_group_array
+                        );
+                        break;
+
+                    default:
+                        break;
+                }              
+                $ads_post = array(
+                      'post_author' => $user_id,                                                            
+                      'post_title' => $post_title,                    
+                      'post_status' => 'publish',                                                            
+                      'post_name' =>  $post_title,                    
+                      'post_type' => 'adsforwp',
+
+                  );     
+              }
+              if($amp_options['ampforwp-advertisement-type-incontent-ad-'.$i] != 2){
+              $post_id = wp_insert_post($ads_post);
+              foreach ($adforwp_meta_key as $key => $val){                     
+                $result[] = update_post_meta($post_id, $key, $val);  
+                }    
+              }                                           
+        }
+        return $result;
+    }
+
+    public function adsforwp_migrate_advanced_amp_ads_after_feature(){
+        $result = array();
+        $adforwp_meta_key = array();
+        $amp_options = get_option('redux_builder_amp');        
+        $user_id = get_current_user_id();
+         if(isset($amp_options['ampforwp-after-featured-image-ad-type'])){
+            
+            $ads_post = array(
+                    'post_author' => $user_id,                                                            
+                    'post_title' => 'After Featured Image (Migrated from Advanced AMP Ads)',                    
+                    'post_status' => 'publish',                                                            
+                    'post_name' =>  'After Featured Image (Migrated from Advanced AMP Ads)',                    
+                    'post_type' => 'adsforwp',
+                    
+                );
+              $post_id = wp_insert_post($ads_post);
+              $data_group_array['group-0'] =array(
+                                    'data_array' => array(
+                                                        array(
+                                                        'key_1' => 'post_type',
+                                                        'key_2' => 'equal',
+                                                        'key_3' => 'post',
+                                                        )
+                                                     )               
+                                                 ); 
+              
+                            switch ($amp_options['ampforwp-after-featured-image-ad-type']) {
+                                case 1:
+                                    $adforwp_meta_key = array(
+                                        'select_adtype'     => 'adsense',  
+                                        'adsense_type'      => 'normal',                    
+                                        'data_client_id'    => $amp_options['ampforwp-after-featured-image-ad-type-1-data-ad-client'],                     
+                                        'data_ad_slot'      => $amp_options['ampforwp-after-featured-image-ad-type-1-data-ad-slot'],                     
+                                        'banner_size'       => $amp_options['ampforwp-after-featured-image-ad-type-1-width'].'x'.$amp_options['ampforwp-after-featured-image-ad-type-1-height'],                     
+                                        'wheretodisplay'    => 'between_the_content',
+                                        'wheretodisplayamp' => 'after_featured_image',
+                                        'imported_from'     => 'ampforwp_advanced_ads',
+                                        'data_group_array'  => $data_group_array
+                                      );                                 
+                                    break;
+                                case 2:
+                                    $adforwp_meta_key = array(
+                                        'select_adtype'   => 'custom',                                                                                                                                     
+                                        'wheretodisplay'  => 'between_the_content',
+                                        'wheretodisplayamp' => 'after_featured_image',                                         
+                                        'custom_code'=> $amp_options['ampforwp-after-featured-image-ad-custom-advertisement'],  
+                                        'imported_from'   => 'ampforwp_advanced_ads',
+                                        'data_group_array'=> $data_group_array
+                                     );
+
+                                    break;
+
+                                default:
+                                break;
+                            }
+                            
+                foreach ($adforwp_meta_key as $key => $val){                     
+                $result[] = update_post_meta($post_id, $key, $val);  
+                }            
+        }
+        return $result;
+    }
+    public function adsforwp_migrate_advanced_amp_ads_inloop(){
+        $result = array();
+        $adforwp_meta_key = array();
+        $amp_options = get_option('redux_builder_amp');        
+        $user_id = get_current_user_id();
+         if(isset($amp_options['ampforwp-inbetween-loop'])){
+            
+            $ads_post = array(
+                    'post_author' => $user_id,                                                            
+                    'post_title' => 'In Loop Ad (Migrated from Advanced AMP Ads)',                    
+                    'post_status' => 'publish',                                                            
+                    'post_name' =>  'In Loop Ad (Migrated from Advanced AMP Ads)',                    
+                    'post_type' => 'adsforwp',
+                    
+                );
+              $post_id = wp_insert_post($ads_post);
+              $data_group_array['group-0'] =array(
+                                    'data_array' => array(
+                                                        array(
+                                                        'key_1' => 'post_type',
+                                                        'key_2' => 'equal',
+                                                        'key_3' => 'post',
+                                                        )
+                                                     )               
+                                                 ); 
+              
+                            switch ($amp_options['ampforwp-inbetween-type']) {
+                                case 1:
+                                    $adforwp_meta_key = array(
+                                        'select_adtype'     => 'adsense',  
+                                        'adsense_type'      => 'normal',                    
+                                        'data_client_id'    => $amp_options['ampforwp-inbetween-adsense-ad-data-ad-client'],                     
+                                        'data_ad_slot'      => $amp_options['ampforwp-inbetween-adsense-ad-data-ad-slot'],                     
+                                        'banner_size'       => $amp_options['ampforwp-inbetween-adsense-ad-width'].'x'.$amp_options['ampforwp-inbetween-adsense-ad-height'],                     
+                                        'wheretodisplay'    => 'between_the_content',
+                                        'wheretodisplayamp' => 'ads_in_loops',
+                                        'after_how_many_post' => $amp_options['ampforwp-inbetween-loop-post-num'], 
+                                        'imported_from'     => 'ampforwp_advanced_ads',
+                                        'data_group_array'  => $data_group_array
+                                      );                                 
+                                    break;
+                                case 2:
+                                    $adforwp_meta_key = array(
+                                        'select_adtype'   => 'custom',                                                                                                                                     
+                                        'wheretodisplay'  => 'between_the_content',
+                                        'wheretodisplayamp' => 'ads_in_loops',                                         
+                                        'custom_code'=> $amp_options['ampforwp-inbetween-custom-advertisement'],  
+                                        'imported_from'   => 'ampforwp_advanced_ads',
+                                        'data_group_array'=> $data_group_array
+                                     );
+
+                                    break;
+
+                                default:
+                                break;
+                            }
+                            
+                foreach ($adforwp_meta_key as $key => $val){                     
+                $result[] = update_post_meta($post_id, $key, $val);  
+                }            
+        }
+        return $result;
+    }
+    public function adsforwp_migrate_advanced_amp_ads_standard(){
+        $result = array();
+        $adforwp_meta_key = array();
+        $amp_options = get_option('redux_builder_amp');        
+        $user_id = get_current_user_id();
+        $placement_position = array(
+                '1'=> 'below_the_header',
+                '2'=> 'below_the_footer',
+                '3'=> 'above_the_post_content',
+                '4'=> 'below_the_post_content',
+                '5'=> 'below_the_title',
+                '6'=> 'above_related_post',
+                '7'=> 'below_author_box'
+                );
+            
+             for($i=1;$i<=7;$i++){                                                                     
+                                                         
+              $post_title ='';
+              $data_group_array['group-0'] =array(
+                                    'data_array' => array(
+                                                        array(
+                                                        'key_1' => 'post_type',
+                                                        'key_2' => 'equal',
+                                                        'key_3' => 'post',
+                                                        )
+                                                     )               
+                                                 );                            
+              if(isset($amp_options['ampforwp-standard-ads-'.$i])){                  
+                switch ($amp_options['ampforwp-advertisement-type-standard-'.$i]) {
+                    case 1: // Adsense
+                        $post_title = 'Adsense Normal Ad '.$i. '(Migrated from Advanced AMP Ads)';
+                                             
+                        $adforwp_meta_key = array(
+                            'select_adtype'   => 'adsense',  
+                            'adsense_type'    => 'normal',                    
+                            'data_client_id'  => $amp_options['ampforwp-adsense-ad-data-ad-client-standard-'.$i],                     
+                            'data_ad_slot'    => $amp_options['ampforwp-adsense-ad-data-ad-slot-standard-'.$i],                     
+                            'banner_size'     => $amp_options['ampforwp-adsense-ad-width-standard-'.$i].'x'.$amp_options['ampforwp-adsense-ad-height-standard-'.$i],                     
+                            'wheretodisplay'  => 'between_the_content',                            
+                            'wheretodisplayamp'  => $placement_position[$i],    
+                            'imported_from'   => 'ampforwp_advanced_ads',
+                            'data_group_array'=> $data_group_array
+                        );
+
+                        break;
+                    
+                    case 3: //Custom Advertisement
+                        $post_title = 'Custom Ad '.$i. '(Migrated from Advanced AMP Ads)';
+                                                
+                        $adforwp_meta_key = array(
+                            'select_adtype'   => 'custom',                                                                                                                                     
+                            'wheretodisplay'  => 'between_the_content',
+                            'wheretodisplayamp'  => $placement_position[$i],
+                            'custom_code'=> $amp_options['ampforwp-custom-advertisement-standard-'.$i],  
+                            'imported_from'   => 'ampforwp_advanced_ads',
+                            'data_group_array'=> $data_group_array
+                        );
+                        break;
+                    default:
+                        break;
+                }              
+                $ads_post = array(
+                      'post_author' => $user_id,                                                            
+                      'post_title' => $post_title,                    
+                      'post_status' => 'publish',                                                            
+                      'post_name' =>  $post_title,                    
+                      'post_type' => 'adsforwp',
+
+                  );     
+              }
+              if($amp_options['ampforwp-advertisement-type-standard-'.$i] !=2){
+              $post_id = wp_insert_post($ads_post);
+              foreach ($adforwp_meta_key as $key => $val){                     
+                 $result[] = update_post_meta($post_id, $key, $val);  
+               }    
+              }                                           
+            }  
+            return $result;
+    }
+    public function adsforwp_import_all_amp_ads(){    
+                        
+            global $wpdb;
+              $wpdb->query('START TRANSACTION');
+              $result = array();  
+              $result[] = $this->adsforwp_migrate_ampforwp_ads();                              
+            if (is_wp_error($result) ){
+              echo $result->get_error_message();              
+              $wpdb->query('ROLLBACK');             
+            }else{
+              $wpdb->query('COMMIT'); 
+             return $result;     
+            }                         
+    }
+    public function adsforwp_import_all_advanced_amp_ads(){    
+                        
+            global $wpdb;
+            $wpdb->query('START TRANSACTION');
+              $result = array();                
+              
+              $result[] = $this->adsforwp_migrate_advanced_auto_ads();
+
+              $result[] = $this->adsforwp_migrate_advanced_amp_ads_incontent();        
+
+              $result[] = $this->adsforwp_migrate_advanced_amp_ads_after_feature();    
+
+              $result[] = $this->adsforwp_migrate_advanced_amp_ads_standard();                                 
+
+              $result[] = $this->adsforwp_migrate_advanced_amp_ads_inloop();                
+            if (is_wp_error($result) ){
+              echo $result->get_error_message();              
+              $wpdb->query('ROLLBACK');             
+            }else{
+              $wpdb->query('COMMIT'); 
+             return $result;     
+            }                         
+    }
     /**
      * We are here importing all fetched groups from advanced ads to adsforwp plugin
      * @param type $advads_groups

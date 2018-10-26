@@ -19,7 +19,7 @@ class adsforwp_view_placement {
         
  public function adsforwp_meta_box_callback( $post) {   
      
-            $data_group_array =  esc_sql ( get_post_meta($post->ID, 'data_group_array', true)  );                             
+            $data_group_array =  esc_sql ( get_post_meta($post->ID, 'data_group_array', true)  );              
             $data_group_array = is_array($data_group_array)? array_values($data_group_array): array();      
             if ( empty( $data_group_array ) ) {
                        $data_group_array[0] =array(

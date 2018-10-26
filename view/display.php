@@ -8,7 +8,7 @@ class adsforwp_view_display {
 	);
 	private $meta_fields = array(
 		array(
-			'label' => 'Where to display',
+			'label' => 'Where To Display',
 			'id' => 'wheretodisplay',
 			'type' => 'select',
 			'options' => array(
@@ -17,7 +17,7 @@ class adsforwp_view_display {
 				'before_the_content'  => 'Before the content',
                                 'ad_shortcode'  => 'Ad Shortcode',
 			),
-		),
+		),                
 		array(
 			'label' => 'Position',
 			'id' => 'adposition',
@@ -41,8 +41,7 @@ class adsforwp_view_display {
                                'disabled' 	=> 'disabled',
                                'class' => 'afw_manual_ads_type',
 			),
-		),
-            
+		),               
                 array(
 			'label' => 'Alignment',
 			'id' => 'adsforwp_ad_align',
@@ -203,12 +202,12 @@ class adsforwp_view_display {
                         $group_links = '';
                         foreach($in_group as $group){                       
                         $group_post = get_post($group);                        
-                        $group_links .= '<span style="padding-right:5px;"><a href="?post='.esc_attr($group).'&action=edit"> '.esc_html__($group_post->post_title, 'ads-for-wp').'</a>,</span> ';    
+                        $group_links .= '<span style="padding-right:5px;"><a href="?post='.esc_attr($group).'&action=edit"> '.esc_html__($group_post->post_title, 'ads-for-wp').'</a>,</span>';    
                         }
-                        echo '<p>'.esc_html__('This ad is associated with groups. Go to the groups', 'ads-for-wp').' '.html_entity_decode(esc_html($group_links)).' '.esc_html__('Use Shortcode', 'ads-for-wp').' <strong>[adsforwp id="'.$post->ID.'"]</strong></p>';   
+                        echo '<p>'.esc_html__('This ad is associated with ', 'ads-for-wp').''.html_entity_decode(esc_html($group_links)).'group</p>';   
                         echo '<table class="form-table" style="display:none;"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table><div id="afw-embed-code-div"></div>';      
                 }else{
-                        echo '<table class="form-table"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table><div style="display:none;" id="afw-embed-code-div"></div>';   
+                        echo '<table class="form-table adsforwp-display-table"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table><div style="display:none;" id="afw-embed-code-div"></div>';   
                 }
 		                
 	}

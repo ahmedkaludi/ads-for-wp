@@ -224,7 +224,7 @@ class adsforwp_view_ads_type {
                                                 $input .= '</select><span style="cursor:pointer;float:right;" class="afw_pointer dashicons-before dashicons-editor-help" id="afw_data_cid_pointer"></span>';
                                                 break; 
                                             case 'adsense_type':
-                                                $input .= '</select><p class="afw_adsense_auto_note afw_hide">'.esc_html__('You have already added Adsense Auto Ad.', 'ads-for-wp').' <a class="afw_adsense_auto">'.esc_html('Edit' ,'ads-for-wp').'</a></p>';
+                                                $input .= '</select><p class="afw_adsense_auto_note afw_hide">'.esc_html__('You have already added Adsense Auto Ad.', 'ads-for-wp').' <a class="afw_adsense_auto">'.esc_html__('Edit' ,'ads-for-wp').'</a></p>';
                                                 break; 
                                             default:
                                                 $input .= '</select>';
@@ -296,7 +296,7 @@ class adsforwp_view_ads_type {
                 
                 $common_function_obj = new adsforwp_admin_common_functions();
                 $allowed_html = $common_function_obj->adsforwp_expanded_allowed_tags();                                                		                                
-		echo '<table class="form-table"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table>';
+		echo '<table class="form-table adsforwp-ad-type-table"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table>';
 	}
 	public function adsforwp_format_rows( $label, $input ) {
 		return '<tr class=""><th>'.$label.'</th><td>'.$input.'</td></tr>';

@@ -18,14 +18,19 @@ public function __construct() {
          add_action('wp_ajax_nopriv_adsforwp_insert_ad_impression_amp', array($this, 'adsforwp_insert_ad_impression_amp'));      
          add_action('wp_ajax_adsforwp_insert_ad_impression_amp', array($this, 'adsforwp_insert_ad_impression_amp'));
                   
-         add_action('amp_post_template_head',array($this, 'adsforwp_enque_analytics_amp_script'));                  
+         add_action('amp_post_template_data',array($this, 'adsforwp_enque_analytics_amp_script'));                  
          add_filter('amp_post_template_footer', array($this, 'adsforwp_add_analytics_amp_tags'));                             
     }
 
 
-    public function adsforwp_enque_analytics_amp_script(){
-         echo '<script async custom-element="amp-analytics" src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"></script>';
-         echo '<script async custom-element="amp-bind" src="https://cdn.ampproject.org/v0/amp-bind-0.1.js"></script>';
+    public function adsforwp_enque_analytics_amp_script($data){
+        if ( empty( $data['amp_component_scripts']['amp-analytics'] ) ) {
+                $data['amp_component_scripts']['amp-analytics'] = 'https://cdn.ampproject.org/v0/amp-analytics-latest.js';
+        }
+        if ( empty( $data['amp_component_scripts']['amp-bind'] ) ) {
+                $data['amp_component_scripts']['amp-bind'] = 'https://cdn.ampproject.org/v0/amp-bind-0.1.js';
+        }
+                return $data;         
     }
     
     public function adsforwp_add_analytics_amp_tags(){

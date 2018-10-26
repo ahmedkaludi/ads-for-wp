@@ -189,7 +189,7 @@ class adsforwp_view_ad_groups {
 						);  
                                                 }
                                                 }
-                                                $input .= '</select><button type="button" class="button afw-ads-group-button">'.esc_html('add', 'ads-for-wp').'</button>';
+                                                $input .= '</select><button type="button" class="button afw-ads-group-button">'.esc_html__('add', 'ads-for-wp').'</button>';
                                                 break;
 
                                             default:
