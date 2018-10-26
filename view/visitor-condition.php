@@ -288,19 +288,11 @@ class adsforwp_view_visitor_condition {
 
         break;
         
-        case 'user_agent': 
-            
-            $user_agent_name ='others';
-            if (    strpos($_SERVER['HTTP_USER_AGENT'], 'Opera') || strpos($user_agent, 'OPR/')) $user_agent_name = 'opera';
-            elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'Edge'))    $user_agent_name = 'edge';
-            elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome'))  $user_agent_name = 'chrome';
-            elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'Safari'))  $user_agent_name = 'safari';
-            elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'Firefox')) $user_agent_name ='firefox';
-            elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') || strpos($user_agent, 'Trident/7')) $user_agent_name = 'internet_explorer';
-            
-             if(isset($input['key_5']) && $input['key_3']=='user_agent_custom'){
-                 $data = $input['key_5'];
-             }
+        case 'user_agent':            
+                $user_agent_name =$this->adsforwp_detect_user_agent();                               
+                if(isset($input['key_5']) && $input['key_3']=='user_agent_custom'){
+                    $data = strtolower($input['key_5']);
+                }
                 if ( $comparison == 'equal' ) {
                 if ( $user_agent_name == $data ) {
                   $result = true;
@@ -347,6 +339,24 @@ class adsforwp_view_visitor_condition {
 
     return $result;
 } 
+
+
+ public function adsforwp_detect_user_agent( ){
+            $user_agent_name ='others';           
+            if     (strpos($_SERVER['HTTP_USER_AGENT'], 'Opera') || strpos($user_agent, 'OPR/')) $user_agent_name = 'opera';
+            elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'Edge'))    $user_agent_name = 'edge';            
+            elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'Firefox')) $user_agent_name ='firefox';
+            elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') || strpos($user_agent, 'Trident/7')) $user_agent_name = 'internet_explorer';                        
+            elseif (stripos($_SERVER['HTTP_USER_AGENT'], 'iPod')) $user_agent_name = 'ipod';
+            elseif (stripos($_SERVER['HTTP_USER_AGENT'], 'iPhone')) $user_agent_name = 'iphone';
+            elseif (stripos($_SERVER['HTTP_USER_AGENT'], 'iPad')) $user_agent_name = 'ipad';
+            elseif (stripos($_SERVER['HTTP_USER_AGENT'], 'Android')) $user_agent_name = 'android';
+            elseif (stripos($_SERVER['HTTP_USER_AGENT'], 'webOS')) $user_agent_name = 'webos';
+            elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome'))  $user_agent_name = 'chrome';
+            elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'Safari'))  $user_agent_name = 'safari';
+            
+            return $user_agent_name;
+}   
 
  public function adsforwp_visitor_condition_field_data( $post_id ){
       $visitor_conditions_array = get_post_meta( $post_id, 'visitor_conditions_array', true);  
