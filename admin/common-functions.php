@@ -768,19 +768,20 @@ class adsforwp_admin_common_functions {
      * @return type
      */
     public function adsforwp_fetch_all_ads(){
-        
-        if(empty($this->_all_ads_id)){
-            $all_ads = get_posts(
+            $all_ads = array();
+            $all_ads_transient = json_decode(get_transient( 'transient_all_afw_ads_data'));
+            $all_ads = $all_ads_transient;
+            if(empty($all_ads_transient)){
+              $all_ads = get_posts(
                     array(
                             'post_type' 	 => 'adsforwp',
                             'posts_per_page' => -1,   
                             'post_status' => 'publish',
                     )
                  ); 
-            $this->_all_ads_id = $all_ads;
-        }                        
-        return $this->_all_ads_id;
-        
+              set_transient( 'transient_all_afw_ads_data', json_encode($all_ads), 60 );     
+            }                                                         
+        return $all_ads;        
     }
     /**
      * we are here fetching all ads post meta for adsforwp post type 
@@ -788,13 +789,7 @@ class adsforwp_admin_common_functions {
      */
     public function adsforwp_fetch_all_ads_post_meta(){
         $all_ads_post_meta = array();
-        $all_ads = get_posts(
-                    array(
-                            'post_type' 	 => 'adsforwp',
-                            'posts_per_page' => -1,   
-                            'post_status' => 'publish',
-                    )
-                 );         
+        $all_ads = $this->adsforwp_fetch_all_ads();      
         foreach($all_ads as $ad){
                  $all_ads_post_meta[$ad->ID] = get_post_meta( $ad->ID, $key='', true );                                                                           
                 }               
