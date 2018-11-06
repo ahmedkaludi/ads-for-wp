@@ -2,8 +2,12 @@
 /**
  * This is a common class for all common functions which we will use in different classes in our plugin
  */
-class adsforwp_admin_common_functions {   
-        
+class adsforwp_admin_common_functions {  
+    
+    protected $_all_ads_id = array();
+    protected $_all_groups = array();
+
+
     public function __construct() {        
        
     }   
@@ -764,14 +768,18 @@ class adsforwp_admin_common_functions {
      * @return type
      */
     public function adsforwp_fetch_all_ads(){
-        $all_ads = get_posts(
+        
+        if(empty($this->_all_ads_id)){
+            $all_ads = get_posts(
                     array(
                             'post_type' 	 => 'adsforwp',
                             'posts_per_page' => -1,   
                             'post_status' => 'publish',
                     )
                  ); 
-        return $all_ads;
+            $this->_all_ads_id = $all_ads;
+        }                        
+        return $this->_all_ads_id;
         
     }
     /**
@@ -797,13 +805,19 @@ class adsforwp_admin_common_functions {
      * @return type
      */
     public function adsforwp_fetch_all_groups(){
-        $all_groups = get_posts(
+        $all_groups = array();
+        $all_groups_transient = json_decode(get_transient( 'transient_all_groups_data'));
+        $all_groups = $all_groups_transient;
+        if(empty($all_groups_transient)){
+          $all_groups = get_posts(
                     array(
                             'post_type' 	 => 'adsforwp-groups',
                             'posts_per_page' => -1,   
                             'post_status' => 'publish',
                     )
-                 );        
+                 ); 
+          set_transient( 'transient_all_groups_data', json_encode($all_groups), 60 );           
+        }                                            
         return $all_groups;
     }
     /**
@@ -812,13 +826,7 @@ class adsforwp_admin_common_functions {
      */
      public function adsforwp_fetch_all_groups_post_meta(){
         $all_groups_post_meta = array();
-        $all_groups = get_posts(
-                    array(
-                            'post_type' 	 => 'adsforwp-groups',
-                            'posts_per_page' => -1,   
-                            'post_status' => 'publish',
-                    )
-                 );         
+        $all_groups = $this->adsforwp_fetch_all_groups();       
         foreach($all_groups as $group){
                  $all_groups_post_meta[$group->ID] = get_post_meta( $group->ID, $key='', true );                                                                           
                 }                    
@@ -830,13 +838,8 @@ class adsforwp_admin_common_functions {
      * @return type
      */
     public function adsforwp_check_ads_in_group($ad_id){
-        $all_groups = get_posts(
-                    array(
-                            'post_type' 	 => 'adsforwp-groups',
-                            'posts_per_page' => -1,   
-                            'post_status' => 'publish',
-                    )
-                 );
+        
+                $all_groups = $this->adsforwp_fetch_all_groups();                  
                 $meta_value = array(); 
                 $ad_group_ids = array();
                 foreach($all_groups as $groups){
@@ -904,6 +907,7 @@ class adsforwp_admin_common_functions {
                     'data-tagtype'  => array(),
                     'data-cid'  => array(),
                     'data-crid'  => array(),
+                    'data-mid'  => array(),
             );
              $my_allowed['amp-img'] = array(
                     'class' => array(),
@@ -1070,7 +1074,8 @@ class adsforwp_admin_common_functions {
                     'nonce' => array(),                   
                     'text' => array(),
                     'charset' => array(),
-                    'language' => array(),                                                
+                    'language' => array(), 
+                    'data-adfscript' => array(), 
             );
                         
             return $my_allowed;

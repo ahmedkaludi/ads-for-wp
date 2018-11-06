@@ -57,21 +57,7 @@ class adsforwp_view_ad_groups {
                
 	);
 	public function __construct() {
-                
-                $all_ads = get_posts(
-                    array(
-                            'post_type' 	 => 'adsforwp',
-                            'posts_per_page' => -1,
-                            'post_status' => 'publish',                              
-                    )
-                 ); 
-                                
-                 foreach($all_ads as $ad){
-                     $this->ads_list[] =  array(
-                               'ad_id' => $ad->ID,
-                               'ad_name' => $ad->post_title
-                               );         
-                 }                 
+                                                
 		add_action( 'add_meta_boxes', array( $this, 'adsforwp_add_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'adsforwp_save_fields' ) );                                
                 
@@ -93,6 +79,8 @@ class adsforwp_view_ad_groups {
 		$this->adsforwp_field_generator( $post );
 	}
 	public function adsforwp_field_generator( $post ) {
+                $common_function_obj = new adsforwp_admin_common_functions();
+                $all_ads = $common_function_obj->adsforwp_fetch_all_ads();
 		$output = '';                    
 		foreach ( $this->meta_fields as $meta_field ) {
 			$id =''; 
@@ -166,7 +154,14 @@ class adsforwp_view_ad_groups {
 						'<span class="afw-error afw-add-new-note">'. esc_html__('You have added all ads', 'ads-for-wp').'</span><br><select class="afw_select afw_group_ad_list" id="%s" name="%s">',
 						$id,
 						$id
-                                                );
+                                                );                                                                                                  
+
+                                                foreach($all_ads as $ad){
+                                                    $this->ads_list[] =  array(
+                                                              'ad_id' => $ad->ID,
+                                                              'ad_name' => $ad->post_title
+                                                              );         
+                                                }                                                  
                                                 foreach($this->ads_list as $value){                                                
                                                 if($this->added_ad_list){   
                                                 if(!array_key_exists($value['ad_id'], $this->added_ad_list)) {   
