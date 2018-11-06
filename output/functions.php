@@ -684,9 +684,15 @@ class adsforwp_output_functions{
             break;
             
             case 'media_net':
-                        
-            $ad_data_cid = $post_meta_dataset['data_cid'][0];
-            $ad_data_crid = $post_meta_dataset['data_crid'][0];    
+            $ad_data_cid ='';            
+            $ad_data_crid ='';
+            
+            if(isset($post_meta_dataset['data_cid'])){
+             $ad_data_cid = $post_meta_dataset['data_cid'][0];   
+            }
+            if(isset($post_meta_dataset['data_crid'])){
+             $ad_data_crid = $post_meta_dataset['data_crid'][0];       
+            }            
             $width='200';
             $height='200';
             $banner_size = $post_meta_dataset['banner_size'][0];    
@@ -777,7 +783,6 @@ class adsforwp_output_functions{
       }  
     }
             
-
 }
 
     /**

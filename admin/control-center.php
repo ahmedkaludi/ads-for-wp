@@ -324,7 +324,7 @@ function adsforwp_defaultSettings(){
  */
 function adsforwp_update_ads_status(){
         $common_function_obj = new adsforwp_admin_common_functions();
-        $all_ads = $common_function_obj->adsforwp_fetch_all_ads();
+        $all_ads = $common_function_obj->adsforwp_fetch_all_ads();       
         $all_ads_post_meta = array();
     
     foreach($all_ads as $ad){
@@ -434,7 +434,7 @@ add_filter( 'manage_adsforwp-groups_posts_columns', 'adsforwp_groups_custom_colu
 function adsforwp_group_custom_column_set( $column, $post_id ) {
         
         $common_function_obj = new adsforwp_admin_common_functions();
-        $result = $common_function_obj->adsforwp_check_ads_in_group($post_id);
+        $result = $common_function_obj->adsforwp_check_ads_in_group($post_id);       
         $post_title ='';        
             foreach($result as $group){
                $group_post = get_post($group);  
@@ -550,7 +550,7 @@ function adsforwp_admin_enqueue() {
          wp_enqueue_style('wp-pointer');
          wp_enqueue_script('wp-pointer');
          wp_enqueue_script( 'jquery-ui-datepicker' );
-         wp_register_style( 'jquery-ui', 'http://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css' );
+         wp_register_style( 'jquery-ui', 'https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css' );
          wp_enqueue_style( 'jquery-ui' );
          add_action('admin_print_footer_scripts', 'adsforwp_print_footer_scripts' );
     

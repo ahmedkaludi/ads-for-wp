@@ -86,8 +86,7 @@ class adsforwp_view_display {
 		add_action( 'save_post', array( $this, 'adsforwp_save_fields' ) );                               
                 
 	}
-	public function adsforwp_add_meta_boxes() {                
-                $post_type = get_post_type();                
+	public function adsforwp_add_meta_boxes() {                                              
 		foreach ( $this->screen as $single_screen ) {                                                                    
 			add_meta_box(
 				'display-metabox',
