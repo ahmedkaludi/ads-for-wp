@@ -8,14 +8,14 @@ class adsforwp_view_display {
 	);
 	private $meta_fields = array(
 		array(
-			'label' => 'Where To Display',
+			'label' => 'Display Type',
 			'id' => 'wheretodisplay',
 			'type' => 'select',
 			'options' => array(
-				'between_the_content' =>'Between the content',
-				'after_the_content'   => 'After the content',
-				'before_the_content'  => 'Before the content',
-                                'ad_shortcode'  => 'Ad Shortcode',
+                                'ad_shortcode'        => 'Shortcode (Manual)',
+				'between_the_content' => 'Between the Content (Automatic)',
+				'after_the_content'   => 'After the Content (Automatic)',
+				'before_the_content'  => 'Before the Content (Automatic)',                               
 			),
 		),                
 		array(
