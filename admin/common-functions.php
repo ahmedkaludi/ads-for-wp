@@ -9,8 +9,158 @@ class adsforwp_admin_common_functions {
 
 
     public function __construct() {        
-       
+      add_action('admin_init', array($this, 'adsforwp_import_all_settings'),9);  
+      add_action( 'wp_ajax_adsforwp_export_all_settings', array($this,'adsforwp_export_all_settings'));
+      
     }   
+    /*
+     * Here, We are exporting all the settings and and post and saving it in json file
+     */
+    public function adsforwp_export_all_settings(){                   
+            $export_ad    = array();
+            $export_group = array();
+            $export_data_all = array();                     
+            //ads
+            $all_ads_post = get_posts(
+                    array(
+                            'post_type' 	 => 'adsforwp',                                                                                   
+                            'posts_per_page' => -1,   
+                            'post_status' => 'any',
+                    )
+                 );           
+            if($all_ads_post){
+                
+              foreach($all_ads_post as $ads){    
+                $export_ad[$ads->ID]['post'] = $ads;                    
+                $post_meta = get_post_meta($ads->ID, $key='', true );                                                                              
+                $export_ad[$ads->ID]['ads_meta'] = $post_meta; 
+                
+                $in_group = $this->adsforwp_check_ads_in_group($ads->ID); 
+                if(!empty($in_group)){
+                $export_ad[$ads->ID]['in_groups'] = $in_group;    
+                }                
+               }   
+               }               
+               $all_group_post = get_posts(
+                    array(
+                            'post_type' 	 => 'adsforwp-groups',                                                                                   
+                            'posts_per_page' => -1,   
+                            'post_status' => 'any',
+                    )
+                 );           
+            if($all_group_post){           
+              foreach($all_group_post as $group){    
+                $export_group[$group->ID]['group_post'] = $group;                    
+                $post_meta = get_post_meta($group->ID, $key='', true );                                                                              
+                $export_group[$group->ID]['group_meta'] = $post_meta;   
+                
+               }   
+               }               
+               
+                $get_settings_data = get_option('adsforwp_settings');                
+                $export_data_all['ads'] =$export_ad;
+                $export_data_all['group'] =$export_group;
+                $export_data_all['adsforwp_settings'] =$get_settings_data;
+                header('Content-type: application/json');
+                header('Content-disposition: attachment; filename=adsforwpbackup.json');
+                echo json_encode($export_data_all);                                       
+                                 
+        wp_die();
+    }
+    /*
+     * Here, We are importing all the settings and post which is saved in json file
+     */
+    public function adsforwp_import_all_settings(){
+        $url = get_option('adsforwp-file-upload_url');
+        
+        global $wpdb;
+        if($url){
+        $json_data = file_get_contents($url);        
+        $json_array = json_decode($json_data, true);             
+        $all_ads_post = $json_array['ads']; 
+        $ads_in_group = array();
+        
+        $all_group_post = $json_array['group']; 
+        $adsforwp_settings = $json_array['adsforwp_settings'];                
+        $ads_post = array();                     
+        if($all_ads_post || $all_group_post){
+            
+            $wpdb->query('START TRANSACTION');
+            
+            //ads
+            foreach($all_ads_post as $ads_post){  
+                
+                $post = $ads_post['post'];
+                unset($post['ID']); 
+                
+                
+                $post_id = wp_insert_post($post);
+                $result = $post_id;
+                $guid = get_option('siteurl') .'/?post_type=adsforwp&p='.$post_id;                
+                $wpdb->get_results("UPDATE wp_posts SET guid ='".$guid."' WHERE ID ='".$post_id."'");                   
+                $ads_meta = $ads_post['ads_meta'];
+                
+                if(isset($ads_post['in_groups'])){
+                  $ads_in_group[]= array(
+                                    'new_ad_id' =>$post_id,
+                                    'in_group' =>$ads_post['in_groups']
+                          ); 
+                }
+                
+                foreach($ads_meta as $key => $ad){                    
+                 if($key =='adsforwp_ad_margin' || $key =='data_group_array' || $key =='visitor_conditions_array' || $key == 'ampforwp-post-metas' || $key == 'adsforwp_ad_expire_days'){                    
+                  update_post_meta($post_id, $key, unserialize($ad[0]));       
+                 }else{
+                  update_post_meta($post_id, $key, $ad[0]);       
+                 }                    
+                }                                                                                                                                                 
+                }   
+              //group  
+               foreach($all_group_post as $group_post){  
+                
+                $post = $group_post['group_post'];
+                $old_group_id = $post['ID'];
+                unset($post['ID']);               
+                $post_id = wp_insert_post($post);
+                $result = $post_id;
+                $guid = get_option('siteurl') .'/?post_type=adsforwp-groups&p='.$post_id;                
+                $wpdb->get_results("UPDATE wp_posts SET guid ='".$guid."' WHERE ID ='".$post_id."'");                   
+                $ads_meta = $group_post['group_meta'];                               
+                foreach($ads_meta as $key => $ad){
+                 
+                 if($key == 'adsforwp_ads'){
+                  $new_group_ad = array();
+                  
+                  foreach ($ads_in_group as $in){
+                    if(in_array($old_group_id, $in['in_group'])) {
+                     $new_group_ad[$in['new_ad_id']] = get_the_title($in['new_ad_id']);  
+                    } 
+                  }                                                                          
+                  update_post_meta($post_id, $key, $new_group_ad);      
+                 }else{
+                 if($key =='adsforwp_ad_margin' || $key =='data_group_array' || $key =='visitor_conditions_array' || $key == 'ampforwp-post-metas'){                    
+                  update_post_meta($post_id, $key, unserialize($ad[0]));       
+                 }else{
+                  update_post_meta($post_id, $key, $ad[0]);       
+                 }    
+                 }                    
+                }                                                                                                                                                 
+                } 
+                                
+                }                
+             update_option('adsforwp_settings', $adsforwp_settings); 
+             update_option('adsforwp-file-upload_url','');
+            }                                    
+            if (is_wp_error($result) ){
+              echo esc_attr($result->get_error_message());              
+              $wpdb->query('ROLLBACK');             
+            }else{
+              $wpdb->query('COMMIT'); 
+              return true;
+            }            
+                                     
+    }
+    
     /**
      * We are here fetching all groups information from advanced ads plugin
      * @return type array
