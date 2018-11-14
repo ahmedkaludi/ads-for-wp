@@ -96,8 +96,10 @@ function adsforwp_send_query_message(){
         }
         if ( !wp_verify_nonce( $_POST['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
            return;  
-        }					    
-        $message    = sanitize_text_field($_POST['message']);           
+        }
+        if ( is_user_logged_in() ) {
+        require_once ABSPATH . "wp-includes/pluggable.php";    
+        $message    = sanitize_textarea_field($_POST['message']);           
         $user       = wp_get_current_user();
         $user_data  = $user->data;        
         $user_email = $user_data->user_email;       
@@ -112,7 +114,8 @@ function adsforwp_send_query_message(){
         echo json_encode(array('status'=>'t'));            
         }else{
         echo json_encode(array('status'=>'f'));            
-        }        
+        } 
+        }
            wp_die();           
 }
 
