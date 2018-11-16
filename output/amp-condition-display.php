@@ -42,33 +42,33 @@ class adsforwp_output_amp_condition_display{
     }
     
     public function adsforwp_display_ads_between_loop($count){        
-            $this->adsforwp_amp_condition_ad_code('ads_in_loops', $count);                                   
+            $this->adsforwp_amp_condition_ad_code('adsforwp_ads_in_loops', $count);                                   
     }    
     public function adsforwp_display_ads_below_author_box(){        
-            $this->adsforwp_amp_condition_ad_code('below_author_box');                                   
+            $this->adsforwp_amp_condition_ad_code('adsforwp_below_author_box');                                   
     }
     public function adsforwp_display_ads_above_related_post(){        
-            $this->adsforwp_amp_condition_ad_code('above_related_post');                                   
+            $this->adsforwp_amp_condition_ad_code('adsforwp_above_related_post');                                   
     }
     public function adsforwp_display_ads_below_the_title(){        
-            $this->adsforwp_amp_condition_ad_code('below_the_title');                                   
+            $this->adsforwp_amp_condition_ad_code('adsforwp_below_the_title');                                   
     }
     public function adsforwp_display_ads_below_the_post_content(){        
-            $this->adsforwp_amp_condition_ad_code('below_the_post_content');                                   
+            $this->adsforwp_amp_condition_ad_code('adsforwp_below_the_post_content');                                   
     }
     public function adsforwp_display_ads_above_the_post_content(){        
-            $this->adsforwp_amp_condition_ad_code('above_the_post_content');                                   
+            $this->adsforwp_amp_condition_ad_code('adsforwp_above_the_post_content');                                   
     }    
     public function adsforwp_display_ads_above_the_footer(){        
-            $this->adsforwp_amp_condition_ad_code('above_the_footer');                                   
+            $this->adsforwp_amp_condition_ad_code('adsforwp_above_the_footer');                                   
     }
     
     public function adsforwp_display_ads_below_the_footer(){        
-            $this->adsforwp_amp_condition_ad_code('below_the_footer');                                   
+            $this->adsforwp_amp_condition_ad_code('adsforwp_below_the_footer');                                   
     }
     
     public function adsforwp_display_ads_below_the_header(){                   
-            $this->adsforwp_amp_condition_ad_code('below_the_header');                                             
+            $this->adsforwp_amp_condition_ad_code('adsforwp_below_the_header');                                             
     }
     /**
      *  Here, we are fetching ads html markup.
@@ -79,7 +79,7 @@ class adsforwp_output_amp_condition_display{
     public function adsforwp_in_loop_ads_code($ad_id, $count){                         
         $displayed_posts = get_option('posts_per_page');
         $in_between = round(abs($displayed_posts / 2));
-        $in_between = get_post_meta($ad_id,$key='after_how_many_post',true);           
+        $in_between = get_post_meta($ad_id,$key='adsforwp_after_how_many_post',true);           
         if(intval($in_between) == $count){
          $output_function = new adsforwp_output_functions();
          $ad_code = $output_function->adsforwp_get_ad_code($ad_id, $type="AD");    
@@ -96,7 +96,7 @@ class adsforwp_output_amp_condition_display{
     public function adsforwp_in_loop_group_ads_code($group_id, $count, $widget){                         
         $displayed_posts = get_option('posts_per_page');
         $in_between = round(abs($displayed_posts / 2));
-        $in_between = get_post_meta($group_id,$key='after_how_many_post',true);           
+        $in_between = get_post_meta($group_id,$key='adsforwp_after_how_many_post',true);           
         if(intval($in_between) == $count){
          $output_function = new adsforwp_output_functions();
          $ad_code = $output_function->adsforwp_group_ads($atts=null, $group_id, $widget);    
@@ -123,7 +123,7 @@ class adsforwp_output_amp_condition_display{
                       if(empty($in_group)){
                       $amp_display_condition = get_post_meta($ad_id,$key='wheretodisplayamp',true);
                       if($amp_display_condition == $condition){                          
-                      if($amp_display_condition =='ads_in_loops'){
+                      if($amp_display_condition =='adsforwp_ads_in_loops'){
                       echo $this->adsforwp_in_loop_ads_code($ad_id, $count);    
                       }else{
                       echo $output_function->adsforwp_get_ad_code($ad_id, $type="AD");                                          
@@ -142,7 +142,7 @@ class adsforwp_output_amp_condition_display{
                     $widget = '';                      
                     $amp_display_condition = get_post_meta($group_id,$key='wheretodisplayamp',true);
                       if($amp_display_condition == $condition){                          
-                      if($amp_display_condition =='ads_in_loops'){
+                      if($amp_display_condition =='adsforwp_ads_in_loops'){
                       echo $this->adsforwp_in_loop_group_ads_code($group_id, $count, $widget);    
                       }else{
                       echo $output_function->adsforwp_group_ads($atts=null, $group_id, $widget);                                           
