@@ -54,6 +54,13 @@ Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp).
 
 == Changelog ==
 
+= 1.0.8 (16th November 2018) =
+* New Feature: Importer and Exporter (Copy Ads for WP complete data from one site to another with one click )  
+* UX improvement: Renamed some labels for better understanding of context
+* Bug Fixed: AMP content disappear after setting AMP Display Positioning in group ads. #108  
+* Bug Fixed: wp_mail conflict with SendGrid. #107  
+* Bug Fixed: Queries optimization( for fast loading of ads ). #94
+
 = 1.0.7 (26th October 2018) =
 * New Feature: Visitor Conditions (limit the number of users who can see your ad) 
 * New Feature: AMP Display Positioning
