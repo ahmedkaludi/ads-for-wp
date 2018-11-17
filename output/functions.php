@@ -870,7 +870,7 @@ class adsforwp_output_functions{
         $adsforwp_non_amp_visibility = $post_group_meta['ads_for_wp_non_amp_visibility'][0];
         }
         if(array_key_exists('ads-for-wp_amp_compatibilty', $post_group_meta)){
-        $amp_compatibility = $post_meta_dataset['ads-for-wp_amp_compatibilty'][0];              
+        $amp_compatibility = $post_group_meta['ads-for-wp_amp_compatibilty'][0];              
         }        
         if($wheretodisplay !='ad_shortcode' && isset($post_group_meta['adsforwp_ad_align'])){
         $ad_alignment      = $post_group_meta['adsforwp_ad_align'][0];    
@@ -898,11 +898,23 @@ class adsforwp_output_functions{
         $post_data = get_post_meta($post_group_id,$key='',true);                        
         if($post_group_data){
         $adsresultset = array();  
-        $response = array();           
+        $response = array();    
+        
         foreach($post_group_data as $post_ad_id => $post){
         $ad_detail = get_post_meta($post_ad_id,$key='',true);  
-        
-        if(!empty($ad_detail) && $ad_detail['select_adtype'][0] !='' && get_post_status($post_ad_id) == 'publish'){
+        $select_ad_type = '';
+        $data_cid = '';
+        $data_crid = '';
+        if(isset($ad_detail['select_adtype'])){
+         $select_ad_type = $ad_detail['select_adtype'][0];   
+        }        
+        if(isset($ad_detail['data_cid'])){
+         $data_cid = $ad_detail['data_cid'][0];   
+        }
+        if(isset($ad_detail['data_crid'])){
+         $data_crid = $ad_detail['data_crid'][0];   
+        }        
+        if(!empty($ad_detail) && $select_ad_type !='' && get_post_status($post_ad_id) == 'publish'){
         $adsresultset[] = array(
                 'ad_id' => $post_ad_id,
                 'ad_type' => $ad_detail['select_adtype'][0],
@@ -910,8 +922,8 @@ class adsforwp_output_functions{
                 'ad_custom_code' => $ad_detail['custom_code'][0],
                 'ad_data_client_id' => $ad_detail['data_client_id'][0],
                 'ad_data_ad_slot' => $ad_detail['data_ad_slot'][0],
-                'ad_data_cid' => $ad_detail['data_cid'][0],
-                'ad_data_crid' => $ad_detail['data_crid'][0],
+                'ad_data_cid' => $data_cid,
+                'ad_data_crid' => $data_crid,
                 'ad_banner_size' => $ad_detail['banner_size'][0],
                 'ad_image' => $ad_detail['adsforwp_ad_image'][0],
                 'ad_redirect_url' => $ad_detail['adsforwp_ad_redirect_url'][0],

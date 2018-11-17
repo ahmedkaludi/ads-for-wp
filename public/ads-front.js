@@ -146,8 +146,9 @@ jQuery( document ).ready(function($) {
         var ad_ids ={};    
         $(".afw_ad").each(function(index){
            ad_ids[index]= ($(this).attr('data-ad-id'));
-        });     
-        if(ad_ids){
+        });  
+        
+        if($.isEmptyObject( ad_ids ) == false){           
         $.ajax({
                     type: "POST",    
                     url:adsforwp_obj.ajax_url,                    

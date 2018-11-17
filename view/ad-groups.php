@@ -110,11 +110,20 @@ class adsforwp_view_ad_groups {
                                             $input = '<div id="'.esc_attr($meta_field['id']).'" class="'.esc_attr($meta_field['class']).'"> <table class="afw-group-ads">';                                            
                                             $input .= '<tbody>';   
                                             if($meta_value){
-                                              foreach($meta_value as $key => $val){                                                  
-                                             $input .= '<tr class="afw-group-add-ad-list" name="adsforwp_ads['.esc_attr($key).']">'
+                                              foreach($meta_value as $key => $val){
+                                             
+                                               if(get_post_status($key) == 'publish'){
+                                                  $input .= '<tr class="afw-group-add-ad-list" name="adsforwp_ads['.esc_attr($key).']">'
                                                     . '<td>'.esc_html($val).'<input type="hidden" name="adsforwp_ads['.esc_attr($key).']" value="'.esc_attr($val).'"></td>' 
                                                     . '<td><button type="button" class="afw-remove-ad-from-group button">x</button></td>'                                                        
                                                     . '</tr>';  
+                                               }else{
+                                                  $input .= '<tr class="afw-group-add-ad-list" name="adsforwp_ads['.esc_attr($key).']">'
+                                                    . '<td>'.esc_html($val).'<input type="hidden" name="adsforwp_ads['.esc_attr($key).']" value="'.esc_attr($val).'"><p class="afw-error">'.esc_html__('This ad does not exist. Remove', 'ads-for-wp').'</p></td>' 
+                                                    . '<td><button type="button" class="afw-remove-ad-from-group button">x</button></td>'                                                        
+                                                    . '</tr>';  
+                                               }   
+                                                                                                                                                                                          
                                               }                                            
                                               }
                                             $input .= '</tbody>';

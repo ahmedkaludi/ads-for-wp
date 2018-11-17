@@ -270,7 +270,10 @@ class Adsforwp_analyticsSettings{
 		$this->admin_notice_messages;
 	}
 }
-if(is_admin() && current_user_can( 'manage_options' ) ){
-	//$GLOBALS['ADSFORWP'] = new \Adsforwp\analytics\analyticsSettings();
+
+add_action( 'plugins_loaded', 'adsforwp_instantiate_analytics_class' );
+function adsforwp_instantiate_analytics_class(){
+if(is_admin() && current_user_can( 'manage_options' ) ){	
 	$GLOBALS['ADSFORWP'] = new Adsforwp_analyticsSettings();
+}    
 }

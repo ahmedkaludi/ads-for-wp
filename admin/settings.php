@@ -4,6 +4,7 @@ class adsforwp_admin_settings{
 public function __construct() {
       add_action( 'admin_menu', array($this, 'adsforwp_add_menu_links'));        
       add_action('admin_init', array($this, 'adsforwp_settings_init'));
+      add_action('upload_mimes', array($this, 'adsforwp_custom_upload_mimes'));
     }
 public function adsforwp_add_menu_links() {	
 	// Settings page - Same as main menu page
@@ -88,7 +89,7 @@ public function adsforwp_admin_interface_render(){
 	WP Settings API
 */
 public function adsforwp_settings_init(){
-	register_setting( 'adsforwp_setting_dashboard_group', 'adsforwp_settings' );
+	register_setting( 'adsforwp_setting_dashboard_group', 'adsforwp_settings', array($this, 'adsforwp_handle_file_upload'));
 	add_settings_section('adsforwp_tools_section',  'Migration', '__return_false', 'adsforwp_tools_section');		        
                                     
                   
@@ -133,6 +134,24 @@ public function adsforwp_settings_init(){
 }
 
 
+public function adsforwp_custom_upload_mimes($mimes = array()) {
+	
+	$mimes['json'] = "application/json";
+
+	return $mimes;
+}
+public function adsforwp_handle_file_upload($option)
+{
+  if(!empty($_FILES["adsforwp_import_backup"]["tmp_name"]))
+  {
+    $urls = wp_handle_upload($_FILES["adsforwp_import_backup"], array('test_form' => FALSE));      
+    $url = $urls["url"];
+    update_option('adsforwp-file-upload_url',esc_url($url));
+  }
+  
+  return $option;
+}
+
 public function adsforwp_check_data_imported_from($plugin_post_type_name){
        $cc_args = array(
                         'posts_per_page'   => -1,
@@ -145,7 +164,7 @@ public function adsforwp_check_data_imported_from($plugin_post_type_name){
 }
 
 public function adsforwp_import_callback(){
-	$message = '<p>'.esc_html__('This plugin\'s data already has been imported. Do you want to import again?. click on button above button.','schema-and-structured-data-for-wp').'</p>';
+	$message = '<p>'.esc_html__('This plugin\'s data already has been imported. Do you want to import again?. click on button above button.','ads-for-wp').'</p>';
         $schema_message = '';
         $ampforwp_ads_message = '';
         $ampforwp_advanced_ads_message = '';
@@ -180,6 +199,20 @@ public function adsforwp_import_callback(){
                 </li>
             </ul>                   
 	<?php  
+        echo '<h2>'.esc_html__('Import / Export','ads-for-wp').'</h2>'; 
+        $url =  admin_url('admin-ajax.php?action=adsforwp_export_all_settings');
+        ?>
+        <ul>
+                <li>
+                    <div class="adsforwp-tools-field-title"><div class="adsforwp-tooltip"><strong><?php echo esc_html__('Export All Ads For WP Data','ads-for-wp'); ?></strong></div><a href="<?php echo esc_url($url); ?>"class="button adsforwp-export-data"><?php echo esc_html__('Export','ads-for-wp'); ?></a>                         
+                    </div>
+                </li> 
+                <li>
+                    <div class="adsforwp-tools-field-title"><div class="adsforwp-tooltip"><strong><?php echo esc_html__('Import All Ads For WP Data','ads-for-wp'); ?></strong></div><input type="file" name="adsforwp_import_backup" id="adsforwp_import_backup">                         
+                    </div>
+                </li> 
+        </ul>
+        <?php
         
 }
 public function adsforwp_ad_blocker_support_callback(){
