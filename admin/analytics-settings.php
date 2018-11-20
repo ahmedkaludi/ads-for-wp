@@ -355,7 +355,7 @@ public function adsforwp_admin_analytics_interface_render(){
     
 </div>  
 <section style="margin-top:30px; background: #fff;padding:10px;margin-right: 20px;">
-    <h2>Ad performance</h2><hr/>
+    <h2><?php echo esc_html__('Ad performance','ads-for-wp'); ?></h2><hr/>
     <div id="canvas-holder" style="width:40%;padding:10px;display: inline-block;">
         <h3><?php echo esc_html__('Mobile vs Desktop', 'ads-for-wp'); ?></h3>
         <?php

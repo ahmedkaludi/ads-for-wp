@@ -74,6 +74,7 @@ class adsforwp_admin_common_functions {
         $url = get_option('adsforwp-file-upload_url');
         
         global $wpdb;
+        $result ='';
         if($url){
         $json_data = file_get_contents($url);        
         $json_array = json_decode($json_data, true);             

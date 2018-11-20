@@ -747,7 +747,7 @@ jQuery( document ).ready(function($) {
             
         $("#afw-embed-code-div").html(html);
         
-       tb_show("Embed Code", "#TB_inline??width=600&height=550&inlineId=afw-embed-code-div");
+       tb_show("Embed Shortcode", "#TB_inline??width=600&height=550&inlineId=afw-embed-code-div");
        $(document).find('#TB_window').width(600).height(200).css({'top':'200px', 'margin-top': '0px'});
     });
     var tb_unload_count = 1;

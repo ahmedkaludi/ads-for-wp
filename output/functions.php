@@ -10,16 +10,16 @@ class adsforwp_output_functions{
     public  $amp_ads_id = array();
     public function __construct() {  
          $this->_amp_conditions = array(
-                    'after_featured_image',
-                    'below_the_header',
-                    'below_the_footer',
-                    'above_the_footer',
-                    'above_the_post_content',
-                    'below_the_post_content',
-                    'below_the_title',
-                    'above_related_post',
-                    'below_author_box',
-                    'ads_in_loops'
+                    'adsforwp_after_featured_image',
+                    'adsforwp_below_the_header',
+                    'adsforwp_below_the_footer',
+                    'adsforwp_above_the_footer',
+                    'adsforwp_above_the_post_content',
+                    'adsforwp_below_the_post_content',
+                    'adsforwp_below_the_title',
+                    'adsforwp_above_related_post',
+                    'adsforwp_below_author_box',
+                    'adsforwp_ads_in_loops'
                     );
     }
     /**
@@ -236,7 +236,7 @@ class adsforwp_output_functions{
             if(empty($in_group)){                
             $amp_display_condition = get_post_meta($post_ad_id,$key='wheretodisplayamp',true);
             if(in_array($amp_display_condition, $this->_amp_conditions) && $this->is_amp){
-                return ;
+                return $content;
             }                    
             $where_to_display=""; 
             $adposition="";    
@@ -314,7 +314,7 @@ class adsforwp_output_functions{
             
             $amp_display_condition = get_post_meta($post_group_id,$key='wheretodisplayamp',true);
             if(in_array($amp_display_condition, $this->_amp_conditions) && $this->is_amp){
-                return ;
+                return $content;
             }                        
             $where_to_display=""; 
             $adposition="";    
