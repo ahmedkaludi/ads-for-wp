@@ -166,8 +166,7 @@ jQuery( document ).ready(function($) {
 	$("body").append("<script type='template/html' id='adsforwp_visitor_condition_html_template'><tr class='adsforwp-toclone cloneya'>"+selectvisitorrow+"</tr>");
 	adsforwpvisitorclone();
 	adsforwpvisitorremoveHtml();
-	$(document).on("change", ".adsforwp-select-visitor-condition-type", function(){
-            
+	$(document).on("change", ".adsforwp-select-visitor-condition-type", function(){           
                 var current_change = $(this);
                 var selectedValue = $(this).val();
                 var tdindex = [1,2,3,4]; 
@@ -183,6 +182,7 @@ jQuery( document ).ready(function($) {
 		
 		parent.find(".adsforwp-visitor-condition-ajax-output").remove();
                 parent.find(".adsforwp_user_agent_custom").remove();
+                parent.find(".adsforwp-url-parameter").remove();                
                 parent.find(".adsforwp_url_custom").remove();
 		//parent.find(".afw-ajax-output-child").remove();
 		parent.find(".spinner").attr("style","visibility:visible");

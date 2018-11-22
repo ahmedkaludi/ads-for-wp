@@ -44,7 +44,8 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
     }        
         // send the response back to the front end
        // vars
-    $choices = array();        
+    $choices = array();      
+    
     $options['param'] = $response;
       
         switch($options['param'])
@@ -72,7 +73,8 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
                 'ind'   => 'India',                
             );
             break;
-           case "logged_in_visitor":
+        
+          case "logged_in_visitor":
 
             $choices = array(
                 'true' => 'True',
@@ -80,7 +82,7 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
             );                       
             break; 
             
-            case "user_agent":
+          case "user_agent":
 
             $choices = array(
                 'opera' => 'Opera',
@@ -97,7 +99,7 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
             );                       
             break; 
         
-           case "user_type" :
+          case "user_type" :
            global $wp_roles;
             $choices = $wp_roles->get_names();
 
@@ -108,7 +110,7 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
 
             break;
             
-            case "browser_language" :
+          case "browser_language" :
             $choices = array(
                     'af' => 'Afrikanns',
                     'sq' => 'Albanian',
@@ -185,16 +187,19 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
             );
 
             break;
-          
+                            
         }        
     
         $choices = $choices; 
    
-        if ( empty( $choices) ) {
+        if($options['param'] == 'url_parameter') {
+            $output = '<input type="text" placeholder="'.esc_html__('blog', 'ads-for-wp').'" class="widefat adsforwp-url-parameter" value="'.esc_attr($saved_data).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_3]">'; 
+        }else{
+           if ( empty( $choices)) {
           $choices = array('none' => esc_html__('No Items', 'ads-for-wp') );
         }
     
-       $output = '<select  class="widefat adsforwp-visitor-condition-ajax-output" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_3]">'; 
+          $output = '<select  class="widefat adsforwp-visitor-condition-ajax-output" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_3]">'; 
       
           foreach ($choices as $key => $value) { 
                 if ( $saved_data ==  $key ) {
@@ -206,7 +211,7 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
             $output .= '<option '. esc_attr($selected) .' value="' . esc_attr($key) .'"> ' .  esc_html__($value, 'ads-for-wp') .'  </option>';            
           } 
         
-        $output .= ' </select> '; 
+          $output .= ' </select> '; 
               
                 if ( $saved_data ==  'url_custom' || $response =='referrer_url') {
                  if($selected_val_key_4 && $saved_data ==  'url_custom'){
@@ -223,7 +228,9 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
                  $output .= ' <input placeholder ="Android" type="text" class="widefat afw_hide adsforwp_user_agent_custom" value="'.esc_attr($selected_val_key_5).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_5]"> ';        
                  }  
                  
-                }                
+                }    
+        }                           
+                
     $common_function_obj = new adsforwp_admin_common_functions();  
     $allowed_html = $common_function_obj->adsforwp_expanded_allowed_tags();
     echo wp_kses($output, $allowed_html); 

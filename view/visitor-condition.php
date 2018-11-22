@@ -46,7 +46,8 @@ class adsforwp_view_visitor_condition {
           'logged_in_visitor'   =>  esc_html__("Logged In Visitor",'ads-for-wp'),
           'user_agent'   =>  esc_html__("User Agent",'ads-for-wp'),  
           'user_type'   =>  esc_html__("User Can (Capabilities)",'ads-for-wp'),
-          'referrer_url'   =>  esc_html__("Referrer URL",'ads-for-wp')                         
+          'referrer_url'   =>  esc_html__("Referrer URL",'ads-for-wp'),
+          'url_parameter'   =>  esc_html__("URL Parameter",'ads-for-wp'),  
         )        
       ); 
 
@@ -262,6 +263,20 @@ class adsforwp_view_visitor_condition {
                   }
                     if ( $comparison == 'not_equal') {              
                         if ( $browser_language != $data ) {
+                          $result = true;
+                        }
+                    }            
+          break;
+          
+          case 'url_parameter':                      
+                   $url = $_SERVER['REQUEST_URI'];                       
+                  if ( $comparison == 'equal' ) {                                            
+                        if ( strpos($url,$data) !== false ) {                           
+                          $result = true;
+                        }
+                  }
+                    if ( $comparison == 'not_equal') {              
+                        if ( strpos($url,$data) == false ) {
                           $result = true;
                         }
                     }            
