@@ -589,6 +589,22 @@ jQuery( document ).ready(function($) {
       
     });
     
+    $(".adsforwp-advance-option-click").click(function(e){   
+        e.preventDefault();
+       $("#display_tag_name").parent().parent("tr").toggle();       
+    }).change();
+    
+    $("#display_tag_name").change(function(){   
+        
+      $(this).find("option:selected").each(function(){     
+          var optionValue = $(this).attr("value");          
+         $("#entered_tag_name").parent().parent("tr").hide(); 
+          if(optionValue ==='custom_tag'){              
+             $("#entered_tag_name").parent().parent("tr").show(); 
+          }      
+      });
+    }).change();
+    
     $("#wheretodisplay").change(function(){   
         
       $(this).find("option:selected").each(function(){     
@@ -596,11 +612,20 @@ jQuery( document ).ready(function($) {
           if(optionValue){
               $('.adsforwp-display-table tbody tr').not(':first').hide();
               $(".afw_ad_img_margin").parent().parent("tr").show();
+               $(".adsforwp-advance-option-click").hide();
               switch (optionValue) {
                  case "between_the_content":
                     var pragraph_no = $("#adposition").val();
                     if(pragraph_no ==='number_of_paragraph'){
-                     $("#paragraph_number").parent().parent("tr").show();   
+                     $("#paragraph_number").parent().parent("tr").show();
+                     $(".adsforwp-advance-option-click").show();
+                     if($("#display_tag_name").val() !==''){
+                     $("#display_tag_name").parent().parent("tr").show();     
+                     }
+                     if($("#display_tag_name").val() ==='custom_tag'){
+                     $("#entered_tag_name").parent().parent("tr").show();     
+                     }
+                     
                     }
                     $("#adposition").parent().parent("tr").show();                    
                     $(".afw_ads_margin_field").parent().parent("tr").show();
@@ -646,9 +671,11 @@ jQuery( document ).ready(function($) {
           var wheretodisplay = $("#wheretodisplay").val();
           if(optionValue){                                 
               if("number_of_paragraph" === optionValue && wheretodisplay ==='between_the_content'){
-          	$("#paragraph_number").parent().parent("tr").show();                
+          	$("#paragraph_number").parent().parent("tr").show();  
+                $(".adsforwp-advance-option-click").show();                  
               }else{
-               $("#paragraph_number").parent().parent("tr").hide();   
+               $("#paragraph_number").parent().parent("tr").hide(); 
+               $(".adsforwp-advance-option-click").hide();  
               }                                                      
           }      
       });

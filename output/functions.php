@@ -5,6 +5,7 @@
 class adsforwp_output_functions{
     
     private $_amp_conditions = array();
+    private $_display_tag_list = array();
     private $is_amp = false;     
     public  $visibility = null;
     public  $amp_ads_id = array();
@@ -20,6 +21,11 @@ class adsforwp_output_functions{
                     'adsforwp_above_related_post',
                     'adsforwp_below_author_box',
                     'adsforwp_ads_in_loops'
+                    );
+         $this->_display_tag_list = array(
+                    '</p>' => 'p_tag',
+                    '</div>' => 'div_tag',
+                    '<img>' => 'img_tag',                    
                     );
     }
     /**
@@ -264,8 +270,26 @@ class adsforwp_output_functions{
              case 'between_the_content':        
               if($adposition == 'number_of_paragraph'){
                 $paragraph_id = $post_meta_dataset['paragraph_number'][0];   
-                $closing_p = '</p>';
-                $paragraphs = explode( $closing_p, $content );   
+                $entered_tag_name ='';                
+                $display_tag_name ='';                
+                
+                if(isset($post_meta_dataset['display_tag_name'])){
+                  $display_tag_name = $post_meta_dataset['display_tag_name'][0];                  
+                }
+                if(isset($post_meta_dataset['entered_tag_name'])){
+                  $entered_tag_name = $post_meta_dataset['entered_tag_name'][0];                  
+                } 
+                if($display_tag_name !=''){                    
+                    if($display_tag_name == 'custom_tag'){
+                     $closing_p = $entered_tag_name;   
+                    }else{                        
+                     $closing_p = array_search($display_tag_name,$this->_display_tag_list);      
+                    }                                     
+                }else{
+                 $closing_p = '</p>';   
+                }
+                print_r($closing_p);die;                               
+                $paragraphs = explode( $closing_p, $content );                  
                 foreach ($paragraphs as $index => $paragraph) {
 
                  if ( trim( $paragraph ) ) {
@@ -275,7 +299,7 @@ class adsforwp_output_functions{
                        $paragraphs[$index] .= $ad_code;
                    }
                  }
-                        $content = implode( '', $paragraphs );
+                       $content = implode( '', $paragraphs );
                 }
         
                if($adposition == '50_of_the_content'){
