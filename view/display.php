@@ -31,9 +31,8 @@ class adsforwp_view_display {
 			'label' => 'Count As Per The',
 			'id' => 'display_tag_name',
 			'type' => 'select',
-			'options' => array(
-                                ''=>'Select',
-				'p_tag'=>'p',
+			'options' => array(                               
+				'p_tag'=>'p (default)',
 				'div_tag'=>'div', 
                                 'img_tag'=>'img',
                                 'custom_tag'=>'custom',
@@ -42,7 +41,10 @@ class adsforwp_view_display {
                 array(
 			'label' => 'Enter Your Tag',
 			'id' => 'entered_tag_name',
-			'type' => 'text'			
+			'type' => 'text',
+                        'attributes' => array(				
+                               'placeholder' 	=> 'div',	                               
+			),
 		),
 		array(
 			'label' => 'Paragraph',

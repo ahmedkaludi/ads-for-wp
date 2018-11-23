@@ -254,8 +254,7 @@ class adsforwp_output_functions{
             }
             if(array_key_exists('adposition', $post_meta_dataset)){
             $adposition = $post_meta_dataset['adposition'][0];    
-            }
-                                                                                                                                             
+            }                                                                                                                                        
            //Displays all ads according to their settings paragraphs starts here              
             switch ($where_to_display) {
                 
@@ -277,8 +276,8 @@ class adsforwp_output_functions{
                   $display_tag_name = $post_meta_dataset['display_tag_name'][0];                  
                 }
                 if(isset($post_meta_dataset['entered_tag_name'])){
-                  $entered_tag_name = $post_meta_dataset['entered_tag_name'][0];                  
-                } 
+                  $entered_tag_name = '</'.$post_meta_dataset['entered_tag_name'][0].'>';                  
+                }                 
                 if($display_tag_name !=''){                    
                     if($display_tag_name == 'custom_tag'){
                      $closing_p = $entered_tag_name;   
@@ -288,18 +287,24 @@ class adsforwp_output_functions{
                 }else{
                  $closing_p = '</p>';   
                 }
-                print_r($closing_p);die;                               
-                $paragraphs = explode( $closing_p, $content );                  
-                foreach ($paragraphs as $index => $paragraph) {
+                if($closing_p == '<img>'){                                                         
+                preg_match_all( '/<img[^>]+\>/' , $content, $match );
+                $adsforwp_images = array_pop($match);                    
+                $image_ad = $adsforwp_images[$paragraph_id-1].$ad_code;               
+                $content  = str_replace( $adsforwp_images[$paragraph_id-1], $image_ad, $content );                
+                }else{
+                 $paragraphs = explode( $closing_p, $content );                  
+                    foreach ($paragraphs as $index => $paragraph) {
 
-                 if ( trim( $paragraph ) ) {
-                       $paragraphs[$index] .= $closing_p;
-                   }
-                   if ( $paragraph_id == $index + 1 ) {
-                       $paragraphs[$index] .= $ad_code;
-                   }
-                 }
-                       $content = implode( '', $paragraphs );
+                     if ( trim( $paragraph ) ) {
+                           $paragraphs[$index] .= $closing_p;
+                       }
+                       if ( $paragraph_id == $index + 1 ) {
+                           $paragraphs[$index] .= $ad_code;
+                       }
+                     }
+                  $content = implode( '', $paragraphs );   
+                }                                               
                 }
         
                if($adposition == '50_of_the_content'){
@@ -321,9 +326,7 @@ class adsforwp_output_functions{
              default:
                break;
           }      
-          //Displays all ads according to their settings paragraphs ends here   
-          
-          
+          //Displays all ads according to their settings paragraphs ends here                       
             }
          }                          
             }

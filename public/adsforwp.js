@@ -591,11 +591,16 @@ jQuery( document ).ready(function($) {
     
     $(".adsforwp-advance-option-click").click(function(e){   
         e.preventDefault();
-       $("#display_tag_name").parent().parent("tr").toggle();       
+       $("#display_tag_name").parent().parent("tr").toggle();
+       if($("#display_tag_name").val() ==='custom_tag' && $('#display_tag_name').css('display') == 'none'){
+        $("#entered_tag_name").parent().parent("tr").show();    
+       }else{
+        $("#entered_tag_name").parent().parent("tr").hide();       
+       }
+      
     }).change();
     
-    $("#display_tag_name").change(function(){   
-        
+    $("#display_tag_name").change(function(){           
       $(this).find("option:selected").each(function(){     
           var optionValue = $(this).attr("value");          
          $("#entered_tag_name").parent().parent("tr").hide(); 
@@ -669,12 +674,23 @@ jQuery( document ).ready(function($) {
       $(this).find("option:selected").each(function(){  
           var optionValue = $(this).attr("value");    
           var wheretodisplay = $("#wheretodisplay").val();
+          $("#display_tag_name").parent().parent("tr").hide(); 
+          $("#entered_tag_name").parent().parent("tr").hide(); 
           if(optionValue){                                 
               if("number_of_paragraph" === optionValue && wheretodisplay ==='between_the_content'){
+                  
+                var tagval = $("#display_tag_name").val();
+                if(tagval == 'div_tag' || tagval == 'img_tag') {
+                 $("#display_tag_name").parent().parent("tr").show();    
+                } 
+                if(tagval == 'custom_tag'){
+                 $("#display_tag_name").parent().parent("tr").show();
+                 $("#entered_tag_name").parent().parent("tr").show();                 
+                }
           	$("#paragraph_number").parent().parent("tr").show();  
                 $(".adsforwp-advance-option-click").show();                  
               }else{
-               $("#paragraph_number").parent().parent("tr").hide(); 
+               $("#paragraph_number").parent().parent("tr").hide();                
                $(".adsforwp-advance-option-click").hide();  
               }                                                      
           }      
