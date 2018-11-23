@@ -127,14 +127,14 @@ jQuery( document ).ready(function($) {
    /* Visitor condition jquery starts here */   
    
    $(document).on("change",".adsforwp-visitor-condition-ajax-output",function(){
-      var value = $(this).val();     
-      $(this).parent().find(".adsforwp_user_agent_custom").hide();
-      $(this).parent().find(".adsforwp_url_custom").hide();   
+      var value = $(this).val();           
+      $(this).parent().find(".adsforwp_user_agent_custom").addClass('afw_hide');
+      $(this).parent().find(".adsforwp_url_custom").addClass('afw_hide');   
      if(value =='url_custom'){
-      $(this).parent().find(".adsforwp_url_custom").show();   
+      $(this).parent().find(".adsforwp_url_custom").removeClass('afw_hide');   
      }
      if(value =='user_agent_custom'){
-      $(this).parent().find(".adsforwp_user_agent_custom").show();
+      $(this).parent().find(".adsforwp_user_agent_custom").removeClass('afw_hide');
      }
    });
    $(".adsforwp-visitor-condition-or-group").on("click", function(e){
@@ -472,8 +472,8 @@ jQuery( document ).ready(function($) {
                       var adsense_type = $("#adsense_type option:selected").val();                 
                       switch(adsense_type){
                           case "normal":  
-                               $("#display-metabox").show(); 
-                               $("#banner_size, #data_client_id, #data_ad_slot").parent().parent("tr").show();
+                               $("#display-metabox").show();                                
+                               $("#banner_size, #data_client_id, #data_ad_slot, #adsforwp_ad_responsive").parent().parent("tr").show();
                                $("#banner_size, #data_client_id, #data_ad_slot").attr("required",true);
                               
                               break;
@@ -515,7 +515,7 @@ jQuery( document ).ready(function($) {
                       $("#display-metabox").show();
                       $("#adsforwp_ad_image").attr("required",true); 
                       $("#adsforwp_ad_image").attr("readonly",true);                      
-                      $("#adsforwp_ad_image, #adsforwp_ad_redirect_url").parent().parent("tr").show();                                                                                                
+                      $("#adsforwp_ad_image, #adsforwp_ad_redirect_url, #adsforwp_ad_responsive").parent().parent("tr").show();                                                                                                
                         break 
                     case "ad_now":
                       $("#display-metabox").show();
@@ -547,7 +547,7 @@ jQuery( document ).ready(function($) {
               
               switch (optionValue) {
                  case "normal":
-                    $("#banner_size, #data_client_id, #data_ad_slot").parent().parent("tr").show();
+                    $("#banner_size, #data_client_id, #data_ad_slot, #adsforwp_ad_responsive").parent().parent("tr").show();
                     $("#banner_size, #data_client_id, #data_ad_slot").attr("required",true);                    
                     $("#display-metabox").show();
                     $(".afw-select-post-type option[value=post_type]").attr("selected", "selected");
@@ -564,7 +564,8 @@ jQuery( document ).ready(function($) {
                              }); 
                    $("#display-metabox").hide();
                    $("#data_client_id").parent().parent("tr").show();
-                   $("#banner_size, #data_ad_slot").parent().parent("tr").hide();
+                   $("#banner_size, #data_ad_slot, #adsforwp_ad_responsive").parent().parent("tr").hide();
+                   $("#adsforwp_ad_responsive").prop("checked", false);
                    $("#data_client_id").attr("required",true);
                    $("#banner_size, #data_ad_slot").attr("required",false);
                    $.ajax({

@@ -97,7 +97,6 @@ function adsforwp_admin_notice(){
     }             
      //Feedback notice
         $activation_date =  get_option("adsforwp_activation_date");  
-
         $one_day    = date('Y-m-d',strtotime("+1 day",  strtotime($activation_date))); 
         $seven_days = date('Y-m-d',strtotime("+7 day",  strtotime($activation_date)));
         $one_month  = date('Y-m-d',strtotime("+30 day", strtotime($activation_date)));

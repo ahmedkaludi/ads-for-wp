@@ -287,11 +287,14 @@ class adsforwp_output_functions{
                 }else{
                  $closing_p = '</p>';   
                 }
-                if($closing_p == '<img>'){                                                         
-                preg_match_all( '/<img[^>]+\>/' , $content, $match );
-                $adsforwp_images = array_pop($match);                    
-                $image_ad = $adsforwp_images[$paragraph_id-1].$ad_code;               
-                $content  = str_replace( $adsforwp_images[$paragraph_id-1], $image_ad, $content );                
+                if($closing_p == '<img>'){                                                                         
+                if($paragraph_id){
+                 preg_match_all( '/<img[^>]+\>/' , $content, $match );
+                 $adsforwp_images = array_pop($match);                    
+                 $image_ad = $adsforwp_images[$paragraph_id-1].$ad_code;               
+                 $content  = str_replace( $adsforwp_images[$paragraph_id-1], $image_ad, $content ); 
+                }
+                               
                 }else{
                  $paragraphs = explode( $closing_p, $content );                  
                     foreach ($paragraphs as $index => $paragraph) {
@@ -447,6 +450,7 @@ class adsforwp_output_functions{
             $adsforwp_ad_expire_enable ="";                        
             $adsforwp_ad_days_enable ="";
             $adsforwp_non_amp_visibility ="";
+            $adsforwp_ad_responsive ="";
             
             
             $ad_margin_top     = 0;
@@ -488,7 +492,10 @@ class adsforwp_output_functions{
             $ad_alignment      = $post_meta_dataset['adsforwp_ad_align'][0];    
             }                    
             }
-            }                        
+            } 
+            if(array_key_exists('adsforwp_ad_responsive', $post_meta_dataset)){
+            $adsforwp_ad_responsive = $post_meta_dataset['adsforwp_ad_responsive'][0];    
+            }
             if(array_key_exists('custom_code', $post_meta_dataset)){
             $custom_ad_code = $post_meta_dataset['custom_code'][0];    
             }            
@@ -548,17 +555,33 @@ class adsforwp_output_functions{
                     if($this->is_amp){
                      if($amp_compatibility != 'disable'){
                      $amp_ads_id[] = $post_ad_id;   
+                     
+                     if(isset($adsforwp_ad_responsive)){
+                     $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
+							<div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"><a target="_blank" href="'.esc_url($ad_image_redirect_url).'"><amp-img layout="responsive" class="afw_ad_amp_'.esc_attr($post_ad_id).'" src="'.esc_url($ad_image).'" height="'. esc_attr($adsforwp_ad_img_height).'" width="'.esc_attr($adsforwp_ad_img_width).'"></amp-img></a></div>
+							</div>';    
+                     }else{
                      $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
 							<div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"><a target="_blank" href="'.esc_url($ad_image_redirect_url).'"><amp-img class="afw_ad_amp_'.esc_attr($post_ad_id).'" src="'.esc_url($ad_image).'" height="'. esc_attr($adsforwp_ad_img_height).'" width="'.esc_attr($adsforwp_ad_img_width).'"></amp-img></a></div>
-							</div>';
-                                                       
-                             
+							</div>';    
+                     }
+                     
                     }   
                     }else{
                         if($adsforwp_non_amp_visibility !='hide'){
-                         $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                            
+                         if(isset($adsforwp_ad_responsive)){
+                             
+                             $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
+							<a target="_blank" href="'.esc_url($ad_image_redirect_url).'"><img height="auto" max-width="100%" src="'.esc_url($ad_image).'"></a>
+							</div>';  
+                         }else{
+                             
+                             $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
 							<a target="_blank" href="'.esc_url($ad_image_redirect_url).'"><img height="'. esc_attr($adsforwp_ad_img_height).'" width="'.esc_attr($adsforwp_ad_img_width).'" src="'.esc_url($ad_image).'"></a>
-							</div>';        
+							</div>';  
+                             
+                         }                                                              
                     } 
                     
                    }                                                                               
@@ -676,9 +699,28 @@ class adsforwp_output_functions{
                     $height = $explode_size[1];                               
                     }            
                     if($this->is_amp){
+                       
                         $amp_ads_id[] = $post_ad_id;
                         if($amp_compatibility != 'disable'){
-                         $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                           
+                         if(isset($adsforwp_ad_responsive)){
+                             
+                             $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                     <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'">
+                                       <amp-ad width="100vw" height=320                                        
+                                        type="adsense"                                        
+                                        data-ad-client="'. esc_attr($ad_client) .'"
+                                        data-ad-slot="'.esc_attr($ad_slot).'"
+                                        data-auto-format="rspv" 
+                                        data-full-width>
+                                        <div overflow></div>
+                                    </amp-ad>
+                                    </div>
+                                    </div>';
+                             
+                         }else{
+                           
+                          $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                      <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'">
                                        <amp-ad 
                                         class="afw_ad_amp_'.esc_attr($post_ad_id).'"
@@ -689,11 +731,31 @@ class adsforwp_output_functions{
                                         data-ad-slot="'.esc_attr($ad_slot).'">
                                     </amp-ad>
                                     </div>
-                                    </div>';
+                                    </div>';   
+                             
+                             
+                         }                                                        
                         }                             
                     }else{     
-                     if($adsforwp_non_amp_visibility !='hide'){   
-                     $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                     if($adsforwp_non_amp_visibility !='hide'){ 
+                         
+                      if(isset($adsforwp_ad_responsive)){
+                          $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                                                <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
+                                                                </script>
+                                                                <ins 
+                                                                class="adsbygoogle" 
+                                                                style="display:block;                                                                                                                              
+                                                                data-ad-client="'.esc_attr($ad_client).'"
+                                                                data-ad-slot="'.esc_attr($ad_slot).'"
+                                                                data-ad-format="auto">
+                                                                </ins>
+                                                                <script>
+                                                                        (adsbygoogle = window.adsbygoogle || []).push({});
+                                                                </script>
+                                                        </div>';
+                      }else{
+                        $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                                 <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
                                                                 </script>
                                                                 <ins class="adsbygoogle" style="display:inline-block;width:'.esc_attr($width).'px;height:'.esc_attr($height).'px" data-ad-client="'.esc_attr($ad_client).'" data-ad-slot="'.esc_attr($ad_slot).'">
@@ -701,7 +763,9 @@ class adsforwp_output_functions{
                                                                 <script>
                                                                         (adsbygoogle = window.adsbygoogle || []).push({});
                                                                 </script>
-                                                        </div>';   
+                                                        </div>';  
+                      }                         
+                     
                     }
                     }
                     break;                
