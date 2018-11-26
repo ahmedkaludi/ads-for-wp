@@ -1054,6 +1054,8 @@ class adsforwp_admin_common_functions {
                     'data-cid'  => array(),
                     'data-crid'  => array(),
                     'data-mid'  => array(),
+                    'data-block-id'  => array(),
+                    'data-html-access-allowed'  => array(),
             );
              $my_allowed['amp-img'] = array(
                     'class' => array(),

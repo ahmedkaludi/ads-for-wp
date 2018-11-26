@@ -54,6 +54,13 @@ Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp).
 
 == Changelog ==
 
+= 1.0.9 (26th November 2018) =
+* New Feature: Responsive size option 
+* New Feature: New Visitor Conditions (URL Parameters)  
+* New Feature: Advance option in display type between the content. Display ads using different html elements count on content. Example div, img etc.)
+* Label Changed: Renamed some labels for better understanding of context
+
+
 = 1.0.8 (16th November 2018) =
 * New Feature: Importer and Exporter (Copy Ads for WP complete data from one site to another with one click )  
 * UX improvement: Renamed some labels for better understanding of context
