@@ -9,7 +9,7 @@ class adsforwp_view_visitor_condition {
  public function adsforwp_visitor_condition_add_meta_box() {
 	add_meta_box(
 		'adsforwp_visitor_condition_metabox',
-		esc_html__( 'Visitor Conditions', 'ads-for-wp' ),
+		esc_html__( 'User Targeting', 'ads-for-wp' ),
 		array( $this, 'adsforwp_visitor_condition_callback' ),
 		array('adsforwp', 'adsforwp-groups'),
 		'normal',
@@ -41,12 +41,13 @@ class adsforwp_view_visitor_condition {
     // Type Select    
       $choices = array(
         esc_html__("Basic",'ads-for-wp') => array(                               
-          'device'   =>  esc_html__("Device",'ads-for-wp'),           
-          'browser_language'   =>  esc_html__("Browser Language",'ads-for-wp'),  
-          'logged_in_visitor'   =>  esc_html__("Logged In Visitor",'ads-for-wp'),
+          'device'   =>  esc_html__("Device Type",'ads-for-wp'),           
+          'browser_language'   =>  esc_html__("Language Of The Browser",'ads-for-wp'),  
+          'logged_in_visitor'   =>  esc_html__("Logged In",'ads-for-wp'),
           'user_agent'   =>  esc_html__("User Agent",'ads-for-wp'),  
-          'user_type'   =>  esc_html__("User Can (Capabilities)",'ads-for-wp'),
-          'referrer_url'   =>  esc_html__("Referrer URL",'ads-for-wp')                         
+          'user_type'   =>  esc_html__("User Permission",'ads-for-wp'),
+          'referrer_url'   =>  esc_html__("Referring URL",'ads-for-wp'),
+          'url_parameter'   =>  esc_html__("URL Parameter",'ads-for-wp'),  
         )        
       ); 
 
@@ -262,6 +263,20 @@ class adsforwp_view_visitor_condition {
                   }
                     if ( $comparison == 'not_equal') {              
                         if ( $browser_language != $data ) {
+                          $result = true;
+                        }
+                    }            
+          break;
+          
+          case 'url_parameter':                      
+                   $url = $_SERVER['REQUEST_URI'];                       
+                  if ( $comparison == 'equal' ) {                                            
+                        if ( strpos($url,$data) !== false ) {                           
+                          $result = true;
+                        }
+                  }
+                    if ( $comparison == 'not_equal') {              
+                        if ( strpos($url,$data) == false ) {
                           $result = true;
                         }
                     }            

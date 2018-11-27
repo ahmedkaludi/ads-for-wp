@@ -1,5 +1,5 @@
 .afw_hide{
-    display: none;
+    display: none!important;
 }
 input[name=manual_ads_type] {    
     border: 0px;
@@ -288,4 +288,13 @@ font-size: 15px;
 }
 .adsforwp-amp-box input{
 width: 100%;
+}
+.adsforwp-advance-option-click{
+    padding-left: 20px;
+    padding-right: 5px;        
+}
+a.adsforwp-advance-option-click:focus {
+    text-decoration: underline;
+    color: #0073aa;
+    box-shadow: none;
 }

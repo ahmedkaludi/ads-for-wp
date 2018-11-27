@@ -534,7 +534,8 @@ add_action( 'admin_init', 'adsforwp_removing_wysiwig' );
 function adsforwp_frontend_enqueue(){
         wp_register_script('adsforwp-ads-front-js', ADSFORWP_PLUGIN_DIR_URI . 'public/ads-front.js', array( 'jquery' ), ADSFORWP_VERSION, true);
         $object_name = array(
-            'ajax_url' => admin_url( 'admin-ajax.php' ),            
+            'ajax_url' => admin_url( 'admin-ajax.php' ), 
+            'adsforwp_front_nonce'   => wp_create_nonce('adsforwp_ajax_check_front_nonce')
         );
         wp_localize_script('adsforwp-ads-front-js', 'adsforwp_obj', $object_name);
         wp_enqueue_script('adsforwp-ads-front-js');        
@@ -571,7 +572,7 @@ function adsforwp_admin_enqueue() {
             'post_type'                 => get_post_type(),
             'adnow_note'                => esc_html__( 'Adnow does not support AMP, Once Adnow starts supporting, we will also start.', 'ads-for-wp' ),
             'infolinks_note'            => esc_html__( 'Infolinks does not support AMP, Once Infolinks starts supporting, we will also start.', 'ads-for-wp' ),
-            'embed_code_button_text'    => esc_html__( 'Embed Code', 'ads-for-wp' ),
+            'embed_code_button_text'    => esc_html__( 'Embed Shortcode', 'ads-for-wp' ),
             'adsforwp_security_nonce'   => wp_create_nonce('adsforwp_ajax_check_nonce')
             
         );

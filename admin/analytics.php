@@ -36,9 +36,10 @@ public function __construct() {
     public function adsforwp_add_analytics_amp_tags(){
         
          if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {
-        $amp_ads_id = json_decode(get_transient('adsforwp_transient_amp_ids'), true);        
-        $ad_impression_url = admin_url('admin-ajax.php?action=adsforwp_insert_ad_impression_amp&event=${eventId}');                              
-        $ad_clicks_url = admin_url('admin-ajax.php?action=adsforwp_insert_ad_clicks_amp&event=${eventId}');                              
+        $amp_ads_id = json_decode(get_transient('adsforwp_transient_amp_ids'), true);         
+        $nonce = wp_create_nonce('adsforwp_ajax_check_front_nonce');        
+        $ad_impression_url = admin_url('admin-ajax.php?action=adsforwp_insert_ad_impression_amp&adsforwp_front_nonce='.$nonce.'&event=${eventId}');                              
+        $ad_clicks_url = admin_url('admin-ajax.php?action=adsforwp_insert_ad_clicks_amp&adsforwp_front_nonce='.$nonce.'&event=${eventId}');                              
         $ad_impression_script = ''; 
         $ad_clicks_script = '';
         if($amp_ads_id){
@@ -96,7 +97,14 @@ public function __construct() {
     
     
     public function adsforwp_insert_ad_impression_amp(){  
-                           
+           
+            if ( ! isset( $_GET['adsforwp_front_nonce'] ) ){
+                return; 
+             }
+            if ( !wp_verify_nonce( $_GET['adsforwp_front_nonce'], 'adsforwp_ajax_check_front_nonce' ) ){
+               return;  
+            }  
+        
            $ad_id = sanitize_text_field($_GET['event']);           
            $device_name = 'amp';
            $key_name = $device_name.'-count';
@@ -132,6 +140,12 @@ public function __construct() {
      */
     public function adsforwp_insert_ad_impression(){  
         
+            if ( ! isset( $_POST['adsforwp_front_nonce'] ) ){
+                return; 
+             }
+            if ( !wp_verify_nonce( $_POST['adsforwp_front_nonce'], 'adsforwp_ajax_check_front_nonce' ) ){
+               return;  
+            }                
             $ad_ids = $_POST['ad_ids'];
             $device_name = sanitize_text_field($_POST['device_name']);
             $key_name = $device_name.'-count';
@@ -166,6 +180,13 @@ public function __construct() {
      * We are inserting ad clicks
      */
     public function adsforwp_insert_ad_clicks(){  
+            
+            if ( ! isset( $_POST['adsforwp_front_nonce'] ) ){
+                return; 
+             }
+            if ( !wp_verify_nonce( $_POST['adsforwp_front_nonce'], 'adsforwp_ajax_check_front_nonce' ) ){
+               return;  
+            }            
             $device_name = sanitize_text_field($_POST['device_name']);
             $ad_id = sanitize_text_field($_POST['ad_id']);
             $key_name = $device_name.'-clicks';
@@ -196,7 +217,15 @@ public function __construct() {
            wp_die();           
     }
     
-    public function adsforwp_insert_ad_clicks_amp(){              
+    public function adsforwp_insert_ad_clicks_amp(){        
+        
+            if ( ! isset( $_GET['adsforwp_front_nonce'] ) ){
+                return; 
+             }
+            if ( !wp_verify_nonce( $_GET['adsforwp_front_nonce'], 'adsforwp_ajax_check_front_nonce' ) ){
+               return;  
+            }  
+            
             $ad_id = sanitize_text_field($_GET['event']);
             $device_name = 'amp';
             $key_name = $device_name.'-clicks';

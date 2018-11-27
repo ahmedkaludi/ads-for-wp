@@ -3,7 +3,7 @@ Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
 Tags: Ads, Advanced Ads, Ad Inserter, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
 Tested up to: 4.9.8
-Stable tag: 1.0.8
+Stable tag: 1.0.9
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -53,6 +53,13 @@ Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp).
 
 
 == Changelog ==
+
+= 1.0.9 (26th November 2018) =
+* New Feature: Responsive Size Option 
+* New Feature: New Visitor Conditions (URL Parameters)  
+* New Feature: Advance option in display type between the content. Display ads using different html elements count on content. Example div, img etc.)
+* Label Changed: Renamed some labels for better understanding of context
+
 
 = 1.0.8 (16th November 2018) =
 * New Feature: Importer and Exporter (Copy Ads for WP complete data from one site to another with one click )  

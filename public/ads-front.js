@@ -153,7 +153,7 @@ jQuery( document ).ready(function($) {
                     type: "POST",    
                     url:adsforwp_obj.ajax_url,                    
                     dataType: "json",
-                    data:{action:"adsforwp_insert_ad_impression", ad_ids:ad_ids, device_name:device_name},                    
+                    data:{action:"adsforwp_insert_ad_impression", ad_ids:ad_ids, device_name:device_name, adsforwp_front_nonce:adsforwp_obj.adsforwp_front_nonce},                    
                     error: function(response){                    
                     console.log(response);
                     }
@@ -167,7 +167,7 @@ jQuery( document ).ready(function($) {
          var device_name = adsforwp_detect_device();
          if(ad_id){
             $.post(adsforwp_obj.ajax_url, 
-                  { action:"adsforwp_insert_ad_clicks", ad_id:ad_id, device_name:device_name},
+                  { action:"adsforwp_insert_ad_clicks", ad_id:ad_id, device_name:device_name, adsforwp_front_nonce:adsforwp_obj.adsforwp_front_nonce},
                     function(response){
                     console.log(response);       		   		
 		   });  

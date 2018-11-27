@@ -31,9 +31,9 @@ class Adsforwp_Ads_Widget extends WP_Widget {
 	public function widget( $args, $instance ) {
                           
 		echo html_entity_decode(esc_attr($args['before_widget']));
-		if ( ! empty( $instance['title'] ) ) {
-			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
-		}
+//		if ( ! empty( $instance['title'] ) ) {
+//			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
+//		}
                 
                 
                 $common_function_obj = new adsforwp_admin_common_functions();
@@ -70,7 +70,7 @@ class Adsforwp_Ads_Widget extends WP_Widget {
                 
 		?>
 
-		<p>
+<!--		<p>
 		<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>">
                     <?php esc_attr_e( 'Title:', 'ads-for-wp' ); ?></label> 
 		<input 
@@ -79,7 +79,7 @@ class Adsforwp_Ads_Widget extends WP_Widget {
                     name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" 
                     type="text" 
                     value="<?php echo esc_attr( $title ); ?>">
-		</p>
+		</p>-->
                 
                 <p>
 		<label for="<?php echo esc_attr( $this->get_field_id( 'ads' ) ); ?>">
@@ -124,7 +124,7 @@ class Adsforwp_Ads_Widget extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();                
-		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? sanitize_text_field( $new_instance['title'] ) : '';
+		//$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? sanitize_text_field( $new_instance['title'] ) : '';
                 $instance['ads'] = ( ! empty( $new_instance['ads'] ) ) ? sanitize_text_field( $new_instance['ads'] ) : '';                                
 		return $instance;
 	}

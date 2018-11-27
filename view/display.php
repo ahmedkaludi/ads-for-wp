@@ -26,6 +26,25 @@ class adsforwp_view_display {
 				'50_of_the_content'=>'50% of the content',
 				'number_of_paragraph'=>'Number of paragraph',
 			),
+		),                
+                array(
+			'label' => 'Count As Per The',
+			'id' => 'display_tag_name',
+			'type' => 'select',
+			'options' => array(                               
+				'p_tag'=>'p (default)',
+				'div_tag'=>'div', 
+                                'img_tag'=>'img',
+                                'custom_tag'=>'custom',
+			),
+		),
+                array(
+			'label' => 'Enter Your Tag',
+			'id' => 'entered_tag_name',
+			'type' => 'text',
+                        'attributes' => array(				
+                               'placeholder' 	=> 'div',	                               
+			),
 		),
 		array(
 			'label' => 'Paragraph',
@@ -113,7 +132,10 @@ class adsforwp_view_display {
 				$meta_value = isset($meta_field['default']); }
 			switch ( $meta_field['type'] ) {
 				case 'select':
-					$input = sprintf(
+                                    
+                                    switch ($meta_field['id']) {
+                                        case 'adposition':
+                                            $input = sprintf(
 						'<select class="afw_select" id="%s" name="%s">',
 						$meta_field['id'],
 						$meta_field['id']
@@ -127,8 +149,30 @@ class adsforwp_view_display {
 							esc_html__($value, 'ads-for-wp')                                                        
 						);
 					}
-					$input .= '</select>';
+					$input .= '</select><a href="#" class="adsforwp-advance-option-click">Advance Option</a>';
+
+                                            break;
+
+                                        default:
+                                            $input = sprintf(
+						'<select class="afw_select" id="%s" name="%s">',
+						$meta_field['id'],
+						$meta_field['id']
+					   );
+                                            foreach ( $meta_field['options'] as $key => $value ) {
+                                                    $meta_field_value = !is_numeric( $key ) ? $key : $value;
+                                                    $input .= sprintf(
+                                                            '<option %s value="%s">%s</option>',
+                                                            $meta_value === $meta_field_value ? 'selected' : '',
+                                                            $meta_field_value,
+                                                            esc_html__($value, 'ads-for-wp')                                                        
+                                                    );
+                                            }
+                                            $input .= '</select>';
+                                            break;
+                                    }                                        					
 					break;
+                                        
                                         case 'multiple-text':                                        
                                         $input ='<div class="afw_ad_img_margin">';                                       
                                         foreach($meta_field['fields'] as $field){

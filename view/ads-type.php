@@ -111,7 +111,7 @@ class adsforwp_view_ads_type {
                                 '728x20'=>'wide horizontal (728x20)',
                                 '600x120'=>'horizontal (600x120)',
 			),
-		),
+		),             
               array(
 			'label' => 'Upload Ad Image',
 			'id' => 'adsforwp_ad_image',                        
@@ -151,7 +151,12 @@ class adsforwp_view_ads_type {
 			'label' => 'Infolinks W S ID',
 			'id' => 'infolinks_wsid',                        
 			'type' => 'text',
-		),             
+		),  
+                array(
+			'label' => 'Responsive',
+			'id' => 'adsforwp_ad_responsive',                        
+			'type' => 'checkbox',
+		),
                 array(			
                             'id' => 'adsforwp_ad_img_height',                        
                             'type' => 'hidden',
@@ -240,6 +245,14 @@ class adsforwp_view_ads_type {
 						$meta_value
 					); 
                                     break;
+                                case 'checkbox':
+					$input = sprintf(
+						'<input %s id="%s" name="%s" type="checkbox" value="1">',
+						$meta_value === '1' ? 'checked' : '',
+						$meta_field['id'],
+						$meta_field['id']
+						);
+					break;
                                 case 'media':
                                                 $imageprev ='';
                                                 if($meta_value){
