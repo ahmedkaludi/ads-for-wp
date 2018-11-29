@@ -47,7 +47,8 @@ class adsforwp_view_visitor_condition {
           'user_agent'   =>  esc_html__("User Agent",'ads-for-wp'),  
           'user_type'   =>  esc_html__("User Permission",'ads-for-wp'),
           'referrer_url'   =>  esc_html__("Referring URL",'ads-for-wp'),
-          'url_parameter'   =>  esc_html__("URL Parameter",'ads-for-wp'),  
+          'url_parameter'   =>  esc_html__("URL Parameter",'ads-for-wp'),
+          'geo_location'   =>  esc_html__("Country",'ads-for-wp'),  
         )        
       ); 
 
@@ -268,6 +269,22 @@ class adsforwp_view_visitor_condition {
                     }            
           break;
           
+          case 'geo_location':                      
+                   $geo_location_data = file_get_contents('https://api.ipgeolocation.io/ipgeo?apiKey=5ad58efb34f74f97afe0911f271b0bb2');
+                   $geo_location_arr = json_decode($geo_location_data, true);  
+                   //var_dump($this->adsforwp_get_client_ip());
+                    if ( $comparison == 'equal' ) {
+                          if ( $geo_location_arr['country_code3'] == $data ) {
+                            $result = true;
+                          }
+                    }
+                    if ( $comparison == 'not_equal') {              
+                        if ( $geo_location_arr['country_code3'] != $data ) {
+                          $result = true;
+                        }
+                    }            
+          break;
+          
           case 'url_parameter':                      
                    $url = $_SERVER['REQUEST_URI'];                       
                   if ( $comparison == 'equal' ) {                                            
@@ -428,7 +445,27 @@ class adsforwp_view_visitor_condition {
            $unique_checker = 1;   
         }           
        return $unique_checker;
-}         
+}   
+
+// Function to get the client IP address
+ public function adsforwp_get_client_ip() {
+    $ipaddress = '';
+    if (isset($_SERVER['HTTP_CLIENT_IP']))
+        $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+    else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    else if(isset($_SERVER['HTTP_X_FORWARDED']))
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+    else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
+        $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+    else if(isset($_SERVER['HTTP_FORWARDED']))
+        $ipaddress = $_SERVER['HTTP_FORWARDED'];
+    else if(isset($_SERVER['REMOTE_ADDR']))
+        $ipaddress = $_SERVER['REMOTE_ADDR'];
+    else
+        $ipaddress = 'UNKNOWN';
+    return $ipaddress;
+}
     
 }
 if (class_exists('adsforwp_view_visitor_condition')) {
