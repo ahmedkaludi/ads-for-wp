@@ -269,17 +269,35 @@ class adsforwp_view_visitor_condition {
                     }            
           break;
           
-          case 'geo_location':                      
-                   $geo_location_data = file_get_contents('https://api.ipgeolocation.io/ipgeo?apiKey=5ad58efb34f74f97afe0911f271b0bb2');
-                   $geo_location_arr = json_decode($geo_location_data, true);  
-                   //var_dump($this->adsforwp_get_client_ip());
+          case 'geo_location':     
+                   $country_code =''; 
+                   $search_key   ='';
+                   $user_ip = $this->adsforwp_get_client_ip();    
+                   
+                   $saved_ip_list = get_option('adsforwp_ip_list');                     
+                   $search_key = array_search($user_ip, $saved_ip_list['ip']);                    
+                   if(!empty($search_key)|| $search_key !=0){  
+                       
+                    $country_code =$saved_ip_list['country_code3'][$search_key];  
+                    
+                   }else{
+                       
+                    $geo_location_data = file_get_contents('https://api.ipgeolocation.io/ipgeo?apiKey=5ad58efb34f74f97afe0911f271b0bb2');                                                            
+                    $geo_location_arr = json_decode($geo_location_data, true);  
+                    $country_code = $geo_location_arr['country_code3'];                   
+                    $saved_ip_list['ip'][] = $geo_location_arr['ip'];
+                    $saved_ip_list['country_code3'][] = $geo_location_arr['country_code3'];                  
+                    update_option('adsforwp_ip_list', $saved_ip_list);
+                    
+                   }                                                                           
+                   
                     if ( $comparison == 'equal' ) {
-                          if ( $geo_location_arr['country_code3'] == $data ) {
+                          if ( $country_code == $data ) {
                             $result = true;
                           }
                     }
                     if ( $comparison == 'not_equal') {              
-                        if ( $geo_location_arr['country_code3'] != $data ) {
+                        if ( $country_code != $data ) {
                           $result = true;
                         }
                     }            

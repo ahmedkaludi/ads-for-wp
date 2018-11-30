@@ -298,3 +298,23 @@ a.adsforwp-advance-option-click:focus {
     color: #0073aa;
     box-shadow: none;
 }
+/*
+Advance settings css starts here
+*/
+.adsforwp-advance th{
+    width: auto;
+    padding: 0px;
+}
+.adsforwp-tools-field-title strong {
+    padding-right: 130px;
+    width: 300px;   
+}
+.adsforwp-advance .form-table td{
+    padding: 0px;
+}
+.adsforwp-advance .adsforwp-tooltip {
+    width: 25%;
+}
+/*
+Advance settings css ends here
+*/
