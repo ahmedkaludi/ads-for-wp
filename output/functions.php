@@ -27,6 +27,70 @@ class adsforwp_output_functions{
                     '</div>' => 'div_tag',
                     '<img>' => 'img_tag',                    
                     );
+        // if(!is_admin){
+            
+             add_action( 'init', array( $this, 'init' ) );             
+         //}
+         
+    }
+    public function init(){
+        
+        ob_start(array($this, "adsforwp_display_custom_target_ad"));
+    }
+    public function adsforwp_display_custom_target_ad($content){       
+                                 
+                 $all_ads_id = json_decode(get_transient('adsforwp_transient_ads_ids'), true);
+                 foreach($all_ads_id as $ad_id){                     
+                     
+                   $wheretodisplay = get_post_meta($ad_id,$key='wheretodisplay',true);   
+                   
+                   if($wheretodisplay == 'custom_target'){                                                          
+                  
+                   $ad_code =  $this->adsforwp_get_ad_code($ad_id, $type="AD");      
+                       
+                   $post_meta = get_post_meta($ad_id,$key='',true);
+                  
+                   if($post_meta['adsforwp_custom_target_position'][0] == 'existing_element'){
+                       $action = $post_meta['adsforwp_existing_element_action'][0];
+                       $jquery_selector = $post_meta['adsforwp_jquery_selector'][0];
+                       
+                       if(strchr($jquery_selector, '#')){
+                         $jquery_selector = str_replace('#', '', $jquery_selector);   
+                       }
+                       if(strchr($jquery_selector, '.')){
+                         $jquery_selector = str_replace('.', '', $jquery_selector); 
+                         preg_match_all('/<[^>]*class="[^"]*\byahoosanjeev\b[^"]*"[^>]*>/', $content, $matches);
+                       }
+                       
+                      $explod_elemnet ='';
+                       switch ($action) {
+                           case 'prepend_content':
+                               
+                               break;
+                           case 'append_content':   
+                               $explod_elemnet = explode(' ', $matches[0][0]);
+                               $content = str_replace($matches[0][0], $explod_elemnet[0].' class="'.$jquery_selector.'">'.$ad_code, $content);
+
+                               break;
+                           case 'replace_content':
+
+                               break;
+                           case 'replace_element':
+
+                               break;
+
+                           default:
+                               break;
+                       }
+                   }
+                   
+                   if($post_meta['adsforwp_custom_target_position'][0] == 'new_element'){
+                       $new_element_div = html_entity_decode($post_meta['adsforwp_new_element'][0]);                                              
+                       $content = str_replace($new_element_div, $ad_code, $content);
+                   }                                                                                  
+                   }
+                 }                        
+                 return $content;
     }
     /**
      * We are here calling all required hooks
@@ -220,7 +284,8 @@ class adsforwp_output_functions{
      * @param type $content
      * @return type string
      */
-    public function adsforwp_display_ads($content){                
+    public function adsforwp_display_ads($content){       
+        
          delete_transient('adsforwp_transient_amp_ids');                                      
         $current_post_data = get_post_meta(get_the_ID(),$key='',true);                  
         if(array_key_exists('ads-for-wp-visibility', $current_post_data)){

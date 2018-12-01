@@ -656,7 +656,12 @@ jQuery( document ).ready(function($) {
                     break;
                 case "before_the_content":                      
                     $(".afw_ads_margin_field").parent().parent("tr").show();
-                    break;                    
+                    break;     
+                case "custom_target":                      
+                   $(".afw_ad_img_margin").parent().parent("tr").hide();
+                   $(".adsforwp-custom-target-fields").parent().parent("tr").show();
+                   $('input[name=adsforwp_custom_target_position]').change();
+                    break;     
                 default:                                      
                   break;   
                 }                          
@@ -681,7 +686,28 @@ jQuery( document ).ready(function($) {
                 }                          
           }      
       });
-    }).change();        
+    }).change();  
+    
+    $('input[name=adsforwp_custom_target_position]').change(function() {
+        $("#adsforwp_new_element").parent().parent("tr").hide(); 
+        $("#adsforwp_jquery_selector").parent().parent("tr").hide(); 
+        $("#adsforwp_existing_element_action").parent().parent("tr").hide();
+        
+     if($(this).is(":visible")){
+     switch($("input[name='adsforwp_custom_target_position']:checked").val()) {
+         case 'existing_element':
+             $("#adsforwp_jquery_selector").parent().parent("tr").show(); 
+             $("#adsforwp_existing_element_action").parent().parent("tr").show(); 
+             break;
+         case 'new_element':
+             $("#adsforwp_new_element").parent().parent("tr").show(); 
+             
+             break;
+     }    
+     }   
+     
+     
+    }).change();
             
     $("#adposition").change(function(){        
       $(this).find("option:selected").each(function(){  

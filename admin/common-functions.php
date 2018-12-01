@@ -1196,6 +1196,7 @@ class adsforwp_admin_common_functions {
             );
             $my_allowed['div'] = array(
                     'class'  => array(),
+                    'id'     => array(),
                     'data-id'     => array(),                                    
             );
             //  options
