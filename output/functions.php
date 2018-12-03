@@ -53,32 +53,47 @@ class adsforwp_output_functions{
                    if($post_meta['adsforwp_custom_target_position'][0] == 'existing_element'){
                        $action = $post_meta['adsforwp_existing_element_action'][0];
                        $jquery_selector = $post_meta['adsforwp_jquery_selector'][0];
-                       
-                       if(strchr($jquery_selector, '#')){
-                         $jquery_selector = str_replace('#', '', $jquery_selector);   
-                       }
-                       if(strchr($jquery_selector, '.')){
-                         $jquery_selector = str_replace('.', '', $jquery_selector); 
-                         preg_match_all('/<[^>]*class="[^"]*\byahoosanjeev\b[^"]*"[^>]*>/', $content, $matches);
-                       }
-                       
-                      $explod_elemnet ='';
+                                                                     
+                      
                        switch ($action) {
                            case 'prepend_content':
                                
+                              $explod_elemnet ='';                               
+                              if(strchr($jquery_selector, '#')){
+                                $jquery_selector = str_replace('#', '', $jquery_selector);  
+                                
+                                $jquery_selector = str_replace('.', '', $jquery_selector); 
+                                preg_match_all('/<[^>]*id="[^"]*\b'.$jquery_selector.'\b[^"]*"[^>]*>/', $content, $matches);
+                                $explod_elemnet = explode(' ', $matches[0][0]);
+                                $content = str_replace($matches[0][0], $ad_code.$explod_elemnet[0].' id="'.$jquery_selector.'">', $content);
+                                
+                              }
+                              if(strchr($jquery_selector, '.')){
+                                $jquery_selector = str_replace('.', '', $jquery_selector); 
+                                preg_match_all('/<[^>]*class="[^"]*\b'.$jquery_selector.'\b[^"]*"[^>]*>/', $content, $matches);
+                                $explod_elemnet = explode(' ', $matches[0][0]);
+                                $content = str_replace($matches[0][0], $ad_code.$explod_elemnet[0].' class="'.$jquery_selector.'">', $content);
+                              }                                                                                             
+                               
                                break;
                            case 'append_content':   
-                               $explod_elemnet = explode(' ', $matches[0][0]);
-                               $content = str_replace($matches[0][0], $explod_elemnet[0].' class="'.$jquery_selector.'">'.$ad_code, $content);
+                               
+                              $explod_elemnet ='';                               
+                              if(strchr($jquery_selector, '#')){
+                                $jquery_selector = str_replace('#', '', $jquery_selector); 
+                                
+                                preg_match_all('/<[^>]*id="[^"]*\b'.$jquery_selector.'\b[^"]*"[^>]*>/', $content, $matches);
+                                $explod_elemnet = explode(' ', $matches[0][0]);
+                                $content = str_replace($matches[0][0], $explod_elemnet[0].' id="'.$jquery_selector.'">'.$ad_code, $content);
+                              }
+                              if(strchr($jquery_selector, '.')){
+                                $jquery_selector = str_replace('.', '', $jquery_selector); 
+                                preg_match_all('/<[^>]*class="[^"]*\b'.$jquery_selector.'\b[^"]*"[^>]*>/', $content, $matches);
+                                $explod_elemnet = explode(' ', $matches[0][0]);
+                                $content = str_replace($matches[0][0], $explod_elemnet[0].' class="'.$jquery_selector.'">'.$ad_code, $content);
+                              }                                                                                            
 
-                               break;
-                           case 'replace_content':
-
-                               break;
-                           case 'replace_element':
-
-                               break;
-
+                               break;                                                      
                            default:
                                break;
                        }

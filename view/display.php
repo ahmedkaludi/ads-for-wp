@@ -77,8 +77,8 @@ class adsforwp_view_display {
 			'id' => 'adsforwp_custom_target_position',
 			'type' => 'radio',
 			'options' => array(
-				'existing_element'=>'Existing element',
-                                'new_element'=>'New element',
+				'existing_element'=>'Existing html element',
+                                'new_element'=>'New html element',
                                 
 			),
 		),
@@ -102,8 +102,8 @@ class adsforwp_view_display {
                         'options' => array(
                                 'prepend_content'=>'Prepend Content',
 				'append_content'=>'Append Content', 
-                                'replace_content'=>'Replace Content',
-                                'replace_element'=>'Replace Element',
+                               // 'replace_content'=>'Replace Content',
+                               // 'replace_element'=>'Replace Element',
                         )
 		),
                 array(		
