@@ -27,12 +27,36 @@ class adsforwp_output_functions{
                     '</div>' => 'div_tag',
                     '<img>' => 'img_tag',                    
                     );
-        // if(!is_admin){
-            
+         if(!is_admin){            
              add_action( 'init', array( $this, 'init' ) );             
-         //}
+         }
          
     }
+    /**
+     * We are here calling all required hooks
+     */    
+    public function adsforwp_hooks(){
+        //Adsense Auto Ads hooks for amp and non amp starts here       
+        add_filter('widget_text', 'do_shortcode');        
+        add_action('wp_head', array($this, 'adsforwp_adblocker_detector'));
+        add_action('wp_head', array($this, 'adsforwp_adsense_auto_ads'));
+        add_action('amp_post_template_head',array($this, 'adsforwp_adsense_auto_ads_amp_script'),1);
+        add_action('amp_post_template_footer',array($this, 'adsforwp_adsense_auto_ads_amp_tag'));
+        
+        //Adsense Auto Ads hooks for amp and non amp ends here
+        
+        add_filter('the_content', array($this, 'adsforwp_display_ads'));            
+        add_shortcode('adsforwp', array($this,'adsforwp_manual_ads'));
+        add_shortcode('adsforwp-group', array($this, 'adsforwp_group_ads'));
+        add_action('wp_ajax_nopriv_adsforwp_get_groups_ad', array($this, 'adsforwp_get_groups_ad'));
+        add_action('wp_ajax_adsforwp_get_groups_ad', array($this, 'adsforwp_get_groups_ad'));
+        
+        //Hooks for sticky ads
+        add_action('wp_footer', array($this, 'adsforwp_display_sticky_ads')); 
+        add_action('amp_post_template_css',array($this, 'adsforwp_enque_amp_script'));
+        add_action('amp_post_template_footer',array($this, 'adsforwp_display_sticky_ads_amp'));
+    }
+    
     public function init(){
         
         ob_start(array($this, "adsforwp_display_custom_target_ad"));
@@ -106,31 +130,174 @@ class adsforwp_output_functions{
                    }
                  }                        
                  return $content;
-    }
-    /**
-     * We are here calling all required hooks
-     */    
-    public function adsforwp_hooks(){
-        //Adsense Auto Ads hooks for amp and non amp starts here       
-        add_filter('widget_text', 'do_shortcode');        
-        add_action('wp_head', array($this, 'adsforwp_adblocker_detector'));
-        add_action('wp_head', array($this, 'adsforwp_adsense_auto_ads'));
-        add_action('amp_post_template_head',array($this, 'adsforwp_adsense_auto_ads_amp_script'),1);
-        add_action('amp_post_template_footer',array($this, 'adsforwp_adsense_auto_ads_amp_tag'));
+    }        
+    
+    
+    public function adsforwp_enque_amp_script(){
+        ?>
+        @media only screen and (min-width: 600px) {
+            .adsforwp-footer-prompt {
+                padding: 1% 3%;
+                flex-direction: row;
+                justify-content: center;
+            }
+            .adsforwp-close {              
+              right: 0px;              
+            }
+            }
+            .adsforwp-footer-prompt{               
+                width: 100vw;
+                line-height: 2em;
+                background-color: #fff;
+                color: #333;
+                text-align: center;
+                text-decoration: none;    
+                min-height: 10%;
+                padding-top:20px;
+                position: fixed;
+                bottom: 0;
+                justify-content: flex-end;
+                flex-direction: column;
+                flex-grow: 1;               
+                z-index: 9999;
+            }
+            .adsforwp-stick-ad{
+             
+                vertical-align: middle;
+            }
+            .adsforwp-close {
+              position: absolute;
+              right: 10px;
+              top: 0px;
+              width: 32px;
+              height: 32px;
+              opacity: 0.3;
+            }
+            .adsforwp-close:hover {
+              opacity: 1;
+            }
+            .adsforwp-close:before, .adsforwp-close:after {
+              position: absolute;
+              left: 15px;
+              content: ' ';
+              height: 15px;
+              width: 2px;
+              background-color: #333;
+            }
+            .adsforwp-close:before {
+              transform: rotate(45deg);
+            }
+            .adsforwp-close:after {
+              transform: rotate(-45deg);
+            }
+
+        <?php
         
-        //Adsense Auto Ads hooks for amp and non amp ends here
-        
-        add_filter('the_content', array($this, 'adsforwp_display_ads'));            
-        add_shortcode('adsforwp', array($this,'adsforwp_manual_ads'));
-        add_shortcode('adsforwp-group', array($this, 'adsforwp_group_ads'));
-        add_action('wp_ajax_nopriv_adsforwp_get_groups_ad', array($this, 'adsforwp_get_groups_ad'));
-        add_action('wp_ajax_adsforwp_get_groups_ad', array($this, 'adsforwp_get_groups_ad'));
     }
+    public function adsforwp_display_sticky_ads_amp(){
+        $all_ads_id = json_decode(get_transient('adsforwp_transient_ads_ids'), true);
+        $ad_code ='';
+        foreach($all_ads_id as $ad_id){          
+            $wheretodisplay = get_post_meta($ad_id,$key='wheretodisplay',true);  
+             if($wheretodisplay == 'sticky'){  
+               $ad_code .=  $this->adsforwp_get_ad_code($ad_id, $type="AD");   
+             }
+        }
+        
+        echo '<div class="adsforwp-footer-prompt">'
+           . '<a href="#" class="adsforwp-close"></a>'  
+           . '<div class="adsforwp-stick-ad">'.$ad_code.'</div>'                
+           . '</div>';
+    }
+
+    public function adsforwp_display_sticky_ads(){
+        
+        
+        ?>
+        <style>
+          
+            @media only screen and (min-width: 600px) {
+            .adsforwp-footer-prompt {
+                padding: 1% 3%;
+                flex-direction: row;
+                justify-content: center;
+            }
+            .adsforwp-close {              
+              right: 0px;              
+            }
+            }
+            .adsforwp-footer-prompt{               
+                width: 100vw;
+                line-height: 2em;
+                background-color: #fff;
+                color: #333;
+                text-align: center;
+                text-decoration: none;    
+                min-height: 10%;
+                padding-top:20px;
+                position: fixed;
+                bottom: 0;
+                justify-content: flex-end;
+                flex-direction: column;
+                flex-grow: 1;               
+                z-index: 9999;
+            }
+            .adsforwp-stick-ad{
+                display: inline-block;
+                vertical-align: middle;
+            }
+            .adsforwp-close {
+              position: absolute;
+              right: 10px;
+              top: 0px;
+              width: 32px;
+              height: 32px;
+              opacity: 0.3;
+            }
+            .adsforwp-close:hover {
+              opacity: 1;
+            }
+            .adsforwp-close:before, .adsforwp-close:after {
+              position: absolute;
+              left: 15px;
+              content: ' ';
+              height: 15px;
+              width: 2px;
+              background-color: #333;
+            }
+            .adsforwp-close:before {
+              transform: rotate(45deg);
+            }
+            .adsforwp-close:after {
+              transform: rotate(-45deg);
+            }
+
+        </style>    
+        
+        <?php
+        
+        $all_ads_id = json_decode(get_transient('adsforwp_transient_ads_ids'), true);
+        $ad_code ='';
+        foreach($all_ads_id as $ad_id){          
+            $wheretodisplay = get_post_meta($ad_id,$key='wheretodisplay',true);  
+             if($wheretodisplay == 'sticky'){  
+               $ad_code .=  $this->adsforwp_get_ad_code($ad_id, $type="AD");   
+             }
+        }
+        
+        echo '<div class="adsforwp-footer-prompt">'
+           . '<a href="#" class="adsforwp-close"></a>'  
+           . '<div class="adsforwp-stick-ad">'.$ad_code.'</div>'                
+           . '</div>';
+    }
+    
+    
     
     /**
      * This function returns publisher id or data ad client id for adsense ads
      * @return type
      */
+    
     public function adsforwp_get_pub_id_on_revenue_percentage(){
         
                     $settings = adsforwp_defaultSettings();  

@@ -17,6 +17,7 @@ class adsforwp_view_display {
 				'after_the_content'   => 'After the Content (Automatic)',
 				'before_the_content'  => 'Before the Content (Automatic)',
                                 'custom_target'       => 'Custom Target',
+                                'sticky'              => 'Sticky',
 			),
 		),                
 		array(
@@ -165,7 +166,7 @@ class adsforwp_view_display {
 			$meta_value = get_post_meta( $post->ID, $meta_field['id'], true );
 			if ( empty( $meta_value ) ) {
                                 if($meta_field['id'] == 'adsforwp_new_element'){
-                                 //$meta_value = esc_html('<div id="'.md5(uniqid(rand(), true)).'"></div>');    
+                                 $meta_value = esc_html('<div id="'.md5(uniqid(rand(), true)).'"></div>');    
                                 }else{
                                 $meta_value = $meta_field['default']; 
                                 }				                                                                
