@@ -1,4 +1,53 @@
 <?php
+/**
+ * Filter slugs
+ * @since 1.1
+ * @return void
+ */
+function adsforwp_filter_tracked_plugins() {
+  global $typenow;
+  global $wp_query;
+    if ( $typenow == 'adsforwp' ) { // Your custom post type slug
+      $plugins = array(
+                                'ad_shortcode'        => 'Shortcode (Manual)',
+				'between_the_content' => 'Between the Content (Automatic)',
+				'after_the_content'   => 'After the Content (Automatic)',
+				'before_the_content'  => 'Before the Content (Automatic)',
+                                'custom_target'       => 'Custom Target',
+                                'sticky'              => 'Sticky',
+			); // Options for the filter select field
+      $current_plugin = '';
+      if( isset( $_GET['slug'] ) ) {
+        $current_plugin = $_GET['slug']; // Check if option has been selected
+      } ?>
+      <select name="slug" id="slug">
+        <option value="all" <?php selected( 'all', $current_plugin ); ?>><?php _e( 'All', 'ads-for-wp' ); ?></option>
+        <?php foreach( $plugins as $key=>$value ) { ?>
+          <option value="<?php echo esc_attr( $key ); ?>" <?php selected( $key, $current_plugin ); ?>><?php echo esc_attr( $value ); ?></option>
+        <?php } ?>
+      </select>
+  <?php }
+}
+add_action( 'restrict_manage_posts', 'adsforwp_filter_tracked_plugins' );
+
+
+/**
+ * Update query
+ * @since 1.1
+ * @return void
+ */
+function adsforwp_sort_ads_by_display_type( $query ) {
+  global $pagenow;
+  // Get the post type
+  $post_type = isset( $_GET['post_type'] ) ? $_GET['post_type'] : '';
+  if ( is_admin() && $pagenow=='edit.php' && $post_type == 'adsforwp' && isset( $_GET['slug'] ) && $_GET['slug'] !='all' ) {
+    $query->query_vars['meta_key'] = 'wheretodisplay';
+    $query->query_vars['meta_value'] = $_GET['slug'];
+    $query->query_vars['meta_compare'] = '=';
+  }
+}
+add_filter( 'parse_query', 'adsforwp_sort_ads_by_display_type' );
+
 function adsforwp_review_notice_close(){   
         
         if ( ! isset( $_POST['adsforwp_security_nonce'] ) ){
