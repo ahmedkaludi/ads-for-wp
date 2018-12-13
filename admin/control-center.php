@@ -587,7 +587,9 @@ function adsforwp_frontend_enqueue(){
             'adsforwp_front_nonce'   => wp_create_nonce('adsforwp_ajax_check_front_nonce')
         );
         wp_localize_script('adsforwp-ads-front-js', 'adsforwp_obj', $object_name);
-        wp_enqueue_script('adsforwp-ads-front-js');        
+        wp_enqueue_script('adsforwp-ads-front-js');
+        
+        wp_enqueue_style( 'ads-for-wp-front-css', ADSFORWP_PLUGIN_DIR_URI . 'public/adsforwp-front.css', false , ADSFORWP_VERSION );
                 
 }
 add_action( 'wp_enqueue_scripts', 'adsforwp_frontend_enqueue' );

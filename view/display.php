@@ -168,7 +168,9 @@ class adsforwp_view_display {
                                 if($meta_field['id'] == 'adsforwp_new_element'){
                                  $meta_value = esc_html('<div id="'.md5(uniqid(rand(), true)).'"></div>');    
                                 }else{
-                                $meta_value = $meta_field['default']; 
+                                 if(isset($meta_field['default'])){
+                                  $meta_value = $meta_field['default'];    
+                                 }                                   
                                 }				                                                                
                         }
 			switch ( $meta_field['type'] ) {

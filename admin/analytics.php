@@ -30,6 +30,9 @@ public function __construct() {
         if ( empty( $data['amp_component_scripts']['amp-bind'] ) ) {
                 $data['amp_component_scripts']['amp-bind'] = 'https://cdn.ampproject.org/v0/amp-bind-0.1.js';
         }
+        if ( empty( $data['amp_component_scripts']['amp-user-notification'] ) ) {
+                $data['amp_component_scripts']['amp-user-notification'] = 'https://cdn.ampproject.org/v0/amp-user-notification-0.1.js';
+        }
                 return $data;         
     }
     

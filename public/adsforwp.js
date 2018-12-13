@@ -443,7 +443,12 @@ jQuery( document ).ready(function($) {
           $(this).find("option:selected").each(function(){
               var optionValue = $(this).attr("value");
               var optionHtml = $(this).html().toLowerCase();          
-              if(optionHtml){    
+              if(optionHtml){ 
+                  
+                  if($("#wheretodisplay option:selected").val() != 'sticky'){
+                    $("#wheretodisplay option[value='sticky']").remove();
+                  }
+            
                   $(".afw-amp-support").addClass('afw_hide'); 
                   $(".afw-amp-support").addClass('afw_hide');
                   $(".afw-amp-support span").text("");
@@ -519,6 +524,11 @@ jQuery( document ).ready(function($) {
                         break     
 
                     case "ad_image":
+                        
+                       if($("#wheretodisplay option:selected").val() != 'sticky'){
+                        $("#wheretodisplay").append('<option value="sticky">Sticky</option>');
+                         } 
+                                                
                       $("#display-metabox").show();
                       $("#adsforwp_visitor_condition_metabox").show();
                       $("#adsforwp_ad_image").attr("required",true); 
