@@ -202,13 +202,20 @@ jQuery( document ).ready(function($) {
     $(".adsforwp-sticky-ad-close").on("click", function(e){
        e.preventDefault();
        $(this).parent().hide();
-       var ad_id = $(this).parent().find('.afw').attr('data-ad-id');                       
+       var ad_id = $(this).parent().find('.afw').attr('data-ad-id');
+       var group_id = $(this).parent().find('.afw_group').attr('data-id');
        var afw_cookie = getCookie("adsforwp-stick-ad-id7");
             if(afw_cookie ==""){
              afw_cookie += ad_id;   
             }else{
              afw_cookie += ','+ad_id;   
-            }                                                                    
+            }
+            
+            if(afw_cookie ==""){
+             afw_cookie += group_id;   
+            }else{
+             afw_cookie += ','+group_id;   
+            }            
          setCookie("adsforwp-stick-ad-id7", afw_cookie, 7);                                 
     });
     
