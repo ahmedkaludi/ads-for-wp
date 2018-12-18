@@ -224,16 +224,25 @@ class adsforwp_output_functions{
         ?>       
         .adsforwp-stick-ad{
             padding-top:20px;
-        }
+        }               
+        .afw_ad_amp_achor{
+            text-align:center;
+        }        
         .adsforwp-sticky-ad-close {
           position: absolute;
-          right: 10px;
+          right: 0px;
           top: 0px;
           padding:2px;
           cursor:pointer;
+          color:#000;
+          background-color:#fff;
+          border: #fff;
         }
-        <?php
-        
+        .adsforwp-sticky-ad-close:after{
+        display: inline-block;
+        content: "\00d7"; 
+        }
+        <?php        
     }
     
     public function adsforwp_update_amp_sticky_ad_status(){
@@ -245,7 +254,7 @@ class adsforwp_output_functions{
            return;  
         }  
         
-        $ad_id = sanitize_text_field($_GET['elementId']);  
+        $ad_id = sanitize_text_field($_GET['ad_id']);  
         $cookie_data = '';
         if(!isset($_COOKIE['adsforwp-stick-ad-id7']) && $_COOKIE['adsforwp-stick-ad-id7'] =='') {
                  $cookie_data .= $ad_id;                     
@@ -264,7 +273,7 @@ class adsforwp_output_functions{
            return;  
         }  
                                
-        $ad_id = sanitize_text_field($_GET['elementId']);           
+        $ad_id = sanitize_text_field($_GET['ad_id']);           
         
         $common_function_obj = new adsforwp_admin_common_functions();
         $in_group = $common_function_obj->adsforwp_check_ads_in_group($ad_id);
@@ -313,11 +322,11 @@ class adsforwp_output_functions{
                 $dismissurl = admin_url('admin-ajax.php?action=adsforwp_update_amp_sticky_ad_status&timestamp='.time().'&adsforwp_front_nonce='.$nonce.'&ad_id='.$ad_id);                                  
                 echo '<amp-user-notification
                         layout="nodisplay"
-                        id="amp-user-notification_'.$ad_id.'"  
-                        data-show-if-href="'.$showurl.'"
-                        data-dismiss-href="'.$dismissurl.'">
+                        id="amp-user-notification_'.esc_attr($ad_id).'"  
+                        data-show-if-href="'.esc_url($showurl).'"
+                        data-dismiss-href="'.esc_url($dismissurl).'">
                         <div class="adsforwp-stick-ad">'.$ad_code.'</div>                      
-                        <button on="tap:amp-user-notification_'.$ad_id.'.dismiss" class="adsforwp-sticky-ad-close">close</button>
+                        <button on="tap:amp-user-notification_'.esc_attr($ad_id).'.dismiss" class="adsforwp-sticky-ad-close"></button>
                      </amp-user-notification>';
                }
              }
@@ -340,11 +349,11 @@ class adsforwp_output_functions{
                 $dismissurl = admin_url('admin-ajax.php?action=adsforwp_update_amp_sticky_ad_status&timestamp='.time().'&adsforwp_front_nonce='.$nonce.'&ad_id='.$ad_id);                                  
                 echo '<amp-user-notification
                         layout="nodisplay"
-                        id="amp-user-notification_'.$ad_id.'"  
-                        data-show-if-href="'.$showurl.'"
-                        data-dismiss-href="'.$dismissurl.'">
+                        id="amp-user-notification_'.esc_attr($ad_id).'"  
+                        data-show-if-href="'.esc_url($showurl).'"
+                        data-dismiss-href="'.esc_url($dismissurl).'">
                         <div class="adsforwp-stick-ad">'.$ad_code.'</div>                      
-                        <button on="tap:amp-user-notification_'.$ad_id.'.dismiss" class="adsforwp-sticky-ad-close">close</button>
+                        <button on="tap:amp-user-notification_'.esc_attr($ad_id).'.dismiss" class="adsforwp-sticky-ad-close"></button>
                      </amp-user-notification>';
                }
              }
@@ -918,13 +927,13 @@ class adsforwp_output_functions{
                      if($amp_compatibility != 'disable'){
                      $amp_ads_id[] = $post_ad_id;   
                      
-                     if(isset($adsforwp_ad_responsive)){
+                     if($adsforwp_ad_responsive !='' && $adsforwp_ad_responsive ==1){
                      $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
-							<div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"><a target="_blank" href="'.esc_url($ad_image_redirect_url).'" rel="nofollow"><amp-img layout="responsive" class="afw_ad_amp_'.esc_attr($post_ad_id).'" src="'.esc_url($ad_image).'" height="'. esc_attr($adsforwp_ad_img_height).'" width="'.esc_attr($adsforwp_ad_img_width).'"></amp-img></a></div>
+							<div class="afw_ad_amp_achor afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"><a target="_blank" href="'.esc_url($ad_image_redirect_url).'" rel="nofollow"><amp-img layout="responsive" class="afw_ad_amp_'.esc_attr($post_ad_id).'" src="'.esc_url($ad_image).'" height="'. esc_attr($adsforwp_ad_img_height).'" width="'.esc_attr($adsforwp_ad_img_width).'"></amp-img></a></div>
 							</div>';    
                      }else{
                      $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
-							<div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"><a target="_blank" href="'.esc_url($ad_image_redirect_url).'" rel="nofollow"><amp-img class="afw_ad_amp_'.esc_attr($post_ad_id).'" src="'.esc_url($ad_image).'" height="'. esc_attr($adsforwp_ad_img_height).'" width="'.esc_attr($adsforwp_ad_img_width).'"></amp-img></a></div>
+							<div class="afw_ad_amp_achor afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"><a target="_blank" href="'.esc_url($ad_image_redirect_url).'" rel="nofollow"><amp-img class="afw_ad_amp_'.esc_attr($post_ad_id).'" src="'.esc_url($ad_image).'" height="'. esc_attr($adsforwp_ad_img_height).'" width="'.esc_attr($adsforwp_ad_img_width).'"></amp-img></a></div>
 							</div>';    
                      }
                      

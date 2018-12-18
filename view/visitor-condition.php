@@ -281,14 +281,19 @@ class adsforwp_view_visitor_condition {
                     $country_code =$saved_ip_list['country_code3'][$search_key];  
                     
                    }else{
-                       
-                    $geo_location_data = file_get_contents('https://api.ipgeolocation.io/ipgeo?apiKey=5ad58efb34f74f97afe0911f271b0bb2');                                                            
+                     
+                    $settings = adsforwp_defaultSettings();  
+                    if(isset($settings['adsforwp_geolocation_api']) && $settings['adsforwp_geolocation_api'] !=''){
+                    
+                    $geo_location_data = file_get_contents('https://api.ipgeolocation.io/ipgeo?apiKey='.$settings['adsforwp_geolocation_api']);                                                            
                     $geo_location_arr = json_decode($geo_location_data, true);  
                     $country_code = $geo_location_arr['country_code3'];                   
                     $saved_ip_list['ip'][] = $geo_location_arr['ip'];
                     $saved_ip_list['country_code3'][] = $geo_location_arr['country_code3'];                  
                     update_option('adsforwp_ip_list', $saved_ip_list);
                     
+                    }   
+                                        
                    }                                                                           
                    
                     if ( $comparison == 'equal' ) {

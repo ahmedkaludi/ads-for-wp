@@ -1,6 +1,5 @@
 @media only screen and (min-width: 600px) {
-.adsforwp-footer-prompt {
-    padding: 1% 3%;
+.adsforwp-footer-prompt {    
     flex-direction: row;
     justify-content: center;
 }
