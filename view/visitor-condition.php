@@ -131,7 +131,7 @@ class adsforwp_view_visitor_condition {
                 $ajax_select_box_obj = new adsforwp_ajax_selectbox();
                 $ajax_select_box_obj->adsforwp_visitor_condition_type_values($selected_val_key_1, $selected_val_key_3,$selected_val_key_4,$selected_val_key_5, $i,$j);                
                 ?>
-                  <div style="display:none;" class="spinner"></div>
+                  <div style="display:none;" class="spinner"></div>                  
               </div>
             </td>
             

@@ -186,7 +186,7 @@ public function adsforwp_advance_callback(){
                         <div class="adsforwp-tooltip"><strong><?php echo esc_html__('IP Geolocation API','ads-for-wp'); ?></strong>
                         </div>
                         <input type="text" value="<?php if(isset($settings['adsforwp_geolocation_api'])){ echo $settings['adsforwp_geolocation_api']; } ?>" id="adsforwp-geolocation-api" name="adsforwp_settings[adsforwp_geolocation_api]">
-                        <p><a href="https://ipgeolocation.io" target="_blank"><?php echo esc_html__('Links','ads-for-wp'); ?></a> <?php echo esc_html__('They have free plan which gives you 50K requests per month. For all that you need to singup','ads-for-wp'); ?></p>
+                        <p><?php echo esc_html__('Note : They have free plan which gives you 50K requests per month. For all that you need to singup','ads-for-wp'); ?> <a href="https://ipgeolocation.io" target="_blank"><?php echo esc_html__('Links','ads-for-wp'); ?></a></p>
                         
                     </div>
                 </li> 

@@ -184,6 +184,7 @@ jQuery( document ).ready(function($) {
                 parent.find(".adsforwp_user_agent_custom").remove();
                 parent.find(".adsforwp-url-parameter").remove();                
                 parent.find(".adsforwp_url_custom").remove();
+                parent.find(".adsforwp-user-targeting-note").remove();
 		//parent.find(".afw-ajax-output-child").remove();
 		parent.find(".spinner").attr("style","visibility:visible");
 		parent.children(".spinner").addClass("show");

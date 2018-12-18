@@ -22,6 +22,7 @@ public function adsforwp_post_type_generator(){
 
 public function adsforwp_visitor_condition_type_values($data = '', $saved_data= '',$selected_val_key_4='',$selected_val_key_5='', $current_number = '', $current_group_number  = '') {
    
+    $adsforwp_settings = adsforwp_defaultSettings();
     
     $response = $data;
     $is_ajax = false;
@@ -450,7 +451,11 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
           } 
         
           $output .= ' </select> '; 
-              
+          
+          if(!isset($adsforwp_settings['adsforwp_geolocation_api']) && $adsforwp_settings['adsforwp_geolocation_api'] =='' && $options['param'] == 'geo_location'){
+            $output .= '<div class="adsforwp-user-targeting-note">'.esc_html__('To use this condition, provide', 'ads-for-wp').' <strong>'.esc_html__('IP Geolocation API', 'ads-for-wp').'</strong> '.esc_html__('in advanced settings', 'ads-for-wp').'</div>';   
+          }
+                                  
                 if ( $saved_data ==  'url_custom' || $response =='referrer_url') {
                  if($selected_val_key_4 && $saved_data ==  'url_custom'){
                   $output .= ' <input type="text" class="widefat adsforwp_url_custom" value="'.esc_attr($selected_val_key_4).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_4]"> ';                           
