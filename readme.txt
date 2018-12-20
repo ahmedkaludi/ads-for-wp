@@ -55,7 +55,7 @@ Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp).
 == Changelog ==
 
 = 1.1 (20 December 2018) =
-* New Feature: Sticky display type added in banner type ad
+* New Feature: Sticky display type added in banner ad type for amp or non amp
 * New Feature: Option to filter ads list by display type
 * New Feature: Show ads on specific theme element
 * New Feature: User targeting by Geo Location
