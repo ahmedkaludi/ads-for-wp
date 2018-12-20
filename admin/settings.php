@@ -35,7 +35,7 @@ public function adsforwp_admin_interface_render(){
             
 		settings_errors();
 	    }
-	       $tab = adsforwp_get_tab('general', array('general', 'support', 'tools'));
+	       $tab = adsforwp_get_tab('general', array('general', 'support', 'tools', 'advance'));
         
 	?>
 		                            
@@ -45,6 +45,8 @@ public function adsforwp_admin_interface_render(){
 			echo '<a href="' . esc_url(adsforwp_admin_link('general')) . '" class="nav-tab ' . esc_attr( $tab == 'general' ? 'nav-tab-active' : '') . '"><span class=""></span> ' . esc_html__('General','ads-for-wp') . '</a>';
                         
                         echo '<a href="' . esc_url(adsforwp_admin_link('tools')) . '" class="nav-tab ' . esc_attr( $tab == 'tools' ? 'nav-tab-active' : '') . '"><span class=""></span> ' . esc_html__('Tools', 'ads-for-wp') . '</a>';    
+                        
+                        echo '<a href="' . esc_url(adsforwp_admin_link('advance')) . '" class="nav-tab ' . esc_attr( $tab == 'advance' ? 'nav-tab-active' : '') . '"><span class=""></span> ' . esc_html__('Advanced', 'ads-for-wp') . '</a>';    
                         
                         echo '<a href="' . esc_url(adsforwp_admin_link('support')) . '" class="nav-tab ' . esc_attr( $tab == 'support' ? 'nav-tab-active' : '') . '"><span class=""></span> ' . esc_html__('Support','ads-for-wp') . '</a>';
                                                                                                                     			
@@ -59,16 +61,21 @@ public function adsforwp_admin_interface_render(){
 			echo "<div class='adsforwp-general' ".( $tab != 'general' ? 'style="display:none;"' : '').">";
 				// general Application Settings
 		        do_settings_sections( 'adsforwp_general_section' );	// Page slug
+			echo "</div>";                                                
+                        
+                        echo "<div class='adsforwp-tools' ".( $tab != 'tools' ? 'style="display:none;"' : '').">";
+			// Status
+			do_settings_sections( 'adsforwp_tools_section' );	// Page slug
+			echo "</div>";
+                        
+                        echo "<div class='adsforwp-advance' ".( $tab != 'advance' ? 'style="display:none;"' : '').">";
+			// Status
+			do_settings_sections( 'adsforwp_advance_section' );	// Page slug
 			echo "</div>";
                         
                         echo "<div class='adsforwp-support' ".( $tab != 'support' ? 'style="display:none;"' : '').">";
 				// general Application Settings
 		        do_settings_sections( 'adsforwp_support_section' );	// Page slug
-			echo "</div>";
-                        
-                        echo "<div class='adsforwp-tools' ".( $tab != 'tools' ? 'style="display:none;"' : '').">";
-			// Status
-			do_settings_sections( 'adsforwp_tools_section' );	// Page slug
 			echo "</div>";
 
 			?>
@@ -90,11 +97,8 @@ public function adsforwp_admin_interface_render(){
 */
 public function adsforwp_settings_init(){
 	register_setting( 'adsforwp_setting_dashboard_group', 'adsforwp_settings', array($this, 'adsforwp_handle_file_upload'));
-	add_settings_section('adsforwp_tools_section',  'Migration', '__return_false', 'adsforwp_tools_section');		        
-                                    
-                  
-                // the meta_key 'diplay_on_homepage' with the meta_value 'true'
-                      
+        
+	        add_settings_section('adsforwp_tools_section',  'Migration', '__return_false', 'adsforwp_tools_section');		                                                                                                  
                     
                     add_settings_field(
                             'adsforwp_import_status',								// ID
@@ -102,9 +106,19 @@ public function adsforwp_settings_init(){
                              array($this, 'adsforwp_import_callback'),					// Callback
                             'adsforwp_tools_section',							// Page slug
                             'adsforwp_tools_section'							// Settings Section ID
-                    );                                                     
+                    );        
+                    
+                add_settings_section('adsforwp_advance_section',  'Advance Settings', '__return_false', 'adsforwp_advance_section');		                                                                                                  
+                    
+                    add_settings_field(
+                            'adsforwp_advance_status',								// ID
+                            '',			// Title
+                             array($this, 'adsforwp_advance_callback'),					// Callback
+                            'adsforwp_advance_section',							// Page slug
+                            'adsforwp_advance_section'							// Settings Section ID
+                    );    
                                                                     
-               add_settings_section('adsforwp_general_section', 'Settings', '__return_false', 'adsforwp_general_section');		              
+                add_settings_section('adsforwp_general_section', 'Settings', '__return_false', 'adsforwp_general_section');		              
                     add_settings_field(
                             'adsforwp_ad_blocker_support',								// ID
                             'Ad Blocker Support',			// Title
@@ -113,7 +127,7 @@ public function adsforwp_settings_init(){
                             'adsforwp_general_section'							// Settings Section ID
                     );
                     
-               add_settings_section('adsforwp_general_section', 'Settings', '__return_false', 'adsforwp_general_section');		              
+                add_settings_section('adsforwp_general_section', 'Settings', '__return_false', 'adsforwp_general_section');		              
                     add_settings_field(
                             'adsforwp_ad_revenue_sharing',								// ID
                             'Revenue Sharing',			// Title
@@ -122,7 +136,7 @@ public function adsforwp_settings_init(){
                             'adsforwp_general_section'							// Settings Section ID
                     );   
                     
-                add_settings_section('adsforwp_support_section', 'Contact Us', '__return_false', 'adsforwp_support_section');		              
+                 add_settings_section('adsforwp_support_section', 'Contact Us', '__return_false', 'adsforwp_support_section');		              
                     add_settings_field(
                             'adsforwp_contact_us_form',								// ID
                             '',			// Title
@@ -161,6 +175,26 @@ public function adsforwp_check_data_imported_from($plugin_post_type_name){
                     );					
 	$imported_from = new WP_Query( $cc_args ); 
         return $imported_from;
+}
+
+public function adsforwp_advance_callback(){
+    $settings = adsforwp_defaultSettings();
+    
+    ?>
+            <ul>
+                <li><div class="adsforwp-tools-field-title">
+                        <div class="adsforwp-tooltip"><strong><?php echo esc_html__('IP Geolocation API','ads-for-wp'); ?></strong>
+                        </div>
+                        <input type="text" value="<?php if(isset($settings['adsforwp_geolocation_api'])){ echo $settings['adsforwp_geolocation_api']; } ?>" id="adsforwp-geolocation-api" name="adsforwp_settings[adsforwp_geolocation_api]">
+                        <p><?php echo esc_html__('Note : They have free plan which gives you 50K requests per month. For all that you need to singup','ads-for-wp'); ?> <a href="https://ipgeolocation.io" target="_blank"><?php echo esc_html__('Links','ads-for-wp'); ?></a></p>
+                        
+                    </div>
+                </li> 
+                
+            </ul>
+        
+    <?php    
+    
 }
 
 public function adsforwp_import_callback(){

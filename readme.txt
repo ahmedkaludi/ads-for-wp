@@ -2,8 +2,8 @@
 Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
 Tags: Ads, Advanced Ads, Ad Inserter, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
-Tested up to: 4.9.8
-Stable tag: 1.0.9
+Tested up to: 5.0.1
+Stable tag: 1.1
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -53,6 +53,13 @@ Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp).
 
 
 == Changelog ==
+
+= 1.1 (20 December 2018) =
+* New Feature: Sticky display type added in banner ad type for amp or non amp
+* New Feature: Option to filter ads list by display type
+* New Feature: Show ads on specific theme element
+* New Feature: User targeting by Geo Location
+* Bug Fixed: For the outgoing links in banner ads, need to add rel="nofollow" #117
 
 = 1.0.9 (26th November 2018) =
 * New Feature: Responsive Size Option 

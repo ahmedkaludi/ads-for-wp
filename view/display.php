@@ -15,7 +15,9 @@ class adsforwp_view_display {
                                 'ad_shortcode'        => 'Shortcode (Manual)',
 				'between_the_content' => 'Between the Content (Automatic)',
 				'after_the_content'   => 'After the Content (Automatic)',
-				'before_the_content'  => 'Before the Content (Automatic)',                               
+				'before_the_content'  => 'Before the Content (Automatic)',
+                                'custom_target'       => 'Custom Target',
+                                'sticky'              => 'Sticky',
 			),
 		),                
 		array(
@@ -70,6 +72,40 @@ class adsforwp_view_display {
 				'center'=>'Center',
                                 'right' => 'Right'
 			),
+		),
+                array(
+			'label' => 'Position',
+			'id' => 'adsforwp_custom_target_position',
+			'type' => 'radio',
+			'options' => array(
+				'existing_element'=>'Existing html element',
+                                'new_element'=>'New html element',
+                                
+			),
+		),
+                array(
+			'label' => 'jQuery Selector',
+			'id' => 'adsforwp_jquery_selector',
+			'type' => 'text',
+			'attributes' => array(				                               	                               
+                               'placeholder' => '#container_id or .container_id',
+			),
+		),
+                array(
+			'label' => 'New Element',
+			'id' => 'adsforwp_new_element',
+			'type' => 'text',                        
+		),
+                array(
+			'label' => 'Action',
+			'id' => 'adsforwp_existing_element_action',
+			'type' => 'select',
+                        'options' => array(
+                                'prepend_content'=>'Prepend Content',
+				'append_content'=>'Append Content', 
+                               // 'replace_content'=>'Replace Content',
+                               // 'replace_element'=>'Replace Element',
+                        )
 		),
                 array(		
                         'label' => 'Margin',
@@ -129,7 +165,14 @@ class adsforwp_view_display {
 			$label = '<label for="' . $meta_field['id'] . '">' . esc_html__( $meta_field['label'], 'ads-for-wp' ) . '</label>';
 			$meta_value = get_post_meta( $post->ID, $meta_field['id'], true );
 			if ( empty( $meta_value ) ) {
-				$meta_value = isset($meta_field['default']); }
+                                if($meta_field['id'] == 'adsforwp_new_element'){
+                                 $meta_value = esc_html('<div id="'.md5(uniqid(rand(), true)).'"></div>');    
+                                }else{
+                                 if(isset($meta_field['default'])){
+                                  $meta_value = $meta_field['default'];    
+                                 }                                   
+                                }				                                                                
+                        }
 			switch ( $meta_field['type'] ) {
 				case 'select':
                                     
@@ -174,22 +217,31 @@ class adsforwp_view_display {
 					break;
                                         
                                         case 'multiple-text':                                        
-                                        $input ='<div class="afw_ad_img_margin">';                                       
+                                        $input ='<div class="afw_ad_img_margin">';    
+                                            
                                         foreach($meta_field['fields'] as $field){
+                                         $margin_value = '';   
+                                         if(!empty( $meta_value )){
+                                            $margin_value = $meta_value[$field['id']];                  
+                                         }                                               
                                         $input.= sprintf(
 						'<input class="afw_input" %s id="%s" name="adsforwp_ad_margin[%s]" type="%s" placeholder="%s" value="%s">',
 						$meta_field['type'] !== 'color' ? '' : '',
 						$field['id'],
 						$field['id'],
 						$field['type'],
-						$field['label'],
-                                                $meta_value[$field['id']]                                                 
+						$field['label'],   
+                                                $margin_value
                                              );                                        
                                         }
 					$input .='</div>';
                                     break;
                                     case 'radio':
-					$input = '<fieldset class="afw_ads_margin_field">';
+                                        
+                                        
+                                        switch ($meta_field['id']) {
+                                            case 'adsforwp_ad_align':
+                                                $input = '<fieldset class="afw_ads_margin_field">';
 					$input .= '<legend class="screen-reader-text">' . isset($meta_field['label']) . '</legend>';
 					$i = 0;
 					foreach ( $meta_field['options'] as $key => $value ) {
@@ -216,6 +268,34 @@ class adsforwp_view_display {
 						$i++;
 					}
 					$input .= '</fieldset>';
+
+                                                break;
+                                            
+                                            case 'adsforwp_custom_target_position':
+                                                
+                                                $input = '<fieldset class="adsforwp-custom-target-fields">';
+                                                $input .= '<legend class="screen-reader-text">' . $meta_field['label'] . '</legend>';
+                                                $i = 0;
+                                                foreach ( $meta_field['options'] as $key => $value ) {
+                                                        $meta_field_value = !is_numeric( $key ) ? $key : $value;
+                                                        $input .= sprintf(
+                                                                '<label style="padding-right:10px;"><input %s id="%s" name="%s" type="radio" value="%s">%s</label>%s',
+                                                                $meta_value === $meta_field_value ? 'checked' : '',
+                                                                $meta_field['id'],
+                                                                $meta_field['id'],
+                                                                $meta_field_value,
+                                                                $value,
+                                                                $i < count( $meta_field['options'] ) - 1 ? '' : ''
+                                                        );
+                                                        $i++;
+                                                }
+                                                $input .= '</fieldset>';
+
+                                                break;
+
+                                            default:
+                                                break;
+                                        }                                                                                					
 					break;
 				default:
                                     
@@ -278,7 +358,7 @@ class adsforwp_view_display {
 						$_POST[ $meta_field['id'] ] = sanitize_email( $_POST[ $meta_field['id'] ] );
 						break;
 					case 'text':
-						$_POST[ $meta_field['id'] ] = sanitize_text_field( $_POST[ $meta_field['id'] ] );
+						$_POST[ $meta_field['id'] ] = sanitize_text_field( esc_html($_POST[ $meta_field['id'] ]));
 						break;
 				}
 				update_post_meta( $post_id, $meta_field['id'], $_POST[ $meta_field['id'] ] );

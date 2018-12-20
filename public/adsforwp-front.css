@@ -1,0 +1,56 @@
+@media only screen and (min-width: 600px) {
+.adsforwp-footer-prompt {    
+    flex-direction: row;
+    justify-content: center;
+}
+.adsforwp-sticky-ad-close {              
+  right: 0px;              
+}
+}
+.adsforwp-footer-prompt{               
+    width: 100vw;
+    line-height: 2em;
+    background-color: #fff;
+    color: #333;
+    text-align: center;
+    text-decoration: none;    
+    min-height: 10%;
+    padding-top:20px;
+    position: fixed;
+    bottom: 0;
+    justify-content: flex-end;
+    flex-direction: column;
+    flex-grow: 1;               
+    z-index: 9999;
+}
+.adsforwp-stick-ad{
+    display: inline-block;
+    vertical-align: middle;
+}
+.adsforwp-sticky-ad-close {
+  position: absolute;
+  right: 10px;
+  top: 0px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.3;
+}
+.adsforwp-sticky-ad-close:hover {
+  opacity: 1;
+}
+.adsforwp-sticky-ad-close:before, .adsforwp-sticky-ad-close:after {
+  position: absolute;
+  left: 15px;
+  content: ' ';
+  height: 15px;
+  width: 2px;
+  background-color: #333;
+}
+.adsforwp-sticky-ad-close:before {
+  transform: rotate(45deg);
+}
+.adsforwp-sticky-ad-close:after {
+  transform: rotate(-45deg);
+}
+
+        

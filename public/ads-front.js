@@ -197,6 +197,51 @@ jQuery( document ).ready(function($) {
 	  });
     //Analytics js ends here
     
+    //Sticky Ads script starts here
+    
+    $(".adsforwp-sticky-ad-close").on("click", function(e){
+       e.preventDefault();
+       $(this).parent().hide();
+       var ad_id = $(this).parent().find('.afw').attr('data-ad-id');
+       var group_id = $(this).parent().find('.afw_group').attr('data-id');
+       var afw_cookie = getCookie("adsforwp-stick-ad-id7");
+            if(afw_cookie ==""){
+             afw_cookie += ad_id;   
+            }else{
+             afw_cookie += ','+ad_id;   
+            }
+            
+            if(afw_cookie ==""){
+             afw_cookie += group_id;   
+            }else{
+             afw_cookie += ','+group_id;   
+            }            
+         setCookie("adsforwp-stick-ad-id7", afw_cookie, 7);                                 
+    });
+    
+    function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for(var i = 0; i < ca.length; i++) {
+              var c = ca[i];
+              while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+              }
+              if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+              }
+            }
+            return "";
+}
+    function setCookie(cname,cvalue,exdays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays*24*60*60*1000));
+            var expires = "expires=" + d.toGMTString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+    
+    //Sticky Ads script ends here
     
     
 });

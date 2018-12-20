@@ -34,8 +34,7 @@ class Adsforwp_Ads_Widget extends WP_Widget {
 //		if ( ! empty( $instance['title'] ) ) {
 //			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
 //		}
-                
-                
+                                
                 $common_function_obj = new adsforwp_admin_common_functions();
                 $all_ads = $common_function_obj->adsforwp_fetch_all_ads();
                 $all_groups = $common_function_obj->adsforwp_fetch_all_groups();                                                 

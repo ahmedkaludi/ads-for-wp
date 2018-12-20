@@ -3,7 +3,7 @@
 Plugin Name: Ads for WP - Advanced Ads & Adsense Solution for WP & AMP
 Plugin URI: https://wordpress.org/plugins/ads-for-wp/
 Description: ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy to Use, Unlimited Incontent Ads, Adsense, Premium Features and more
-Version: 1.0.9
+Version: 1.1
 Author: Ahmed Kaludi, Mohammed Kaludi
 Author URI: http://adsforwp.com/
 Donate link: https://www.paypal.me/Kaludi/25usd
@@ -18,7 +18,7 @@ define('ADSFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('ADSFORWP_PLUGIN_DIR_URI', plugin_dir_url(__FILE__));
 define( 'ADSFORWP_LIB_PATH', dirname( __FILE__ ) . '/admin/inc/' );
 if ( ! defined( 'ADSFORWP_VERSION' ) ) {
-	define( 'ADSFORWP_VERSION', '1.0.9' );
+	define( 'ADSFORWP_VERSION', '1.1' );
 }
 /* Loading Backend files files*/
 require_once  ADSFORWP_PLUGIN_DIR.'/admin/control-center.php';
@@ -117,4 +117,28 @@ function adsforwp_admin_notice(){
     }  
 }
 
+add_filter('plugin_row_meta' , 'adsforwp_add_plugin_meta_links', 10, 2);
+
+function adsforwp_add_plugin_meta_links($meta_fields, $file) {
+    if ( plugin_basename(__FILE__) == $file ) {
+      $plugin_url = "https://wordpress.org/support/plugin/ads-for-wp";      
+      $meta_fields[] = "<a href='" . esc_url($plugin_url) . "' target='_blank'>" . esc_html__('Support Forum', 'ads-for-wp') . "</a>";
+      $meta_fields[] = "<a href='" . esc_url($plugin_url) . "/reviews#new-post' target='_blank' title='" . esc_html__('Rate', 'ads-for-wp') . "'>
+            <i class='adsforwp-wdi-rate-stars'>"
+        . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
+        . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
+        . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
+        . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
+        . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
+        . "</i></a>";      
+      echo "<style>"
+        . ".adsforwp-wdi-rate-stars{display:inline-block;color:#ffb900;position:relative;top:3px;}"
+        . ".adsforwp-wdi-rate-stars svg{fill:#ffb900;}"
+        . ".adsforwp-wdi-rate-stars svg:hover{fill:#ffb900}"
+        . ".adsforwp-wdi-rate-stars svg:hover ~ svg{fill:none;}"
+        . "</style>";
+    }
+
+    return $meta_fields;
+  }
 
