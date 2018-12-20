@@ -396,9 +396,9 @@ class adsforwp_output_functions{
         //Ads Sticky ends here
         
         //Group Sticky starts here
+        $all_group_post = array();
         $group_ad_code ='';
-        $all_group_post = json_decode(get_transient('adsforwp_groups_transient_ids'), true);    
-                        
+        $all_group_post = json_decode(get_transient('adsforwp_groups_transient_ids'), true);                            
         if(!empty($all_ads_id)){
         foreach($all_group_post as $ad_id){            
             $widget = '';                        

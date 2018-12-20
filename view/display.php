@@ -217,16 +217,21 @@ class adsforwp_view_display {
 					break;
                                         
                                         case 'multiple-text':                                        
-                                        $input ='<div class="afw_ad_img_margin">';                                       
+                                        $input ='<div class="afw_ad_img_margin">';    
+                                            
                                         foreach($meta_field['fields'] as $field){
+                                         $margin_value = '';   
+                                         if(!empty( $meta_value )){
+                                            $margin_value = $meta_value[$field['id']];                  
+                                         }                                               
                                         $input.= sprintf(
 						'<input class="afw_input" %s id="%s" name="adsforwp_ad_margin[%s]" type="%s" placeholder="%s" value="%s">',
 						$meta_field['type'] !== 'color' ? '' : '',
 						$field['id'],
 						$field['id'],
 						$field['type'],
-						$field['label'],
-                                                $meta_value[$field['id']]                                                 
+						$field['label'],   
+                                                $margin_value
                                              );                                        
                                         }
 					$input .='</div>';
