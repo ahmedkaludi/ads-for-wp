@@ -1231,9 +1231,7 @@ class adsforwp_output_functions{
         
         $visitor_condition_obj = new adsforwp_view_visitor_condition();
         $visitor_condition_status = $visitor_condition_obj->adsforwp_visitor_conditions_status($post_ad_id);
-        
-        
-                 
+                                 
         if(($condition_status ===1 || $condition_status === true || $condition_status==='notset')&& ($visitor_condition_status ===1 || $visitor_condition_status === true || $visitor_condition_status==='notset')){
             
             if($this->visibility != 'hide') {                                    
@@ -1295,8 +1293,7 @@ class adsforwp_output_functions{
         if($wheretodisplay !='ad_shortcode' && isset($post_group_meta['adsforwp_ad_align'])){
         $ad_alignment      = $post_group_meta['adsforwp_ad_align'][0];    
         }
-            
-           
+                       
         $ad_code            ="";  
         $group_ad_code      ="";
         $filter_group_ids   = array();    
@@ -1372,7 +1369,9 @@ class adsforwp_output_functions{
         foreach ($post_group_data as $group_id=>$value){
             
             if(get_post_status($group_id) == 'publish'){
+                
               $filter_group_ids[$group_id] = $value; 
+              
             }
             
         }       
@@ -1403,7 +1402,9 @@ class adsforwp_output_functions{
         $ads_group_id           = sanitize_text_field($_GET['ads_group_id']);
         $ads_group_type         = sanitize_text_field($_GET['ads_group_type']);
         $ads_group_data         = get_post_meta($ads_group_id,$key='adsforwp_ads',true);
+        
         switch ($ads_group_type) {
+            
             case 'rand':
             $ad_code =  $this->adsforwp_get_ad_code(array_rand($ads_group_data), $type="GROUP");
                 break;            
@@ -1413,6 +1414,7 @@ class adsforwp_output_functions{
             
             default:
                 break;
+            
         }                
         if($ad_code){
         echo json_encode(array('status'=> 't','ad_code'=> $ad_code));        

@@ -8,6 +8,7 @@ Author: Ahmed Kaludi, Mohammed Kaludi
 Author URI: http://adsforwp.com/
 Donate link: https://www.paypal.me/Kaludi/25usd
 Text Domain: ads-for-wp
+Domain Path: /languages
 License: GPL2+
 */
 
