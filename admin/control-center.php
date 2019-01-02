@@ -73,7 +73,8 @@ function adsforwp_sort_ads_by_display_type( $query ) {
 }
 add_filter( 'parse_query', 'adsforwp_sort_ads_by_display_type' );
 
-function adsforwp_review_notice_close(){   
+
+function adsforwp_review_notice_remindme(){   
         
         if ( ! isset( $_POST['adsforwp_security_nonce'] ) ){
            return; 
@@ -82,6 +83,26 @@ function adsforwp_review_notice_close(){
            return;  
         }                    
         $result =  update_option( "review_notice_bar_close_date", date("Y-m-d"));               
+        if($result){           
+        echo json_encode(array('status'=>'t'));            
+        }else{
+        echo json_encode(array('status'=>'f'));            
+        }        
+           wp_die();           
+}
+
+add_action('wp_ajax_adsforwp_review_notice_remindme', 'adsforwp_review_notice_remindme');
+
+
+function adsforwp_review_notice_close(){   
+        
+        if ( ! isset( $_POST['adsforwp_security_nonce'] ) ){
+           return; 
+        }
+        if ( !wp_verify_nonce( $_POST['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
+           return;  
+        }                    
+        $result =  update_option( "review_notice_bar_close_never", 'never');               
         if($result){           
         echo json_encode(array('status'=>'t'));            
         }else{

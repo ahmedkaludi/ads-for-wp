@@ -900,6 +900,25 @@ jQuery( document ).ready(function($) {
     
 });
 
+$(".adsforwp-feedback-notice-remindme").on("click", function(e){
+      e.preventDefault();               
+                $.ajax({
+                    type: "POST",    
+                    url:adsforwp_localize_data.ajax_url,                    
+                    dataType: "json",
+                    data:{action:"adsforwp_review_notice_remindme", adsforwp_security_nonce:adsforwp_localize_data.adsforwp_security_nonce},
+                    success:function(response){                       
+                      if(response['status'] =='t'){
+                       $(".adsforwp-feedback-notice").hide();
+                      }
+                    },
+                    error: function(response){                    
+                    console.log(response);
+                    }
+                    });
+    
+});
+
     $(".adsforwp-import-plugins").on("click", function(e){
             e.preventDefault(); 
             var current_selection = $(this);
