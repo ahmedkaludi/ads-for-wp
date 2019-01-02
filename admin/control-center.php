@@ -1,4 +1,24 @@
 <?php
+function adsforwp_rmv_warnings($data, $index, $type){     
+    	
+                if($type =='adsforwp_array'){
+
+                        if(isset($data[$index])){
+                                return $data[$index][0];
+                        }else{
+                                return '';
+                        }		
+                }
+
+		if($type =='adsforwp_string'){
+	
+		if(isset($data[$index])){
+                        return $data[$index];
+		}else{
+			return '';
+		}		
+	}    
+}
 /**
  * Filter slugs
  * @since 1.1
