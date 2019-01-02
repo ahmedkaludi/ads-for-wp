@@ -213,12 +213,17 @@ class adsforwp_view_placement {
           break;
           
           case 'post_type':   
-                $current_post_type  = $post->post_type;            
+                
+                $current_post_type ='';
+              
+                if(is_singular()){
+                    $current_post_type  = $post->post_type;  
+                }              
                   if ( $comparison == 'equal' ) {
                   if ( $current_post_type == $data ) {
                     $result = true;
                   }
-              }
+                }
               if ( $comparison == 'not_equal') {              
                   if ( $current_post_type != $data ) {
                     $result = true;

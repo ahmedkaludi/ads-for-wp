@@ -119,10 +119,10 @@ add_action('wp_ajax_adsforwp_review_notice_close', 'adsforwp_review_notice_close
 function adsforwp_import_plugin_data(){   
         
         if ( ! isset( $_GET['adsforwp_security_nonce'] ) ){
-           return; 
+             return; 
         }
         if ( !wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
-           return;  
+             return;  
         }        
         $plugin_name   = sanitize_text_field($_GET['plugin_name']);           
         $common_function_obj = new adsforwp_admin_common_functions();

@@ -452,7 +452,7 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
         
           $output .= ' </select> '; 
           
-          if(!isset($adsforwp_settings['adsforwp_geolocation_api']) && $adsforwp_settings['adsforwp_geolocation_api'] =='' && $options['param'] == 'geo_location'){
+          if(adsforwp_rmv_warnings($adsforwp_settings, 'adsforwp_geolocation_api', 'adsforwp_string') =='' && $options['param'] == 'geo_location'){
             $output .= '<div class="adsforwp-user-targeting-note">'.esc_html__('To use this condition, provide', 'ads-for-wp').' <strong>'.esc_html__('IP Geolocation API', 'ads-for-wp').'</strong> '.esc_html__('in advanced settings', 'ads-for-wp').'</div>';   
           }
                                   
