@@ -411,12 +411,12 @@ class adsforwp_admin_common_functions {
                
         $placement = array('1'=> 'Single','2'=> 'Global','3'=> 'Custom Post Types','4'=> 'Pages');
         $wheretodisplayamp = array(                    
-                    '1'=>'below_the_header',
-                    '2'=>'below_the_footer',                   
-                    '3'=>'above_the_post_content',
-                    '4'=>'below_the_post_content',
-                    '5'=>'below_the_title',
-                    '6'=>'above_related_post',                    
+                    '1'=>'adsforwp_below_the_header',
+                    '2'=>'adsforwp_below_the_footer',                   
+                    '3'=>'adsforwp_above_the_post_content',
+                    '4'=>'adsforwp_below_the_post_content',
+                    '5'=>'adsforwp_below_the_title',
+                    '6'=>'adsforwp_above_related_post',                    
                     );
         if($amp_options){
             for($i=1;$i<=6; $i++){
@@ -659,7 +659,7 @@ class adsforwp_admin_common_functions {
                                         'data_ad_slot'      => $amp_options['ampforwp-after-featured-image-ad-type-1-data-ad-slot'],                     
                                         'banner_size'       => $amp_options['ampforwp-after-featured-image-ad-type-1-width'].'x'.$amp_options['ampforwp-after-featured-image-ad-type-1-height'],                     
                                         'wheretodisplay'    => 'between_the_content',
-                                        'wheretodisplayamp' => 'after_featured_image',
+                                        'wheretodisplayamp' => 'adsforwp_after_featured_image',
                                         'imported_from'     => 'ampforwp_advanced_ads',
                                         'data_group_array'  => $data_group_array
                                       );                                 
@@ -668,7 +668,7 @@ class adsforwp_admin_common_functions {
                                     $adforwp_meta_key = array(
                                         'select_adtype'   => 'custom',                                                                                                                                     
                                         'wheretodisplay'  => 'between_the_content',
-                                        'wheretodisplayamp' => 'after_featured_image',                                         
+                                        'wheretodisplayamp' => 'adsforwp_after_featured_image',                                         
                                         'custom_code'=> $amp_options['ampforwp-after-featured-image-ad-custom-advertisement'],  
                                         'imported_from'   => 'ampforwp_advanced_ads',
                                         'data_group_array'=> $data_group_array
@@ -721,7 +721,7 @@ class adsforwp_admin_common_functions {
                                         'data_ad_slot'      => $amp_options['ampforwp-inbetween-adsense-ad-data-ad-slot'],                     
                                         'banner_size'       => $amp_options['ampforwp-inbetween-adsense-ad-width'].'x'.$amp_options['ampforwp-inbetween-adsense-ad-height'],                     
                                         'wheretodisplay'    => 'between_the_content',
-                                        'wheretodisplayamp' => 'ads_in_loops',
+                                        'wheretodisplayamp' => 'adsforwp_ads_in_loops',
                                         'after_how_many_post' => $amp_options['ampforwp-inbetween-loop-post-num'], 
                                         'imported_from'     => 'ampforwp_advanced_ads',
                                         'data_group_array'  => $data_group_array
@@ -731,7 +731,7 @@ class adsforwp_admin_common_functions {
                                     $adforwp_meta_key = array(
                                         'select_adtype'   => 'custom',                                                                                                                                     
                                         'wheretodisplay'  => 'between_the_content',
-                                        'wheretodisplayamp' => 'ads_in_loops',                                         
+                                        'wheretodisplayamp' => 'adsforwp_ads_in_loops',                                         
                                         'custom_code'=> $amp_options['ampforwp-inbetween-custom-advertisement'],  
                                         'imported_from'   => 'ampforwp_advanced_ads',
                                         'data_group_array'=> $data_group_array
@@ -755,13 +755,13 @@ class adsforwp_admin_common_functions {
         $amp_options = get_option('redux_builder_amp');        
         $user_id = get_current_user_id();
         $placement_position = array(
-                '1'=> 'below_the_header',
-                '2'=> 'below_the_footer',
-                '3'=> 'above_the_post_content',
-                '4'=> 'below_the_post_content',
-                '5'=> 'below_the_title',
-                '6'=> 'above_related_post',
-                '7'=> 'below_author_box'
+                '1'=> 'adsforwp_below_the_header',
+                '2'=> 'adsforwp_below_the_footer',
+                '3'=> 'adsforwp_above_the_post_content',
+                '4'=> 'adsforwp_below_the_post_content',
+                '5'=> 'adsforwp_below_the_title',
+                '6'=> 'adsforwp_above_related_post',
+                '7'=> 'adsforwp_below_author_box'
                 );
             
              for($i=1;$i<=7;$i++){                                                                     
