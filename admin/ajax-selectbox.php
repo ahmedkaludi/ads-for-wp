@@ -431,8 +431,19 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
     
         $choices = $choices; 
    
-        if($options['param'] == 'url_parameter') {
-            $output = '<input type="text" placeholder="'.esc_html__('blog', 'ads-for-wp').'" class="widefat adsforwp-url-parameter" value="'.esc_attr($saved_data).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_3]">'; 
+        if($options['param'] == 'url_parameter'  || $options['param'] == 'cookie') {
+            
+            if($options['param'] == 'url_parameter'){
+            
+                $output = '<input type="text" placeholder="'.esc_html__('blog', 'ads-for-wp').'" class="widefat adsforwp-url-parameter" value="'.esc_attr($saved_data).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_3]">';                 
+            }
+            
+            if($options['param'] == 'cookie'){
+            
+                $output = '<div class="adsforwp-cookie-value"><input type="text" placeholder="'.esc_html__('Cookie Value', 'ads-for-wp').'" class="widefat " value="'.esc_attr($saved_data).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_3]">'
+                        . '<p>Leave empty to check if cookie is set</p></div>';                 
+            }
+                                    
         }else{
            if ( empty( $choices)) {
           $choices = array('none' => esc_html__('No Items', 'ads-for-wp') );

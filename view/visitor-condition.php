@@ -48,7 +48,8 @@ class adsforwp_view_visitor_condition {
           'user_type'   =>  esc_html__("User Permission",'ads-for-wp'),
           'referrer_url'   =>  esc_html__("Referring URL",'ads-for-wp'),
           'url_parameter'   =>  esc_html__("URL Parameter",'ads-for-wp'),
-          'geo_location'   =>  esc_html__("Country",'ads-for-wp'),  
+          'geo_location'   =>  esc_html__("Country",'ads-for-wp'),
+          'cookie'   =>  esc_html__("Cookie",'ads-for-wp'), 
         )        
       ); 
 
@@ -320,6 +321,62 @@ class adsforwp_view_visitor_condition {
                           $result = true;
                         }
                     }            
+          break;
+          
+          case 'cookie':          
+              
+              $cookie_arr = $_COOKIE;              
+              if($data ==''){
+                  
+               if ( $comparison == 'equal' ) {
+                if ( isset($cookie_arr) ) {
+                  $result = true;
+                }
+                }
+                if ( $comparison == 'not_equal') {              
+                    if ( !isset($cookie_arr) ) {
+                      $result = true;
+                    }
+                }   
+                  
+              }else{
+                  
+                if ( $comparison == 'equal' ) {
+                
+                    if($cookie_arr){
+                    
+                        foreach($cookie_arr as $arr){
+                        
+                        if($arr == $data){
+                            $result = true;
+                             break;
+                        }
+                      }
+                        
+                    }
+                                                            
+                }
+                if ( $comparison == 'not_equal') {
+                    
+                    if(isset($cookie_arr)){
+                    
+                        foreach($cookie_arr as $arr){
+                        
+                        if($arr != $data){
+                            $result = true;
+                             break;
+                        }
+                        
+                      }
+                        
+                    }
+                                                           
+                } 
+                                                      
+              }
+              
+              
+              
           break;
           
            case 'logged_in_visitor': 

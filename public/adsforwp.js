@@ -182,7 +182,8 @@ jQuery( document ).ready(function($) {
 		
 		parent.find(".adsforwp-visitor-condition-ajax-output").remove();
                 parent.find(".adsforwp_user_agent_custom").remove();
-                parent.find(".adsforwp-url-parameter").remove();                
+                parent.find(".adsforwp-url-parameter").remove(); 
+                parent.find(".adsforwp-cookie-value").remove(); 
                 parent.find(".adsforwp_url_custom").remove();
                 parent.find(".adsforwp-user-targeting-note").remove();
 		//parent.find(".afw-ajax-output-child").remove();
@@ -1008,11 +1009,8 @@ $(".adsforwp-feedback-notice-remindme").on("click", function(e){
                             error: function(response){                    
                             console.log(response);
                             }
-                            }); 
-                
-                }
-                                                                 
-
+                            });                 
+                }                                                                 
         });
               
     if(adsforwp_localize_data.post_type === "adsforwp-groups" || adsforwp_localize_data.post_type === "adsforwp"){
