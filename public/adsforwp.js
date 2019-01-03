@@ -990,9 +990,31 @@ $(".adsforwp-feedback-notice-remindme").on("click", function(e){
     });
     
     
-    
-    
+    $(document).on("click",".adsforwp-reset-data", function(e){
+                e.preventDefault();
+             
+                var ads_confirm = confirm("Are you sure?");
+             
+                if(ads_confirm == true){
+                    
+                $.ajax({
+                            type: "POST",    
+                            url:ajaxurl,                    
+                            dataType: "json",
+                            data:{action:"adsforwp_reset_all_settings", adsforwp_security_nonce:adsforwp_localize_data.adsforwp_security_nonce},
+                            success:function(response){                               
+                                setTimeout(function(){ location.reload(); }, 1000);
+                            },
+                            error: function(response){                    
+                            console.log(response);
+                            }
+                            }); 
+                
+                }
+                                                                 
 
+        });
+              
     if(adsforwp_localize_data.post_type === "adsforwp-groups" || adsforwp_localize_data.post_type === "adsforwp"){
         $("#wp-admin-bar-view").hide();
     }

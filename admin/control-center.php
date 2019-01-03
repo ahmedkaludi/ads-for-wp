@@ -1,4 +1,47 @@
 <?php
+function adsforwp_reset_all_settings(){   
+    
+        if ( ! isset( $_POST['adsforwp_security_nonce'] ) ){
+           return; 
+        }
+        if ( !wp_verify_nonce( $_POST['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
+           return;  
+        }            
+        $result ='';
+        
+        //Deleting Settings
+        update_option( 'adsforwp_settings', array());                   
+        
+        //Deleting Ads
+        $allposts= get_posts( array('post_type'=>'adsforwp','numberposts'=>-1) );
+        if($allposts){
+            foreach ($allposts as $eachpost) {
+            $result = wp_delete_post( $eachpost->ID, true );
+            }
+        }
+                        
+        //Deleting group Ads
+        
+        $allposts= get_posts( array('post_type'=>'adsforwp-groups','numberposts'=>-1) );
+        
+        if($allposts){
+            foreach ($allposts as $eachpost) {
+            $result = wp_delete_post( $eachpost->ID, true );
+            }
+        }                
+        
+        if($result){
+        echo json_encode(array('status'=>'t'));            
+        }else{
+        echo json_encode(array('status'=>'f'));            
+        }        
+           wp_die();           
+}
+
+add_action('wp_ajax_adsforwp_reset_all_settings', 'adsforwp_reset_all_settings');
+
+
+
 function adsforwp_load_plugin_textdomain() {
     load_plugin_textdomain( 'ads-for-wp', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
 }

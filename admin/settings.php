@@ -247,6 +247,25 @@ public function adsforwp_import_callback(){
                 </li> 
         </ul>
         <?php
+        echo '<h2>'.esc_html__('Delete All Settings and Data','ads-for-wp').'</h2>';         
+        ?>
+        <ul>
+                
+                <li>
+                   <div class="adsforwp-tools-field-title">
+                        <div class="adsforwp-tooltip">
+                            <strong>
+                                <?php echo esc_html__('Delete','ads-for-wp'); ?>
+                            </strong>
+                        </div>
+                       <a href="#"class="button adsforwp-reset-data">
+                                    <?php echo esc_html__('Delete','ads-for-wp'); ?>
+                       </a>                         
+                        <p>This will delete your settings and all ads</p>
+                    </div>
+                </li> 
+        </ul>
+        <?php
         
 }
 public function adsforwp_ad_blocker_support_callback(){
