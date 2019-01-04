@@ -286,7 +286,7 @@ class adsforwp_view_visitor_condition {
                     $settings = adsforwp_defaultSettings();  
                     if(isset($settings['adsforwp_geolocation_api']) && $settings['adsforwp_geolocation_api'] !=''){
                     
-                    $geo_location_data = file_get_contents('https://api.ipgeolocation.io/ipgeo?apiKey='.$settings['adsforwp_geolocation_api']);                                                            
+                    $geo_location_data = file_get_contents('https://api.ipgeolocation.io/ipgeo?apiKey='.$settings['adsforwp_geolocation_api'].'&ip='.$user_ip );
                     $geo_location_arr = json_decode($geo_location_data, true);  
                     $country_code = $geo_location_arr['country_code3'];                   
                     $saved_ip_list['ip'][] = $geo_location_arr['ip'];

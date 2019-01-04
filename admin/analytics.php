@@ -18,7 +18,7 @@ public function __construct() {
          add_action('wp_ajax_nopriv_adsforwp_insert_ad_impression_amp', array($this, 'adsforwp_insert_ad_impression_amp'));      
          add_action('wp_ajax_adsforwp_insert_ad_impression_amp', array($this, 'adsforwp_insert_ad_impression_amp'));
                   
-         add_action('amp_post_template_data',array($this, 'adsforwp_enque_analytics_amp_script'));                  
+         add_filter('amp_post_template_data',array($this, 'adsforwp_enque_analytics_amp_script'));                  
          add_filter('amp_post_template_footer', array($this, 'adsforwp_add_analytics_amp_tags'));                             
     }
 
@@ -32,6 +32,9 @@ public function __construct() {
         }
         if ( empty( $data['amp_component_scripts']['amp-user-notification'] ) ) {
                 $data['amp_component_scripts']['amp-user-notification'] = 'https://cdn.ampproject.org/v0/amp-user-notification-0.1.js';
+        }
+        if ( empty( $data['amp_component_scripts']['amp-ad'] ) ) {
+                $data['amp_component_scripts']['amp-ad'] = 'https://cdn.ampproject.org/v0/amp-ad-latest.js';
         }
                 return $data;         
     }
