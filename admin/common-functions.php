@@ -1018,6 +1018,7 @@ class adsforwp_admin_common_functions {
                     'readonly'     => array(),
                     'disabled'     => array(),
                     'width'        => array(),
+                    'data-id'      => array(),
                     
             ); 
             //number
@@ -1056,6 +1057,20 @@ class adsforwp_admin_common_functions {
                     'data-mid'  => array(),
                     'data-block-id'  => array(),
                     'data-html-access-allowed'  => array(),
+            );
+             $my_allowed['amp-embed'] = array(
+                    'class' => array(),
+                    'width'    => array(),
+                    'height'  => array(),
+                    'heights'  => array(),
+                    'type' => array(),
+                    'layout'  => array(),                 
+                    'data-publisher'  => array(),
+                    'data-mode'  => array(),
+                    'data-placement'  => array(),
+                    'data-target_type'  => array(),
+                    'data-article'  => array(),
+                    'data-url'  => array(),                    
             );
              $my_allowed['amp-img'] = array(
                     'class' => array(),

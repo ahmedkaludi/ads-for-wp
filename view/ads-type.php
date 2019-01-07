@@ -13,14 +13,15 @@ class adsforwp_view_ads_type {
 			'id' => 'select_adtype',
 			'type' => 'select',                        
 			'options' => array(
-				'' => 'Select Ad Type',
-				'adsense' =>'AdSense',
-                                'media_net' =>'Media.net',
-                                'ad_now' =>'AdNow',				                                
-                                'contentad' =>'Content.ad',
-                                'infolinks' =>'Infolinks',
-                                'ad_image' =>'Image Banner Ad',
-                                'custom' =>'Custom Code',
+				''              => 'Select Ad Type',
+				'adsense'       =>'AdSense',
+                                'media_net'     =>'Media.net',
+                                'ad_now'        =>'AdNow',				                                
+                                'contentad'     =>'Content.ad',
+                                'infolinks'     =>'Infolinks',
+                                'ad_image'      =>'Image Banner Ad',
+                                'ad_background' =>'Background Ad',
+                                'custom'        =>'Custom Code',
                             
 			),
                                 'attributes' => array(				
@@ -29,141 +30,151 @@ class adsforwp_view_ads_type {
 			),
 		),
                   array(
-			'label' => 'AdSense Type',
-			'id' => 'adsense_type',
-			'type' => 'select',                        
-			'options' => array(				
-				'normal' =>'Normal',
+			'label'     => 'AdSense Type',
+			'id'        => 'adsense_type',
+			'type'      => 'select',                        
+			'options'   => array(				
+				'normal'           =>'Normal',
                                 'adsense_auto_ads' =>'AdSense Auto Ads'				                                                            
 			)
                       ),
 		array(
-			'label' => 'Custom Code',
-			'id' => 'custom_code',
-			'type' => 'textarea',
+			'label'     => 'Custom Code',
+			'id'        => 'custom_code',
+			'type'      => 'textarea',
 		),
                
 		array(
-			'label' => 'Data Client ID',
-			'id' => 'data_client_id',
-			'type' => 'text',
-                        'attributes' => array(
-				'placeholder' => 'ca-pub-2005XXXXXXXXX342',
-                                'maxlength' => '30',                                
+			'label'     => 'Data Client ID',
+			'id'        => 'data_client_id',
+			'type'      => 'text',
+                        'attributes'=> array(
+				'placeholder'   => 'ca-pub-2005XXXXXXXXX342',
+                                'maxlength'     => '30',                                
 				
 			),
 		),
 		array(
-			'label' => 'Data Ad Slot',
-			'id' => 'data_ad_slot',
-			'type' => 'text',
-                        'attributes' => array(
-				'placeholder' => '70XXXXXX12',
-                                'maxlength' => '20',
+			'label'     => 'Data Ad Slot',
+			'id'        => 'data_ad_slot',
+			'type'      => 'text',
+                        'attributes'=> array(
+				'placeholder'   => '70XXXXXX12',
+                                'maxlength'     => '20',
 				
 			),
 		),
             //Media.net fields starts here
                 array(
-			'label' => 'Data CID',
-			'id' => 'data_cid',
-			'type' => 'text',
-                        'attributes' => array(
-				'placeholder' => '8XXXXX74',
-                                'maxlength' => '20',
+			'label'     => 'Data CID',
+			'id'        => 'data_cid',
+			'type'      => 'text',
+                        'attributes'=> array(
+				'placeholder'   => '8XXXXX74',
+                                'maxlength'     => '20',
 				
 			),
 		),
                 array(
-			'label' => 'Data CRID',
-			'id' => 'data_crid',
-			'type' => 'text',
+			'label'     => 'Data CRID',
+			'id'        => 'data_crid',
+			'type'      => 'text',
                         'attributes' => array(
-				'placeholder' => '1XXXXXX82',
-                                'maxlength' => '20',
+				'placeholder'   => '1XXXXXX82',
+                                'maxlength'     => '20',
 				
 			),
 		),
             //Media.net fields ends here                    
 		array(
-			'label' => 'Size',
-			'id' => 'banner_size',
-			'type' => 'select',
-			'options' => array(
-                                '' => 'Select Size',
-				'728x90' => 'leaderboard (728x90)',
-				'468x60' =>'banner (468x60)',
-				'234x60'=>'half banner (234x60)' ,
-				'125x125'=>'button (125x125)',
-				'120x600'=>'skyscraper (120x600)',
-				'160x600'=>'wide skyscraper (160x600)',
-				'180x150'=>'small rectangle (180x150)',
-				'120x240'=>'vertical banner (120x240)',
-				'200x200'=>'small square (200x200)',
-				'250x250'=>'square (250x250)',
-				'300x250'=>'medium rectangle (300x250)',
-				'336x280'=>'large rectangle (336x280)',
-				'300x600'=>'half page (300x600)',
-				'300x1050'=>'portrait (300x1050)',
-				'320x50'=>'mobile banner (320x50)',
-				'970x90'=>'large leaderboard (970x90)',
-				'970x250'=>'billboard (970x250)',
-                                '728x20'=>'wide horizontal (728x20)',
-                                '600x120'=>'horizontal (600x120)',
+			'label'     => 'Size',
+			'id'        => 'banner_size',
+			'type'      => 'select',
+			'options'   => array(
+                                ''          =>  'Select Size',
+				'728x90'    =>  'leaderboard (728x90)',
+				'468x60'    =>  'banner (468x60)',
+				'234x60'    =>  'half banner (234x60)' ,
+				'125x125'   =>  'button (125x125)',
+				'120x600'   =>  'skyscraper (120x600)',
+				'160x600'   =>  'wide skyscraper (160x600)',
+				'180x150'   =>  'small rectangle (180x150)',
+				'120x240'   =>  'vertical banner (120x240)',
+				'200x200'   =>  'small square (200x200)',
+				'250x250'   =>  'square (250x250)',
+				'300x250'   =>  'medium rectangle (300x250)',
+				'336x280'   =>  'large rectangle (336x280)',
+				'300x600'   =>  'half page (300x600)',
+				'300x1050'  =>  'portrait (300x1050)',
+				'320x50'    =>  'mobile banner (320x50)',
+				'970x90'    =>  'large leaderboard (970x90)',
+				'970x250'   =>  'billboard (970x250)',
+                                '728x20'    =>  'wide horizontal (728x20)',
+                                '600x120'   =>  'horizontal (600x120)',
 			),
 		),             
               array(
-			'label' => 'Upload Ad Image',
-			'id' => 'adsforwp_ad_image',                        
-			'type' => 'media',
+			'label'     => 'Upload Ad Image',
+			'id'        => 'adsforwp_ad_image',                        
+			'type'      => 'media',
 		),
               array(
-			'label' => 'Ad Anchor link',
-			'id' => 'adsforwp_ad_redirect_url',                        
-			'type' => 'text',
+			'label'     => 'Ad Anchor link',
+			'id'        => 'adsforwp_ad_redirect_url',                        
+			'type'      => 'text',
 		),
                 array(
-			'label' => 'AdNow Widget ID',
-			'id' => 'ad_now_widget_id',                        
-			'type' => 'text',
+			'label'     => 'AdNow Widget ID',
+			'id'        => 'ad_now_widget_id',                        
+			'type'      => 'text',
 		),            
                 array(
-			'label' => 'ID',
-			'id' => 'contentad_id',                        
-			'type' => 'text',
+			'label'     => 'ID',
+			'id'        => 'contentad_id',                        
+			'type'      => 'text',
 		),
                 array(
-			'label' => 'D',
-			'id' => 'contentad_id_d',                        
-			'type' => 'text',
+			'label'     => 'D',
+			'id'        => 'contentad_id_d',                        
+			'type'      => 'text',
 		),
                 array(
-			'label' => 'Content Ad Widget ID',
-			'id' => 'contentad_widget_id',                        
-			'type' => 'text',
+			'label'     => 'Content Ad Widget ID',
+			'id'        => 'contentad_widget_id',                        
+			'type'      => 'text',
 		),             
                 array(
-			'label' => 'Infolinks P ID',
-			'id' => 'infolinks_pid',                        
-			'type' => 'text',
+			'label'     => 'Infolinks P ID',
+			'id'        => 'infolinks_pid',                        
+			'type'      => 'text',
 		),
                 array(
-			'label' => 'Infolinks W S ID',
-			'id' => 'infolinks_wsid',                        
-			'type' => 'text',
-		),  
+			'label'     => 'Infolinks W S ID',
+			'id'        => 'infolinks_wsid',                        
+			'type'      => 'text',
+		),
                 array(
-			'label' => 'Responsive',
-			'id' => 'adsforwp_ad_responsive',                        
-			'type' => 'checkbox',
+			'label'     => 'Upload Ad Image',
+			'id'        => 'ad_background_image',                        
+			'type'      => 'media',
+		),
+                array(
+			'label'     => 'Ad Anchor link',
+			'id'        => 'ad_background_redirect_url',                        
+			'type'      => 'text',
+		),
+                array(
+			'label'     => 'Responsive',
+			'id'        => 'adsforwp_ad_responsive',                        
+			'type'      => 'checkbox',
 		),
                 array(			
-                            'id' => 'adsforwp_ad_img_height',                        
-                            'type' => 'hidden',
+                        'id'        => 'adsforwp_ad_img_height',                        
+                        'type'      => 'hidden',
                     ),
                 array(			
-			'id' => 'adsforwp_ad_img_width',                        
-			'type' => 'hidden',
+			'id'        => 'adsforwp_ad_img_width',                        
+			'type'      => 'hidden',
 		),
 	);
 	public function __construct() {
@@ -254,6 +265,10 @@ class adsforwp_view_ads_type {
 						);
 					break;
                                 case 'media':
+                                        
+                                    
+                                            if($meta_field['id'] == 'adsforwp_ad_image'){
+                                                
                                                 $imageprev ='';
                                                 if($meta_value){
                                                  $imageprev .='<br><div class="afw_ad_thumbnail">';
@@ -273,7 +288,44 @@ class adsforwp_view_ads_type {
 						$meta_field['id'],
 						$meta_value,
                                                 $imageprev        
-					);
+                                             );
+                                                
+                                            }else{
+                                                
+                                                $media_value = array();
+                                                $media_key = $meta_field['id'].'detail';
+                                                $media_value_meta = get_post_meta( $post->ID, $media_key, true ); 
+                                                if(!empty($media_value_meta)){
+                                                $media_value =$media_value_meta;  
+                                                }
+                                                                                                
+                                                if(isset($media_value['thumbnail'])){
+                                                     $media_thumbnail =$media_value['thumbnail'];
+                                                }
+                                                if(isset($media_value['height'])){
+                                                     $media_height =$media_value['height']; 
+                                                }
+                                                if(isset($media_value['width'])){
+                                                     $media_width =$media_value['width'];
+                                                }
+                                                
+                                                $input = sprintf(
+						'<fieldset>'
+                                                . '<input class="afw_input" id="%s" name="%s" type="text" value="%s">'
+                                                . '<input data-id="media" style="width: 19%%" class="button" id="%s_button" name="%s_button" type="button" value="Upload" />'
+                                                . '<input type="hidden" data-id="'.esc_attr($meta_field['id']).'_height" class="upload-height" name="'.esc_attr($meta_field['id']).'_height" id="'.esc_attr($meta_field['id']).'_height" value="'.esc_attr($media_height).'">'
+                                                . '<input type="hidden" data-id="'.esc_attr($meta_field['id']).'_width" class="upload-width" name="'.esc_attr($meta_field['id']).'_width" id="'.esc_attr($meta_field['id']).'_width" value="'.esc_attr($media_width).'">'
+                                                . '<input type="hidden" data-id="'.esc_attr($meta_field['id']).'_thumbnail" class="upload-thumbnail" name="'.esc_attr($meta_field['id']).'_thumbnail" id="'.esc_attr($meta_field['id']).'_thumbnail" value="'.esc_attr($media_thumbnail).'">'                                                
+                                                .'</fieldset>',
+						$meta_field['id'],
+						$meta_field['id'],
+						$meta_value,
+						$meta_field['id'],
+						$meta_field['id']
+                                            );
+                                                
+                                            }
+                                                                                                                        
                                                 break;
                                 case 'hidden':                                                    
                                                 $input = sprintf(
@@ -326,6 +378,20 @@ class adsforwp_view_ads_type {
                     
 			if ( isset( $_POST[ $meta_field['id'] ] ) ) {
 				switch ( $meta_field['type'] ) {
+                                        case 'media':                                                                                                  
+                                                $media_key = $meta_field['id'].'_detail';                                            
+                                                //$media_id = sanitize_text_field( $_POST[ $meta_field['id'].'_id' ] );
+                                                $media_height = sanitize_text_field( $_POST[ $meta_field['id'].'_height' ] );
+                                                $media_width = sanitize_text_field( $_POST[ $meta_field['id'].'_width' ] );
+                                                $media_thumbnail = sanitize_text_field( $_POST[ $meta_field['id'].'_thumbnail' ] );
+                                                $media_detail = array(                                                    
+                                                    'height' =>$media_height,
+                                                    'width' =>$media_width,
+                                                    'thumbnail' =>$media_thumbnail,
+                                                );
+                                                
+                                                update_post_meta( $post_id, $media_key, $media_detail);                                                    
+                                                break;                                                                        
 					case 'email':
 						$_POST[ $meta_field['id'] ] = sanitize_email( $_POST[ $meta_field['id'] ] );
 						break;

@@ -536,7 +536,18 @@ jQuery( document ).ready(function($) {
                       $("#adsforwp_ad_image").attr("required",true); 
                       $("#adsforwp_ad_image").attr("readonly",true);                      
                       $("#adsforwp_ad_image, #adsforwp_ad_redirect_url, #adsforwp_ad_responsive").parent().parent("tr").show();                                                                                                
-                        break 
+                        break
+                    
+                    case "ad_background":
+                                                        
+                      $("#display-metabox").hide();
+                      $("#adsforwp_visitor_condition_metabox").show();
+                      $("#ad_background_image").attr("required",true); 
+                      $("#ad_background_image").attr("readonly",true);                      
+                      $("#ad_background_image, #ad_background_redirect_url").parent().parent("tr").show();  
+                      $("#ad_background_image").parent().parent().parent("tr").show();  
+                        break
+                    
                     case "ad_now":
                       $("#display-metabox").show();
                       $("#adsforwp_visitor_condition_metabox").show();
@@ -751,7 +762,7 @@ jQuery( document ).ready(function($) {
      $("#wheretodisplayamp").change(function(){        
       $(this).find("option:selected").each(function(){  
           var optionValue = $(this).attr("value");                           
-              if("ads_in_loops" === optionValue){
+              if("adsforwp_ads_in_loops" === optionValue){
           	$(".adsforwp-how-many-post").show();
               }else{
                $(".adsforwp-how-many-post").hide();   
@@ -990,6 +1001,30 @@ $(".adsforwp-feedback-notice-remindme").on("click", function(e){
         $(".afw-non-amp-visib-status").show();
     });
     
+    
+    $(document).on("click", "input[data-id=media]" ,function(e) {	// Application Icon upload
+		e.preventDefault();
+                var button = $(this);
+                var id = button.attr('id').replace('_button', '');                
+		var saswpMediaUploader = wp.media({
+			title: "Application Icon",
+			button: {
+				text: "Select Icon"
+			},
+			multiple: false,  // Set this to true to allow multiple files to be selected
+                        library:{type : 'image'}
+		})
+		.on("select", function() {
+			var attachment = saswpMediaUploader.state().get('selection').first().toJSON();                            
+			
+                         $("#"+id).val(attachment.url);
+                         $("input[data-id='"+id+"_id']").val(attachment.id);
+                         $("input[data-id='"+id+"_height']").val(attachment.height);
+                         $("input[data-id='"+id+"_width']").val(attachment.width);
+                         $("input[data-id='"+id+"_thumbnail']").val(attachment.url);
+		})
+		.open();
+	});
     
     $(document).on("click",".adsforwp-reset-data", function(e){
                 e.preventDefault();

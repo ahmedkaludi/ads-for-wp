@@ -36,6 +36,9 @@ public function __construct() {
         if ( empty( $data['amp_component_scripts']['amp-ad'] ) ) {
                 $data['amp_component_scripts']['amp-ad'] = 'https://cdn.ampproject.org/v0/amp-ad-latest.js';
         }
+        if ( empty( $data['amp_component_scripts']['amp-iframe'] ) ) {
+                $data['amp_component_scripts']['amp-iframe'] = 'https://cdn.ampproject.org/v0/amp-iframe-latest.js';
+        }
                 return $data;         
     }
     

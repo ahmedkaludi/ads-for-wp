@@ -37,14 +37,20 @@ class adsforwp_output_amp_condition_display{
         // Below the Author Box
         add_action( 'ampforwp_below_author_box', array($this, 'adsforwp_display_ads_below_author_box') );
         // In loops
-        add_action('ampforwp_between_loop', array($this, 'adsforwp_display_ads_between_loop'),10,1);
+        add_action('ampforwp_between_loop', array($this, 'adsforwp_display_ads_between_loop'),10,1);        
+        // Ad After Featured Image #42
+        add_action('ampforwp_after_featured_image_hook',array($this, 'adsforwp_display_ads_after_featured_image'));
         
+    }
+    
+    public function adsforwp_display_ads_after_featured_image(){        
+            $this->adsforwp_amp_condition_ad_code('adsforwp_after_featured_image');                                   
     }
     
     public function adsforwp_display_ads_between_loop($count){        
             $this->adsforwp_amp_condition_ad_code('adsforwp_ads_in_loops', $count);                                   
     }    
-    public function adsforwp_display_ads_below_author_box(){        
+    public function adsforwp_display_ads_below_author_box(){                                            		        
             $this->adsforwp_amp_condition_ad_code('adsforwp_below_author_box');                                   
     }
     public function adsforwp_display_ads_above_related_post(){        
@@ -109,9 +115,7 @@ class adsforwp_output_amp_condition_display{
      * @param type $condition
      * @param type $count
      */
-    public function adsforwp_amp_condition_ad_code($condition, $count=null){
-        
-        
+    public function adsforwp_amp_condition_ad_code($condition, $count=null){               
         //For Ads
         $post_ad_id_list = json_decode(get_transient('adsforwp_transient_ads_ids'), true);        
         if($post_ad_id_list){
