@@ -1019,6 +1019,7 @@ class adsforwp_admin_common_functions {
                     'disabled'     => array(),
                     'width'        => array(),
                     'data-id'      => array(),
+                    'media-id'      => array(),
                     
             ); 
             //number

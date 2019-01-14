@@ -46,6 +46,9 @@ public function __construct() {
         
          if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {
         $amp_ads_id = json_decode(get_transient('adsforwp_transient_amp_ids'), true);         
+        if(!empty($amp_ads_id)){
+          $amp_ads_id = array_unique($amp_ads_id);  
+        }       
         $nonce = wp_create_nonce('adsforwp_ajax_check_front_nonce');        
         $ad_impression_url = admin_url('admin-ajax.php?action=adsforwp_insert_ad_impression_amp&adsforwp_front_nonce='.$nonce.'&event=${eventId}');                              
         $ad_clicks_url = admin_url('admin-ajax.php?action=adsforwp_insert_ad_clicks_amp&adsforwp_front_nonce='.$nonce.'&event=${eventId}');                              

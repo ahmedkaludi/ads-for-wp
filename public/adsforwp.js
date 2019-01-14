@@ -466,7 +466,7 @@ jQuery( document ).ready(function($) {
                   $("#custom_code").attr("required",false);  
                   $(".afw_pointer").show();
                   $(".afw_pointer").attr("id", "afw_"+optionValue+"_pointer");
-                      
+                  $("#adsforwp-location").show();    
                   switch (optionValue) {
 
                     case "custom":
@@ -488,6 +488,7 @@ jQuery( document ).ready(function($) {
                               break;
                           case "adsense_auto_ads":
                                 $("#display-metabox").hide();
+                                $("#adsforwp-location").hide();   
                                 $("#adsforwp_visitor_condition_metabox").hide();
                                 $("#data_client_id").parent().parent("tr").show();                                
                                 $("#data_client_id").attr("required",true);                               
@@ -541,6 +542,7 @@ jQuery( document ).ready(function($) {
                     case "ad_background":
                                                         
                       $("#display-metabox").hide();
+                      $("#adsforwp-location").hide();
                       $("#adsforwp_visitor_condition_metabox").show();
                       $("#ad_background_image").attr("required",true); 
                       $("#ad_background_image").attr("readonly",true);                      
@@ -583,6 +585,7 @@ jQuery( document ).ready(function($) {
                     $("#banner_size, #data_client_id, #data_ad_slot, #adsforwp_ad_responsive").parent().parent("tr").show();
                     $("#banner_size, #data_client_id, #data_ad_slot").attr("required",true);                    
                     $("#display-metabox").show();
+                    $("#adsforwp-location").show(); 
                     $("#adsforwp_visitor_condition_metabox").show();
                     $(".afw-select-post-type option[value=post_type]").attr("selected", "selected");
                             var tdindex = [1,2,3,4]; 
@@ -597,6 +600,7 @@ jQuery( document ).ready(function($) {
                                 $(".afw-select-post-type").closest('tr').find('td').eq(e).hide();  
                              }); 
                    $("#display-metabox").hide();
+                   $("#adsforwp-location").hide();   
                    $("#adsforwp_visitor_condition_metabox").hide();
                    $("#data_client_id").parent().parent("tr").show();
                    $("#banner_size, #data_ad_slot, #adsforwp_ad_responsive").parent().parent("tr").hide();
@@ -1002,7 +1006,7 @@ $(".adsforwp-feedback-notice-remindme").on("click", function(e){
     });
     
     
-    $(document).on("click", "input[data-id=media]" ,function(e) {	// Application Icon upload
+    $(document).on("click", "input[media-id=media]" ,function(e) {	// Application Icon upload
 		e.preventDefault();
                 var button = $(this);
                 var id = button.attr('id').replace('_button', '');                
@@ -1022,6 +1026,7 @@ $(".adsforwp-feedback-notice-remindme").on("click", function(e){
                          $("input[data-id='"+id+"_height']").val(attachment.height);
                          $("input[data-id='"+id+"_width']").val(attachment.width);
                          $("input[data-id='"+id+"_thumbnail']").val(attachment.url);
+                         $(".afw_ad_img_div").html('<div class="afw_ad_thumbnail"><img class="afw_ad_image_prev" src="'+attachment.url+'"/><a href="#" class="afw_ad_prev_close">X</a></div>');
 		})
 		.open();
 	});

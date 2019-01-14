@@ -291,14 +291,13 @@ class adsforwp_view_ads_type {
                                              );
                                                 
                                             }else{
-                                                
+                                               
                                                 $media_value = array();
-                                                $media_key = $meta_field['id'].'detail';
-                                                $media_value_meta = get_post_meta( $post->ID, $media_key, true ); 
+                                                $media_key = $meta_field['id'].'_detail';                                                 
+                                                $media_value_meta = get_post_meta( $post->ID, $media_key, true );                                                
                                                 if(!empty($media_value_meta)){
                                                 $media_value =$media_value_meta;  
-                                                }
-                                                                                                
+                                                }                                                                                                
                                                 if(isset($media_value['thumbnail'])){
                                                      $media_thumbnail =$media_value['thumbnail'];
                                                 }
@@ -307,21 +306,31 @@ class adsforwp_view_ads_type {
                                                 }
                                                 if(isset($media_value['width'])){
                                                      $media_width =$media_value['width'];
-                                                }
-                                                
+                                                }                                                
+                                                $imageprev ='';
+                                                if(isset($media_value_meta['thumbnail'])){
+                                                 $imageprev .='<br><div class="afw_ad_thumbnail">';
+                                                 $imageprev .='<img class="afw_ad_image_prev" src="'.esc_url($media_value_meta['thumbnail']).'"/>';
+                                                 $imageprev .='<a href="#" class="afw_ad_prev_close">X</a>';
+                                                 $imageprev .='</div>';
+                                                 
+                                                }                                                
                                                 $input = sprintf(
 						'<fieldset>'
                                                 . '<input class="afw_input" id="%s" name="%s" type="text" value="%s">'
-                                                . '<input data-id="media" style="width: 19%%" class="button" id="%s_button" name="%s_button" type="button" value="Upload" />'
+                                                . '<input media-id="media" style="width: 19%%" class="button" id="%s_button" name="%s_button" type="button" value="Upload" />'
                                                 . '<input type="hidden" data-id="'.esc_attr($meta_field['id']).'_height" class="upload-height" name="'.esc_attr($meta_field['id']).'_height" id="'.esc_attr($meta_field['id']).'_height" value="'.esc_attr($media_height).'">'
                                                 . '<input type="hidden" data-id="'.esc_attr($meta_field['id']).'_width" class="upload-width" name="'.esc_attr($meta_field['id']).'_width" id="'.esc_attr($meta_field['id']).'_width" value="'.esc_attr($media_width).'">'
                                                 . '<input type="hidden" data-id="'.esc_attr($meta_field['id']).'_thumbnail" class="upload-thumbnail" name="'.esc_attr($meta_field['id']).'_thumbnail" id="'.esc_attr($meta_field['id']).'_thumbnail" value="'.esc_attr($media_thumbnail).'">'                                                
-                                                .'</fieldset>',
+                                                .'</fieldset>'
+                                                . '<div class="afw_ad_img_div">%s'
+                                                . '</div>',
 						$meta_field['id'],
 						$meta_field['id'],
 						$meta_value,
 						$meta_field['id'],
-						$meta_field['id']
+						$meta_field['id'],
+                                                $imageprev        
                                             );
                                                 
                                             }
@@ -378,20 +387,7 @@ class adsforwp_view_ads_type {
                     
 			if ( isset( $_POST[ $meta_field['id'] ] ) ) {
 				switch ( $meta_field['type'] ) {
-                                        case 'media':                                                                                                  
-                                                $media_key = $meta_field['id'].'_detail';                                            
-                                                //$media_id = sanitize_text_field( $_POST[ $meta_field['id'].'_id' ] );
-                                                $media_height = sanitize_text_field( $_POST[ $meta_field['id'].'_height' ] );
-                                                $media_width = sanitize_text_field( $_POST[ $meta_field['id'].'_width' ] );
-                                                $media_thumbnail = sanitize_text_field( $_POST[ $meta_field['id'].'_thumbnail' ] );
-                                                $media_detail = array(                                                    
-                                                    'height' =>$media_height,
-                                                    'width' =>$media_width,
-                                                    'thumbnail' =>$media_thumbnail,
-                                                );
-                                                
-                                                update_post_meta( $post_id, $media_key, $media_detail);                                                    
-                                                break;                                                                        
+                                                                                                                                                 
 					case 'email':
 						$_POST[ $meta_field['id'] ] = sanitize_email( $_POST[ $meta_field['id'] ] );
 						break;
@@ -399,7 +395,24 @@ class adsforwp_view_ads_type {
 						$_POST[ $meta_field['id'] ] = sanitize_text_field( $_POST[ $meta_field['id'] ] );
 						break;
 				}
-				update_post_meta( $post_id, $meta_field['id'], $_POST[ $meta_field['id'] ] );
+                                if($meta_field['id'] == 'ad_background_image'){
+                                    
+                                                $media_key = $meta_field['id'].'_detail';                                                     
+                                                $media_height = sanitize_text_field( $_POST[ $meta_field['id'].'_height' ] );
+                                                $media_width = sanitize_text_field( $_POST[ $meta_field['id'].'_width' ] );
+                                                $media_thumbnail = sanitize_text_field( $_POST[ $meta_field['id'].'_thumbnail' ] );
+                                                $media_detail = array(                                                    
+                                                    'height' =>$media_height,
+                                                    'width' =>$media_width,
+                                                    'thumbnail' =>$media_thumbnail,
+                                                );                                                    
+                                                update_post_meta( $post_id, $media_key, $media_detail);                                                                                                                    
+                                    
+                                }else{                                    
+                                    update_post_meta( $post_id, $meta_field['id'], $_POST[ $meta_field['id'] ] );                                         
+                                }
+                                
+				
 			} else if ( $meta_field['type'] === 'checkbox' ) {
 				update_post_meta( $post_id, $meta_field['id'], '0' );
 			}

@@ -1,4 +1,31 @@
 <?php
+ob_start();
+add_action('shutdown', function() {
+    if ( is_admin() ) {
+        return;
+    }
+    $final = '';
+    $levels = ob_get_level();
+    for ($i = 0; $i < $levels; $i++){
+        $final .= ob_get_clean();
+    }
+    echo apply_filters('adsforwp_final_output', $final);
+}, 0);
+
+add_filter('adsforwp_final_output', function($output) {  
+    if ( is_admin() ) {
+        return;
+    }       
+    $after_body = apply_filters('adsforwp_after_body','');
+    
+    $before_body = apply_filters('adsforwp_before_body','');
+    
+    $output = preg_replace("/(\<body.*\>)/", "$1".$after_body, $output);      
+    $output = preg_replace("/(\<\/body.*\>)/", $before_body."$1", $output);      
+    return $output;
+});
+
+
 function adsforwp_reset_all_settings(){   
     
         if ( ! isset( $_POST['adsforwp_security_nonce'] ) ){
@@ -196,7 +223,7 @@ function adsforwp_review_notice_close(){
         if ( !wp_verify_nonce( $_POST['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
            return;  
         }                    
-        $result =  update_option( "review_notice_bar_close_never", 'never');               
+        $result =  update_option( "adsforwp_review_never", 'never');               
         if($result){           
         echo json_encode(array('status'=>'t'));            
         }else{

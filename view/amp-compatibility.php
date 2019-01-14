@@ -7,7 +7,7 @@ class adsforwp_amp_compatibility {
 	}
         function adsforwp_amp_comp_add_meta_box() {
 	add_meta_box(
-		'location',
+		'adsforwp-location',
 		esc_html__( 'AMP', 'ads-for-wp' ),
 		array( $this, 'adsforwp_meta_box_callback' ),
 		array('adsforwp','adsforwp-groups'),

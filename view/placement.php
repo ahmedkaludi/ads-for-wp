@@ -279,9 +279,14 @@ class adsforwp_view_placement {
 
       // Post Category
       case 'post_category':
+          $current_category = '';
           $postcat = get_the_category( $post->ID );
-          $current_category = $postcat[0]->cat_ID; 
-
+          if(!empty($postcat)){
+              if(is_object($postcat[0])){                 
+                $current_category = $postcat[0]->cat_ID;                   
+              }               
+          }
+                   
           if ( $comparison == 'equal') {
               if ( $data == $current_category ) {
                   $result = true;
