@@ -529,6 +529,7 @@ class adsforwp_output_functions{
     
     public function adsforwp_enque_amp_bg_ad_script(){
         ?>       
+
        
        <?php
         
@@ -643,15 +644,14 @@ class adsforwp_output_functions{
                     if (( $condition_status ===1 || $condition_status === true || $condition_status==='notset' ) && ( $visitor_condition_status ===1 || $visitor_condition_status === true || $visitor_condition_status==='notset' )) {                       
                         
                      $media_value_meta = get_post_meta( $ad_id, 'ad_background_image_detail', true );  
-                       
-                                                 
+                       $design = ampforwp_get_setting('amp-design-selector');
+
                        ?>
-                            .adsforwp-bg-ad{
+                          .adsforwp-bg-ad{
                              background-image:url(<?php echo esc_url($media_value_meta['thumbnail']); ?>);
                              position: fixed;
                              top: 0;
                              left: 0;
-                             z-index: 1;
                              height: 100%;
                              width: 100%;
                              background-position: center;
@@ -659,16 +659,36 @@ class adsforwp_output_functions{
                              background-size: cover;
                           }
                          .adsforwp-bg-content{
-                             z-index:99;
+                             z-index:1;
                              margin: auto;
                              position: absolute;
-                             top: 0; left: 0; bottom: 0; right: 0;
+                             top: 0; 
+                             left: 0; 
+                             bottom: 0; 
+                             right: 0;
                           }
-                          .cntr{
+                          .h_m{
+                            z-index: 1;
+                            position: relative;
+                          }
+                          .content-wrapper{
+                              position: relative;
+                              z-index: 0;
+                              margin: 0 16%
+                          }
+                          .cntr, .amp-wp-article{
                              background:#ffffff;
                           }
                           .footer{
                              background:#ffffff;
+                          }
+                         @media(max-width:768px){
+                            .adsforwp-bg-ad{
+                              position:relative;
+                            }
+                            .content-wrapper{
+                              margin:0;
+                            }
                           }
                        <?php
                     }

@@ -57,7 +57,6 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 9999;
     height: 100%;
     width: 100%;
     background-position: center;
@@ -65,10 +64,14 @@
     background-size: cover;
  }
 .adsforwp-bg-content{
-    z-index: 99999;
+    z-index: 1;
     margin: auto;
     position: absolute;
-    top: 0; left: 0; bottom: 0; right: 0;
+    top: 0; 
+    left: auto; 
+    bottom: 0; 
+    right: auto;
+    margin: 0px 16%;
  }
 
 
