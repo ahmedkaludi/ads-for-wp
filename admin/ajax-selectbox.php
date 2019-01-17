@@ -2,13 +2,12 @@
 class adsforwp_ajax_selectbox{
     
 public function __construct() {
+    
       add_action('wp_ajax_adsforwp_create_ajax_select_box',array($this,'adsforwp_ajax_select_creator')); 
-      add_action('wp_ajax_adsforwp_ajax_select_taxonomy',array($this,'adsforwp_create_ajax_select_taxonomy'));
-      
+      add_action('wp_ajax_adsforwp_ajax_select_taxonomy',array($this,'adsforwp_create_ajax_select_taxonomy'));      
       add_action('wp_ajax_adsforwp_visitor_condition_type_values',array($this,'adsforwp_visitor_condition_type_values'));
 }
     
-
 public function adsforwp_post_type_generator(){
 
     $post_types = '';
@@ -339,6 +338,7 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
             break; 
         
           case "user_type" :
+              
            global $wp_roles;
             $choices = $wp_roles->get_names();
 
@@ -676,6 +676,7 @@ public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $curre
             break;
 
           case "user_type" :
+              
            global $wp_roles;
             $choices = $wp_roles->get_names();
 
@@ -699,7 +700,9 @@ public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $curre
 
     // Add None if no elements found in the current selected items
     if ( empty( $choices) ) {
+        
       $choices = array('none' => esc_html__('No Items', 'ads-for-wp') );
+      
     }
      //  echo $current_number;
     // echo $saved_data;
@@ -748,6 +751,7 @@ public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $curre
  * @return type
  */
 public function adsforwp_post_taxonomy_generator(){
+    
     $taxonomies = '';  
     $choices    = array();
     $taxonomies = get_taxonomies( array('public' => true), 'objects' );
@@ -773,6 +777,7 @@ public function adsforwp_post_taxonomy_generator(){
  * @param type $current_number
  */
 public function adsforwp_create_ajax_select_taxonomy($selectedParentValue = '',$selectedValue='', $current_number ='', $current_group_number  = ''){
+    
     $is_ajax = false;
     if( $_SERVER['REQUEST_METHOD']=='POST'){
         $is_ajax = true;

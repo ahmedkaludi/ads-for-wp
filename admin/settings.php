@@ -261,7 +261,7 @@ public function adsforwp_import_callback(){
                        <a href="#"class="button adsforwp-reset-data">
                                     <?php echo esc_html__('Delete','ads-for-wp'); ?>
                        </a>                         
-                        <p>This will delete your settings and all ads</p>
+                        <p><?php echo esc_html__('This will delete your settings and all ads','ads-for-wp'); ?></p>
                     </div>
                 </li> 
         </ul>

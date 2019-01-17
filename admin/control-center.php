@@ -708,11 +708,11 @@ add_action( 'manage_adsforwp_posts_custom_column' , 'adsforwp_group_custom_colum
 
 function adsforwp_custom_columns($columns) {    
     unset($columns['date']);
-    $columns['adsforwp_ad_image_preview'] = '<a>'.esc_html__( 'Preview', 'ads-for-wp' ).'<a>';
-    $columns['adsforwp_expire_column'] = '<a>'.esc_html__( 'Expire On', 'ads-for-wp' ).'<a>';
-    $columns['adsforwp_group_column'] = '<a>'.esc_html__( 'Groups', 'ads-for-wp' ).'<a>';
-    $columns['adsforwp_ad_impression_column'] = '<a>'.esc_html__( 'Ad Impression', 'ads-for-wp' ).'<a>';
-    $columns['adsforwp_ad_clicks_column'] = '<a>'.esc_html__( 'Ad Clicks', 'ads-for-wp' ).'<a>';
+    $columns['adsforwp_ad_image_preview']       = '<a>'.esc_html__( 'Preview', 'ads-for-wp' ).'<a>';
+    $columns['adsforwp_expire_column']          = '<a>'.esc_html__( 'Expire On', 'ads-for-wp' ).'<a>';
+    $columns['adsforwp_group_column']           = '<a>'.esc_html__( 'Groups', 'ads-for-wp' ).'<a>';
+    $columns['adsforwp_ad_impression_column']   = '<a>'.esc_html__( 'Ad Impression', 'ads-for-wp' ).'<a>';
+    $columns['adsforwp_ad_clicks_column']       = '<a>'.esc_html__( 'Ad Clicks', 'ads-for-wp' ).'<a>';
     
     
     return $columns;
@@ -871,7 +871,7 @@ function adsforwp_groups_update_ids_on_untrash(){
 }
     add_action( 'publish_adsforwp-groups', 'adsforwp_groups_published');
     add_action( 'trash_adsforwp-groups', 'adsforwp_groups_update_ids_on_trash');    
-    add_action('untrash_adsforwp-groups', 'adsforwp_groups_update_ids_on_untrash');    
+    add_action( 'untrash_adsforwp-groups', 'adsforwp_groups_update_ids_on_untrash');    
 
 /**
  * Here, We are displaying notice in admin panel on different different actions or conditions

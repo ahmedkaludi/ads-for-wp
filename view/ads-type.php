@@ -346,15 +346,18 @@ class adsforwp_view_ads_type {
 						$meta_field['id'],	
                                                 $meta_field['id'],	        
 						$meta_value                                                     
-					);
+                                                );
                                                 break;            
 				default:
                                       
                                     if(isset($meta_field['attributes'])){
+                                        
                                       foreach ( $meta_field['attributes'] as $key => $value ) {
                                     
 					$attributes .=  $key."=".'"'.$value.'"'.' ';                                        
+                                        
 					}
+                                        
                                     }
     
                                      $input = sprintf(
@@ -379,7 +382,8 @@ class adsforwp_view_ads_type {
 	public function adsforwp_format_rows( $label, $input ) {
 		return '<tr class=""><th>'.$label.'</th><td>'.$input.'</td></tr>';
 	}                
-	public function adsforwp_save_fields( $post_id ) {               
+	public function adsforwp_save_fields( $post_id ) {  
+            
 		if ( ! isset( $_POST['adsforwp_adtype_nonce'] ) )
 			return $post_id;		
 		if ( !wp_verify_nonce( $_POST['adsforwp_adtype_nonce'], 'adsforwp_adtype_data' ) )
@@ -412,8 +416,10 @@ class adsforwp_view_ads_type {
                                                 );                                                    
                                                 update_post_meta( $post_id, $media_key, $media_detail);                                                                                                                    
                                     
-                                }else{                                    
-                                    update_post_meta( $post_id, $meta_field['id'], $_POST[ $meta_field['id'] ] );                                         
+                                }else{ 
+                                    
+                                    update_post_meta( $post_id, $meta_field['id'], $_POST[ $meta_field['id'] ] );
+                                    
                                 }
                                 
 				

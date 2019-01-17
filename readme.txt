@@ -3,7 +3,7 @@ Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
 Tags: Ads, Advanced Ads, Ad Inserter, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
 Tested up to: 5.0.1
-Stable tag: 1.1.1
+Stable tag: 1.2
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -54,7 +54,7 @@ Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp).
 
 == Changelog ==
 
-= 1.1.1 (17 January 2019) =
+= 1.2 (17 January 2019) =
 * New Feature: Background Ad Type
 * New Feature: User targeting by Cookie
 * Added: Support for  MGID Ads & Taboola Ads in custom ads type

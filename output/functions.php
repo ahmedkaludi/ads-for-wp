@@ -9,6 +9,7 @@ class adsforwp_output_functions{
     private $is_amp = false;     
     public  $visibility = null;
     public  $amp_ads_id = array();
+    
     public function __construct() {  
          $this->_amp_conditions = array(
                     'adsforwp_after_featured_image',
@@ -645,8 +646,10 @@ class adsforwp_output_functions{
                         
                      $media_value_meta = get_post_meta( $ad_id, 'ad_background_image_detail', true );  
                        $design = ampforwp_get_setting('amp-design-selector');
-
-                       ?>
+                       
+                       if(isset($media_value_meta)){
+                           
+                           ?>
                           .adsforwp-bg-ad{
                              background-image:url(<?php echo esc_url($media_value_meta['thumbnail']); ?>);
                              position: fixed;
@@ -691,6 +694,9 @@ class adsforwp_output_functions{
                             }
                           }
                        <?php
+                           
+                       }
+                       
                     }
                                     
                }
@@ -838,12 +844,13 @@ class adsforwp_output_functions{
      * @return type string
      */
     public function adsforwp_display_ads($content){       
-        
-         delete_transient('adsforwp_transient_amp_ids');                                      
+                                                    
         $current_post_data = get_post_meta(get_the_ID(),$key='',true);     
         
         if(isset($current_post_data['ads-for-wp-visibility'])){
+            
           $this->visibility = $current_post_data['ads-for-wp-visibility'][0];      
+          
         }
                 
         if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {
@@ -854,7 +861,8 @@ class adsforwp_output_functions{
             $all_ads_post = json_decode(get_transient('adsforwp_transient_ads_ids'), true);              
             if($all_ads_post){
                 
-            foreach($all_ads_post as $ads){                               
+            foreach($all_ads_post as $ads){   
+                
             $post_ad_id = $ads;             
             $common_function_obj = new adsforwp_admin_common_functions();
             $in_group = $common_function_obj->adsforwp_check_ads_in_group($post_ad_id);
@@ -1000,6 +1008,7 @@ class adsforwp_output_functions{
           
              case 'between_the_content':        
               if($adposition == 'number_of_paragraph'){
+                  
                 $paragraph_id = adsforwp_rmv_warnings($post_meta_dataset, 'paragraph_number', 'adsforwp_array');   
                 $closing_p    = '</p>';
                 $paragraphs = explode( $closing_p, $content );   
@@ -1049,8 +1058,7 @@ class adsforwp_output_functions{
      * @return string 
      */
     public function adsforwp_get_ad_code($post_ad_id, $type){
-            
-            //$amp_ads_id = json_decode(get_transient('adsforwp_transient_amp_ids'), true); 
+                        
             
             $visitor_condition_status ='';
             $condition_status ='';
@@ -1097,25 +1105,25 @@ class adsforwp_output_functions{
             $post_meta_dataset          = get_post_meta($post_ad_id,$key='',true);   
             
             
-            $where_to_display = adsforwp_rmv_warnings($post_meta_dataset, 'wheretodisplay', 'adsforwp_array');  
+            $where_to_display           = adsforwp_rmv_warnings($post_meta_dataset, 'wheretodisplay', 'adsforwp_array');  
             
             if($type =="AD"){
                 
-                $ad_margin_top      ='';
-                $ad_margin_bottom   ='';
-                $ad_margin_left     ='';
-                $ad_margin_right    ='';
+                $ad_margin_top          ='';
+                $ad_margin_bottom       ='';
+                $ad_margin_left         ='';
+                $ad_margin_right        ='';
 
-                $margin_post_meta   = get_post_meta($post_ad_id, $key='adsforwp_ad_margin',true);
+                $margin_post_meta       = get_post_meta($post_ad_id, $key='adsforwp_ad_margin',true);
             
-                $ad_margin_top     = adsforwp_rmv_warnings($margin_post_meta, 'ad_margin_top', 'adsforwp_string');                                       
-                $ad_margin_bottom  = adsforwp_rmv_warnings($margin_post_meta, 'ad_margin_bottom', 'adsforwp_string');                                      
-                $ad_margin_left    = adsforwp_rmv_warnings($margin_post_meta, 'ad_margin_left', 'adsforwp_string');                                                  
-                $ad_margin_right   = adsforwp_rmv_warnings($margin_post_meta, 'ad_margin_right', 'adsforwp_string');  
+                $ad_margin_top          = adsforwp_rmv_warnings($margin_post_meta, 'ad_margin_top', 'adsforwp_string');                                       
+                $ad_margin_bottom       = adsforwp_rmv_warnings($margin_post_meta, 'ad_margin_bottom', 'adsforwp_string');                                      
+                $ad_margin_left         = adsforwp_rmv_warnings($margin_post_meta, 'ad_margin_left', 'adsforwp_string');                                                  
+                $ad_margin_right        = adsforwp_rmv_warnings($margin_post_meta, 'ad_margin_right', 'adsforwp_string');  
             
             if($where_to_display !='ad_shortcode'){
                            
-                $ad_alignment      = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_align', 'adsforwp_array');                
+                $ad_alignment            = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_align', 'adsforwp_array');                
             
             }
             } 
@@ -1398,6 +1406,7 @@ class adsforwp_output_functions{
             break;
             
             case 'media_net':
+                
             $ad_data_cid ='';            
             $ad_data_crid ='';
                         
@@ -1745,6 +1754,8 @@ class adsforwp_output_functions{
     }
 }
 if (class_exists('adsforwp_output_functions')) {
+    
 	$adsforwp_function_obj = new adsforwp_output_functions;
         $adsforwp_function_obj->adsforwp_hooks();
+        
 }

@@ -300,10 +300,13 @@ class adsforwp_view_display {
 				default:
                                     
                                          if(isset($meta_field['attributes'])){
-                                      foreach ( $meta_field['attributes'] as $key => $value ) {
-                                    
-					$attributes .=  $key."=".'"'.$value.'"'.' ';                                        
-					}
+                                             
+                                            foreach ( $meta_field['attributes'] as $key => $value ) {
+
+                                              $attributes .=  $key."=".'"'.$value.'"'.' ';                                        
+                                              
+                                              }
+                                              
                                        }
     
 					$input = sprintf(

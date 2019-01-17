@@ -1,9 +1,11 @@
 <?php
 class adsforwp_view_visitor_condition {
     
- public function __construct() {                                                                                                     
+ public function __construct() {    
+     
 		add_action( 'add_meta_boxes', array( $this, 'adsforwp_visitor_condition_add_meta_box' ) );
 		add_action( 'save_post', array( $this, 'adsforwp_visitor_condition_save' ) );
+                
 	}
         
  public function adsforwp_visitor_condition_add_meta_box() {
@@ -20,8 +22,9 @@ class adsforwp_view_visitor_condition {
  public function adsforwp_visitor_condition_callback( $post) {   
      
             $visitor_condition_enable = get_post_meta($post->ID, $key='adsforwp_v_condition_enable', true);            
-            $visitor_conditions_array =  esc_sql ( get_post_meta($post->ID, 'visitor_conditions_array', true)  );                             
+            $visitor_conditions_array = esc_sql ( get_post_meta($post->ID, 'visitor_conditions_array', true)  );                             
             $visitor_conditions_array = is_array($visitor_conditions_array)? array_values($visitor_conditions_array): array();      
+            
             if ( empty( $visitor_conditions_array ) ) {
             
                        $visitor_conditions_array[0] =array(
@@ -33,7 +36,8 @@ class adsforwp_view_visitor_condition {
                                     )
                        )               
                    );
-            }            
+            }   
+            
     //security check
     wp_nonce_field( 'adsforwp_visitor_condition_action_nonce', 'adsforwp_visitor_condition_name_nonce' );?>
 
@@ -41,21 +45,21 @@ class adsforwp_view_visitor_condition {
     // Type Select    
       $choices = array(
         esc_html__("Basic",'ads-for-wp') => array(                               
-          'device'   =>  esc_html__("Device Type",'ads-for-wp'),           
-          'browser_language'   =>  esc_html__("Language Of The Browser",'ads-for-wp'),  
+          'device'              =>  esc_html__("Device Type",'ads-for-wp'),           
+          'browser_language'    =>  esc_html__("Language Of The Browser",'ads-for-wp'),  
           'logged_in_visitor'   =>  esc_html__("Logged In",'ads-for-wp'),
-          'user_agent'   =>  esc_html__("User Agent",'ads-for-wp'),  
-          'user_type'   =>  esc_html__("User Permission",'ads-for-wp'),
-          'referrer_url'   =>  esc_html__("Referring URL",'ads-for-wp'),
-          'url_parameter'   =>  esc_html__("URL Parameter",'ads-for-wp'),
-          'geo_location'   =>  esc_html__("Country",'ads-for-wp'),
-          'cookie'   =>  esc_html__("Cookie",'ads-for-wp'), 
+          'user_agent'          =>  esc_html__("User Agent",'ads-for-wp'),  
+          'user_type'           =>  esc_html__("User Permission",'ads-for-wp'),
+          'referrer_url'        =>  esc_html__("Referring URL",'ads-for-wp'),
+          'url_parameter'       =>  esc_html__("URL Parameter",'ads-for-wp'),
+          'geo_location'        =>  esc_html__("Country",'ads-for-wp'),
+          'cookie'              =>  esc_html__("Cookie",'ads-for-wp'), 
         )        
       ); 
 
       $comparison = array(
-        'equal'   =>  esc_html__( 'Equal to', 'ads-for-wp'), 
-        'not_equal' =>  esc_html__( 'Not Equal to', 'ads-for-wp'),     
+        'equal'         =>  esc_html__( 'Equal to', 'ads-for-wp'), 
+        'not_equal'     =>  esc_html__( 'Not Equal to', 'ads-for-wp'),     
       );
       $total_group_fields = count( $visitor_conditions_array );       
       ?>
@@ -218,7 +222,8 @@ class adsforwp_view_visitor_condition {
 
         switch ($type) {
                    
-          case 'device':                      
+          case 'device':
+              
                     $device_name  = 'desktop'; 
                     if(wp_is_mobile()){
                     $device_name  = 'mobile';                
