@@ -3,7 +3,7 @@ Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
 Tags: Ads, Advanced Ads, Ad Inserter, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
 Tested up to: 5.0.1
-Stable tag: 1.1
+Stable tag: 1.1.1
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -53,6 +53,19 @@ Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp).
 
 
 == Changelog ==
+
+= 1.1.1 (17 January 2019) =
+* New Feature: Background Ad Type
+* New Feature: User targeting by Cookie
+* Added: Support for  MGID Ads & Taboola Ads in custom ads type
+* Added: Delete all settings, ads and groups ads at one click
+* Added: Option to filter ads list by ad type
+* Added: Prepared for localization to make plugin translatable
+* Improvement: Notice box to ask for review in day interval should not be shown again, if users click no thanks button
+* Bug Fixed: Update wheretodisplayamp while importing Ads from AMPforWP #125
+* Bug Fixed: If auto ads is selected, then AMP Display Positioning in AMP section should be hidden #114
+* Bug Fixed: Warning issue when no Ads are setup. #128
+
 
 = 1.1 (20 December 2018) =
 * New Feature: Sticky display type added in banner ad type for amp or non amp

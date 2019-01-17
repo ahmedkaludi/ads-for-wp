@@ -292,9 +292,13 @@ class adsforwp_view_ads_type {
                                                 
                                             }else{
                                                
-                                                $media_value = array();
-                                                $media_key = $meta_field['id'].'_detail';                                                 
-                                                $media_value_meta = get_post_meta( $post->ID, $media_key, true );                                                
+                                                $media_value      = array();
+                                                $media_thumbnail  ='';
+                                                $media_height     ='';
+                                                $media_width      = '';
+                                                $media_key        = $meta_field['id'].'_detail';                                                 
+                                                $media_value_meta = get_post_meta( $post->ID, $media_key, true );   
+                                                
                                                 if(!empty($media_value_meta)){
                                                 $media_value =$media_value_meta;  
                                                 }                                                                                                
@@ -327,7 +331,7 @@ class adsforwp_view_ads_type {
                                                 . '</div>',
 						$meta_field['id'],
 						$meta_field['id'],
-						$meta_value,
+						$media_thumbnail,
 						$meta_field['id'],
 						$meta_field['id'],
                                                 $imageprev        
