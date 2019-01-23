@@ -18,7 +18,7 @@ public function __construct() {
          add_action('wp_ajax_nopriv_adsforwp_insert_ad_impression_amp', array($this, 'adsforwp_insert_ad_impression_amp'));      
          add_action('wp_ajax_adsforwp_insert_ad_impression_amp', array($this, 'adsforwp_insert_ad_impression_amp'));
                   
-         add_action('amp_post_template_data',array($this, 'adsforwp_enque_analytics_amp_script'));                  
+         add_filter('amp_post_template_data',array($this, 'adsforwp_enque_analytics_amp_script'));                  
          add_filter('amp_post_template_footer', array($this, 'adsforwp_add_analytics_amp_tags'));                             
     }
 
@@ -33,6 +33,12 @@ public function __construct() {
         if ( empty( $data['amp_component_scripts']['amp-user-notification'] ) ) {
                 $data['amp_component_scripts']['amp-user-notification'] = 'https://cdn.ampproject.org/v0/amp-user-notification-0.1.js';
         }
+        if ( empty( $data['amp_component_scripts']['amp-ad'] ) ) {
+                $data['amp_component_scripts']['amp-ad'] = 'https://cdn.ampproject.org/v0/amp-ad-latest.js';
+        }
+        if ( empty( $data['amp_component_scripts']['amp-iframe'] ) ) {
+                $data['amp_component_scripts']['amp-iframe'] = 'https://cdn.ampproject.org/v0/amp-iframe-latest.js';
+        }
                 return $data;         
     }
     
@@ -40,6 +46,9 @@ public function __construct() {
         
          if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {
         $amp_ads_id = json_decode(get_transient('adsforwp_transient_amp_ids'), true);         
+        if(!empty($amp_ads_id)){
+          $amp_ads_id = array_unique($amp_ads_id);  
+        }       
         $nonce = wp_create_nonce('adsforwp_ajax_check_front_nonce');        
         $ad_impression_url = admin_url('admin-ajax.php?action=adsforwp_insert_ad_impression_amp&adsforwp_front_nonce='.$nonce.'&event=${eventId}');                              
         $ad_clicks_url = admin_url('admin-ajax.php?action=adsforwp_insert_ad_clicks_amp&adsforwp_front_nonce='.$nonce.'&event=${eventId}');                              

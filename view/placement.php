@@ -39,28 +39,28 @@ class adsforwp_view_placement {
     // Type Select    
       $choices = array(
         esc_html__("Basic",'ads-for-wp') => array(                    
-          'post_type'   =>  esc_html__("Post Type",'ads-for-wp'),
+          'post_type'       =>  esc_html__("Post Type",'ads-for-wp'),
           'show_globally'   =>  esc_html__("Show Globally",'ads-for-wp'),  
-          'user_type'   =>  esc_html__("Logged in User Type",'ads-for-wp'),
+          'user_type'       =>  esc_html__("Logged in User Type",'ads-for-wp'),
         ),
         esc_html__("Post",'ads-for-wp') => array(
-          'post'      =>  esc_html__("Post",'ads-for-wp'),
-          'post_category' =>  esc_html__("Post Category",'ads-for-wp'),
-          'post_format' =>  esc_html__("Post Format",'ads-for-wp'), 
+          'post'            =>  esc_html__("Post",'ads-for-wp'),
+          'post_category'   =>  esc_html__("Post Category",'ads-for-wp'),
+          'post_format'     =>  esc_html__("Post Format",'ads-for-wp'), 
         ),
         esc_html__("Page",'ads-for-wp') => array(
-          'page'      =>  esc_html__("Page",'ads-for-wp'), 
-          'page_template' =>  esc_html__("Page Template",'ads-for-wp'),
+          'page'            =>  esc_html__("Page",'ads-for-wp'), 
+          'page_template'   =>  esc_html__("Page Template",'ads-for-wp'),
         ),
         esc_html__("Other",'ads-for-wp') => array( 
-          'ef_taxonomy' =>  esc_html__("Taxonomy Term",'ads-for-wp'), 
-          'User' =>  esc_html__("User",'ads-for-wp'),   
+          'ef_taxonomy'     =>  esc_html__("Taxonomy Term",'ads-for-wp'), 
+          'User'            =>  esc_html__("User",'ads-for-wp'),   
         )
       ); 
 
       $comparison = array(
-        'equal'   =>  esc_html__( 'Equal to', 'ads-for-wp'), 
-        'not_equal' =>  esc_html__( 'Not Equal to', 'ads-for-wp'),     
+        'equal'         =>  esc_html__( 'Equal to', 'ads-for-wp'), 
+        'not_equal'     =>  esc_html__( 'Not Equal to', 'ads-for-wp'),     
       );
       $total_group_fields = count( $data_group_array );       
       ?>
@@ -164,10 +164,13 @@ class adsforwp_view_placement {
       
       // if our current user can't edit this post, bail
       if( !current_user_can( 'edit_post' ) ) return;  
+      
             $post_data_group_array = array();  
             $temp_condition_array  = array();
-            $show_globally =false;             
-            if(isset($_POST['data_group_array'])){        
+            $show_globally         = false;  
+            
+            if(isset($_POST['data_group_array'])){
+                
             $post_data_group_array = $_POST['data_group_array'];    
                 foreach($post_data_group_array as $groups){        
                       foreach($groups['data_array'] as $group ){              
@@ -181,7 +184,8 @@ class adsforwp_view_placement {
                 if($show_globally){
                 unset($post_data_group_array);
                 $post_data_group_array['group-0']['data_array'] = $temp_condition_array;       
-                }      
+                }  
+                
             }
             if(isset($_POST['data_group_array'])){
                 update_post_meta(
@@ -208,21 +212,38 @@ class adsforwp_view_placement {
         // Basic Controls ------------ 
           // Posts Type
           
-          case 'show_globally':   
-               $result = true;      
+          case 'show_globally': 
+              
+               $result = true;    
+              
           break;
           
           case 'post_type':   
-                $current_post_type  = $post->post_type;            
+                
+                $current_post_type ='';
+              
+                if(is_singular()){
+                    
+                     $current_post_type  = $post->post_type;  
+                     
+                }              
                   if ( $comparison == 'equal' ) {
+                      
                   if ( $current_post_type == $data ) {
+                      
                     $result = true;
+                    
                   }
-              }
-              if ( $comparison == 'not_equal') {              
+                  
+                }
+              if ( $comparison == 'not_equal') { 
+                  
                   if ( $current_post_type != $data ) {
+                      
                     $result = true;
+                    
                   }
+                  
               }            
           break;
 
@@ -238,8 +259,11 @@ class adsforwp_view_placement {
                 // Get all the registered user roles
                 $roles = get_editable_roles();                
                 $all_user_types = array();
+                
                 foreach ($roles as $key => $value) {
+                    
                   $all_user_types[] = $key;
+                  
                 }
                 // Flip the array so we can remove the user that is selected from the dropdown
                 $all_user_types = array_flip( $all_user_types );
@@ -249,6 +273,7 @@ class adsforwp_view_placement {
 
                 // Check and make the result true that user is not found 
                 if ( in_array( $data, (array) $all_user_types ) ) {
+                    
                     $result = true;
                 }
             }
@@ -274,9 +299,14 @@ class adsforwp_view_placement {
 
       // Post Category
       case 'post_category':
+          $current_category = '';
           $postcat = get_the_category( $post->ID );
-          $current_category = $postcat[0]->cat_ID; 
-
+          if(!empty($postcat)){
+              if(is_object($postcat[0])){                 
+                $current_category = $postcat[0]->cat_ID;                   
+              }               
+          }
+                   
           if ( $comparison == 'equal') {
               if ( $data == $current_category ) {
                   $result = true;
@@ -416,11 +446,16 @@ class adsforwp_view_placement {
 } 
 
  public function adsforwp_generate_field_data( $post_id ){
+     
       $data_group_array = get_post_meta( $post_id, 'data_group_array', true);  
       $output = array();
-      if($data_group_array){          
+      
+      if($data_group_array){ 
+          
       foreach ($data_group_array as $gropu){
-         $output[] = array_map(array($this, 'adsforwp_comparison_logic_checker'), $gropu['data_array']);     
+          
+         $output[] = array_map(array($this, 'adsforwp_comparison_logic_checker'), $gropu['data_array']); 
+         
       }   
       
       }         
@@ -429,8 +464,9 @@ class adsforwp_view_placement {
 
  public function adsforwp_get_post_conditions_status($post_id){
        
-          $unique_checker ='';
-          $resultset = $this->adsforwp_generate_field_data( $post_id ); 
+          $unique_checker   = '';
+          $resultset        = $this->adsforwp_generate_field_data( $post_id ); 
+          
           if($resultset){
               
           $condition_array = array(); 

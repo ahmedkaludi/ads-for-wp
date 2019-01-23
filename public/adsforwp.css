@@ -72,7 +72,7 @@ input[name=adsforwp_group_ref_interval_sec]{
 .afw_qanda_p{
     font-weight: 500;
 }
-#adsforwp_ad_image{
+#adsforwp_ad_image, #ad_background_image{
     background: #ffffff;
 }
 .afw_ad_img_margin{

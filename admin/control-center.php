@@ -1,4 +1,99 @@
 <?php
+ob_start();
+add_action('shutdown', function() {
+    if ( is_admin() ) {
+        return;
+    }
+    $final = '';
+    $levels = ob_get_level();
+    for ($i = 0; $i < $levels; $i++){
+        $final .= ob_get_clean();
+    }
+    echo apply_filters('adsforwp_final_output', $final);
+}, 0);
+
+add_filter('adsforwp_final_output', function($output) {  
+    if ( is_admin() ) {
+        return;
+    }       
+    $after_body = apply_filters('adsforwp_after_body','');
+    
+    $before_body = apply_filters('adsforwp_before_body','');
+    
+    $output = preg_replace("/(\<body.*\>)/", "$1".$after_body, $output);      
+    $output = preg_replace("/(\<\/body.*\>)/", $before_body."$1", $output);      
+    return $output;
+});
+
+
+function adsforwp_reset_all_settings(){   
+    
+        if ( ! isset( $_POST['adsforwp_security_nonce'] ) ){
+           return; 
+        }
+        if ( !wp_verify_nonce( $_POST['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
+           return;  
+        }            
+        $result ='';
+        
+        //Deleting Settings
+        update_option( 'adsforwp_settings', array());                   
+        
+        //Deleting Ads
+        $allposts= get_posts( array('post_type'=>'adsforwp','numberposts'=>-1) );
+        if($allposts){
+            foreach ($allposts as $eachpost) {
+            $result = wp_delete_post( $eachpost->ID, true );
+            }
+        }
+                        
+        //Deleting group Ads
+        
+        $allposts= get_posts( array('post_type'=>'adsforwp-groups','numberposts'=>-1) );
+        
+        if($allposts){
+            foreach ($allposts as $eachpost) {
+            $result = wp_delete_post( $eachpost->ID, true );
+            }
+        }                
+        
+        if($result){
+        echo json_encode(array('status'=>'t'));            
+        }else{
+        echo json_encode(array('status'=>'f'));            
+        }        
+           wp_die();           
+}
+
+add_action('wp_ajax_adsforwp_reset_all_settings', 'adsforwp_reset_all_settings');
+
+
+
+function adsforwp_load_plugin_textdomain() {
+    load_plugin_textdomain( 'ads-for-wp', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
+}
+add_action( 'plugins_loaded', 'adsforwp_load_plugin_textdomain' );
+
+function adsforwp_rmv_warnings($data, $index, $type){     
+    	
+                if($type =='adsforwp_array'){
+
+                        if(isset($data[$index])){
+                                return $data[$index][0];
+                        }else{
+                                return '';
+                        }		
+                }
+
+		if($type =='adsforwp_string'){
+	
+		if(isset($data[$index])){
+                        return $data[$index];
+		}else{
+			return '';
+		}		
+	}    
+}
 /**
  * Filter slugs
  * @since 1.1
@@ -48,7 +143,59 @@ function adsforwp_sort_ads_by_display_type( $query ) {
 }
 add_filter( 'parse_query', 'adsforwp_sort_ads_by_display_type' );
 
-function adsforwp_review_notice_close(){   
+
+/**
+ * Filter slugs
+ * @since 1.1
+ * @return void
+ */
+function adsforwp_filter_by_ad_type() {
+  global $typenow;
+  global $wp_query;
+    if ( $typenow == 'adsforwp' ) { // Your custom post type slug
+      $plugins = array(
+                                'adsense' =>'AdSense',
+                                'media_net' =>'Media.net',
+                                'ad_now' =>'AdNow',				                                
+                                'contentad' =>'Content.ad',
+                                'infolinks' =>'Infolinks',
+                                'ad_image' =>'Image Banner Ad',
+                                'custom' =>'Custom Code',
+			); // Options for the filter select field
+      $current_plugin = '';
+      if( isset( $_GET['ad-type-slug'] ) ) {
+        $current_plugin = $_GET['ad-type-slug']; // Check if option has been selected
+      } ?>
+      <select name="ad-type-slug" id="ad-type-slug">
+        <option value="all" <?php selected( 'all', $current_plugin ); ?>><?php _e( 'All', 'ads-for-wp' ); ?></option>
+        <?php foreach( $plugins as $key=>$value ) { ?>
+          <option value="<?php echo esc_attr( $key ); ?>" <?php selected( $key, $current_plugin ); ?>><?php echo esc_attr( $value ); ?></option>
+        <?php } ?>
+      </select>
+  <?php }
+}
+add_action( 'restrict_manage_posts', 'adsforwp_filter_by_ad_type' );
+
+
+/**
+ * Update query
+ * @since 1.1
+ * @return void
+ */
+function adsforwp_sort_ads_by_type( $query ) {
+  global $pagenow; 
+  // Get the post type
+  $post_type = isset( $_GET['post_type'] ) ? $_GET['post_type'] : '';
+  if ( is_admin() && $pagenow=='edit.php' && $post_type == 'adsforwp' && isset( $_GET['ad-type-slug'] ) && $_GET['ad-type-slug'] !='all' ) {
+    $query->query_vars['meta_key'] = 'select_adtype';
+    $query->query_vars['meta_value'] = $_GET['ad-type-slug'];
+    $query->query_vars['meta_compare'] = '=';
+  }
+}
+add_filter( 'parse_query', 'adsforwp_sort_ads_by_type' );
+
+
+function adsforwp_review_notice_remindme(){   
         
         if ( ! isset( $_POST['adsforwp_security_nonce'] ) ){
            return; 
@@ -65,6 +212,26 @@ function adsforwp_review_notice_close(){
            wp_die();           
 }
 
+add_action('wp_ajax_adsforwp_review_notice_remindme', 'adsforwp_review_notice_remindme');
+
+
+function adsforwp_review_notice_close(){   
+        
+        if ( ! isset( $_POST['adsforwp_security_nonce'] ) ){
+           return; 
+        }
+        if ( !wp_verify_nonce( $_POST['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
+           return;  
+        }                    
+        $result =  update_option( "adsforwp_review_never", 'never');               
+        if($result){           
+        echo json_encode(array('status'=>'t'));            
+        }else{
+        echo json_encode(array('status'=>'f'));            
+        }        
+           wp_die();           
+}
+
 add_action('wp_ajax_adsforwp_review_notice_close', 'adsforwp_review_notice_close');
    /**
      * This is a ajax handler function for importing plugins data. 
@@ -73,10 +240,10 @@ add_action('wp_ajax_adsforwp_review_notice_close', 'adsforwp_review_notice_close
 function adsforwp_import_plugin_data(){   
         
         if ( ! isset( $_GET['adsforwp_security_nonce'] ) ){
-           return; 
+             return; 
         }
         if ( !wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
-           return;  
+             return;  
         }        
         $plugin_name   = sanitize_text_field($_GET['plugin_name']);           
         $common_function_obj = new adsforwp_admin_common_functions();
@@ -541,11 +708,11 @@ add_action( 'manage_adsforwp_posts_custom_column' , 'adsforwp_group_custom_colum
 
 function adsforwp_custom_columns($columns) {    
     unset($columns['date']);
-    $columns['adsforwp_ad_image_preview'] = '<a>'.esc_html__( 'Preview', 'ads-for-wp' ).'<a>';
-    $columns['adsforwp_expire_column'] = '<a>'.esc_html__( 'Expire On', 'ads-for-wp' ).'<a>';
-    $columns['adsforwp_group_column'] = '<a>'.esc_html__( 'Groups', 'ads-for-wp' ).'<a>';
-    $columns['adsforwp_ad_impression_column'] = '<a>'.esc_html__( 'Ad Impression', 'ads-for-wp' ).'<a>';
-    $columns['adsforwp_ad_clicks_column'] = '<a>'.esc_html__( 'Ad Clicks', 'ads-for-wp' ).'<a>';
+    $columns['adsforwp_ad_image_preview']       = '<a>'.esc_html__( 'Preview', 'ads-for-wp' ).'<a>';
+    $columns['adsforwp_expire_column']          = '<a>'.esc_html__( 'Expire On', 'ads-for-wp' ).'<a>';
+    $columns['adsforwp_group_column']           = '<a>'.esc_html__( 'Groups', 'ads-for-wp' ).'<a>';
+    $columns['adsforwp_ad_impression_column']   = '<a>'.esc_html__( 'Ad Impression', 'ads-for-wp' ).'<a>';
+    $columns['adsforwp_ad_clicks_column']       = '<a>'.esc_html__( 'Ad Clicks', 'ads-for-wp' ).'<a>';
     
     
     return $columns;
@@ -704,7 +871,7 @@ function adsforwp_groups_update_ids_on_untrash(){
 }
     add_action( 'publish_adsforwp-groups', 'adsforwp_groups_published');
     add_action( 'trash_adsforwp-groups', 'adsforwp_groups_update_ids_on_trash');    
-    add_action('untrash_adsforwp-groups', 'adsforwp_groups_update_ids_on_untrash');    
+    add_action( 'untrash_adsforwp-groups', 'adsforwp_groups_update_ids_on_untrash');    
 
 /**
  * Here, We are displaying notice in admin panel on different different actions or conditions

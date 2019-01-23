@@ -1,9 +1,11 @@
 <?php
 class adsforwp_view_visitor_condition {
     
- public function __construct() {                                                                                                     
+ public function __construct() {    
+     
 		add_action( 'add_meta_boxes', array( $this, 'adsforwp_visitor_condition_add_meta_box' ) );
 		add_action( 'save_post', array( $this, 'adsforwp_visitor_condition_save' ) );
+                
 	}
         
  public function adsforwp_visitor_condition_add_meta_box() {
@@ -20,8 +22,9 @@ class adsforwp_view_visitor_condition {
  public function adsforwp_visitor_condition_callback( $post) {   
      
             $visitor_condition_enable = get_post_meta($post->ID, $key='adsforwp_v_condition_enable', true);            
-            $visitor_conditions_array =  esc_sql ( get_post_meta($post->ID, 'visitor_conditions_array', true)  );                             
+            $visitor_conditions_array = esc_sql ( get_post_meta($post->ID, 'visitor_conditions_array', true)  );                             
             $visitor_conditions_array = is_array($visitor_conditions_array)? array_values($visitor_conditions_array): array();      
+            
             if ( empty( $visitor_conditions_array ) ) {
             
                        $visitor_conditions_array[0] =array(
@@ -33,7 +36,8 @@ class adsforwp_view_visitor_condition {
                                     )
                        )               
                    );
-            }            
+            }   
+            
     //security check
     wp_nonce_field( 'adsforwp_visitor_condition_action_nonce', 'adsforwp_visitor_condition_name_nonce' );?>
 
@@ -41,20 +45,21 @@ class adsforwp_view_visitor_condition {
     // Type Select    
       $choices = array(
         esc_html__("Basic",'ads-for-wp') => array(                               
-          'device'   =>  esc_html__("Device Type",'ads-for-wp'),           
-          'browser_language'   =>  esc_html__("Language Of The Browser",'ads-for-wp'),  
+          'device'              =>  esc_html__("Device Type",'ads-for-wp'),           
+          'browser_language'    =>  esc_html__("Language Of The Browser",'ads-for-wp'),  
           'logged_in_visitor'   =>  esc_html__("Logged In",'ads-for-wp'),
-          'user_agent'   =>  esc_html__("User Agent",'ads-for-wp'),  
-          'user_type'   =>  esc_html__("User Permission",'ads-for-wp'),
-          'referrer_url'   =>  esc_html__("Referring URL",'ads-for-wp'),
-          'url_parameter'   =>  esc_html__("URL Parameter",'ads-for-wp'),
-          'geo_location'   =>  esc_html__("Country",'ads-for-wp'),  
+          'user_agent'          =>  esc_html__("User Agent",'ads-for-wp'),  
+          'user_type'           =>  esc_html__("User Permission",'ads-for-wp'),
+          'referrer_url'        =>  esc_html__("Referring URL",'ads-for-wp'),
+          'url_parameter'       =>  esc_html__("URL Parameter",'ads-for-wp'),
+          'geo_location'        =>  esc_html__("Country",'ads-for-wp'),
+          'cookie'              =>  esc_html__("Cookie",'ads-for-wp'), 
         )        
       ); 
 
       $comparison = array(
-        'equal'   =>  esc_html__( 'Equal to', 'ads-for-wp'), 
-        'not_equal' =>  esc_html__( 'Not Equal to', 'ads-for-wp'),     
+        'equal'         =>  esc_html__( 'Equal to', 'ads-for-wp'), 
+        'not_equal'     =>  esc_html__( 'Not Equal to', 'ads-for-wp'),     
       );
       $total_group_fields = count( $visitor_conditions_array );       
       ?>
@@ -217,7 +222,8 @@ class adsforwp_view_visitor_condition {
 
         switch ($type) {
                    
-          case 'device':                      
+          case 'device':
+              
                     $device_name  = 'desktop'; 
                     if(wp_is_mobile()){
                     $device_name  = 'mobile';                
@@ -271,31 +277,36 @@ class adsforwp_view_visitor_condition {
           
           case 'geo_location':     
                    $country_code =''; 
-                   $search_key   ='';
+                   $saved_ip   ='';
                    $user_ip = $this->adsforwp_get_client_ip();    
                    
-                   $saved_ip_list = get_option('adsforwp_ip_list');                     
-                   $search_key = array_search($user_ip, $saved_ip_list['ip']);                    
-                   if(!empty($search_key)|| $search_key !=0){  
-                       
-                    $country_code =$saved_ip_list['country_code3'][$search_key];  
+                   $saved_ip_list = array();
+				   
+                    if(isset($_COOKIE['adsforwp-user-info'])){
+                         $saved_ip_list = $_COOKIE['adsforwp-user-info']; 
+                         $saved_ip = $saved_ip_list[0];					
+                    }						
+                   
+                   if(!empty($saved_ip_list) && $saved_ip == $user_ip){  
+				   
+                    $country_code = $saved_ip_list[1];  
                     
                    }else{
                      
                     $settings = adsforwp_defaultSettings();  
                     if(isset($settings['adsforwp_geolocation_api']) && $settings['adsforwp_geolocation_api'] !=''){
                     
-                    $geo_location_data = file_get_contents('https://api.ipgeolocation.io/ipgeo?apiKey='.$settings['adsforwp_geolocation_api']);                                                            
-                    $geo_location_arr = json_decode($geo_location_data, true);  
+                    $geo_location_data = wp_remote_get('https://api.ipgeolocation.io/ipgeo?apiKey='.$settings['adsforwp_geolocation_api'].'&ip='.$user_ip )	;	
+											
+                    $geo_location_arr = json_decode($geo_location_data['body'], true);				    
                     $country_code = $geo_location_arr['country_code3'];                   
-                    $saved_ip_list['ip'][] = $geo_location_arr['ip'];
-                    $saved_ip_list['country_code3'][] = $geo_location_arr['country_code3'];                  
-                    update_option('adsforwp_ip_list', $saved_ip_list);
-                    
+                                       
+                    setcookie('adsforwp-user-info[0]', $geo_location_arr['ip'], time() + (86400 * 60), "/"); 
+                    setcookie('adsforwp-user-info[1]', $geo_location_arr['country_code3'], time() + (86400 * 60), "/"); 
+										                   
                     }   
                                         
-                   }                                                                           
-                   
+                   }                                                                                              
                     if ( $comparison == 'equal' ) {
                           if ( $country_code == $data ) {
                             $result = true;
@@ -320,6 +331,62 @@ class adsforwp_view_visitor_condition {
                           $result = true;
                         }
                     }            
+          break;
+          
+          case 'cookie':          
+              
+              $cookie_arr = $_COOKIE;              
+              if($data ==''){
+                  
+               if ( $comparison == 'equal' ) {
+                if ( isset($cookie_arr) ) {
+                  $result = true;
+                }
+                }
+                if ( $comparison == 'not_equal') {              
+                    if ( !isset($cookie_arr) ) {
+                      $result = true;
+                    }
+                }   
+                  
+              }else{
+                  
+                if ( $comparison == 'equal' ) {
+                
+                    if($cookie_arr){
+                    
+                        foreach($cookie_arr as $arr){
+                        
+                        if($arr == $data){
+                            $result = true;
+                             break;
+                        }
+                      }
+                        
+                    }
+                                                            
+                }
+                if ( $comparison == 'not_equal') {
+                    
+                    if(isset($cookie_arr)){
+                    
+                        foreach($cookie_arr as $arr){
+                        
+                        if($arr != $data){
+                            $result = true;
+                             break;
+                        }
+                        
+                      }
+                        
+                    }
+                                                           
+                } 
+                                                      
+              }
+              
+              
+              
           break;
           
            case 'logged_in_visitor': 

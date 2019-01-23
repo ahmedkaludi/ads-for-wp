@@ -53,4 +53,26 @@
   transform: rotate(-45deg);
 }
 
+.adsforwp-bg-ad{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat; 
+    background-size: cover;
+ }
+.adsforwp-bg-content{
+    z-index: 1;
+    margin: auto;
+    position: absolute;
+    top: 0; 
+    left: auto; 
+    bottom: 0; 
+    right: auto;
+    margin: 0px 16%;
+ }
+
+
         

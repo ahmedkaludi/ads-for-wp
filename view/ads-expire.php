@@ -115,7 +115,7 @@ class adsforwp_view_expiredate {
                                         
                                         case 'adsforwp_ad_expire_days':                                               
                                             $input = sprintf(
-						'<select multiple id="%s" name="%s[]" style="height:146px;">',
+						'<select multiple id="%s" name="%s[]" style="height:146px; width:auto;">',
 						$meta_field['id'],
 						$meta_field['id']
                                                     

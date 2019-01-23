@@ -232,7 +232,7 @@ class adsforwp_view_ad_groups {
                                             break;
 
                                         default:
-                                             if(isset($meta_field['attributes'])){
+                                            if(isset($meta_field['attributes'])){
                                             foreach ( $meta_field['attributes'] as $key => $value ) {                                    
                                             $attributes .=  $key."=".'"'.$value.'"'.' ';                                        
                                             }

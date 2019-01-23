@@ -2,13 +2,12 @@
 class adsforwp_ajax_selectbox{
     
 public function __construct() {
+    
       add_action('wp_ajax_adsforwp_create_ajax_select_box',array($this,'adsforwp_ajax_select_creator')); 
-      add_action('wp_ajax_adsforwp_ajax_select_taxonomy',array($this,'adsforwp_create_ajax_select_taxonomy'));
-      
+      add_action('wp_ajax_adsforwp_ajax_select_taxonomy',array($this,'adsforwp_create_ajax_select_taxonomy'));      
       add_action('wp_ajax_adsforwp_visitor_condition_type_values',array($this,'adsforwp_visitor_condition_type_values'));
 }
     
-
 public function adsforwp_post_type_generator(){
 
     $post_types = '';
@@ -339,6 +338,7 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
             break; 
         
           case "user_type" :
+              
            global $wp_roles;
             $choices = $wp_roles->get_names();
 
@@ -431,8 +431,19 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
     
         $choices = $choices; 
    
-        if($options['param'] == 'url_parameter') {
-            $output = '<input type="text" placeholder="'.esc_html__('blog', 'ads-for-wp').'" class="widefat adsforwp-url-parameter" value="'.esc_attr($saved_data).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_3]">'; 
+        if($options['param'] == 'url_parameter'  || $options['param'] == 'cookie') {
+            
+            if($options['param'] == 'url_parameter'){
+            
+                $output = '<input type="text" placeholder="'.esc_html__('blog', 'ads-for-wp').'" class="widefat adsforwp-url-parameter" value="'.esc_attr($saved_data).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_3]">';                 
+            }
+            
+            if($options['param'] == 'cookie'){
+            
+                $output = '<div class="adsforwp-cookie-value"><input type="text" placeholder="'.esc_html__('Cookie Value', 'ads-for-wp').'" class="widefat " value="'.esc_attr($saved_data).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_3]">'
+                        . '<p>Leave empty to check if cookie is set</p></div>';                 
+            }
+                                    
         }else{
            if ( empty( $choices)) {
           $choices = array('none' => esc_html__('No Items', 'ads-for-wp') );
@@ -452,7 +463,7 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
         
           $output .= ' </select> '; 
           
-          if(!isset($adsforwp_settings['adsforwp_geolocation_api']) && $adsforwp_settings['adsforwp_geolocation_api'] =='' && $options['param'] == 'geo_location'){
+          if(adsforwp_rmv_warnings($adsforwp_settings, 'adsforwp_geolocation_api', 'adsforwp_string') =='' && $options['param'] == 'geo_location'){
             $output .= '<div class="adsforwp-user-targeting-note">'.esc_html__('To use this condition, provide', 'ads-for-wp').' <strong>'.esc_html__('IP Geolocation API', 'ads-for-wp').'</strong> '.esc_html__('in advanced settings', 'ads-for-wp').'</div>';   
           }
                                   
@@ -665,6 +676,7 @@ public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $curre
             break;
 
           case "user_type" :
+              
            global $wp_roles;
             $choices = $wp_roles->get_names();
 
@@ -688,7 +700,9 @@ public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $curre
 
     // Add None if no elements found in the current selected items
     if ( empty( $choices) ) {
+        
       $choices = array('none' => esc_html__('No Items', 'ads-for-wp') );
+      
     }
      //  echo $current_number;
     // echo $saved_data;
@@ -737,6 +751,7 @@ public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $curre
  * @return type
  */
 public function adsforwp_post_taxonomy_generator(){
+    
     $taxonomies = '';  
     $choices    = array();
     $taxonomies = get_taxonomies( array('public' => true), 'objects' );
@@ -762,6 +777,7 @@ public function adsforwp_post_taxonomy_generator(){
  * @param type $current_number
  */
 public function adsforwp_create_ajax_select_taxonomy($selectedParentValue = '',$selectedValue='', $current_number ='', $current_group_number  = ''){
+    
     $is_ajax = false;
     if( $_SERVER['REQUEST_METHOD']=='POST'){
         $is_ajax = true;

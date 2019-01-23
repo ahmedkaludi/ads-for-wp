@@ -182,7 +182,8 @@ jQuery( document ).ready(function($) {
 		
 		parent.find(".adsforwp-visitor-condition-ajax-output").remove();
                 parent.find(".adsforwp_user_agent_custom").remove();
-                parent.find(".adsforwp-url-parameter").remove();                
+                parent.find(".adsforwp-url-parameter").remove(); 
+                parent.find(".adsforwp-cookie-value").remove(); 
                 parent.find(".adsforwp_url_custom").remove();
                 parent.find(".adsforwp-user-targeting-note").remove();
 		//parent.find(".afw-ajax-output-child").remove();
@@ -465,7 +466,7 @@ jQuery( document ).ready(function($) {
                   $("#custom_code").attr("required",false);  
                   $(".afw_pointer").show();
                   $(".afw_pointer").attr("id", "afw_"+optionValue+"_pointer");
-                      
+                  $("#adsforwp-location").show();    
                   switch (optionValue) {
 
                     case "custom":
@@ -487,6 +488,7 @@ jQuery( document ).ready(function($) {
                               break;
                           case "adsense_auto_ads":
                                 $("#display-metabox").hide();
+                                $("#adsforwp-location").hide();   
                                 $("#adsforwp_visitor_condition_metabox").hide();
                                 $("#data_client_id").parent().parent("tr").show();                                
                                 $("#data_client_id").attr("required",true);                               
@@ -535,7 +537,19 @@ jQuery( document ).ready(function($) {
                       $("#adsforwp_ad_image").attr("required",true); 
                       $("#adsforwp_ad_image").attr("readonly",true);                      
                       $("#adsforwp_ad_image, #adsforwp_ad_redirect_url, #adsforwp_ad_responsive").parent().parent("tr").show();                                                                                                
-                        break 
+                        break
+                    
+                    case "ad_background":
+                                                        
+                      $("#display-metabox").hide();
+                      $("#adsforwp-location").hide();
+                      $("#adsforwp_visitor_condition_metabox").show();
+                      $("#ad_background_image").attr("required",true); 
+                      $("#ad_background_image").attr("readonly",true);                      
+                      $("#ad_background_image, #ad_background_redirect_url").parent().parent("tr").show();  
+                      $("#ad_background_image").parent().parent().parent("tr").show();  
+                        break
+                    
                     case "ad_now":
                       $("#display-metabox").show();
                       $("#adsforwp_visitor_condition_metabox").show();
@@ -571,6 +585,7 @@ jQuery( document ).ready(function($) {
                     $("#banner_size, #data_client_id, #data_ad_slot, #adsforwp_ad_responsive").parent().parent("tr").show();
                     $("#banner_size, #data_client_id, #data_ad_slot").attr("required",true);                    
                     $("#display-metabox").show();
+                    $("#adsforwp-location").show(); 
                     $("#adsforwp_visitor_condition_metabox").show();
                     $(".afw-select-post-type option[value=post_type]").attr("selected", "selected");
                             var tdindex = [1,2,3,4]; 
@@ -585,6 +600,7 @@ jQuery( document ).ready(function($) {
                                 $(".afw-select-post-type").closest('tr').find('td').eq(e).hide();  
                              }); 
                    $("#display-metabox").hide();
+                   $("#adsforwp-location").hide();   
                    $("#adsforwp_visitor_condition_metabox").hide();
                    $("#data_client_id").parent().parent("tr").show();
                    $("#banner_size, #data_ad_slot, #adsforwp_ad_responsive").parent().parent("tr").hide();
@@ -750,7 +766,7 @@ jQuery( document ).ready(function($) {
      $("#wheretodisplayamp").change(function(){        
       $(this).find("option:selected").each(function(){  
           var optionValue = $(this).attr("value");                           
-              if("ads_in_loops" === optionValue){
+              if("adsforwp_ads_in_loops" === optionValue){
           	$(".adsforwp-how-many-post").show();
               }else{
                $(".adsforwp-how-many-post").hide();   
@@ -900,6 +916,25 @@ jQuery( document ).ready(function($) {
     
 });
 
+$(".adsforwp-feedback-notice-remindme").on("click", function(e){
+      e.preventDefault();               
+                $.ajax({
+                    type: "POST",    
+                    url:adsforwp_localize_data.ajax_url,                    
+                    dataType: "json",
+                    data:{action:"adsforwp_review_notice_remindme", adsforwp_security_nonce:adsforwp_localize_data.adsforwp_security_nonce},
+                    success:function(response){                       
+                      if(response['status'] =='t'){
+                       $(".adsforwp-feedback-notice").hide();
+                      }
+                    },
+                    error: function(response){                    
+                    console.log(response);
+                    }
+                    });
+    
+});
+
     $(".adsforwp-import-plugins").on("click", function(e){
             e.preventDefault(); 
             var current_selection = $(this);
@@ -971,9 +1006,53 @@ jQuery( document ).ready(function($) {
     });
     
     
+    $(document).on("click", "input[media-id=media]" ,function(e) {	// Application Icon upload
+		e.preventDefault();
+                var button = $(this);
+                var id = button.attr('id').replace('_button', '');                
+		var saswpMediaUploader = wp.media({
+			title: "Application Icon",
+			button: {
+				text: "Select Icon"
+			},
+			multiple: false,  // Set this to true to allow multiple files to be selected
+                        library:{type : 'image'}
+		})
+		.on("select", function() {
+			var attachment = saswpMediaUploader.state().get('selection').first().toJSON();                            
+			
+                         $("#"+id).val(attachment.url);
+                         $("input[data-id='"+id+"_id']").val(attachment.id);
+                         $("input[data-id='"+id+"_height']").val(attachment.height);
+                         $("input[data-id='"+id+"_width']").val(attachment.width);
+                         $("input[data-id='"+id+"_thumbnail']").val(attachment.url);
+                         $(".afw_ad_img_div").html('<div class="afw_ad_thumbnail"><img class="afw_ad_image_prev" src="'+attachment.url+'"/><a href="#" class="afw_ad_prev_close">X</a></div>');
+		})
+		.open();
+	});
     
-    
-
+    $(document).on("click",".adsforwp-reset-data", function(e){
+                e.preventDefault();
+             
+                var ads_confirm = confirm("Are you sure?");
+             
+                if(ads_confirm == true){
+                    
+                $.ajax({
+                            type: "POST",    
+                            url:ajaxurl,                    
+                            dataType: "json",
+                            data:{action:"adsforwp_reset_all_settings", adsforwp_security_nonce:adsforwp_localize_data.adsforwp_security_nonce},
+                            success:function(response){                               
+                                setTimeout(function(){ location.reload(); }, 1000);
+                            },
+                            error: function(response){                    
+                            console.log(response);
+                            }
+                            });                 
+                }                                                                 
+        });
+              
     if(adsforwp_localize_data.post_type === "adsforwp-groups" || adsforwp_localize_data.post_type === "adsforwp"){
         $("#wp-admin-bar-view").hide();
     }

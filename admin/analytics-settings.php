@@ -2,6 +2,7 @@
 class adsforwp_admin_analytics_settings{
             
 public function __construct() {
+    
         add_action( 'admin_enqueue_scripts', array($this, 'adsforwp_chart_register_scripts') );
         add_action( 'admin_menu', array($this, 'adsforwp_add_analytics_menu_links'),20);
                 
@@ -11,9 +12,13 @@ public function adsforwp_add_analytics_menu_links() {
                
         $settingsLink = null;
         $adsforwp_google_token = get_option( 'adsforwp_google_token' );
+        
         if (! $adsforwp_google_token ) {
-            $settingsLink = 'edit.php?post_type=adsforwp';    
+            
+            $settingsLink = 'edit.php?post_type=adsforwp';  
+            
         }else{
+            
              add_submenu_page( 'edit.php?post_type=adsforwp',
                 esc_html__( 'Ads for wp', 'ads-for-wp' ),
                 esc_html__( 'Analytics', 'ads-for-wp' ),

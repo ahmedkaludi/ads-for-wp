@@ -37,21 +37,30 @@ class Adsforwp_Ads_Widget extends WP_Widget {
                                 
                 $common_function_obj = new adsforwp_admin_common_functions();
                 $all_ads = $common_function_obj->adsforwp_fetch_all_ads();
-                $all_groups = $common_function_obj->adsforwp_fetch_all_groups();                                                 
+                $all_groups = $common_function_obj->adsforwp_fetch_all_groups();   
+                
                 foreach($all_ads as $ad){
+                    
                     if($ad->ID == $instance['ads']){   
+                        
                             $output_function_obj = new adsforwp_output_functions();
                             $ad_code =  $output_function_obj->adsforwp_get_ad_code($instance['ads'], $type="AD");          
-                            echo $ad_code;                                        
-                    }     
+                            echo $ad_code;    
+                            
+                    }   
+                    
                 }
                 foreach($all_groups as $group){
+                    
                  if($group->ID == $instance['ads']){   
+                     
                         $output_function_obj = new adsforwp_output_functions();
                         $widget = 'widget';
                         $ad_code =  $output_function_obj->adsforwp_group_ads($atts=null, $instance['ads'], $widget);                   
-                        echo $ad_code;                        
-                }    
+                        echo $ad_code;     
+                        
+                }  
+                
                 }
                 echo html_entity_decode(esc_attr($args['after_widget']));		
 	}
@@ -64,6 +73,7 @@ class Adsforwp_Ads_Widget extends WP_Widget {
 	 * @param array $instance Previously saved values from database.
 	 */
 	public function form( $instance ) {
+            
 		$title = ! empty( $instance['title'] ) ? $instance['title'] : esc_html__( 'Ad title or group title', 'ads-for-wp' );
                 $ads = ! empty( $instance['ads'] ) ? $instance['ads'] : esc_html__( 'ads list to be display', 'ads-for-wp' );                                
                 
@@ -92,12 +102,17 @@ class Adsforwp_Ads_Widget extends WP_Widget {
                  $all_groups = $common_function_obj->adsforwp_fetch_all_groups();
                  
                  foreach($all_ads as $ad){
+                     
                      $ads_select_html .='<option '. esc_attr(selected( $ads, $ad->ID, false)).' value="'.esc_attr($ad->ID).'">'.esc_html__($ad->post_title, 'ads-for-wp').'</option>';
+                     
                  }
                  foreach($all_groups as $group){
+                     
                      $group_select_html .='<option '. esc_attr(selected( $ads, $group->ID, false)).' value="'.esc_attr($group->ID).'">'.esc_html__($group->post_title, 'ads-for-wp').'</option>';
+                     
                  }
                  $allow_html = $common_function_obj->adsforwp_expanded_allowed_tags();
+                 
                  echo '<select id="'.esc_attr( $this->get_field_id( 'ads' )).'" name="'.esc_attr( $this->get_field_name( 'ads' )).'">'
                          . '<optgroup label="Groups">'
                          . wp_kses($group_select_html, $allow_html)
