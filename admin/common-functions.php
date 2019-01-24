@@ -1067,6 +1067,10 @@ class adsforwp_admin_common_functions {
                     'data-block-id'  => array(),
                     'data-html-access-allowed'  => array(),
             );
+             $my_allowed['amp-pixel'] = array(                    
+                    'src'     => array(),
+                    'layout'  => array(),                    
+            );
              $my_allowed['amp-embed'] = array(
                     'class' => array(),
                     'width'    => array(),

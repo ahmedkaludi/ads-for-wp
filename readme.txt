@@ -2,7 +2,7 @@
 Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
 Tags: Ads, Advanced Ads, Ad Inserter, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
-Tested up to: 5.0.1
+Tested up to: 5.0.2
 Stable tag: 1.2
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later

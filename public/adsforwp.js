@@ -673,16 +673,16 @@ jQuery( document ).ready(function($) {
                      
                     }
                     $("#adposition").parent().parent("tr").show();                    
-                    $(".afw_ads_margin_field").parent().parent("tr").show();
+                    $(".afw_ad_align_field").parent().parent("tr").show();
                     break;
                 case "ad_shortcode":
                     $("#manual_ads_type").parent().parent("tr").show();                   
                     break
                 case "after_the_content":                      
-                    $(".afw_ads_margin_field").parent().parent("tr").show();
+                    $(".afw_ad_align_field").parent().parent("tr").show();
                     break;
                 case "before_the_content":                      
-                    $(".afw_ads_margin_field").parent().parent("tr").show();
+                    $(".afw_ad_align_field").parent().parent("tr").show();
                     break;     
                 case "custom_target":                      
                    $(".afw_ad_img_margin").parent().parent("tr").hide();
