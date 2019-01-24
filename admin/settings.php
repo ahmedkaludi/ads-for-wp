@@ -126,6 +126,15 @@ public function adsforwp_settings_init(){
                             'adsforwp_general_section',							// Page slug
                             'adsforwp_general_section'							// Settings Section ID
                     );
+                
+                add_settings_section('adsforwp_general_section', 'Settings', '__return_false', 'adsforwp_general_section');		              
+                    add_settings_field(
+                            'adsforwp_ad_performance_tracking',								// ID
+                            'Ad Performance Tracking',			// Title
+                             array($this, 'adsforwp_ad_performance_tracking_callback'),					// Callback
+                            'adsforwp_general_section',							// Page slug
+                            'adsforwp_general_section'							// Settings Section ID
+                    );    
                     
                 add_settings_section('adsforwp_general_section', 'Settings', '__return_false', 'adsforwp_general_section');		              
                     add_settings_field(
@@ -288,6 +297,27 @@ public function adsforwp_ad_blocker_support_callback(){
 	<?php
         
 }
+public function adsforwp_ad_performance_tracking_callback(){
+	        
+	$settings = adsforwp_defaultSettings();           
+        ?>	
+	<fieldset>
+            <?php
+          
+            if(isset($settings['ad_performance_tracker'])){
+                echo '<input type="checkbox" name="adsforwp_settings[ad_performance_tracker]" class="regular-text" value="1" checked> ';
+            }else{
+                echo '<input type="checkbox" name="adsforwp_settings[ad_performance_tracker]" class="regular-text" value="1" >';
+            }
+           
+            ?>
+		
+	</fieldset>
+
+	<?php
+        
+}
+
 public function adsforwp_ad_revenue_sharing_callback(){	        
 	$settings = adsforwp_defaultSettings();   
         

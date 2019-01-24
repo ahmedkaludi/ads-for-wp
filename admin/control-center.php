@@ -748,11 +748,21 @@ add_action( 'admin_init', 'adsforwp_removing_wysiwig' );
  *	 REGISTER ALL NON-ADMIN SCRIPTS
  */
 function adsforwp_frontend_enqueue(){
+    
+        $settings = adsforwp_defaultSettings();
+                   
         wp_register_script('adsforwp-ads-front-js', ADSFORWP_PLUGIN_DIR_URI . 'public/ads-front.js', array( 'jquery' ), ADSFORWP_VERSION, true);
         $object_name = array(
             'ajax_url' => admin_url( 'admin-ajax.php' ), 
             'adsforwp_front_nonce'   => wp_create_nonce('adsforwp_ajax_check_front_nonce')
         );
+        
+        if(isset($settings['ad_performance_tracker'])){
+            
+           $object_name['ad_performance_tracker'] = $settings['ad_performance_tracker'];
+            
+        }
+        
         wp_localize_script('adsforwp-ads-front-js', 'adsforwp_obj', $object_name);
         wp_enqueue_script('adsforwp-ads-front-js');
         

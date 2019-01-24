@@ -139,7 +139,8 @@ jQuery( document ).ready(function($) {
                 return device;
         }
         
-    
+      if(adsforwp_obj.ad_performance_tracker == 1){
+        
         setTimeout(function(){   
             
         var device_name = adsforwp_detect_device();    
@@ -173,8 +174,8 @@ jQuery( document ).ready(function($) {
 		   });  
              }         
         });
-    
-      //Detecting click event on iframe based ads
+                
+        //Detecting click event on iframe based ads
          window.addEventListener('blur',function(){		
 	    if (document.activeElement instanceof HTMLIFrameElement) {
                 var data = $(this);                   
@@ -195,6 +196,9 @@ jQuery( document ).ready(function($) {
                    }
 	       }
 	  });
+        
+      }
+                                  
     //Analytics js ends here
     
     //Sticky Ads script starts here

@@ -44,7 +44,11 @@ public function __construct() {
     
     public function adsforwp_add_analytics_amp_tags(){
         
-         if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {
+        $settings = adsforwp_defaultSettings();
+        
+        if(isset($settings['ad_performance_tracker'])){
+         
+            if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {
         $amp_ads_id = json_decode(get_transient('adsforwp_transient_amp_ids'), true);         
         if(!empty($amp_ads_id)){
           $amp_ads_id = array_unique($amp_ads_id);  
@@ -100,10 +104,12 @@ public function __construct() {
                               </amp-analytics>';                        
             
            }   
-        }                   
+         }                   
           echo $ad_impression_script; 
           echo $ad_clicks_script;
          }
+            
+        }                                           
          
     }
     
