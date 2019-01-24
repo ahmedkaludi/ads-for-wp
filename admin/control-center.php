@@ -839,7 +839,7 @@ function adsforwp_update_ids_on_untrash(){
 }
     add_action( 'publish_adsforwp', 'adsforwp_published');
     add_action( 'trash_adsforwp', 'adsforwp_update_ids_on_trash');    
-    add_action('untrash_adsforwp', 'adsforwp_update_ids_on_untrash');
+    add_action( 'untrash_adsforwp', 'adsforwp_update_ids_on_untrash');
     
 /*
  *      Storing and updating all groups post ids in transient on different actions 

@@ -209,7 +209,9 @@ class adsforwp_view_ads_type {
 			$label = '<label for="' . $meta_field['id'] . '">' . esc_html__( $label, 'ads-for-wp' ) . '</label>';
 			$meta_value = get_post_meta( $post->ID, $meta_field['id'], true );
 			if ( empty( $meta_value ) ) {
-				$meta_value = isset($meta_field['default']); }
+				$meta_value = isset($meta_field['default']); 
+                                
+                        }
 			switch ( $meta_field['type'] ) {
 				case 'select':                                                                        
                     

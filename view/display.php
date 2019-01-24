@@ -241,7 +241,7 @@ class adsforwp_view_display {
                                         
                                         switch ($meta_field['id']) {
                                             case 'adsforwp_ad_align':
-                                                $input = '<fieldset class="afw_ads_margin_field">';
+                                                $input = '<fieldset class="afw_ad_align_field">';
 					$input .= '<legend class="screen-reader-text">' . isset($meta_field['label']) . '</legend>';
 					$i = 0;
 					foreach ( $meta_field['options'] as $key => $value ) {
