@@ -57,7 +57,7 @@ Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp).
 = 1.3 (30 January 2019) =
 * Added: Sticky ad support for adsense (Only AMP)
 * Added: Doubleclick (DFP) ad support for AMP and NON AMP 
-* Added: Ad Inserter Plugin ( https://wordpress.org/plugins/ad-inserter/ ) importer. It will import all block ads to adsforwp (Note: Ad Inserter Plugin which is available on wordpress.org)
+* Added: Ad Inserter Plugin ( https://wordpress.org/plugins/ad-inserter/ ) importer. It will import all block ads to ads-for-wp (Note: Ad Inserter Plugin which is available on wordpress.org)
 * Added: AD Performance Tracking Option ( Users can choose whether they want to track ads impressions and clicks or not)
 * Bug Fixed: Normal adsense ad shows responsive even when the responsive option is disabled #135
 
