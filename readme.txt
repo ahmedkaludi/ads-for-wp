@@ -3,7 +3,7 @@ Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
 Tags: Ads, Advanced Ads, Ad Inserter, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
 Tested up to: 5.0.2
-Stable tag: 1.2
+Stable tag: 1.3
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -53,6 +53,13 @@ Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp).
 
 
 == Changelog ==
+
+= 1.3 (30 January 2019) =
+* Added: Sticky ad support for adsense (Only AMP)
+* Added: Doubleclick (DFP) ad support for AMP and NON AMP 
+* Added: Ad Inserter Plugin ( https://wordpress.org/plugins/ad-inserter/ ) importer. It will import all block ads to adsforwp (Note: Ad Inserter Plugin which is available on wordpress.org)
+* Added: AD Performance Tracking Option ( Users can choose whether they want to track ads impressions and clicks or not)
+* Bug Fixed: Normal adsense ad shows responsive even when the responsive option is disabled #135
 
 = 1.2 (17 January 2019) =
 * New Feature: Background Ad Type
