@@ -134,7 +134,7 @@ class adsforwp_output_amp_condition_display{
         if(intval($in_between) == $count){
             
          $output_function = new adsforwp_output_functions();
-         $ad_code = $output_function->adsforwp_group_ads($atts=null, $group_id, $widget);  
+         $ad_code         = $output_function->adsforwp_group_ads($atts=null, $group_id, $widget);  
          
         }   
         
@@ -149,10 +149,11 @@ class adsforwp_output_amp_condition_display{
      */
     public function adsforwp_amp_condition_ad_code($condition, $count=null){               
         //For Ads
-        $post_ad_id_list = json_decode(get_transient('adsforwp_transient_ads_ids'), true);        
+        $post_ad_id_list = json_decode(get_transient('adsforwp_transient_ads_ids'), true);    
+        
         if($post_ad_id_list){
             
-            $output_function = new adsforwp_output_functions();
+            $output_function     = new adsforwp_output_functions();
             $common_function_obj = new adsforwp_admin_common_functions();
             
             echo '<div class="amp-ad-wrapper">';
@@ -182,7 +183,8 @@ class adsforwp_output_amp_condition_display{
             echo '</div>';
         }
         //For Group Ads
-        $post_group_id_list = json_decode(get_transient('adsforwp_groups_transient_ids'), true);         
+        $post_group_id_list = json_decode(get_transient('adsforwp_groups_transient_ids'), true);      
+        
         if($post_group_id_list){
             
             $output_function = new adsforwp_output_functions();   
@@ -218,6 +220,7 @@ class adsforwp_output_amp_condition_display{
 if (class_exists('adsforwp_output_amp_condition_display')) {   
     
         add_action('amp_init', 'adsforwp_amp_hooks_call');
+        
         function adsforwp_amp_hooks_call(){
             
             $adsforwp_condition_obj = new adsforwp_output_amp_condition_display;

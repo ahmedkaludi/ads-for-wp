@@ -873,6 +873,100 @@ class adsforwp_admin_common_functions {
              return $result;     
             }                         
     }
+    
+    public function adsforwp_import_all_ad_inserter_ads(){    
+                        
+            global $wpdb;
+            $wpdb->query('START TRANSACTION');
+            $result = array();                
+            $user_id = get_current_user_id();
+            global $block_object;
+             
+            if(is_array($block_object)){
+                
+                $i = 0;                
+                foreach($block_object as $object){
+                    
+                    $wp_options = $object->wp_options;
+                   
+                    $ad_code = $wp_options['code'];
+                    
+                    if($ad_code != ''){
+                       
+                        $ads_post = array(
+                            'post_author' => $user_id,                                                            
+                            'post_title'  => 'Custom Ad '.$i.' (Migrated from Ad Inserter)',                    
+                            'post_status' => 'publish',                                                            
+                            'post_name'   => 'Custom Ad '.$i.' (Migrated from Ad Inserter)',                        
+                            'post_type'   => 'adsforwp',
+                    
+                         );
+                        
+                        $post_id = wp_insert_post($ads_post);
+                                                
+                        $wheretodisplay = '';
+                        $ad_align       = '';
+                        $pragraph_no    = '';
+                        $adposition     = '';
+                        
+                        if($wp_options['display_type'] == 3 || $wp_options['display_type'] == 1){
+                          $wheretodisplay ='before_the_content';  
+                        }elseif($wp_options['display_type'] == 4 || $wp_options['display_type'] == 2){
+                          $wheretodisplay ='after_the_content';  
+                        }elseif($wp_options['display_type'] == 5){
+                          $wheretodisplay ='between_the_content';
+                          $pragraph_no    = $wp_options['paragraph_number'];
+                          $adposition     = 'number_of_paragraph';
+                        }
+                                                
+                        if($wp_options['alignment_type'] == 1){
+                         $ad_align ='left';   
+                        }elseif($wp_options['alignment_type'] == 2){
+                         $ad_align ='right';
+                        }elseif($wp_options['alignment_type'] == 3){
+                         $ad_align ='center';  
+                        }                        
+                        
+                        $data_group_array['group-0'] = array(                            
+                                                 'data_array' => array(                                                     
+                                                        array(
+                                                            'key_1' => 'show_globally',
+                                                            'key_2' => 'equal',
+                                                            'key_3' => 'post',
+                                                        )
+                                                     )               
+                                                 ); 
+                        
+                        $adforwp_meta_key = array(
+                            'select_adtype'     => 'custom',  
+                            'custom_code'       => $ad_code,
+                            'adposition'        => $adposition,
+                            'paragraph_number'  => $pragraph_no,  
+                            'adsforwp_ad_align' => $ad_align,
+                            'imported_from'     => 'ad_inserter',                            
+                            'wheretodisplay'    => $wheretodisplay,
+                            'data_group_array'  => $data_group_array
+                         );
+                        
+                        foreach ($adforwp_meta_key as $key => $val){   
+
+                         $result[] =  update_post_meta($post_id, $key, $val);  
+
+                        }                                                   
+                    }
+                   
+                $i++;    
+                }                                                
+            }                          
+              
+            if (is_wp_error($result) ){
+              echo $result->get_error_message();              
+              $wpdb->query('ROLLBACK');             
+            }else{
+              $wpdb->query('COMMIT'); 
+             return $result;     
+            }                         
+    }        
     /**
      * We are here importing all fetched groups from advanced ads to adsforwp plugin
      * @param type $advads_groups
@@ -1027,7 +1121,8 @@ class adsforwp_admin_common_functions {
                     'disabled'     => array(),
                     'width'        => array(),
                     'data-id'      => array(),
-                    'media-id'      => array(),
+                    'media-id'     => array(),
+                    'provider_type'=> array(),
                     
             ); 
             //number
@@ -1066,6 +1161,8 @@ class adsforwp_admin_common_functions {
                     'data-mid'  => array(),
                     'data-block-id'  => array(),
                     'data-html-access-allowed'  => array(),
+                    'data-property'  => array(),
+                    'data-zone'  => array(),
             );
              $my_allowed['amp-pixel'] = array(                    
                     'src'     => array(),
@@ -1223,9 +1320,11 @@ class adsforwp_admin_common_functions {
                     'name'   => array(),                    
             );
             $my_allowed['div'] = array(
-                    'class'  => array(),
-                    'id'     => array(),
-                    'data-id'     => array(),                                    
+                    'class'       => array(),
+                    'id'          => array(),
+                    'data-id'     => array(), 
+                    'data-mantis-zone'     => array(), 
+                
             );
             //  options
             $my_allowed['option'] = array(

@@ -486,6 +486,14 @@ jQuery( document ).ready(function($) {
                                $("#banner_size, #data_client_id, #data_ad_slot").attr("required",true);
                               
                               break;
+                          case "adsense_sticky_ads":  
+                               $("#display-metabox").hide();
+                               $("#adsforwp-location").hide();
+                               $("#adsforwp_visitor_condition_metabox").show();
+                               $("#banner_size, #data_client_id, #data_ad_slot").parent().parent("tr").show();
+                               $("#banner_size, #data_client_id, #data_ad_slot").attr("required",true);
+                              
+                              break;    
                           case "adsense_auto_ads":
                                 $("#display-metabox").hide();
                                 $("#adsforwp-location").hide();   
@@ -507,7 +515,16 @@ jQuery( document ).ready(function($) {
                       $("#adsforwp_visitor_condition_metabox").show();
                       $("#data_cid, #banner_size, #data_crid").parent().parent("tr").show();                                                                            
                       $("#banner_size, #data_crid, #data_cid").attr("required",true);                                                                                                 
-                        break 
+                        break
+                    
+                    case "doubleclick":
+                      $("#display-metabox").show();
+                      $("#adsforwp_visitor_condition_metabox").show();
+                      $("#banner_size").parent().parent("tr").show();
+                      $(".adsforwp_dfp").show();     
+                                                                                                                                            
+                        break
+                    
                     case "contentad":
                       $("#display-metabox").show();
                       $("#adsforwp_visitor_condition_metabox").show();
@@ -593,6 +610,16 @@ jQuery( document ).ready(function($) {
                                 $(".afw-select-post-type").closest('tr').find('td').eq(e).show();  
                              });
                     break;
+                
+                case "adsense_sticky_ads":
+                    $("#banner_size, #data_client_id, #data_ad_slot").parent().parent("tr").show();
+                    $("#banner_size, #data_client_id, #data_ad_slot").attr("required",true);                    
+                    $("#display-metabox").hide();
+                    $("#adsforwp-location").hide(); 
+                    $("#adsforwp_visitor_condition_metabox").show();                    
+                          
+                    break;
+                
                 case "adsense_auto_ads":
                    $(".afw-select-post-type option[value=show_globally]").attr("selected", "selected");
                             var tdindex = [1,2,3,4]; 
@@ -871,9 +898,13 @@ jQuery( document ).ready(function($) {
    //query form send starts here
 
     $(".afw-send-query").on("click", function(e){
+        
     e.preventDefault();   
-    var message = $("#adsforwp_query_message").val();           
-                $.ajax({
+    var message = $("#adsforwp_query_message").val();    
+    
+    if($.trim(message) !=''){
+     
+            $.ajax({
                     type: "POST",    
                     url:adsforwp_localize_data.ajax_url,                    
                     dataType: "json",
@@ -890,7 +921,11 @@ jQuery( document ).ready(function($) {
                     error: function(response){                    
                     console.log(response);
                     }
-                    });
+            });
+        
+    } else{
+        alert('Please type message');
+    }                                                           
     
 });
 
@@ -938,6 +973,7 @@ $(".adsforwp-feedback-notice-remindme").on("click", function(e){
     $(".adsforwp-import-plugins").on("click", function(e){
             e.preventDefault(); 
             var current_selection = $(this);
+            current_selection.addClass('updating-message');
             var plugin_name = $(this).attr('data-id');                      
                          $.get(ajaxurl, 
                              { action:"adsforwp_import_plugin_data", plugin_name:plugin_name, adsforwp_security_nonce:adsforwp_localize_data.adsforwp_security_nonce},
@@ -949,7 +985,8 @@ $(".adsforwp-feedback-notice-remindme").on("click", function(e){
                               }else{
                                   $(current_selection).parent().find(".adsforwp-imported-message").addClass('adsforwp-error');
                                   $(current_selection).parent().find(".adsforwp-imported-message").text(response['message']);                                 
-                              }       		   		
+                              }  
+                              current_selection.removeClass('updating-message');
                              },'json');
         });
         

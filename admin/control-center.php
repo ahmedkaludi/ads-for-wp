@@ -1,31 +1,4 @@
 <?php
-ob_start();
-add_action('shutdown', function() {
-    if ( is_admin() ) {
-        return;
-    }
-    $final = '';
-    $levels = ob_get_level();
-    for ($i = 0; $i < $levels; $i++){
-        $final .= ob_get_clean();
-    }
-    echo apply_filters('adsforwp_final_output', $final);
-}, 0);
-
-add_filter('adsforwp_final_output', function($output) {  
-    if ( is_admin() ) {
-        return;
-    }       
-    $after_body = apply_filters('adsforwp_after_body','');
-    
-    $before_body = apply_filters('adsforwp_before_body','');
-    
-    $output = preg_replace("/(\<body.*\>)/", "$1".$after_body, $output);      
-    $output = preg_replace("/(\<\/body.*\>)/", $before_body."$1", $output);      
-    return $output;
-});
-
-
 function adsforwp_reset_all_settings(){   
     
         if ( ! isset( $_POST['adsforwp_security_nonce'] ) ){
@@ -268,7 +241,14 @@ function adsforwp_import_plugin_data(){
                  $result = $common_function_obj->adsforwp_import_all_advanced_amp_ads();
                 
                 }                
-                break;    
+                break; 
+            case 'ad_inserter':              
+                if ( is_plugin_active('ad-inserter/ad-inserter.php')) {                     
+                 $result = $common_function_obj->adsforwp_import_all_ad_inserter_ads();
+                
+                }                
+                break;     
+                
 
             default:
                 break;
@@ -952,6 +932,12 @@ function adsforwp_print_footer_scripts() {
             case 'afw_custom_pointer':
                 content = '<?php echo '<h3>'.esc_html__( 'Help', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'Insert the ad code or script', 'ads-for-wp' ).'</p>'; ?>';
                 break;     
+            case 'afw_doubleclick_pointer':
+                content = '<?php echo '<h3>'.esc_html__( 'Help', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'Insert the Slot Id and Div Gpt Ad', 'ads-for-wp' ).'</p>'; ?>';
+                break;
+            case 'afw_ad_background_pointer':
+                content = '<?php echo '<h3>'.esc_html__( 'Help', 'ads-for-wp' ).'</h3><p>'.esc_html__( 'Insert the background banner', 'ads-for-wp' ).'</p>'; ?>';
+                break;    
             default:
                 break;
         }         

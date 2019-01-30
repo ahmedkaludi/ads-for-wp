@@ -163,16 +163,16 @@ public function adsforwp_custom_upload_mimes($mimes = array()) {
 
 	return $mimes;
 }
-public function adsforwp_handle_file_upload($option)
-{
-  if(!empty($_FILES["adsforwp_import_backup"]["tmp_name"]))
-  {
-    $urls = wp_handle_upload($_FILES["adsforwp_import_backup"], array('test_form' => FALSE));      
-    $url = $urls["url"];
-    update_option('adsforwp-file-upload_url',esc_url($url));
-  }
-  
-  return $option;
+public function adsforwp_handle_file_upload($option){
+
+        if(!empty($_FILES["adsforwp_import_backup"]["tmp_name"]))
+        {
+          $urls = wp_handle_upload($_FILES["adsforwp_import_backup"], array('test_form' => FALSE));      
+          $url = $urls["url"];
+          update_option('adsforwp-file-upload_url',esc_url($url));
+        }
+
+        return $option;
 }
 
 public function adsforwp_check_data_imported_from($plugin_post_type_name){
@@ -208,12 +208,20 @@ public function adsforwp_advance_callback(){
 
 public function adsforwp_import_callback(){
 	$message = '<p>'.esc_html__('This plugin\'s data already has been imported. Do you want to import again?. click on button above button.','ads-for-wp').'</p>';
-        $schema_message = '';
-        $ampforwp_ads_message = '';
+        $schema_message                = '';
+        $ampforwp_ads_message          = '';
         $ampforwp_advanced_ads_message = '';
-        $schema_plugin = $this->adsforwp_check_data_imported_from('advance_ads'); 
-        $ampforwp_ads = $this->adsforwp_check_data_imported_from('ampforwp_ads'); 
+        $ad_inserter_message           = '';
+        
+        
+        
+        $schema_plugin         = $this->adsforwp_check_data_imported_from('advance_ads'); 
+        $ampforwp_ads          = $this->adsforwp_check_data_imported_from('ampforwp_ads'); 
         $ampforwp_advanced_ads = $this->adsforwp_check_data_imported_from('ampforwp_advanced_ads'); 
+        $ad_inserter           = $this->adsforwp_check_data_imported_from('ad_inserter'); 
+        
+        
+        
 	if($schema_plugin->post_count !=0){
          $schema_message =$message;
         }
@@ -223,6 +231,11 @@ public function adsforwp_import_callback(){
         if($ampforwp_advanced_ads->post_count !=0){
          $ampforwp_advanced_ads_message =$message;   
         }
+        
+        if($ad_inserter->post_count !=0){
+         $ad_inserter_message = $message;   
+        }
+        
         ?>	
             <ul>
                 <li><div class="adsforwp-tools-field-title"><div class="adsforwp-tooltip"><strong><?php echo esc_html__('Advanced Ads Plugin','ads-for-wp'); ?></strong></div><button data-id="advanced_ads" class="button adsforwp-import-plugins"><?php echo esc_html__('Start Importing','ads-for-wp'); ?></button>
@@ -238,6 +251,13 @@ public function adsforwp_import_callback(){
                 <li><div class="adsforwp-tools-field-title"><div class="adsforwp-tooltip"><strong><?php echo esc_html__('AMP for WP Advanced Ads','ads-for-wp'); ?></strong></div><button data-id="ampforwp_advanced_ads" class="button adsforwp-import-plugins"><?php echo esc_html__('Start Importing','ads-for-wp'); ?></button>
                         <p class="adsforwp-imported-message"></p>
                         <?php echo $ampforwp_advanced_ads_message; ?>    
+                    </div>
+                </li>
+                <li><div class="adsforwp-tools-field-title"><div class="adsforwp-tooltip"><strong><?php echo esc_html__('Ad Inserter','ads-for-wp'); ?></strong></div><button data-id="ad_inserter" class="button adsforwp-import-plugins"><?php echo esc_html__('Start Importing','ads-for-wp'); ?></button>
+                       <p>This will work perfectly with plugin which is available on wordpress.org</p> 
+                        <p class="adsforwp-imported-message"></p>
+                        
+                        <?php echo $ad_inserter_message; ?>    
                     </div>
                 </li>
             </ul>                   

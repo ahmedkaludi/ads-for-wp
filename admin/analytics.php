@@ -39,6 +39,9 @@ public function __construct() {
         if ( empty( $data['amp_component_scripts']['amp-iframe'] ) ) {
                 $data['amp_component_scripts']['amp-iframe'] = 'https://cdn.ampproject.org/v0/amp-iframe-latest.js';
         }
+        if ( empty( $data['amp_component_scripts']['amp-sticky-ad'] ) ) {
+                $data['amp_component_scripts']['amp-sticky-ad'] = 'https://cdn.ampproject.org/v0/amp-sticky-ad-latest.js';
+        }
                 return $data;         
     }
     
@@ -123,9 +126,10 @@ public function __construct() {
                return;  
             }  
         
-           $ad_id = sanitize_text_field($_GET['event']);           
+           $ad_id       = sanitize_text_field($_GET['event']);           
            $device_name = 'amp';
-           $key_name = $device_name.'-count';
+           $key_name    = $device_name.'-count';
+           
             if($ad_id){
                 
                  $post_impression_count = get_post_meta($ad_id, $key='ad_impression_count', true );            
@@ -163,12 +167,16 @@ public function __construct() {
              }
             if ( !wp_verify_nonce( $_POST['adsforwp_front_nonce'], 'adsforwp_ajax_check_front_nonce' ) ){
                return;  
-            }                
+            }  
+            
             $ad_ids = $_POST['ad_ids'];
             $device_name = sanitize_text_field($_POST['device_name']);
             $key_name = $device_name.'-count';
+            
             if($ad_ids){
+                
                 foreach ($ad_ids as $ad_id){
+                    
                  $post_impression_count = get_post_meta($ad_id, $key='ad_impression_count', true );            
                  $post_impression_count++;        
                  update_post_meta( $ad_id, 'ad_impression_count', $post_impression_count);          
@@ -204,11 +212,14 @@ public function __construct() {
              }
             if ( !wp_verify_nonce( $_POST['adsforwp_front_nonce'], 'adsforwp_ajax_check_front_nonce' ) ){
                return;  
-            }            
+            }      
+            
             $device_name = sanitize_text_field($_POST['device_name']);
             $ad_id = sanitize_text_field($_POST['ad_id']);
             $key_name = $device_name.'-clicks';
-            if($ad_id){               
+            
+            if($ad_id){     
+                
                 $ad_clicks_count = get_post_meta($ad_id, $key='ad_clicks', true );                
                 $ad_clicks_count++;        
                 update_post_meta( $ad_id, 'ad_clicks', $ad_clicks_count);                         
@@ -247,7 +258,9 @@ public function __construct() {
             $ad_id = sanitize_text_field($_GET['event']);
             $device_name = 'amp';
             $key_name = $device_name.'-clicks';
-            if($ad_id){               
+            
+            if($ad_id){    
+                
                 $ad_clicks_count = get_post_meta($ad_id, $key='ad_clicks', true );                
                 $ad_clicks_count++;        
                 update_post_meta( $ad_id, 'ad_clicks', $ad_clicks_count);                         
