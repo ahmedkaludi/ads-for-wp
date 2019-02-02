@@ -8,49 +8,49 @@ class adsforwp_view_ad_groups {
         private $meta_fields = array(	
                 array(
 			'label' => 'Usage',
-			'id' => 'adsforwp_group_shortcode',
-			'type' => 'text',
+			'id'    => 'adsforwp_group_shortcode',
+			'type'  => 'text',
                         'attributes' => array(				
                                'readonly' 	=> 'readonly',	
                                'disabled' 	=> 'disabled',
-                               'class' => 'afw_manual_ads_type',
+                               'class'          => 'afw_manual_ads_type',
 			),
                         
 		),
 		array(
-			'label' => 'Sorting',
-			'id' => 'adsforwp_group_type',
-			'type' => 'radio',
+			'label'   => 'Sorting',
+			'id'      => 'adsforwp_group_type',
+			'type'    => 'radio',
                         'default' => 'rand',
 			'options' => array(
-				'rand'=>'Random ads',
-				'ordered'=>'Ordered ads ',
+				'rand'    =>'Random ads',
+				'ordered' =>'Ordered ads ',
 			),
 		),		
 		array(
-			'label' => 'Refresh Type',
-			'id' => 'adsforwp_refresh_type',
-			'type' => 'select',
+			'label'   => 'Refresh Type',
+			'id'      => 'adsforwp_refresh_type',
+			'type'    => 'select',
                         'options' => array(
-                          'on_load' => 'On Reload',
+                          'on_load'     => 'On Reload',
                           'on_interval' => 'Auto Refresh'  
                         )
 		),
 		array(			
-			'id' => 'adsforwp_group_ref_interval_sec',
+			'id'   => 'adsforwp_group_ref_interval_sec',
 			'type' => 'number',
 		),
                  array(
 			'label' => 'Ads',     
                         'id'    => 'adsforwp_ads',
                         'class' => 'afw-option afw-option-group-ads',
-			'type' => 'div',
+			'type'  => 'div',
                         
 		),
 		array(
 			'label' => 'Ad New',
-			'id' => 'adsforwp_group_ad_list',
-			'type' => 'select',
+			'id'    => 'adsforwp_group_ad_list',
+			'type'  => 'select',
                         
 		),
                 

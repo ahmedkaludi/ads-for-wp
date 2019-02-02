@@ -506,6 +506,7 @@ public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $curre
  
     $response = $data;
     $is_ajax = false;
+    
     if( $_SERVER['REQUEST_METHOD']=='POST'){
         $is_ajax = true;
         if(wp_verify_nonce($_POST["adsforwp_call_nonce"],'adsforwp_select_action_nonce')){
@@ -781,6 +782,7 @@ public function adsforwp_create_ajax_select_taxonomy($selectedParentValue = '',$
     $is_ajax = false;
     if( $_SERVER['REQUEST_METHOD']=='POST'){
         $is_ajax = true;
+        
         if(wp_verify_nonce($_POST["adsforwp_call_nonce"],'adsforwp_select_action_nonce')){
               if(isset($_POST['id'])){
                 $selectedParentValue = sanitize_text_field(wp_unslash($_POST['id']));

@@ -283,7 +283,11 @@ class adsforwp_view_placement {
     // Post Controls  ------------ 
       // Posts
       case 'post': 
-            $current_post = $post->ID;
+          
+            $current_post ='';              
+                if(is_singular()){                    
+                    $current_post = $post->ID;                      
+                }                      
             if ( $comparison == 'equal' ) {
                 if ( $current_post == $data ) {
                   $result = true;

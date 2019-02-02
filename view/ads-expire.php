@@ -6,28 +6,28 @@ class adsforwp_view_expiredate {
 	private $meta_fields = array(
 		array(
 			'label' => 'Set Expire Date',
-			'id' => 'adsforwp_ad_expire_enable',
-			'type' => 'checkbox',
+			'id'    => 'adsforwp_ad_expire_enable',
+			'type'  => 'checkbox',
 		),
 		array(
 			'label' => 'From',
-			'id' => 'adsforwp_ad_expire_from',
-			'type' => 'text',
+			'id'    => 'adsforwp_ad_expire_from',
+			'type'  => 'text',
 		),
 		array(
 			'label' => 'To',
-			'id' => 'adsforwp_ad_expire_to',
-			'type' => 'text',
+			'id'    => 'adsforwp_ad_expire_to',
+			'type'  => 'text',
 		),
               array(
 			'label' => 'Set Specific Days',
-			'id' => 'adsforwp_ad_expire_day_enable',
-			'type' => 'checkbox',
+			'id'    => 'adsforwp_ad_expire_day_enable',
+			'type'  => 'checkbox',
 		),
             array(
 			'label' => 'Days',
-			'id' => 'adsforwp_ad_expire_days',
-			'type' => 'select',
+			'id'    => 'adsforwp_ad_expire_days',
+			'type'  => 'select',
                         'options' => array(
                             '0' => 'Monday',
                             '1' => 'Tuesday',

@@ -9,19 +9,20 @@ class adsforwp_view_ads_type {
 	);
 	private $meta_fields = array(
 		array(
-			'label' => 'Ad Type',
-			'id' => 'select_adtype',
-			'type' => 'select',                        
+			'label'   => 'Ad Type',
+			'id'      => 'select_adtype',
+			'type'    => 'select',                        
 			'options' => array(
 				''              => 'Select Ad Type',
-				'adsense'       =>'AdSense',
-                                'media_net'     =>'Media.net',
-                                'ad_now'        =>'AdNow',				                                
-                                'contentad'     =>'Content.ad',
-                                'infolinks'     =>'Infolinks',
-                                'ad_image'      =>'Image Banner Ad',
-                                'ad_background' =>'Background Ad',
-                                'custom'        =>'Custom Code',
+				'adsense'       => 'AdSense',
+                                'doubleclick'   => 'DoubleClick',
+                                'media_net'     => 'Media.net',
+                                'ad_now'        => 'AdNow',				                                
+                                'contentad'     => 'Content.ad',
+                                'infolinks'     => 'Infolinks',
+                                'ad_image'      => 'Image Banner Ad',
+                                'ad_background' => 'Background Ad',
+                                'custom'        => 'Custom Code',
                             
 			),
                                 'attributes' => array(				
@@ -34,8 +35,9 @@ class adsforwp_view_ads_type {
 			'id'        => 'adsense_type',
 			'type'      => 'select',                        
 			'options'   => array(				
-				'normal'           =>'Normal',
-                                'adsense_auto_ads' =>'AdSense Auto Ads'				                                                            
+				'normal'             => 'Normal',
+                                'adsense_auto_ads'   => 'Auto Ads',
+                                'adsense_sticky_ads' => 'Sticky (Only AMP)'
 			)
                       ),
 		array(
@@ -76,16 +78,41 @@ class adsforwp_view_ads_type {
 			),
 		),
                 array(
-			'label'     => 'Data CRID',
-			'id'        => 'data_crid',
-			'type'      => 'text',
+			'label'      => 'Data CRID',
+			'id'         => 'data_crid',
+			'type'       => 'text',
                         'attributes' => array(
 				'placeholder'   => '1XXXXXX82',
                                 'maxlength'     => '20',
 				
 			),
 		),
-            //Media.net fields ends here                    
+            //Media.net fields ends here  
+            
+            //DoubleClick fields starts here
+                array(
+			'label'     => 'Slot Id',
+			'id'        => 'dfp_slot_id',
+			'type'      => 'text',
+                        'attributes'=> array(
+				'placeholder'   => '/41****9/mobile_ad_banner',
+                                'maxlength'     => '50',
+                                'provider_type' => 'adsforwp_dfp',
+				
+			),
+		),
+                array(
+			'label'      => 'Div Gpt Ad',
+			'id'         => 'dfp_div_gpt_ad',
+			'type'       => 'text',
+                        'attributes' => array(
+				'placeholder'   => 'div-gpt-ad-*************-*',
+                                'maxlength'     => '60',
+                                'provider_type' => 'adsforwp_dfp',
+				
+			),
+		),
+            //DoubleClick fields ends here  
 		array(
 			'label'     => 'Size',
 			'id'        => 'banner_size',
@@ -202,6 +229,7 @@ class adsforwp_view_ads_type {
 		$output = '';                     
 		foreach ( $this->meta_fields as $meta_field ) {
                     $attributes ='';
+                    $provider_type = '';
                     $label ='';
                     if(isset($meta_field['label'])){
                       $label =  $meta_field['label']; 
@@ -212,6 +240,18 @@ class adsforwp_view_ads_type {
 				$meta_value = isset($meta_field['default']); 
                                 
                         }
+                        
+                        if(isset($meta_field['attributes'])){
+                            
+                            if(array_key_exists('provider_type', $meta_field['attributes'])){
+                                
+                               $provider_type = $meta_field['attributes']['provider_type']; 
+                                
+                            }
+                            
+                            
+                        }
+                        
 			switch ( $meta_field['type'] ) {
 				case 'select':                                                                        
                     
@@ -374,15 +414,16 @@ class adsforwp_view_ads_type {
                                         
 					
 			}
-			$output .= $this->adsforwp_format_rows( $label, $input );
+			$output .= $this->adsforwp_format_rows( $label, $input, $provider_type );
 		}
                 
                 $common_function_obj = new adsforwp_admin_common_functions();
                 $allowed_html = $common_function_obj->adsforwp_expanded_allowed_tags();                                                		                                
 		echo '<table class="form-table adsforwp-ad-type-table"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table>';
 	}
-	public function adsforwp_format_rows( $label, $input ) {
-		return '<tr class=""><th>'.$label.'</th><td>'.$input.'</td></tr>';
+	public function adsforwp_format_rows( $label, $input, $provider_type ) {
+                                                        
+		return '<tr class="'.$provider_type.'"><th>'.$label.'</th><td>'.$input.'</td></tr>';
 	}                
 	public function adsforwp_save_fields( $post_id ) {  
             
