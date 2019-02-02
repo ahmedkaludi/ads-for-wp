@@ -382,7 +382,7 @@ class adsforwp_output_functions{
              if($wheretodisplay == 'sticky'){  
                  
                $widget ='';
-               $ad_code =  $this->$this->adsforwp_group_ads($atts=null, $ad_id, $widget); 
+               $ad_code =  $this->adsforwp_group_ads($atts=null, $ad_id, $widget); 
                
                if($ad_code){
                    

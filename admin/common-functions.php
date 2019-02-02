@@ -1163,6 +1163,7 @@ class adsforwp_admin_common_functions {
                     'data-html-access-allowed'  => array(),
                     'data-property'  => array(),
                     'data-zone'  => array(),
+                    'data-json'  => array(),
             );
              $my_allowed['amp-pixel'] = array(                    
                     'src'     => array(),
