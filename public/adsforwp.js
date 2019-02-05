@@ -546,8 +546,10 @@ jQuery( document ).ready(function($) {
                     case "ad_image":
                         
                        if($("#wheretodisplay option:selected").val() != 'sticky'){
-                        $("#wheretodisplay").append('<option value="sticky">Sticky</option>');
-                         } 
+                           
+                        $("#wheretodisplay option[value='custom_target']").after('<option value="sticky">Sticky</option>');   
+                        
+                       } 
                                                 
                       $("#display-metabox").show();
                       $("#adsforwp_visitor_condition_metabox").show();
@@ -704,6 +706,7 @@ jQuery( document ).ready(function($) {
                     break;
                 case "ad_shortcode":
                     $("#manual_ads_type").parent().parent("tr").show();                   
+                    $(".afw_ad_align_field").parent().parent("tr").show();
                     break
                 case "after_the_content":                      
                     $(".afw_ad_align_field").parent().parent("tr").show();
@@ -715,7 +718,27 @@ jQuery( document ).ready(function($) {
                    $(".afw_ad_img_margin").parent().parent("tr").hide();
                    $(".adsforwp-custom-target-fields").parent().parent("tr").show();
                    $('input[name=adsforwp_custom_target_position]').change();
-                    break;     
+                    break; 
+                    
+                case "adsforwp_after_featured_image":
+                case "adsforwp_below_the_header":
+                case "adsforwp_below_the_footer":
+                case "adsforwp_above_the_footer":
+                case "adsforwp_above_the_post_content":
+                case "adsforwp_below_the_post_content":
+                case "adsforwp_below_the_title":
+                case "adsforwp_above_related_post":
+                case "adsforwp_below_author_box":
+                                                                 
+                $(".afw_ad_align_field").parent().parent("tr").show();
+                break;
+                
+                case "adsforwp_ads_in_loops":
+                                                          
+                    $(".afw_ad_align_field").parent().parent("tr").show();
+                    $("#adsforwp_after_how_many_post").parent().parent("tr").show();
+                      
+                break;        
                 default:                                      
                   break;   
                 }                          
@@ -790,17 +813,7 @@ jQuery( document ).ready(function($) {
       });
     }).change();  
     
-     $("#wheretodisplayamp").change(function(){        
-      $(this).find("option:selected").each(function(){  
-          var optionValue = $(this).attr("value");                           
-              if("adsforwp_ads_in_loops" === optionValue){
-          	$(".adsforwp-how-many-post").show();
-              }else{
-               $(".adsforwp-how-many-post").hide();   
-              }                                                                     
-       });
-    }).change(); 
-    
+         
     $(document).on("click",'.afw-ads-group-button', function(){
         var adsval = $("#adsforwp_group_ad_list option:selected").val();
         var adstext = $("#adsforwp_group_ad_list option:selected").text();        

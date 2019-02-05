@@ -102,7 +102,9 @@ class adsforwp_output_amp_condition_display{
      * @param type $count
      * @return type
      */
-    public function adsforwp_in_loop_ads_code($ad_id, $count){    
+    public function adsforwp_in_loop_ads_code($ad_id, $count){
+        
+        $ad_code ='';
         
         $displayed_posts        = get_option('posts_per_page');
         $in_between             = round(abs($displayed_posts / 2));
@@ -156,62 +158,83 @@ class adsforwp_output_amp_condition_display{
             $output_function     = new adsforwp_output_functions();
             $common_function_obj = new adsforwp_admin_common_functions();
             
-            echo '<div class="amp-ad-wrapper">';
+            
             foreach($post_ad_id_list as $ad_id){  
                 
                       $in_group = $common_function_obj->adsforwp_check_ads_in_group($ad_id);
                       
                       if(empty($in_group)){
                           
-                      $amp_display_condition = get_post_meta($ad_id,$key='wheretodisplayamp',true);
+                      $amp_display_condition = get_post_meta($ad_id,$key='wheretodisplay',true);
                       
                       if($amp_display_condition == $condition){   
                           
                       if($amp_display_condition =='adsforwp_ads_in_loops'){
                           
-                        echo $this->adsforwp_in_loop_ads_code($ad_id, $count);  
+                        $amp_ad_code = $this->adsforwp_in_loop_ads_code($ad_id, $count);
+                        
+                        
+                        if($amp_ad_code){
+                        
+                            echo '<div class="amp-ad-wrapper">'.$amp_ad_code.'</div>';
+                            
+                        }
+                                                
                       
                       }else{
                           
-                        echo $output_function->adsforwp_get_ad_code($ad_id, $type="AD");  
-                      
+                        $amp_ad_code = $output_function->adsforwp_get_ad_code($ad_id, $type="AD"); 
+                        
+                        if($amp_ad_code){
+                            
+                             echo '<div class="amp-ad-wrapper">'.$amp_ad_code.'</div>';
+                            
+                        }                                                                     
                       }                              
                      }   
                }  
                
             }
-            echo '</div>';
+            
         }
         //For Group Ads
         $post_group_id_list = json_decode(get_transient('adsforwp_groups_transient_ids'), true);      
         
         if($post_group_id_list){
             
-            $output_function = new adsforwp_output_functions();   
-            
-            echo '<div class="amp-ad-wrapper">';
+            $output_function = new adsforwp_output_functions();                          
             
             foreach($post_group_id_list as $group_id){   
                 
                       $widget = '';    
                       
-                      $amp_display_condition = get_post_meta($group_id,$key='wheretodisplayamp',true);
+                      $amp_display_condition = get_post_meta($group_id,$key='wheretodisplay',true);
                       
                       if($amp_display_condition == $condition){        
                           
                       if($amp_display_condition =='adsforwp_ads_in_loops'){
                           
-                      echo $this->adsforwp_in_loop_group_ads_code($group_id, $count, $widget);
+                          $amp_group_code = $this->adsforwp_in_loop_group_ads_code($group_id, $count, $widget);
+                          
+                          if($amp_group_code){
+                            
+                              echo '<div class="amp-ad-wrapper">'.$amp_group_code.'</div>';
+                              
+                          }                                                      
                       
                       }else{
                           
-                      echo $output_function->adsforwp_group_ads($atts=null, $group_id, $widget);                                           
-                      
+                          $amp_group_code = $output_function->adsforwp_group_ads($atts=null, $group_id, $widget); 
+                          
+                          if($amp_group_code){
+                              
+                               echo '<div class="amp-ad-wrapper">'.$amp_group_code.'</div>';
+                              
+                          }                                                                                                                      
                       }                                                                                               
                  } 
                  
-            }
-            echo '</div>';
+            }           
         }
                         
     }    

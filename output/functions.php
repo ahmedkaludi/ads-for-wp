@@ -1134,19 +1134,13 @@ class adsforwp_output_functions{
             $in_group = $common_function_obj->adsforwp_check_ads_in_group($post_ad_id);
            
             if(empty($in_group)){            
-                
-            $amp_display_condition = get_post_meta($post_ad_id,$key='wheretodisplayamp',true);
-            
-            if(in_array($amp_display_condition, $this->_amp_conditions) && $this->is_amp){
-                return $content;
-            }                    
+                                        
             $where_to_display   = ""; 
             $adposition         = "";    
             $post_meta_dataset  = array();
             $post_meta_dataset  = get_post_meta($post_ad_id,$key='',true);
             $ad_code            = $this->adsforwp_get_ad_code($post_ad_id, $type="AD");
-            
-                        
+                                    
             $where_to_display   = adsforwp_rmv_warnings($post_meta_dataset, 'wheretodisplay', 'adsforwp_array');                          
             $adposition         = adsforwp_rmv_warnings($post_meta_dataset, 'adposition', 'adsforwp_array');    
             
@@ -1252,11 +1246,7 @@ class adsforwp_output_functions{
                 
             $post_group_id = $group;             
             
-            $amp_display_condition = get_post_meta($post_group_id,$key='wheretodisplayamp',true);
-            
-            if(in_array($amp_display_condition, $this->_amp_conditions) && $this->is_amp){
-                return $content;
-            }                        
+                       
             $where_to_display   =''; 
             $adposition         ='';    
             $widget             = '';

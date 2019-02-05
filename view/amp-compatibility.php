@@ -63,47 +63,25 @@ class adsforwp_amp_compatibility {
                         </div> 
                         
                     </div> 
-                    <div class="adsforwp-amp-box">
-                       <span><?php echo esc_html__('AMP Display Positioning', 'ads-for-wp') ?></span><br> 
-                       <select style="margin-top: 5px;" id="wheretodisplayamp" name="wheretodisplayamp">
-                           <option value=""><?php echo esc_html__('Select Location', 'ads-for-wp') ?></option>
-                           <option value="adsforwp_after_featured_image" <?php echo ($this->adsforwp_amp_comp_get_meta( 'wheretodisplayamp' ) === 'adsforwp_after_featured_image' ) ? 'selected' : '' ?>><?php echo esc_html__('Ad after Featured Image', 'ads-for-wp') ?></option>
-                           <option value="adsforwp_below_the_header" <?php echo ($this->adsforwp_amp_comp_get_meta( 'wheretodisplayamp' ) === 'adsforwp_below_the_header' ) ? 'selected' : '' ?>><?php echo esc_html__('Below the Header (SiteWide)', 'ads-for-wp') ?></option>
-                           <option value="adsforwp_below_the_footer" <?php echo ($this->adsforwp_amp_comp_get_meta( 'wheretodisplayamp' ) === 'adsforwp_below_the_footer' ) ? 'selected' : '' ?>><?php echo esc_html__('Below the Footer (SiteWide)', 'ads-for-wp') ?></option>
-                           <option value="adsforwp_above_the_footer" <?php echo ($this->adsforwp_amp_comp_get_meta( 'wheretodisplayamp' ) === 'adsforwp_above_the_footer' ) ? 'selected' : '' ?>><?php echo esc_html__('Above the Footer (SiteWide)', 'ads-for-wp') ?></option>
-                           <option value="adsforwp_above_the_post_content" <?php echo ($this->adsforwp_amp_comp_get_meta( 'wheretodisplayamp' ) === 'adsforwp_above_the_post_content' ) ? 'selected' : '' ?>><?php echo esc_html__('Above the Post Content (Single Post)', 'ads-for-wp') ?></option>
-                           <option value="adsforwp_below_the_post_content" <?php echo ($this->adsforwp_amp_comp_get_meta( 'wheretodisplayamp' ) === 'adsforwp_below_the_post_content' ) ? 'selected' : '' ?>><?php echo esc_html__('Below the Post Content (Single Post)', 'ads-for-wp') ?></option>
-                           <option value="adsforwp_below_the_title" <?php echo ($this->adsforwp_amp_comp_get_meta( 'wheretodisplayamp' ) === 'adsforwp_below_the_title' ) ? 'selected' : '' ?>><?php echo esc_html__('Below the Title (Single Post)', 'ads-for-wp') ?></option>
-                           <option value="adsforwp_above_related_post" <?php echo ($this->adsforwp_amp_comp_get_meta( 'wheretodisplayamp' ) === 'adsforwp_above_related_post' ) ? 'selected' : '' ?>><?php echo esc_html__('Above Related Posts (Single Post)', 'ads-for-wp') ?></option>
-                           <option value="adsforwp_below_author_box" <?php echo ($this->adsforwp_amp_comp_get_meta( 'wheretodisplayamp' ) === 'adsforwp_below_author_box' ) ? 'selected' : '' ?>><?php echo esc_html__('Below the Author Box (Single Post)', 'ads-for-wp') ?></option>
-                           <option value="adsforwp_ads_in_loops" <?php echo ($this->adsforwp_amp_comp_get_meta( 'wheretodisplayamp' ) === 'adsforwp_ads_in_loops' ) ? 'selected' : '' ?>> <?php echo esc_html__('Ads Inbetween Loop', 'ads-for-wp') ?></option>
-                       </select> 
-                       <div class="adsforwp-amp-box adsforwp-how-many-post">
-                        <span><?php echo esc_html__('After how many posts?', 'ads-for-wp') ?></span>
-                        <input type="text" id="adsforwp_after_how_many_post" name="adsforwp_after_how_many_post" value="<?php echo ($this->adsforwp_amp_comp_get_meta( 'adsforwp_after_how_many_post' )); ?>">   
-                       </div>
-                       
-                    </div>
+                    
                 </div>
                     <?php
         }
    
-        function adsforwp_amp_comp_save( $post_id ) {              
+        function adsforwp_amp_comp_save( $post_id ) {  
+            
                 if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+                
                 if ( ! isset( $_POST['adsforwp_amp_compatibility_nonce'] ) || ! wp_verify_nonce( $_POST['adsforwp_amp_compatibility_nonce'], 'adsforwp_amp_compatibility_nonce' ) ) return;
+                
                 if ( ! current_user_can( 'edit_post', $post_id ) ) return;
                                
                 if ( isset( $_POST['ads-for-wp_amp_compatibilty'] ) )
                         update_post_meta( $post_id, 'ads-for-wp_amp_compatibilty', esc_attr( $_POST['ads-for-wp_amp_compatibilty'] ) );
                
-                 if ( isset( $_POST['ads_for_wp_non_amp_visibility'] ) )
+                if ( isset( $_POST['ads_for_wp_non_amp_visibility'] ) )
                         update_post_meta( $post_id, 'ads_for_wp_non_amp_visibility', esc_attr( $_POST['ads_for_wp_non_amp_visibility'] ) );
-                 
-                  if ( isset( $_POST['wheretodisplayamp'] ) )
-                        update_post_meta( $post_id, 'wheretodisplayamp', esc_attr( $_POST['wheretodisplayamp'] ) );
-
-                   if ( isset( $_POST['adsforwp_after_how_many_post'] ) )
-                        update_post_meta( $post_id, 'adsforwp_after_how_many_post', esc_attr( $_POST['adsforwp_after_how_many_post'] ) );
+                                              
         }    
 }
 if (class_exists('adsforwp_amp_compatibility')) {

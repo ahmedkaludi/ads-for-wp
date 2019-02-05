@@ -8,7 +8,8 @@ class adsforwp_admin_common_functions {
     protected $_all_groups = array();
 
 
-    public function __construct() {        
+    public function __construct() {  
+        
       add_action('admin_init', array($this, 'adsforwp_import_all_settings'),9);  
       add_action( 'wp_ajax_adsforwp_export_all_settings', array($this,'adsforwp_export_all_settings'));
       
@@ -28,40 +29,51 @@ class adsforwp_admin_common_functions {
                             'posts_per_page' => -1,   
                             'post_status' => 'any',
                     )
-                 );           
+                 );    
+            
             if($all_ads_post){
                 
               foreach($all_ads_post as $ads){    
-                $export_ad[$ads->ID]['post'] = $ads;                    
+                  
+                $export_ad[$ads->ID]['post']     = $ads;                    
                 $post_meta = get_post_meta($ads->ID, $key='', true );                                                                              
                 $export_ad[$ads->ID]['ads_meta'] = $post_meta; 
                 
                 $in_group = $this->adsforwp_check_ads_in_group($ads->ID); 
+                
                 if(!empty($in_group)){
-                $export_ad[$ads->ID]['in_groups'] = $in_group;    
+                    
+                    $export_ad[$ads->ID]['in_groups'] = $in_group;    
+                                
                 }                
                }   
-               }               
+               
+               }  
+               
                $all_group_post = get_posts(
                     array(
                             'post_type' 	 => 'adsforwp-groups',                                                                                   
                             'posts_per_page' => -1,   
                             'post_status' => 'any',
                     )
-                 );           
-            if($all_group_post){           
-              foreach($all_group_post as $group){    
-                $export_group[$group->ID]['group_post'] = $group;                    
-                $post_meta = get_post_meta($group->ID, $key='', true );                                                                              
-                $export_group[$group->ID]['group_meta'] = $post_meta;   
+                 ); 
+               
+            if($all_group_post){  
+                
+              foreach($all_group_post as $group){
+                  
+                    $export_group[$group->ID]['group_post'] = $group;                    
+                    $post_meta = get_post_meta($group->ID, $key='', true );                                                                              
+                    $export_group[$group->ID]['group_meta'] = $post_meta;   
                 
                }   
                }               
                
-                $get_settings_data = get_option('adsforwp_settings');                
-                $export_data_all['ads'] =$export_ad;
-                $export_data_all['group'] =$export_group;
-                $export_data_all['adsforwp_settings'] =$get_settings_data;
+                $get_settings_data                      = get_option('adsforwp_settings');                
+                $export_data_all['ads']                 = $export_ad;
+                $export_data_all['group']               = $export_group;
+                $export_data_all['adsforwp_settings']   = $get_settings_data;
+                
                 header('Content-type: application/json');
                 header('Content-disposition: attachment; filename=adsforwpbackup.json');
                 echo json_encode($export_data_all);                                       
@@ -76,16 +88,19 @@ class adsforwp_admin_common_functions {
         $url = get_option('adsforwp-file-upload_url');
         
         global $wpdb;
-        $result ='';
-        if($url){
-        $json_data = file_get_contents($url);        
-        $json_array = json_decode($json_data, true);             
-        $all_ads_post = $json_array['ads']; 
-        $ads_in_group = array();
+        $result = '';
         
-        $all_group_post = $json_array['group']; 
+        if($url){
+            
+        $json_data         = file_get_contents($url);        
+        $json_array        = json_decode($json_data, true);             
+        $all_ads_post      = $json_array['ads']; 
+        $ads_in_group      = array();
+        
+        $all_group_post    = $json_array['group']; 
         $adsforwp_settings = $json_array['adsforwp_settings'];                
-        $ads_post = array();                     
+        $ads_post          = array();                     
+        
         if($all_ads_post || $all_group_post){
             
             $wpdb->query('START TRANSACTION');
@@ -95,28 +110,37 @@ class adsforwp_admin_common_functions {
                 
                 $post = $ads_post['post'];
                 unset($post['ID']); 
-                
-                
+                                
                 $post_id = wp_insert_post($post);
-                $result = $post_id;
-                $guid = get_option('siteurl') .'/?post_type=adsforwp&p='.$post_id;                
+                $result  = $post_id;
+                $guid    = get_option('siteurl') .'/?post_type=adsforwp&p='.$post_id;                
+                
                 $wpdb->get_results("UPDATE wp_posts SET guid ='".$guid."' WHERE ID ='".$post_id."'");                   
                 $ads_meta = $ads_post['ads_meta'];
                 
                 if(isset($ads_post['in_groups'])){
+                    
                   $ads_in_group[]= array(
                                     'new_ad_id' =>$post_id,
                                     'in_group' =>$ads_post['in_groups']
                           ); 
+                  
                 }
                 
-                foreach($ads_meta as $key => $ad){                    
+                foreach($ads_meta as $key => $ad){
+                    
                  if($key =='adsforwp_ad_margin' || $key =='data_group_array' || $key =='visitor_conditions_array' || $key == 'ampforwp-post-metas' || $key == 'adsforwp_ad_expire_days'){                    
-                  update_post_meta($post_id, $key, unserialize($ad[0]));       
+                     
+                  update_post_meta($post_id, $key, unserialize($ad[0]));  
+                  
                  }else{
-                  update_post_meta($post_id, $key, $ad[0]);       
-                 }                    
-                }                                                                                                                                                 
+                     
+                  update_post_meta($post_id, $key, $ad[0]); 
+                  
+                 }   
+                 
+                }
+                
                 }   
               //group  
                foreach($all_group_post as $group_post){  
@@ -488,7 +512,7 @@ class adsforwp_admin_common_functions {
                     'data_ad_slot' =>$amp_options['enable-amp-ads-text-feild-slot-'.$i],                     
                     'banner_size' =>$placement[$amp_options['enable-amp-ads-select-'.$i]],                     
                     'wheretodisplay' =>'after_the_content',
-                    'wheretodisplayamp' =>$wheretodisplayamp[$i],
+                    'wheretodisplay' =>$wheretodisplayamp[$i],
                     'imported_from' => 'ampforwp_ads',
                     'data_group_array' => $data_group_array
                 );
@@ -667,7 +691,7 @@ class adsforwp_admin_common_functions {
                                         'data_ad_slot'      => $amp_options['ampforwp-after-featured-image-ad-type-1-data-ad-slot'],                     
                                         'banner_size'       => $amp_options['ampforwp-after-featured-image-ad-type-1-width'].'x'.$amp_options['ampforwp-after-featured-image-ad-type-1-height'],                     
                                         'wheretodisplay'    => 'between_the_content',
-                                        'wheretodisplayamp' => 'adsforwp_after_featured_image',
+                                        'wheretodisplay'    => 'adsforwp_after_featured_image',
                                         'imported_from'     => 'ampforwp_advanced_ads',
                                         'data_group_array'  => $data_group_array
                                       );                                 
@@ -676,8 +700,8 @@ class adsforwp_admin_common_functions {
                                     $adforwp_meta_key = array(
                                         'select_adtype'   => 'custom',                                                                                                                                     
                                         'wheretodisplay'  => 'between_the_content',
-                                        'wheretodisplayamp' => 'adsforwp_after_featured_image',                                         
-                                        'custom_code'=> $amp_options['ampforwp-after-featured-image-ad-custom-advertisement'],  
+                                        'wheretodisplay'  => 'adsforwp_after_featured_image',                                         
+                                        'custom_code'     => $amp_options['ampforwp-after-featured-image-ad-custom-advertisement'],  
                                         'imported_from'   => 'ampforwp_advanced_ads',
                                         'data_group_array'=> $data_group_array
                                      );
@@ -729,8 +753,8 @@ class adsforwp_admin_common_functions {
                                         'data_ad_slot'      => $amp_options['ampforwp-inbetween-adsense-ad-data-ad-slot'],                     
                                         'banner_size'       => $amp_options['ampforwp-inbetween-adsense-ad-width'].'x'.$amp_options['ampforwp-inbetween-adsense-ad-height'],                     
                                         'wheretodisplay'    => 'between_the_content',
-                                        'wheretodisplayamp' => 'adsforwp_ads_in_loops',
-                                        'after_how_many_post' => $amp_options['ampforwp-inbetween-loop-post-num'], 
+                                        'wheretodisplay' => 'adsforwp_ads_in_loops',
+                                        'adsforwp_after_how_many_post' => $amp_options['ampforwp-inbetween-loop-post-num'], 
                                         'imported_from'     => 'ampforwp_advanced_ads',
                                         'data_group_array'  => $data_group_array
                                       );                                 
@@ -739,7 +763,7 @@ class adsforwp_admin_common_functions {
                                     $adforwp_meta_key = array(
                                         'select_adtype'   => 'custom',                                                                                                                                     
                                         'wheretodisplay'  => 'between_the_content',
-                                        'wheretodisplayamp' => 'adsforwp_ads_in_loops',                                         
+                                        'wheretodisplay' => 'adsforwp_ads_in_loops',                                         
                                         'custom_code'=> $amp_options['ampforwp-inbetween-custom-advertisement'],  
                                         'imported_from'   => 'ampforwp_advanced_ads',
                                         'data_group_array'=> $data_group_array
@@ -796,7 +820,7 @@ class adsforwp_admin_common_functions {
                             'data_ad_slot'    => $amp_options['ampforwp-adsense-ad-data-ad-slot-standard-'.$i],                     
                             'banner_size'     => $amp_options['ampforwp-adsense-ad-width-standard-'.$i].'x'.$amp_options['ampforwp-adsense-ad-height-standard-'.$i],                     
                             'wheretodisplay'  => 'between_the_content',                            
-                            'wheretodisplayamp'  => $placement_position[$i],    
+                            'wheretodisplay'  => $placement_position[$i],    
                             'imported_from'   => 'ampforwp_advanced_ads',
                             'data_group_array'=> $data_group_array
                         );
@@ -809,7 +833,7 @@ class adsforwp_admin_common_functions {
                         $adforwp_meta_key = array(
                             'select_adtype'   => 'custom',                                                                                                                                     
                             'wheretodisplay'  => 'between_the_content',
-                            'wheretodisplayamp'  => $placement_position[$i],
+                            'wheretodisplay'  => $placement_position[$i],
                             'custom_code'=> $amp_options['ampforwp-custom-advertisement-standard-'.$i],  
                             'imported_from'   => 'ampforwp_advanced_ads',
                             'data_group_array'=> $data_group_array
@@ -1331,7 +1355,11 @@ class adsforwp_admin_common_functions {
             $my_allowed['option'] = array(
                     'selected' => array(),
                     'value' => array(),
-            );                       
+            );
+            $my_allowed['optgroup'] = array(
+                    'label'   => array(),
+                    'data-id' => array(),
+            );
             // style
             $my_allowed['style'] = array(
                     'types' => array(),
