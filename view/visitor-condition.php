@@ -211,6 +211,7 @@ class adsforwp_view_visitor_condition {
  public function adsforwp_visitor_condition_logic_checker($input){
         global $post;        
         $type               = $input['key_1'];
+        
         $comparison         = $input['key_2'];
         $data               = $input['key_3'];       
         
@@ -276,34 +277,65 @@ class adsforwp_view_visitor_condition {
           break;
           
           case 'geo_location':     
-                   $country_code =''; 
-                   $saved_ip   ='';
-                   $user_ip = $this->adsforwp_get_client_ip();    
+                   $country_code =  ''; 
+                   $saved_ip     =  '';
+                   $user_ip      =  $this->adsforwp_get_client_ip();    
                    
                    $saved_ip_list = array();
 				   
                     if(isset($_COOKIE['adsforwp-user-info'])){
+                        
                          $saved_ip_list = $_COOKIE['adsforwp-user-info']; 
-                         $saved_ip = $saved_ip_list[0];					
+                         $saved_ip = $saved_ip_list[0];	
+                         
                     }						
                    
                    if(!empty($saved_ip_list) && $saved_ip == $user_ip){  
-				   
-                    $country_code = $saved_ip_list[1];  
+				
+                    if(isset($saved_ip_list[1])){
+                        
+                        $country_code = $saved_ip_list[1]; 
+                        
+                    }   
+                    
                     
                    }else{
+                      
+                    $request_day_count  = get_option("adsforwp_ip_request_".date('Y-m-d'));   
                      
-                    $settings = adsforwp_defaultSettings();  
+                    if($request_day_count){ 
+                        
+                        $request_day_count += 1;  
+                        
+                    }else{
+                        
+                        $request_day_count = 1;
+                        
+                    }
+                    
+                    update_option("adsforwp_ip_request_".date('Y-m-d'), $request_day_count);        
+                       
+                    $settings = adsforwp_defaultSettings(); 
+                    
                     if(isset($settings['adsforwp_geolocation_api']) && $settings['adsforwp_geolocation_api'] !=''){
                     
                     $geo_location_data = wp_remote_get('https://api.ipgeolocation.io/ipgeo?apiKey='.$settings['adsforwp_geolocation_api'].'&ip='.$user_ip )	;	
 											
-                    $geo_location_arr = json_decode($geo_location_data['body'], true);				    
-                    $country_code = $geo_location_arr['country_code3'];                   
-                                       
-                    setcookie('adsforwp-user-info[0]', $geo_location_arr['ip'], time() + (86400 * 60), "/"); 
-                    setcookie('adsforwp-user-info[1]', $geo_location_arr['country_code3'], time() + (86400 * 60), "/"); 
-										                   
+                    $geo_location_arr  = json_decode($geo_location_data['body'], true);	
+                    
+                    if(isset($geo_location_arr['country_code3'])){
+                    
+                        $country_code = $geo_location_arr['country_code3']; 
+                        
+                    }
+                                                                              
+                    if(isset($geo_location_arr['ip']) && isset($geo_location_arr['country_code3'])){
+                    
+                        setcookie('adsforwp-user-info[0]', $geo_location_arr['ip'], time() + (86400 * 60), "/"); 
+                        setcookie('adsforwp-user-info[1]', $geo_location_arr['country_code3'], time() + (86400 * 60), "/"); 
+                        
+                    }
+                    										                   
                     }   
                                         
                    }                                                                                              
@@ -484,6 +516,7 @@ class adsforwp_view_visitor_condition {
 }   
 
  public function adsforwp_visitor_condition_field_data( $post_id ){
+     
       $visitor_conditions_array = get_post_meta( $post_id, 'visitor_conditions_array', true);  
       $output = array();
       if($visitor_conditions_array){          
@@ -496,7 +529,7 @@ class adsforwp_view_visitor_condition {
 }   
 
  public function adsforwp_visitor_conditions_status($post_id){
-       
+     
           $unique_checker ='';
           $visitor_condition_enable = get_post_meta($post_id, $key='adsforwp_v_condition_enable', true);
                     

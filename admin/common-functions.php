@@ -19,8 +19,8 @@ class adsforwp_admin_common_functions {
      */
     public function adsforwp_export_all_settings(){    
         
-            $export_ad    = array();
-            $export_group = array();
+            $export_ad       = array();
+            $export_group    = array();
             $export_data_all = array();                     
             //ads
             $all_ads_post = get_posts(
@@ -66,7 +66,7 @@ class adsforwp_admin_common_functions {
                     $post_meta = get_post_meta($group->ID, $key='', true );                                                                              
                     $export_group[$group->ID]['group_meta'] = $post_meta;   
                 
-               }   
+                 }   
                }               
                
                 $get_settings_data                      = get_option('adsforwp_settings');                
@@ -121,8 +121,8 @@ class adsforwp_admin_common_functions {
                 if(isset($ads_post['in_groups'])){
                     
                   $ads_in_group[]= array(
-                                    'new_ad_id' =>$post_id,
-                                    'in_group' =>$ads_post['in_groups']
+                                    'new_ad_id' => $post_id,
+                                    'in_group'  => $ads_post['in_groups']
                           ); 
                   
                 }
@@ -145,41 +145,62 @@ class adsforwp_admin_common_functions {
               //group  
                foreach($all_group_post as $group_post){  
                 
-                $post = $group_post['group_post'];
+                $post         = $group_post['group_post'];
                 $old_group_id = $post['ID'];
-                unset($post['ID']);               
+                unset($post['ID']);     
+                
                 $post_id = wp_insert_post($post);
-                $result = $post_id;
+                $result  = $post_id;
+                
                 $guid = get_option('siteurl') .'/?post_type=adsforwp-groups&p='.$post_id;                
                 $wpdb->get_results("UPDATE wp_posts SET guid ='".$guid."' WHERE ID ='".$post_id."'");                   
                 $ads_meta = $group_post['group_meta'];                               
+                
                 foreach($ads_meta as $key => $ad){
                  
                  if($key == 'adsforwp_ads'){
                   $new_group_ad = array();
                   
                   foreach ($ads_in_group as $in){
+                      
                     if(in_array($old_group_id, $in['in_group'])) {
-                     $new_group_ad[$in['new_ad_id']] = get_the_title($in['new_ad_id']);  
+                        
+                     $new_group_ad[$in['new_ad_id']] = get_the_title($in['new_ad_id']); 
+                     
                     } 
-                  }                                                                          
-                  update_post_meta($post_id, $key, $new_group_ad);      
+                    
+                  } 
+                  
+                  update_post_meta($post_id, $key, $new_group_ad); 
+                  
                  }else{
+                     
                  if($key =='adsforwp_ad_margin' || $key =='data_group_array' || $key =='visitor_conditions_array' || $key == 'ampforwp-post-metas'){                    
-                  update_post_meta($post_id, $key, unserialize($ad[0]));       
+                     
+                    update_post_meta($post_id, $key, unserialize($ad[0]));  
+                  
                  }else{
-                  update_post_meta($post_id, $key, $ad[0]);       
-                 }    
-                 }                    
-                }                                                                                                                                                 
+                     
+                    update_post_meta($post_id, $key, $ad[0]);  
+                  
+                 }  
+                 
+                 }  
+                 
+                } 
+                
                 } 
                                 
-                }                
+                }     
+                
              update_option('adsforwp_settings', $adsforwp_settings); 
              update_option('adsforwp-file-upload_url','');
+             
             }                                    
             if (is_wp_error($result) ){
-              echo esc_attr($result->get_error_message());              
+                
+              echo esc_attr($result->get_error_message()); 
+              
               $wpdb->query('ROLLBACK');             
             }else{
               $wpdb->query('COMMIT'); 
@@ -198,21 +219,29 @@ class adsforwp_admin_common_functions {
         
         $terms = get_terms( 'advanced_ads_groups', array(
         'hide_empty' => false,
-        ));        
+        ));  
+        
         foreach($terms as $term){
+            
             $ad_ids = array();
-            $args = array(
+            $args   = array(
 			'post_type' => 'advanced_ads',
 			'post_status' => array('publish', 'pending', 'future', 'private'),
 			'taxonomy' => $term->taxonomy,
 			'term' => $term->slug,
 			'posts_per_page' => -1
 		);
+            
              $wp = new WP_Query( $args );
+             
              if($wp->post_count){
+                 
                  foreach ($wp->posts as $ad_id){
+                     
                     $ad_ids[] = $ad_id->ID; 
+                    
                  }
+                 
              }
              $group_list[$term->term_id] = $ad_ids;
         }    
@@ -417,12 +446,18 @@ class adsforwp_admin_common_functions {
                 }                                                                  
               }   
             $result = $this->adsforwp_import_all_advanced_groups($advads_groups);
+            
             if (is_wp_error($result) ){
-              echo $result->get_error_message();              
-              $wpdb->query('ROLLBACK');             
+                
+              echo $result->get_error_message(); 
+              
+              $wpdb->query('ROLLBACK');   
+              
             }else{
+                
               $wpdb->query('COMMIT'); 
               return true;
+              
             }            
         }
                              
@@ -436,10 +471,11 @@ class adsforwp_admin_common_functions {
      */
     
     public function adsforwp_migrate_ampforwp_ads(){
-        $result =array();
+        
+        $result           = array();
         $adforwp_meta_key = array();
-        $amp_options = get_option('redux_builder_amp');         
-        $user_id = get_current_user_id();
+        $amp_options      = get_option('redux_builder_amp');         
+        $user_id          = get_current_user_id();
                
         $placement = array('1'=> 'Single','2'=> 'Global','3'=> 'Custom Post Types','4'=> 'Pages');
         $wheretodisplayamp = array(                    
@@ -451,7 +487,9 @@ class adsforwp_admin_common_functions {
                     '6'=>'adsforwp_above_related_post',                    
                     );
         if($amp_options){
+            
             for($i=1;$i<=6; $i++){
+                
               $amp_options['enable-amp-ads-select-'.$i];   
               $amp_options['enable-amp-ads-text-feild-client-'.$i]; 
               $amp_options['enable-amp-ads-text-feild-slot-'.$i];              
@@ -464,37 +502,55 @@ class adsforwp_admin_common_functions {
                     'post_type' => 'adsforwp',
                     
                 );  
-        if($amp_options['enable-amp-ads-'.$i] ==1){            
-                $post_id = wp_insert_post($ads_post);
+        
+        if($amp_options['enable-amp-ads-'.$i] ==1){ 
+            
+                $post_id          = wp_insert_post($ads_post);
                 $data_group_array = array();
-                $conditions = array();
+                $conditions       = array();
+                
                 if($i==3){
+                    
                 if(isset($amp_options['made-amp-ad-3-global'])){                
+                    
                 $conditions = $amp_options['made-amp-ad-3-global'];                
+                
                 if(!in_array(4, $conditions)){ 
                    
-                for($i = 0; $i <count($conditions); $i++){                    
-                    $displayon ='';                    
-                    if($conditions[$i] ==1){
+                for($i = 0; $i <count($conditions); $i++){   
+                    
+                      $displayon = '';  
+                      
+                    if($conditions[$i] == 1){
+                        
                       $displayon = 'post';  
-                    }else if($conditions[$i] ==3){
+                      
+                    }else if($conditions[$i] == 3){
+                        
                       $displayon = 'post';  
-                    }else if ($conditions[$i] ==2){
+                      
+                    }else if ($conditions[$i] == 2){
+                        
                       $displayon = 'page';  
-                    }                                        
+                      
+                    }    
+                    
                     $data_group_array['group-'.$i] =array(
-                                    'data_array' => array(
-                                                        array(
-                                                        'key_1' => 'post_type',
-                                                        'key_2' => 'equal',
-                                                        'key_3' => $displayon,
-                                                        )
+                        
+                                        'data_array' => array(
+                                                            array(
+                                                            'key_1' => 'post_type',
+                                                            'key_2' => 'equal',
+                                                            'key_3' => $displayon,
+                                                            )
                                                      )               
                                                  );                     
-                }                 
+                }   
+                
                 }
                 }    
-                }else{                                                      
+                }else{  
+                    
                  $data_group_array['group-0'] =array(
                                     'data_array' => array(
                                                         array(
@@ -503,23 +559,28 @@ class adsforwp_admin_common_functions {
                                                         'key_3' => 'post',
                                                         )
                                                      )               
-                                                 );  
+                                                 );
+                 
                 }                                                
                 $adforwp_meta_key = array(
-                    'select_adtype' => 'adsense',  
-                    'adsense_type' => 'normal',                    
-                    'data_client_id' =>$amp_options['enable-amp-ads-text-feild-client-'.$i], 
-                    'data_ad_slot' =>$amp_options['enable-amp-ads-text-feild-slot-'.$i],                     
-                    'banner_size' =>$placement[$amp_options['enable-amp-ads-select-'.$i]],                     
-                    'wheretodisplay' =>'after_the_content',
-                    'wheretodisplay' =>$wheretodisplayamp[$i],
-                    'imported_from' => 'ampforwp_ads',
+                    'select_adtype'    => 'adsense',  
+                    'adsense_type'     => 'normal',                    
+                    'data_client_id'   => $amp_options['enable-amp-ads-text-feild-client-'.$i], 
+                    'data_ad_slot'     => $amp_options['enable-amp-ads-text-feild-slot-'.$i],                     
+                    'banner_size'      => $placement[$amp_options['enable-amp-ads-select-'.$i]],                     
+                    'wheretodisplay'   => 'after_the_content',
+                    'wheretodisplay'   => $wheretodisplayamp[$i],
+                    'imported_from'    => 'ampforwp_ads',
                     'data_group_array' => $data_group_array
                 );
-                foreach ($adforwp_meta_key as $key => $val){                     
-                $result[] =  update_post_meta($post_id, $key, $val);  
-                }                                     
-                 }
+                
+                foreach ($adforwp_meta_key as $key => $val){    
+                    
+                     $result[] =  update_post_meta($post_id, $key, $val);  
+                     
+                }        
+                
+               }
         
             }
              
@@ -528,11 +589,14 @@ class adsforwp_admin_common_functions {
     }
     
     public function adsforwp_migrate_advanced_auto_ads(){
-        $result =array();
+        
+        $result           = array();
         $adforwp_meta_key = array();
-        $amp_options = get_option('redux_builder_amp');        
-        $user_id = get_current_user_id();
+        $amp_options      = get_option('redux_builder_amp');        
+        $user_id          = get_current_user_id();
+        
         if(isset($amp_options['ampforwp-amp-auto-ads-code'])){
+            
           $explodestr = explode('"', $amp_options['ampforwp-amp-auto-ads-code']);         
           $ads_post = array(
                     'post_author' => $user_id,                                                            
@@ -563,19 +627,24 @@ class adsforwp_admin_common_functions {
                  $result[] =  update_post_meta($post_id, $key, $val);  
                 }
         }
+        
         return $result;
     }
     
     public function adsforwp_migrate_advanced_amp_ads_incontent(){
-        $result = array();
+        
+        $result           = array();
         $adforwp_meta_key = array();
-        $amp_options = get_option('redux_builder_amp');        
-        $user_id = get_current_user_id();
+        $amp_options      = get_option('redux_builder_amp');        
+        $user_id          = get_current_user_id();
+        
          for($i=1;$i<=4;$i++){              
-              $adposition = '';
-              $paragraph_number ='';
-              $post_title ='';
-              $data_group_array['group-0'] =array(
+             
+              $adposition       = '';
+              $paragraph_number = '';
+              $post_title       = '';
+              
+              $data_group_array['group-0'] = array(
                                     'data_array' => array(
                                                         array(
                                                         'key_1' => 'post_type',
@@ -639,28 +708,36 @@ class adsforwp_admin_common_functions {
                 }              
                 $ads_post = array(
                       'post_author' => $user_id,                                                            
-                      'post_title' => $post_title,                    
+                      'post_title'  => $post_title,                    
                       'post_status' => 'publish',                                                            
-                      'post_name' =>  $post_title,                    
-                      'post_type' => 'adsforwp',
+                      'post_name'   =>  $post_title,                    
+                      'post_type'   => 'adsforwp',
 
                   );     
               }
               if($amp_options['ampforwp-advertisement-type-incontent-ad-'.$i] != 2){
+                  
               $post_id = wp_insert_post($ads_post);
-              foreach ($adforwp_meta_key as $key => $val){                     
-                $result[] = update_post_meta($post_id, $key, $val);  
-                }    
+              
+              foreach ($adforwp_meta_key as $key => $val){   
+                  
+                    $result[] = update_post_meta($post_id, $key, $val);  
+                
+                } 
+                
               }                                           
         }
+        
         return $result;
     }
 
     public function adsforwp_migrate_advanced_amp_ads_after_feature(){
-        $result = array();
+        
+        $result           = array();
         $adforwp_meta_key = array();
-        $amp_options = get_option('redux_builder_amp');        
-        $user_id = get_current_user_id();
+        $amp_options      = get_option('redux_builder_amp');        
+        $user_id          = get_current_user_id();
+        
          if(isset($amp_options['ampforwp-after-featured-image-ad-type'])){
             
             $ads_post = array(
@@ -671,6 +748,7 @@ class adsforwp_admin_common_functions {
                     'post_type' => 'adsforwp',
                     
                 );
+            
               $post_id = wp_insert_post($ads_post);
               $data_group_array['group-0'] =array(
                                     'data_array' => array(
@@ -712,25 +790,30 @@ class adsforwp_admin_common_functions {
                                 break;
                             }
                             
-                foreach ($adforwp_meta_key as $key => $val){                     
-                $result[] = update_post_meta($post_id, $key, $val);  
+                foreach ($adforwp_meta_key as $key => $val){ 
+                    
+                         $result[] = update_post_meta($post_id, $key, $val);
+                
                 }            
         }
+        
         return $result;
     }
     public function adsforwp_migrate_advanced_amp_ads_inloop(){
-        $result = array();
-        $adforwp_meta_key = array();
-        $amp_options = get_option('redux_builder_amp');        
-        $user_id = get_current_user_id();
+        
+        $result             = array();
+        $adforwp_meta_key   = array();
+        $amp_options        = get_option('redux_builder_amp');        
+        $user_id            = get_current_user_id();
+        
          if(isset($amp_options['ampforwp-inbetween-loop'])){
             
             $ads_post = array(
                     'post_author' => $user_id,                                                            
-                    'post_title' => 'In Loop Ad (Migrated from Advanced AMP Ads)',                    
+                    'post_title'  => 'In Loop Ad (Migrated from Advanced AMP Ads)',                    
                     'post_status' => 'publish',                                                            
-                    'post_name' =>  'In Loop Ad (Migrated from Advanced AMP Ads)',                    
-                    'post_type' => 'adsforwp',
+                    'post_name'   =>  'In Loop Ad (Migrated from Advanced AMP Ads)',                    
+                    'post_type'   => 'adsforwp',
                     
                 );
               $post_id = wp_insert_post($ads_post);
@@ -775,17 +858,21 @@ class adsforwp_admin_common_functions {
                                 break;
                             }
                             
-                foreach ($adforwp_meta_key as $key => $val){                     
-                $result[] = update_post_meta($post_id, $key, $val);  
+                foreach ($adforwp_meta_key as $key => $val){ 
+                    
+                        $result[] = update_post_meta($post_id, $key, $val);  
+                        
                 }            
         }
         return $result;
     }
     public function adsforwp_migrate_advanced_amp_ads_standard(){
-        $result = array();
+        
+        $result           = array();
         $adforwp_meta_key = array();
-        $amp_options = get_option('redux_builder_amp');        
-        $user_id = get_current_user_id();
+        $amp_options      = get_option('redux_builder_amp');        
+        $user_id          = get_current_user_id();
+        
         $placement_position = array(
                 '1'=> 'adsforwp_below_the_header',
                 '2'=> 'adsforwp_below_the_footer',
@@ -798,7 +885,7 @@ class adsforwp_admin_common_functions {
             
              for($i=1;$i<=7;$i++){                                                                     
                                                          
-              $post_title ='';
+              $post_title = '';
               $data_group_array['group-0'] =array(
                                     'data_array' => array(
                                                         array(
@@ -808,8 +895,10 @@ class adsforwp_admin_common_functions {
                                                         )
                                                      )               
                                                  );                            
-              if(isset($amp_options['ampforwp-standard-ads-'.$i])){                  
+              if(isset($amp_options['ampforwp-standard-ads-'.$i])){    
+                  
                 switch ($amp_options['ampforwp-advertisement-type-standard-'.$i]) {
+                    
                     case 1: // Adsense
                         $post_title = 'Adsense Normal Ad '.$i. '(Migrated from Advanced AMP Ads)';
                                              
@@ -852,9 +941,13 @@ class adsforwp_admin_common_functions {
                   );     
               }
               if($amp_options['ampforwp-advertisement-type-standard-'.$i] !=2){
+                  
               $post_id = wp_insert_post($ads_post);
+              
               foreach ($adforwp_meta_key as $key => $val){                     
+                  
                  $result[] = update_post_meta($post_id, $key, $val);  
+                 
                }    
               }                                           
             }  
@@ -997,8 +1090,8 @@ class adsforwp_admin_common_functions {
      */
     public function adsforwp_import_all_advanced_groups($advads_groups) {
         
-            $user_id = get_current_user_id();
-            $terms = get_terms( 'advanced_ads_groups', array(
+            $user_id     = get_current_user_id();
+            $terms       = get_terms( 'advanced_ads_groups', array(
             'hide_empty' => false,
             ));
             $groups_extra_attr = get_option( 'advads-ad-groups', array());            
@@ -1027,15 +1120,21 @@ class adsforwp_admin_common_functions {
             }else{
                $adforwp_group_meta_key['adsforwp_refresh_type'] = 'on_load';  
             }
-            $store_ads_id = $advads_groups[$term->term_id];
+            $store_ads_id  = $advads_groups[$term->term_id];
             $ads_forwp_ads = array();
+            
             foreach($store_ads_id as $id){
-              $title = get_the_title($id);
+                
+              $title              = get_the_title($id);
               $ads_forwp_ads[$id] = $title;              
+              
             }    
-            $adforwp_group_meta_key['adsforwp_ads']= $ads_forwp_ads;           
+            $adforwp_group_meta_key['adsforwp_ads'] = $ads_forwp_ads;     
+            
             foreach ($adforwp_group_meta_key as $key => $val){                     
+                
                     update_post_meta($group_post_id, $key, $val);  
+                    
                 }   
             }  
     }
@@ -1045,10 +1144,13 @@ class adsforwp_admin_common_functions {
      * @return type
      */
     public function adsforwp_fetch_all_ads(){
-            $all_ads = array();
+        
+            $all_ads           = array();
             $all_ads_transient = json_decode(get_transient( 'transient_all_afw_ads_data'));
-            $all_ads = $all_ads_transient;
+            $all_ads           = $all_ads_transient;
+            
             if(empty($all_ads_transient)){
+                
               $all_ads = get_posts(
                     array(
                             'post_type' 	 => 'adsforwp',
@@ -1056,7 +1158,9 @@ class adsforwp_admin_common_functions {
                             'post_status' => 'publish',
                     )
                  ); 
-              set_transient( 'transient_all_afw_ads_data', json_encode($all_ads), 60 );     
+              
+              set_transient( 'transient_all_afw_ads_data', json_encode($all_ads), 60 ); 
+              
             }                                                         
         return $all_ads;        
     }
@@ -1065,11 +1169,16 @@ class adsforwp_admin_common_functions {
      * @return type
      */
     public function adsforwp_fetch_all_ads_post_meta(){
+        
         $all_ads_post_meta = array();
-        $all_ads = $this->adsforwp_fetch_all_ads();      
+        $all_ads           = $this->adsforwp_fetch_all_ads();  
+        
         foreach($all_ads as $ad){
-                 $all_ads_post_meta[$ad->ID] = get_post_meta( $ad->ID, $key='', true );                                                                           
-                }               
+            
+                  $all_ads_post_meta[$ad->ID] = get_post_meta( $ad->ID, $key='', true );
+                 
+                } 
+                
         return $all_ads_post_meta;        
     }
     /**
@@ -1077,10 +1186,13 @@ class adsforwp_admin_common_functions {
      * @return type
      */
     public function adsforwp_fetch_all_groups(){
-        $all_groups = array();
+        
+        $all_groups           = array();
         $all_groups_transient = json_decode(get_transient( 'transient_all_groups_data'));
-        $all_groups = $all_groups_transient;
+        $all_groups           = $all_groups_transient;
+        
         if(empty($all_groups_transient)){
+            
           $all_groups = get_posts(
                     array(
                             'post_type' 	 => 'adsforwp-groups',
@@ -1088,8 +1200,10 @@ class adsforwp_admin_common_functions {
                             'post_status' => 'publish',
                     )
                  ); 
+          
           set_transient( 'transient_all_groups_data', json_encode($all_groups), 60 );           
-        }                                            
+        }
+        
         return $all_groups;
     }
     /**
@@ -1097,11 +1211,16 @@ class adsforwp_admin_common_functions {
      * @return type
      */
      public function adsforwp_fetch_all_groups_post_meta(){
+         
         $all_groups_post_meta = array();
-        $all_groups = $this->adsforwp_fetch_all_groups();       
+        $all_groups           = $this->adsforwp_fetch_all_groups();       
+        
         foreach($all_groups as $group){
+            
                  $all_groups_post_meta[$group->ID] = get_post_meta( $group->ID, $key='', true );                                                                           
-                }                    
+                 
+                } 
+                
         return $all_groups_post_meta;        
     }
     /**
@@ -1111,17 +1230,27 @@ class adsforwp_admin_common_functions {
      */
     public function adsforwp_check_ads_in_group($ad_id){
         
-                $all_groups = $this->adsforwp_fetch_all_groups();                  
-                $meta_value = array(); 
+                $all_groups   = $this->adsforwp_fetch_all_groups();                  
+                $meta_value   = array(); 
                 $ad_group_ids = array();
+                
                 foreach($all_groups as $groups){
+                    
                   $meta_value  = get_post_meta( $groups->ID, $key='adsforwp_ads', true );                    
+                  
                     if($meta_value){
+                        
                         if(in_array($ad_id, array_keys($meta_value))){
-                        $ad_group_ids[] = $groups->ID;  
-                    }}                                  
-                }                
-                return $ad_group_ids;
+                            
+                            $ad_group_ids[] = $groups->ID;  
+                            
+                    }
+                    
+                  }
+                  
+                }     
+                
+            return $ad_group_ids;
     }
 
     /**
@@ -1129,6 +1258,7 @@ class adsforwp_admin_common_functions {
      * @return array
      */
     public function adsforwp_expanded_allowed_tags() {
+        
             $my_allowed = wp_kses_allowed_html( 'post' );
             // form fields - input
             $my_allowed['input'] = array(
@@ -1151,13 +1281,14 @@ class adsforwp_admin_common_functions {
             ); 
             //number
             $my_allowed['number'] = array(
+                
                     'class'        => array(),
                     'id'           => array(),
                     'name'         => array(),
                     'value'        => array(),
                     'type'         => array(),
                     'style'        => array(),                    
-                    'width'     => array(),
+                    'width'        => array(),
                     
             ); 
             //textarea
@@ -1167,174 +1298,174 @@ class adsforwp_admin_common_functions {
                     'name'  => array(),
                     'value' => array(),
                     'type'  => array(),
-                    'style'  => array(),
+                    'style' => array(),
                     'rows'  => array(),                                                            
             );       
              //amp tag
              $my_allowed['amp-ad'] = array(
-                    'class' => array(),
-                    'width'    => array(),
-                    'height'  => array(),
-                    'type' => array(),
-                    'data-slot'  => array(),                 
-                    'data-ad-client'  => array(),
-                    'data-ad-slot'  => array(),
-                    'data-tagtype'  => array(),
-                    'data-cid'  => array(),
-                    'data-crid'  => array(),
-                    'data-mid'  => array(),
-                    'data-block-id'  => array(),
+                    'class'                     => array(),
+                    'width'                     => array(),
+                    'height'                    => array(),
+                    'type'                      => array(),
+                    'data-slot'                 => array(),                 
+                    'data-ad-client'            => array(),
+                    'data-ad-slot'              => array(),
+                    'data-tagtype'              => array(),
+                    'data-cid'                  => array(),
+                    'data-crid'                 => array(),
+                    'data-mid'                  => array(),
+                    'data-block-id'             => array(),
                     'data-html-access-allowed'  => array(),
-                    'data-property'  => array(),
-                    'data-zone'  => array(),
-                    'data-json'  => array(),
+                    'data-property'             => array(),
+                    'data-zone'                 => array(),
+                    'data-json'                 => array(),
             );
              $my_allowed['amp-pixel'] = array(                    
                     'src'     => array(),
                     'layout'  => array(),                    
             );
              $my_allowed['amp-embed'] = array(
-                    'class' => array(),
-                    'width'    => array(),
-                    'height'  => array(),
-                    'heights'  => array(),
-                    'type' => array(),
-                    'layout'  => array(),                 
-                    'data-publisher'  => array(),
-                    'data-mode'  => array(),
-                    'data-placement'  => array(),
+                    'class'             => array(),
+                    'width'             => array(),
+                    'height'            => array(),
+                    'heights'           => array(),
+                    'type'              => array(),
+                    'layout'            => array(),                 
+                    'data-publisher'    => array(),
+                    'data-mode'         => array(),
+                    'data-placement'    => array(),
                     'data-target_type'  => array(),
-                    'data-article'  => array(),
-                    'data-url'  => array(),                    
+                    'data-article'      => array(),
+                    'data-url'          => array(),                    
             );
              $my_allowed['amp-img'] = array(
-                    'class' => array(),
-                    'id' => array(),
-                    'width'    => array(),
-                    'height'  => array(),
-                    'type' => array(),
-                    'src'  => array(), 
-                    'on'  => array(), 
-                    'role'  => array(), 
+                    'class'     => array(),
+                    'id'        => array(),
+                    'width'     => array(),
+                    'height'    => array(),
+                    'type'      => array(),
+                    'src'       => array(), 
+                    'on'        => array(), 
+                    'role'      => array(), 
                     'tabindex'  => array(), 
-                    'layout'  => array(), 
+                    'layout'    => array(), 
             );
              $my_allowed['amp-ad-exit'] = array(
                     'id' => array(),                    
              );
              $my_allowed['amp-auto-ads'] = array(
-                    'type' => array(),
-                    'id' => array(),
+                    'type'           => array(),
+                    'id'             => array(),
                     'data-ad-client' => array(),
-                    'height'  => array(),
-                    'width' => array(),             
+                    'height'         => array(),
+                    'width'          => array(),             
             );
              $my_allowed['amp-sticky-ad'] = array(
                     'layout' => array(),
-                    'id' => array(),                             
+                    'id'     => array(),                             
             );
              $my_allowed['amp-list'] = array(
-                    'width' => array(),
+                    'width'  => array(),
                     'height' => array(),
                     'layout' => array(),
-                    'src'  => array(),
-                    'width' => array(), 
-                    'id' => array(), 
+                    'src'    => array(),
+                    'width'  => array(), 
+                    'id'     => array(), 
             );
              $my_allowed['amp-live-list'] = array(                    
                     'data-max-items-per-page'  => array(),
-                    'data-poll-interval' => array(), 
-                    'id' => array(), 
+                    'data-poll-interval'       => array(), 
+                    'id'                       => array(), 
             );
              $my_allowed['amp-app-banner'] = array(                    
-                    'layout'  => array(),                    
-                    'id' => array(), 
+                    'layout'    => array(),                    
+                    'id'        => array(), 
             );
              $my_allowed['amp-carousel'] = array(                    
-                    'width'  => array(),                    
-                    'height' => array(), 
-                    'id' => array(), 
-                    'layout' => array(), 
-                    'type' => array(), 
-                     'data-next-button-aria-label' => array(), 
-                     'data-previous-button-aria-label' => array(),
-                    'delay' => array(),
-                    'loop' => array(),
-                    'autoplay' => array(),
-                    'controls' => array(),
+                    'width'                           => array(),                    
+                    'height'                          => array(), 
+                    'id'                              => array(), 
+                    'layout'                          => array(), 
+                    'type'                            => array(), 
+                    'data-next-button-aria-label'     => array(), 
+                    'data-previous-button-aria-label' => array(),
+                    'delay'                           => array(),
+                    'loop'                            => array(),
+                    'autoplay'                        => array(),
+                    'controls'                        => array(),
                  
             );
              $my_allowed['amp-iframe'] = array(                    
-                    'width'  => array(), 
-                    'height'  => array(), 
-                    'sandbox'  => array(), 
-                    'layout'  => array(), 
-                    'frameborder'  => array(),
-                    'src'  => array(),                 
-                    'id' => array(), 
+                    'width'         => array(), 
+                    'height'        => array(), 
+                    'sandbox'       => array(), 
+                    'layout'        => array(), 
+                    'frameborder'   => array(),
+                    'src'           => array(),                 
+                    'id'            => array(), 
             );
              $my_allowed['amp-image-lightbox'] = array(                    
-                    'layout'  => array(), 
-                    'height'  => array(),                                         
-                    'id' => array(), 
+                    'layout'    => array(), 
+                    'height'    => array(),                                         
+                    'id'        => array(), 
             );
              $my_allowed['amp-layout'] = array(                    
                     'layout'  => array(), 
-                    'width'  => array(),   
+                    'width'   => array(),   
                     'height'  => array(),   
-                    'id' => array(), 
+                    'id'      => array(), 
             );
              $my_allowed['amp-3d-gltf'] = array(                    
-                    'layout'  => array(), 
-                    'width'  => array(),   
-                    'height'  => array(),   
-                    'id' => array(), 
-                    'antialiasing' => array(), 
-                    'src' => array(),                  
+                    'layout'        => array(), 
+                    'width'         => array(),   
+                    'height'        => array(),   
+                    'id'            => array(), 
+                    'antialiasing'  => array(), 
+                    'src'           => array(),                  
             );
              $my_allowed['amp-anim'] = array(                    
-                    'layout'  => array(), 
-                    'width'  => array(),   
-                    'height'  => array(),   
-                    'id' => array(), 
-                    'srcset' => array(), 
-                    'src' => array(),                  
+                    'layout'        => array(), 
+                    'width'         => array(),   
+                    'height'        => array(),   
+                    'id'            => array(), 
+                    'srcset'        => array(), 
+                    'src'           => array(),                  
             );
              $my_allowed['amp-imgur'] = array(                    
-                    'data-imgur-id'  => array(), 
-                    'layout'  => array(),   
-                    'width'  => array(),   
-                    'height' => array(), 
-                    'id' => array(),                                   
+                    'data-imgur-id' => array(), 
+                    'layout'        => array(),   
+                    'width'         => array(),   
+                    'height'        => array(), 
+                    'id'            => array(),                                   
             );
              $my_allowed['amp-animation'] = array(                                        
-                    'layout'  => array(),   
-                    'duration'  => array(),   
-                    'delay' => array(), 
-                    'endDelay' => array(),
-                    'iterations' => array(),
-                    'iterationStart' => array(),
-                    'easing' => array(),
-                    'direction' => array(),
-                    'fill' => array(),   
+                    'layout'          => array(),   
+                    'duration'        => array(),   
+                    'delay'           => array(), 
+                    'endDelay'        => array(),
+                    'iterations'      => array(),
+                    'iterationStart'  => array(),
+                    'easing'          => array(),
+                    'direction'       => array(),
+                    'fill'            => array(),   
             );
              
             // select
             $my_allowed['select'] = array(
-                    'class'  => array(),
-                    'id'     => array(),
-                    'name'   => array(),
-                    'value'  => array(),
-                    'type'   => array(),
-                    'required' => array(),
-                    'multiple' => array(),
-                    'style' => array(),
+                    'class'     => array(),
+                    'id'        => array(),
+                    'name'      => array(),
+                    'value'     => array(),
+                    'type'      => array(),
+                    'required'  => array(),
+                    'multiple'  => array(),
+                    'style'     => array(),
             );
             
             $my_allowed['iframe'] = array(
-                    'class'  => array(),
-                    'id'     => array(),
-                    'src'   => array(),
+                    'class'   => array(),
+                    'id'      => array(),
+                    'src'     => array(),
                     'height'  => array(),
                     'width'   => array(),                                                            
             );
@@ -1345,16 +1476,16 @@ class adsforwp_admin_common_functions {
                     'name'   => array(),                    
             );
             $my_allowed['div'] = array(
-                    'class'       => array(),
-                    'id'          => array(),
-                    'data-id'     => array(), 
-                    'data-mantis-zone'     => array(), 
+                    'class'             => array(),
+                    'id'                => array(),
+                    'data-id'           => array(), 
+                    'data-mantis-zone'  => array(), 
                 
             );
             //  options
             $my_allowed['option'] = array(
                     'selected' => array(),
-                    'value' => array(),
+                    'value'    => array(),
             );
             $my_allowed['optgroup'] = array(
                     'label'   => array(),
@@ -1366,21 +1497,21 @@ class adsforwp_admin_common_functions {
             );
             // allow script
             $my_allowed['script'] = array(
-                    'src' => array(),
-                    'type' => array(),
-                    'data-width' => array(),
-                    'data-height' => array(),                                
-                    'async' => array(),
-                    'crossorigin' => array(),
-                    'defer' => array(),
-                    'importance' => array(),
-                    'integrity' => array(),
-                    'nomodule' => array(),
-                    'nonce' => array(),                   
-                    'text' => array(),
-                    'charset' => array(),
-                    'language' => array(), 
-                    'data-adfscript' => array(), 
+                    'src'               => array(),
+                    'type'              => array(),
+                    'data-width'        => array(),
+                    'data-height'       => array(),                                
+                    'async'             => array(),
+                    'crossorigin'       => array(),
+                    'defer'             => array(),
+                    'importance'        => array(),
+                    'integrity'         => array(),
+                    'nomodule'          => array(),
+                    'nonce'             => array(),                   
+                    'text'              => array(),
+                    'charset'           => array(),
+                    'language'          => array(), 
+                    'data-adfscript'    => array(), 
             );
                         
             return $my_allowed;

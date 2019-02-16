@@ -13,7 +13,10 @@ class adsforwp_file_creation{
            $this->ad_support = $this->wppath."front.js";
 
        }
-            
+        /**
+         * Function to create a ad blocker js file
+         * @return boolean
+         */    
         public function adsforwp_create_adblocker_support_js(){   
             
         $writestatus = '';
@@ -40,6 +43,11 @@ class adsforwp_file_creation{
             return false;   
         }
     }  
+    
+    /**
+     * Function to delete a ad blocker js file
+     * @return type
+     */
     public function adsforwp_delete_adblocker_support_js(){  
         
         $result ='';
@@ -53,4 +61,5 @@ class adsforwp_file_creation{
        return $result;
        
     }
+    
 }

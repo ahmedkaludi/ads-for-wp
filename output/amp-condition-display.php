@@ -11,6 +11,9 @@ class adsforwp_output_amp_condition_display{
      */
     public function adsforwp_amp_condition_hooks(){
        // Below the Header 
+        //Amp custom theme
+        add_action( 'ampforwp_add_loop_class', array($this, 'ampforwp_add_loop_class_above_ad') );
+        
         add_action( 'ampforwp_after_header', array($this, 'adsforwp_display_ads_below_the_header') );
         add_action( 'ampforwp_design_1_after_header', array($this, 'adsforwp_display_ads_below_the_header') ); 
         
@@ -144,13 +147,8 @@ class adsforwp_output_amp_condition_display{
         
     }
     
-    /**
-     * Here, We are displaying ads or group ads according to amp where to display condition
-     * @param type $condition
-     * @param type $count
-     */
-    public function adsforwp_amp_condition_ad_code($condition, $count=null){               
-        //For Ads
+    public function adsforwp_amp_condition_get_ad_code($condition, $count=null){
+                        
         $post_ad_id_list = json_decode(get_transient('adsforwp_transient_ads_ids'), true);    
         
         if($post_ad_id_list){
@@ -176,7 +174,7 @@ class adsforwp_output_amp_condition_display{
                         
                         if($amp_ad_code){
                         
-                            echo '<div class="amp-ad-wrapper">'.$amp_ad_code.'</div>';
+                            return '<div class="amp-ad-wrapper">'.$amp_ad_code.'</div>';
                             
                         }
                                                 
@@ -187,7 +185,7 @@ class adsforwp_output_amp_condition_display{
                         
                         if($amp_ad_code){
                             
-                             echo '<div class="amp-ad-wrapper">'.$amp_ad_code.'</div>';
+                            return '<div class="amp-ad-wrapper">'.$amp_ad_code.'</div>';
                             
                         }                                                                     
                       }                              
@@ -218,7 +216,7 @@ class adsforwp_output_amp_condition_display{
                           
                           if($amp_group_code){
                             
-                              echo '<div class="amp-ad-wrapper">'.$amp_group_code.'</div>';
+                              return '<div class="amp-ad-wrapper">'.$amp_group_code.'</div>';
                               
                           }                                                      
                       
@@ -228,7 +226,7 @@ class adsforwp_output_amp_condition_display{
                           
                           if($amp_group_code){
                               
-                               echo '<div class="amp-ad-wrapper">'.$amp_group_code.'</div>';
+                              return '<div class="amp-ad-wrapper">'.$amp_group_code.'</div>';
                               
                           }                                                                                                                      
                       }                                                                                               
@@ -236,8 +234,37 @@ class adsforwp_output_amp_condition_display{
                  
             }           
         }
+                                
+    }
+    
+    /**
+     * Here, We are displaying ads or group ads according to amp where to display condition
+     * @param type $condition
+     * @param type $count
+     */
+    public function adsforwp_amp_condition_ad_code($condition, $count=null){               
+                
+        $result = $this->adsforwp_amp_condition_get_ad_code($condition, $count);
+        echo $result;
                         
     }    
+    
+    /**
+     * Here, We are adding a class above ad inside loop ad for amp theme framework
+     * @param type $i
+     */
+    public function ampforwp_add_loop_class_above_ad($i){
+        
+        $condition = 'adsforwp_ads_in_loops';
+        
+        $result = $this->adsforwp_amp_condition_get_ad_code($condition, $i);
+        
+        if($result){
+            echo 'ampforwp-new-class';
+        }
+        
+       
+    }
     
 }
 if (class_exists('adsforwp_output_amp_condition_display')) {   

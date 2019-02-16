@@ -496,7 +496,7 @@ jQuery( document ).ready(function($) {
                               break;    
                           case "adsense_auto_ads":
                                 $("#display-metabox").hide();
-                                $("#adsforwp-location").hide();   
+                               // $("#adsforwp-location").hide();   
                                 $("#adsforwp_visitor_condition_metabox").hide();
                                 $("#data_client_id").parent().parent("tr").show();                                
                                 $("#data_client_id").attr("required",true);                               
@@ -629,7 +629,7 @@ jQuery( document ).ready(function($) {
                                 $(".afw-select-post-type").closest('tr').find('td').eq(e).hide();  
                              }); 
                    $("#display-metabox").hide();
-                   $("#adsforwp-location").hide();   
+                  // $("#adsforwp-location").hide();   
                    $("#adsforwp_visitor_condition_metabox").hide();
                    $("#data_client_id").parent().parent("tr").show();
                    $("#banner_size, #data_ad_slot, #adsforwp_ad_responsive").parent().parent("tr").hide();

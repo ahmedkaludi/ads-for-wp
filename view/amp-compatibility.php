@@ -16,6 +16,7 @@ class adsforwp_amp_compatibility {
 	);
     }
         function adsforwp_amp_comp_get_meta( $value ) {
+            
             global $post;
             
             $field = get_post_meta( $post->ID, $value, true );
