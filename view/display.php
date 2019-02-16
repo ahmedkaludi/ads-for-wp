@@ -8,17 +8,35 @@ class adsforwp_view_display {
 	);
 	private $meta_fields = array(
 		array(
-			'label' => 'Display Type',
-			'id' => 'wheretodisplay',
-			'type' => 'select',
-			'options' => array(
-                                'ad_shortcode'        => 'Shortcode (Manual)',
-				'between_the_content' => 'Between the Content (Automatic)',
-				'after_the_content'   => 'After the Content (Automatic)',
-				'before_the_content'  => 'Before the Content (Automatic)',
-                                'custom_target'       => 'Custom Target',
-                                'sticky'              => 'Sticky',
-			),
+			'label'    => 'Display Type',
+			'id'       => 'wheretodisplay',
+			'type'     => 'select',
+                        'optgroup' => array(
+                                
+                                'both-options'  => array(
+                                            'ad_shortcode'        => 'Shortcode (Manual)',
+                                            'between_the_content' => 'Between the Content (Automatic)',
+                                            'after_the_content'   => 'After the Content (Automatic)',
+                                            'before_the_content'  => 'Before the Content (Automatic)',
+                                            'custom_target'       => 'Custom Target',
+                                            'sticky'              => 'Sticky',
+                                ),
+                                
+                                'amp-options'  => array(
+                                            'adsforwp_after_featured_image'         => 'Ad after Featured Image',
+                                            'adsforwp_below_the_header'             => 'Below the Header (SiteWide)',
+                                            'adsforwp_below_the_footer'             => 'Below the Footer (SiteWide)',
+                                            'adsforwp_above_the_footer'             => 'Above the Footer (SiteWide)',
+                                            'adsforwp_above_the_post_content'       => 'Above the Post Content (Single Post)',
+                                            'adsforwp_below_the_post_content'       => 'Below the Post Content (Single Post)',                                            
+                                            'adsforwp_below_the_title'              => 'Below the Title (Single Post)',
+                                            'adsforwp_above_related_post'           => 'Above Related Posts (Single Post)',
+                                            'adsforwp_below_author_box'             => 'Below the Author Box (Single Post)',
+                                            'adsforwp_ads_in_loops'                 => 'Ads Inbetween Loop',
+                                )
+                            
+                        ),
+			
 		),                
 		array(
 			'label' => 'Position',
@@ -62,7 +80,12 @@ class adsforwp_view_display {
                                'disabled' 	=> 'disabled',
                                'class' => 'afw_manual_ads_type',
 			),
-		),               
+		), 
+                array(
+			'label' => 'After How Many Posts?',
+			'id' => 'adsforwp_after_how_many_post',
+			'type' => 'number',                        
+		),
                 array(
 			'label' => 'Alignment',
 			'id' => 'adsforwp_ad_align',
@@ -95,7 +118,7 @@ class adsforwp_view_display {
 			'label' => 'New Element',
 			'id' => 'adsforwp_new_element',
 			'type' => 'text',                        
-		),
+		),                
                 array(
 			'label' => 'Action',
 			'id' => 'adsforwp_existing_element_action',
@@ -194,6 +217,56 @@ class adsforwp_view_display {
 					}
 					$input .= '</select><a href="#" class="adsforwp-advance-option-click">Advance Option</a>';
 
+                                            break;
+                                        
+                                        case 'wheretodisplay':
+                                            
+                                            if(is_plugin_active('accelerated-mobile-pages/accelerated-moblie-pages.php') || is_plugin_active('amp/amp.php')){
+                                                
+                                                $opt_label = 'Full Support ( AMP & NON AMP )';
+                                                
+                                            }else{
+                                                
+                                                $opt_label = 'Display Type';
+                                                unset($meta_field['optgroup']['amp-options']);
+                                                
+                                            }
+                                            $input = sprintf(
+						'<select class="afw_select" id="%s" name="%s">',
+						$meta_field['id'],
+						$meta_field['id']
+					   );
+                                            
+                                            foreach($meta_field['optgroup'] as $dtype => $options){
+                                                   
+                                               if($dtype =='both-options'){
+                                                   
+                                                   $input .='<optgroup label="'.esc_html__($opt_label, 'ads-for-wp').'">';
+                                                   
+                                               }
+                                               if($dtype =='amp-options'){
+                                                   
+                                                   $input .='<optgroup label="Partial Support ( AMP Only )">';
+                                                   
+                                               }                                                
+                                               
+                                                foreach ( $options as $key => $value ) {
+                                                    $meta_field_value = !is_numeric( $key ) ? $key : $value;
+                                                    $input .= sprintf(
+                                                            '<option %s value="%s">%s</option>',
+                                                            $meta_value === $meta_field_value ? 'selected' : '',
+                                                            $meta_field_value,
+                                                            esc_html__($value, 'ads-for-wp')                                                        
+                                                    );
+                                               }
+                                                
+                                               $input .='</optgroup>';
+                                                
+                                            }                                                                                        
+                                            $input .= '</select>';
+                                            
+                                            
+                                            
                                             break;
 
                                         default:

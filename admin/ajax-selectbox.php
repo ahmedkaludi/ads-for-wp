@@ -26,16 +26,27 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
     $response = $data;
     $is_ajax = false;
     if( $_SERVER['REQUEST_METHOD']=='POST'){
+        
         $is_ajax = true;
-        if(wp_verify_nonce($_POST["adsforwp_visitor_condition_call_nonce"],'adsforwp_visitor_condition_action_nonce')){             
+        
+        if(wp_verify_nonce($_POST["adsforwp_visitor_condition_call_nonce"],'adsforwp_visitor_condition_action_nonce')){   
+            
             if ( isset( $_POST["id"] ) ) {
-              $response = sanitize_text_field(wp_unslash($_POST["id"]));
+                
+                    $response = sanitize_text_field(wp_unslash($_POST["id"]));
+              
             }
+            
             if ( isset( $_POST["number"] ) ) {
-              $current_number   = intval($_POST["number"]);
+                
+                    $current_number   = intval($_POST["number"]);
+              
             }
+            
             if ( isset( $_POST["group_number"] ) ) {
-              $current_group_number   = intval($_POST["group_number"]);
+                
+                    $current_group_number   = intval($_POST["group_number"]);
+              
             }
         }else{            
             exit;
@@ -315,7 +326,7 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
           case "logged_in_visitor":
 
             $choices = array(
-                'true' => 'True',
+                'true'  => 'True',
                 'false' => 'False',                                
             );                       
             break; 
@@ -323,16 +334,16 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
           case "user_agent":
 
             $choices = array(
-                'opera' => 'Opera',
-                'edge' => 'Edge',
-                'chrome' => 'Chrome',
-                'safari' => 'Safari',
-                'firefox' => 'Firefox',
+                'opera'             => 'Opera',
+                'edge'              => 'Edge',
+                'chrome'            => 'Chrome',
+                'safari'            => 'Safari',
+                'firefox'           => 'Firefox',
                 'internet_explorer' => 'MSIE',
-                'android' => 'Android',               
-                'iphone' => 'iPhone',
-                'ipad' => 'iPad',
-                'ipod' => 'iPod',                                
+                'android'           => 'Android',               
+                'iphone'            => 'iPhone',
+                'ipad'              => 'iPad',
+                'ipod'              => 'iPod',                                
                 'user_agent_custom' => 'Custom',
             );                       
             break; 
@@ -340,6 +351,7 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
           case "user_type" :
               
            global $wp_roles;
+              
             $choices = $wp_roles->get_names();
 
             if( is_multisite() )
@@ -446,16 +458,23 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
                                     
         }else{
            if ( empty( $choices)) {
+               
           $choices = array('none' => esc_html__('No Items', 'ads-for-wp') );
+          
         }
     
           $output = '<select  class="widefat adsforwp-visitor-condition-ajax-output" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_3]">'; 
       
-          foreach ($choices as $key => $value) { 
+          foreach ($choices as $key => $value) {
+              
                 if ( $saved_data ==  $key ) {
-                    $selected = 'selected="selected"';
+                    
+                        $selected = 'selected="selected"';
+                    
                 } else {
-                  $selected = '';
+                    
+                        $selected = '';
+                  
                 }
 
             $output .= '<option '. esc_attr($selected) .' value="' . esc_attr($key) .'"> ' .  esc_html__($value, 'ads-for-wp') .'  </option>';            
@@ -468,18 +487,29 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
           }
                                   
                 if ( $saved_data ==  'url_custom' || $response =='referrer_url') {
+                    
                  if($selected_val_key_4 && $saved_data ==  'url_custom'){
-                  $output .= ' <input type="text" class="widefat adsforwp_url_custom" value="'.esc_attr($selected_val_key_4).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_4]"> ';                           
+                     
+                    $output .= ' <input type="text" class="widefat adsforwp_url_custom" value="'.esc_attr($selected_val_key_4).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_4]"> ';                           
+                    
                  }else{
-                  $output .= ' <input placeholder ="https://www.example.com/" type="text" class="widefat afw_hide adsforwp_url_custom" value="'.esc_attr($selected_val_key_4).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_4]"> ';                           
+                     
+                    $output .= ' <input placeholder ="https://www.example.com/" type="text" class="widefat afw_hide adsforwp_url_custom" value="'.esc_attr($selected_val_key_4).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_4]"> ';                           
+                    
                  }   
                  
-                } 
-                if ( $saved_data ==  'user_agent_custom' || $response =='user_agent') {   
+                }
+                
+                if ( $saved_data ==  'user_agent_custom' || $response =='user_agent') { 
+                    
                  if($selected_val_key_5 && $saved_data ==  'user_agent_custom'){
-                 $output .= ' <input type="text" class="widefat adsforwp_user_agent_custom" value="'.esc_attr($selected_val_key_5).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_5]"> ';        
+                     
+                    $output .= ' <input type="text" class="widefat adsforwp_user_agent_custom" value="'.esc_attr($selected_val_key_5).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_5]"> ';        
+                    
                  } else{
-                 $output .= ' <input placeholder ="Android" type="text" class="widefat afw_hide adsforwp_user_agent_custom" value="'.esc_attr($selected_val_key_5).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_5]"> ';        
+                     
+                    $output .= ' <input placeholder ="Android" type="text" class="widefat afw_hide adsforwp_user_agent_custom" value="'.esc_attr($selected_val_key_5).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_5]"> ';        
+                    
                  }  
                  
                 }    
@@ -508,18 +538,29 @@ public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $curre
     $is_ajax = false;
     
     if( $_SERVER['REQUEST_METHOD']=='POST'){
+        
         $is_ajax = true;
+        
         if(wp_verify_nonce($_POST["adsforwp_call_nonce"],'adsforwp_select_action_nonce')){
             
             if ( isset( $_POST["id"] ) ) {
-              $response = sanitize_text_field(wp_unslash($_POST["id"]));
+                
+                    $response = sanitize_text_field(wp_unslash($_POST["id"]));
+              
             }
+            
             if ( isset( $_POST["number"] ) ) {
-              $current_number   = intval($_POST["number"]);
+                
+                    $current_number   = intval($_POST["number"]);
+              
             }
+            
             if ( isset( $_POST["group_number"] ) ) {
-              $current_group_number   = intval($_POST["group_number"]);
+                
+                    $current_group_number   = intval($_POST["group_number"]);
+              
             }
+            
         }else{
             exit;
         }
@@ -570,6 +611,7 @@ public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $curre
               {
                 $title = '';
                 $ancestors = get_ancestors($page->ID, 'page');
+                
                 if($ancestors)
                 {
                   foreach($ancestors as $a)
@@ -601,6 +643,7 @@ public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $curre
             );
 
             $templates = get_page_templates();
+            
             foreach($templates as $k => $v)
             {
               $choices[$v] = $k;
@@ -690,9 +733,9 @@ public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $curre
 
           case "ef_taxonomy" :
 
-            $choices = array('all' => esc_html__('All','ads-for-wp'));
+            $choices    = array('all' => esc_html__('All','ads-for-wp'));
             $taxonomies = $this->adsforwp_post_taxonomy_generator();        
-            $choices = array_merge($choices, $taxonomies);                      
+            $choices    = array_merge($choices, $taxonomies);                      
             break;
 
         }        
@@ -712,28 +755,44 @@ public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $curre
 
         // Generate Options for Posts
         if ( $options['param'] == 'post' ) {
-          foreach ($choices as $choice_post_type) {      
+            
+          foreach ($choices as $choice_post_type) {  
+              
             foreach ($choice_post_type as $key => $value) { 
+                
                 if ( $saved_data ==  $key ) {
-                    $selected = 'selected="selected"';
+                    
+                         $selected = 'selected="selected"';
+                    
                 } else {
-                  $selected = '';
+                    
+                         $selected = '';
+                  
                 }
 
                 $output .= '<option '. esc_attr($selected) .' value="' .  esc_attr($key) .'"> ' .  esc_html__($value, 'ads-for-wp') .'  </option>';            
             }
+            
           }
          // Options for Other then posts
         } else {
-          foreach ($choices as $key => $value) { 
+            
+          foreach ($choices as $key => $value) {
+              
                 if ( $saved_data ==  $key ) {
+                    
                     $selected = 'selected="selected"';
+                    
                 } else {
-                  $selected = '';
+                    
+                    $selected = '';
+                  
                 }
 
             $output .= '<option '. esc_attr($selected) .' value="' . esc_attr($key) .'"> ' .  esc_html__($value, 'ads-for-wp') .'  </option>';            
+            
           } 
+          
         }
     $output .= ' </select> '; 
     $common_function_obj = new adsforwp_admin_common_functions();  
@@ -759,12 +818,16 @@ public function adsforwp_post_taxonomy_generator(){
     
 
       foreach($taxonomies as $taxonomy) {
-        $choices[ $taxonomy->name ] = $taxonomy->labels->name;
+          
+            $choices[ $taxonomy->name ] = $taxonomy->labels->name;
+        
       }
       
       // unset post_format (why is this a public taxonomy?)
       if( isset($choices['post_format']) ) {
-        unset( $choices['post_format']) ;
+          
+            unset( $choices['post_format']);
+        
       }
       
     return $choices;
@@ -780,45 +843,72 @@ public function adsforwp_post_taxonomy_generator(){
 public function adsforwp_create_ajax_select_taxonomy($selectedParentValue = '',$selectedValue='', $current_number ='', $current_group_number  = ''){
     
     $is_ajax = false;
+    
     if( $_SERVER['REQUEST_METHOD']=='POST'){
+        
         $is_ajax = true;
         
         if(wp_verify_nonce($_POST["adsforwp_call_nonce"],'adsforwp_select_action_nonce')){
+            
               if(isset($_POST['id'])){
-                $selectedParentValue = sanitize_text_field(wp_unslash($_POST['id']));
+                  
+                    $selectedParentValue = sanitize_text_field(wp_unslash($_POST['id']));
+                
               }
+              
               if(isset($_POST['number'])){
-                $current_number = intval($_POST['number']);
+                  
+                    $current_number = intval($_POST['number']);
+                
               }
               
               if ( isset( $_POST["group_number"] ) ) {
-              $current_group_number   = intval($_POST["group_number"]);
+                  
+                    $current_group_number   = intval($_POST["group_number"]);
+              
               }
         }else{
+            
             exit;
+            
         }       
     }
     $taxonomies = array(); 
     if($selectedParentValue == 'all'){
-    $taxonomies =  get_terms( array(
+        
+        $taxonomies =  get_terms( array(
                         'hide_empty' => true,
-                    ) );    
+                    ) ); 
+    
     }else{
-    $taxonomies =  get_terms($selectedParentValue, array(
+        
+        $taxonomies =  get_terms($selectedParentValue, array(
                         'hide_empty' => true,
-                    ) );    
-    }     
+                    ) );   
+    
+    }    
+    
     $choices = '<option value="all">'.esc_html__('All','ads-for-wp').'</option>';
+    
     foreach($taxonomies as $taxonomy) {
+        
       $sel="";
+      
       if($selectedValue == $taxonomy->slug){
+          
         $sel = "selected";
+        
       }
+      
       $choices .= '<option value="'.esc_attr($taxonomy->slug).'" '.esc_attr($sel).'>'.esc_html__($taxonomy->name,'ads-for-wp').'</option>';
+      
     }
+    
     $common_function_obj = new adsforwp_admin_common_functions();  
-    $allowed_html = $common_function_obj->adsforwp_expanded_allowed_tags();    
+    $allowed_html = $common_function_obj->adsforwp_expanded_allowed_tags();  
+    
     echo '<select  class="widefat afw-ajax-output-child" name="data_group_array[group-'. esc_attr($current_group_number) .'][data_array]['.esc_attr($current_number).'][key_4]">'. wp_kses($choices, $allowed_html).'</select>';
+    
     if($is_ajax){
       die;
     }

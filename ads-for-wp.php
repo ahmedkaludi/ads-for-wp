@@ -3,7 +3,7 @@
 Plugin Name: Ads for WP - Advanced Ads & Adsense Solution for WP & AMP
 Plugin URI: https://wordpress.org/plugins/ads-for-wp/
 Description: ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy to Use, Unlimited Incontent Ads, Adsense, Premium Features and more
-Version: 1.3
+Version: 1.4
 Author: Ahmed Kaludi, Mohammed Kaludi
 Author URI: http://adsforwp.com/
 Donate link: https://www.paypal.me/Kaludi/25usd
@@ -19,9 +19,10 @@ define('ADSFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('ADSFORWP_PLUGIN_DIR_URI', plugin_dir_url(__FILE__));
 define( 'ADSFORWP_LIB_PATH', dirname( __FILE__ ) . '/admin/inc/' );
 if ( ! defined( 'ADSFORWP_VERSION' ) ) {
-	define( 'ADSFORWP_VERSION', '1.3' );
+	define( 'ADSFORWP_VERSION', '1.4' );
 }
 /* Loading Backend files files*/
+require_once  ADSFORWP_PLUGIN_DIR.'/admin/ads-setup.php';
 require_once  ADSFORWP_PLUGIN_DIR.'/admin/control-center.php';
 require_once  ADSFORWP_PLUGIN_DIR.'/admin/ads-newsletter.php';
 require_once  ADSFORWP_PLUGIN_DIR.'/admin/ads-widget.php';
@@ -36,7 +37,7 @@ require_once  ADSFORWP_PLUGIN_DIR.'/admin/file-creation.php';
 require_once  ADSFORWP_PLUGIN_DIR.'/admin/analytics-settings.php';
 require_once  ADSFORWP_PLUGIN_DIR.'/admin/analytics.php';
 
-/* Loading Metaboxes*/
+/* Loading view Metaboxes*/
 require_once  ADSFORWP_PLUGIN_DIR.'/view/ads-type.php';
 require_once  ADSFORWP_PLUGIN_DIR.'/view/display.php';
 require_once  ADSFORWP_PLUGIN_DIR.'/view/ads-visibility.php';
@@ -51,53 +52,68 @@ require_once  ADSFORWP_PLUGIN_DIR.'/output/amp-condition-display.php';
 
 
 register_activation_hook( __FILE__, 'adsforwp_on_activation' );
-function adsforwp_on_activation() {    
-    add_option('adsforwp_do_activation_redirect', true);   
-    
-    set_transient( 'adsforwp_admin_notice_transient', true, 5 );
-    update_option( "adsforwp_activation_date", date("Y-m-d"));
-}
+register_deactivation_hook(__FILE__, 'adsforwp_on_deactivation');
+
+
 /* Function to check other plugin is install or not*/
-add_action( 'admin_init', 'adsforwp_check_plugin' );
 function adsforwp_check_plugin() {
     
     if (get_option('adsforwp_do_activation_redirect', false)) {
+        
         delete_option('adsforwp_do_activation_redirect');
+        
         if(!isset($_GET['activate-multi']))
         {
+            
             $url = esc_url( admin_url( 'edit.php?post_type=adsforwp' ) );
             wp_redirect($url);
             exit;
+            
         }
+        
     }      
   if ( is_plugin_active('accelerated-mobile-pages/accelerated-moblie-pages.php') ) {
+      
          require ADSFORWP_PLUGIN_DIR.'/view/amp-compatibility.php';	
+         
   }
+  
 }
-add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'adsforwp_action_links' );
-function adsforwp_action_links ( $links ) {
-        $mylinks = array(
-        '<a href="' . admin_url( 'edit.php?post_type=adsforwp&page=adsforwp' ) . '">'.esc_html__('Settings', 'ads-for-wp').'</a>',
-        );
-return array_merge( $links, $mylinks );
-}
-/**
- * set user defined message on plugin activate
- */
-add_action( 'admin_notices', 'adsforwp_admin_notice' );
 
-function adsforwp_admin_notice(){    
+add_action( 'admin_init', 'adsforwp_check_plugin' );
+
+
+function adsforwp_action_links ( $links ) {
+    
+        $mylinks = array(
+            '<a href="' . admin_url( 'edit.php?post_type=adsforwp&page=adsforwp' ) . '">'.esc_html__('Settings', 'ads-for-wp').'</a>',
+        );
+        return array_merge( $links, $mylinks );
+    
+}
+
+add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'adsforwp_action_links' );
+
+/**
+ * Set user defined message on plugin activate
+ */
+function adsforwp_admin_notice(){ 
+    
     /* Check transient, if available display notice */
     if( get_transient( 'adsforwp_admin_notice_transient' ) ){
+        
         echo '<div class="updated notice is-dismissible message notice notice-alt adsforwp-setup-notice">
              <p><span class="dashicons dashicons-thumbs-up"></span>'.esc_html__('Thank you for using Ads For WP plugin!', 'ads-for-wp').'               
              <a href="'.esc_url( admin_url( 'edit.php?post_type=adsforwp' ) ).'"> '.esc_html__('Start adding ads', 'schema-and-structured-data-for-wp') .'</a>
-             </p></div>';             
+             </p></div>';     
+        
         /* Delete transient, only display this notice once. */
         delete_transient( 'adsforwp_admin_notice_transient' );
+        
     }             
      //Feedback notice
         $activation_date =  get_option("adsforwp_activation_date");  
+        
         $one_day    = date('Y-m-d',strtotime("+1 day",  strtotime($activation_date))); 
         $seven_days = date('Y-m-d',strtotime("+7 day",  strtotime($activation_date)));
         $one_month  = date('Y-m-d',strtotime("+30 day", strtotime($activation_date)));
@@ -111,6 +127,7 @@ function adsforwp_admin_notice(){
         $review_notice_bar_never = get_option( "adsforwp_review_never");
         
         if(in_array($current_date,$list_of_date) && $review_notice_bar_status_date !=$current_date && $review_notice_bar_never !='never'){
+            
            echo '<div class="updated notice is-dismissible message notice notice-alt adsforwp-feedback-notice">
                 <p><span class="dashicons dashicons-thumbs-up"></span> 
                 '.esc_html__('You have been using the Ads For WP plugin for some time now, do you like it?, If so,', 'ads-for-wp').'						
@@ -119,12 +136,19 @@ function adsforwp_admin_notice(){
                 </a> 
                 <button style="margin-left:10px;" class="button button-primary adsforwp-feedback-notice-remindme">'.esc_html__('Remind Me Later', 'ads-for-wp').'</button>
                 <button style="margin-left:10px;" class="button button-primary adsforwp-feedback-notice-close">'.esc_html__('No Thanks', 'ads-for-wp').'</button> '
-                    . ' </p> </div>';                       
+                    . ' </p> </div>';    
+           
         }  
 }
 
-add_filter('plugin_row_meta' , 'adsforwp_add_plugin_meta_links', 10, 2);
+add_action( 'admin_notices', 'adsforwp_admin_notice' );
 
+/**
+ * Here, We are adding support forum links, hire us links and review links for our plugin inside plugins list  
+ * @param type $meta_fields
+ * @param type $file
+ * @return string
+ */
 function adsforwp_add_plugin_meta_links($meta_fields, $file) {
     if ( plugin_basename(__FILE__) == $file ) {
       $plugin_url = "https://wordpress.org/support/plugin/ads-for-wp";  
@@ -149,3 +173,5 @@ function adsforwp_add_plugin_meta_links($meta_fields, $file) {
 
     return $meta_fields;
   }
+ 
+ add_filter('plugin_row_meta' , 'adsforwp_add_plugin_meta_links', 10, 2);

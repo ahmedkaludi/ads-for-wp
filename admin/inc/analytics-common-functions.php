@@ -142,6 +142,7 @@ function adsforwp_show_default_overall_dashboard($dashboard_profile_ID,$start_da
 }
 
 function adsforwp_get_compare_stats( $results, $compare_results, $date_different, $name='' ) {
+    
 	if ( $date_different == 0 ) { return; }
         $compare='';
         if($compare_results !=0){
@@ -157,6 +158,7 @@ function adsforwp_get_compare_stats( $results, $compare_results, $date_different
 	return '<div class="adsforwp_general_status_footer_info">
 			<span class="' . $class . '  adsforwp_info_value"> ' . $compare . ' %</span> 
 	</div>';
+        
 }
 function adsforwp_beautify_number($num){
 	if ( is_numeric( $num ) ){
@@ -288,7 +290,7 @@ function adsforwp_get_analytics_dashboard( $metrics, $start_date, $end_date, $di
 
 function adsforwp_get_analytics_setiings($settingname){
 	$settingOpt = get_option('adsforwp_analytics');
-       $dashboard_profile_ID = $settingOpt['profile_for_dashboard'];
+        $dashboard_profile_ID = $settingOpt['profile_for_dashboard'];
     if($settingname!=''){
     	if(isset($settingOpt[$settingname])){
     		return $settingOpt[$settingname];

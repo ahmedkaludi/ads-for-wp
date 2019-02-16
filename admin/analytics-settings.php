@@ -25,7 +25,7 @@ public function adsforwp_add_analytics_menu_links() {
                 'manage_options',
                 'analytics',
                 array($this, 'adsforwp_admin_analytics_interface_render')); 
-        }
+            }
                 add_submenu_page( $settingsLink,
                     esc_html__( 'Ads for wp Analytics', 'ads-for-wp' ),
                     esc_html__( 'Analytics', 'ads-for-wp' ),
@@ -47,11 +47,13 @@ public function adsforwp_admin_analytics_interface_render(){
             $total_ads_clicks = 0;
             if($all_ads_post){
                 
-            foreach($all_ads_post as $ad_id){                               
+            foreach($all_ads_post as $ad_id){     
+                
                 $ad_impression_count = get_post_meta($ad_id, $key='ad_impression_count', true );
                 $ad_clicks_count = get_post_meta($ad_id, $key='ad_clicks', true );                 
                 $total_ads_impression = ((int)$total_ads_impression+ (int)$ad_impression_count);
                 $total_ads_clicks = ((int)$total_ads_clicks+(int)$ad_clicks_count);
+                
             }
             
             }                
@@ -67,8 +69,20 @@ public function adsforwp_admin_analytics_interface_render(){
             //$_differ = get_option( 'adsforwp_date_differ' );
             $_differ =  'today';
             if(isset($_REQUEST['view_data'])){
+                
                 $_differ = $_REQUEST['view_data'];
+                
             }
+            
+            $ad_id_param = null;
+                        
+            if(isset($_REQUEST['ad_id'])){
+                
+                $ad_id_param = $_REQUEST['ad_id'];
+                
+            }
+            
+            
             if ( $_differ ) {
                 if ( $_differ == 'last_7_days' ) {
                     $start_date = date( 'Y-m-d', strtotime( '-7 days' ) );
@@ -125,8 +139,9 @@ public function adsforwp_admin_analytics_interface_render(){
         $datediff = strtotime($end_date) - strtotime($start_date);
         $date_different     = round($datediff / (60 * 60 * 24));
         if($date_different == 0){    
-            $optionDetails = get_option("adsforwp_ads-".date('Y-m-d'));
-            $overallStats = $optionDetails['complete'];
+            
+            $overallStats = adsforwp_get_ad_stats('fetchAllBy', $ad_id_param ,strtotime(date('y-m-d')));
+                        
         }else{
             $periods = new DatePeriod(
                              new DateTime($start_date),
@@ -134,9 +149,11 @@ public function adsforwp_admin_analytics_interface_render(){
                              new DateTime($end_date)
                         );
             foreach ($periods as $key => $value) {
-                $optionDetails = get_option("adsforwp_ads-".$value->format('Y-m-d'));
+               
+                $optionDetails = adsforwp_get_ad_stats('fetchAllBy', $ad_id_param ,strtotime($value->format('Y-m-d')));
+                 
                 if($optionDetails){
-                    foreach ($optionDetails['complete'] as $key => $value) {
+                    foreach ($optionDetails as $key => $value) {
                         if(isset($overallStats[$key]['impression'])){
                             $overallStats[$key]['impression'] = $value['impression'];
                         }else{
@@ -164,8 +181,17 @@ public function adsforwp_admin_analytics_interface_render(){
     $overallStats['all'] = $allDeviceAds;
 	?>
         
-<div class="afw-analytic_container">	                            
-                <div class="afw-analytics-title"><h1><?php echo esc_html__('Analytics', 'ads-for-wp'); ?></h1></div>
+<div class="afw-analytic_container">	 
+                <?php if(isset($_GET['ad_id'])) { ?>
+                
+                <div class="afw-analytics-title"><h3><?php echo esc_html__('Analytics of Single AD', 'ads-for-wp'); ?></h3></div>
+    
+                <?php } else { ?>
+    
+                <div class="afw-analytics-title"><h3><?php echo esc_html__('Analytics of All ADs', 'ads-for-wp'); ?></h3></div>
+                
+                <?php } ?>
+                    
 		<div class="nav-tab-wrapper adsforwp-analytics-tabs">
             <?php
 
@@ -185,6 +211,13 @@ public function adsforwp_admin_analytics_interface_render(){
                 <div class="afw-analytics-days" style="display: inline-block;">
                     <input type="hidden" name="post_type" value="adsforwp">
                     <input type="hidden" name="page" value="analytics">
+                    
+                    <?php
+                    if(isset($_GET['ad_id'])){
+                        echo ' <input type="hidden" name="ad_id" value="'.esc_attr($_GET['ad_id']).'">';
+                    }
+                    ?>
+                                        
                     <select name="view_data">
                         <option value="today" <?php if($_differ=='today'){echo "selected"; } ?>> <?php echo esc_html__('Today','ads-for-wp'); ?></option>
                         <option value="last_7_days" <?php if($_differ=='last_7_days'){echo "selected"; } ?> > <?php echo esc_html__('Last 7 days','ads-for-wp'); ?></option>
