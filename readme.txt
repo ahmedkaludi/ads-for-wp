@@ -54,7 +54,7 @@ Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp).
 
 == Changelog ==
 
-= 1.4 (18 February 2019) =
+= 1.4 (16 February 2019) =
 * Added: Showing monthly ads stats inside analytics section by passing ad id or clicking on ad impression or clicks in ad list ( impression, clicks etc.. )#130
 * Added: Display positioning of AMP and non-AMP should be combined into one dropdown #146
 * Bug Fixed: Multiple calls are happening while checking user IP in User Targeting. #148
