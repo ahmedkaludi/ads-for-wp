@@ -563,15 +563,15 @@ class adsforwp_admin_common_functions {
                  
                 }                                                
                 $adforwp_meta_key = array(
-                    'select_adtype'    => 'adsense',  
-                    'adsense_type'     => 'normal',                    
-                    'data_client_id'   => $amp_options['enable-amp-ads-text-feild-client-'.$i], 
-                    'data_ad_slot'     => $amp_options['enable-amp-ads-text-feild-slot-'.$i],                     
-                    'banner_size'      => $placement[$amp_options['enable-amp-ads-select-'.$i]],                     
-                    'wheretodisplay'   => 'after_the_content',
-                    'wheretodisplay'   => $wheretodisplayamp[$i],
-                    'imported_from'    => 'ampforwp_ads',
-                    'data_group_array' => $data_group_array
+                    'select_adtype'             => 'adsense',  
+                    'adsense_type'              => 'normal',                    
+                    'data_client_id'            => $amp_options['enable-amp-ads-text-feild-client-'.$i], 
+                    'data_ad_slot'              => $amp_options['enable-amp-ads-text-feild-slot-'.$i],                     
+                    'banner_size'               => $placement[$amp_options['enable-amp-ads-select-'.$i]],                     
+                    'adsforwp_ad_responsive'    => $amp_options['enable-amp-ads-resp-'.$i],
+                    'wheretodisplay'            => $wheretodisplayamp[$i],
+                    'imported_from'             => 'ampforwp_ads',
+                    'data_group_array'          => $data_group_array
                 );
                 
                 foreach ($adforwp_meta_key as $key => $val){    
