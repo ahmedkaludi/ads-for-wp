@@ -474,10 +474,12 @@ class adsforwp_admin_common_functions {
         
         $result           = array();
         $adforwp_meta_key = array();
-        $amp_options      = get_option('redux_builder_amp');         
+        $amp_options      = get_option('redux_builder_amp');    
+       
         $user_id          = get_current_user_id();
                
-        $placement = array('1'=> 'Single','2'=> 'Global','3'=> 'Custom Post Types','4'=> 'Pages');
+        //$placement = array('1'=> 'Single','2'=> 'Global','3'=> 'Custom Post Types','4'=> 'Pages');
+        $ad_size   = array('1'=> '300x250','2'=> '336x280','3'=> '728x90','4'=> '300x600', '5'=> '320x100', '6'=> '200x50', '7'=> '320x50');
         $wheretodisplayamp = array(                    
                     '1'=>'adsforwp_below_the_header',
                     '2'=>'adsforwp_below_the_footer',                   
@@ -567,7 +569,7 @@ class adsforwp_admin_common_functions {
                     'adsense_type'              => 'normal',                    
                     'data_client_id'            => $amp_options['enable-amp-ads-text-feild-client-'.$i], 
                     'data_ad_slot'              => $amp_options['enable-amp-ads-text-feild-slot-'.$i],                     
-                    'banner_size'               => $placement[$amp_options['enable-amp-ads-select-'.$i]],                     
+                    'banner_size'               => $ad_size[$amp_options['enable-amp-ads-select-'.$i]],                     
                     'adsforwp_ad_responsive'    => $amp_options['enable-amp-ads-resp-'.$i],
                     'wheretodisplay'            => $wheretodisplayamp[$i],
                     'imported_from'             => 'ampforwp_ads',
