@@ -517,25 +517,25 @@ class adsforwp_admin_common_functions {
                 
                 if(!in_array(4, $conditions)){ 
                    
-                for($i = 0; $i <count($conditions); $i++){   
+                for($k = 0; $k <count($conditions); $k++){   
                     
                       $displayon = '';  
                       
-                    if($conditions[$i] == 1){
+                    if($conditions[$k] == 1){
                         
                       $displayon = 'post';  
                       
-                    }else if($conditions[$i] == 3){
+                    }else if($conditions[$k] == 3){
                         
                       $displayon = 'post';  
                       
-                    }else if ($conditions[$i] == 2){
+                    }else if ($conditions[$k] == 2){
                         
                       $displayon = 'page';  
                       
                     }    
                     
-                    $data_group_array['group-'.$i] =array(
+                    $data_group_array['group-'.$k] =array(
                         
                                         'data_array' => array(
                                                             array(
