@@ -1097,15 +1097,15 @@ class adsforwp_output_functions{
 
                     }                                  
 
-                    if($this->visibility != 'hide') {
-                
-            $post_meta_dataset      = get_post_meta($post_id,$key='',true);                        
-            $current_date           = date("Y-m-d");
-            $ad_expire_enable       = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_expire_day_enable', 'adsforwp_array');      
-            $ad_expire_from         = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_expire_from', 'adsforwp_array');      
-            $ad_expire_to           = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_expire_to', 'adsforwp_array');      
-            $ad_days_enable         = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_expire_day_enable', 'adsforwp_array');      
-            $ad_expire_days         = get_post_meta($post_id,$key='adsforwp_ad_expire_days',true);                   
+               if($this->visibility != 'hide') {
+
+                    $post_meta_dataset      = get_post_meta($post_id,$key='',true);                        
+                    $current_date           = date("Y-m-d");
+                    $ad_expire_enable       = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_expire_day_enable', 'adsforwp_array');      
+                    $ad_expire_from         = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_expire_from', 'adsforwp_array');      
+                    $ad_expire_to           = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_expire_to', 'adsforwp_array');      
+                    $ad_days_enable         = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_expire_day_enable', 'adsforwp_array');      
+                    $ad_expire_days         = get_post_meta($post_id,$key='adsforwp_ad_expire_days',true);                   
                                      
             if($ad_expire_enable){
                 
@@ -1208,16 +1208,20 @@ class adsforwp_output_functions{
              case 'between_the_content':        
               if($adposition == 'number_of_paragraph'){
                 
-                $entered_tag_name    = '';                
-                $display_tag_name    = '';                  
-                  
+                $entered_tag_name     = '';                
+                $display_tag_name     = '';  
+                $every_paragraphs     = 0;
+                
+                $every_paragraphs    = adsforwp_rmv_warnings($post_meta_dataset, 'ads_on_every_paragraphs_number', 'adsforwp_array');
+                
                 $paragraph_id        = adsforwp_rmv_warnings($post_meta_dataset, 'paragraph_number', 'adsforwp_array');   
                                                 
                 $display_tag_name    = adsforwp_rmv_warnings($post_meta_dataset, 'display_tag_name', 'adsforwp_array');                                  
                 
                 $entered_tag_name    = '</'.adsforwp_rmv_warnings($post_meta_dataset, 'entered_tag_name', 'adsforwp_array').'>';                  
                                
-                if($display_tag_name !=''){                    
+                if($display_tag_name !=''){   
+                    
                     if($display_tag_name == 'custom_tag'){
                         
                      $closing_p = $entered_tag_name;   
@@ -1230,29 +1234,75 @@ class adsforwp_output_functions{
                 }else{
                  $closing_p = '</p>';   
                 }
+                
+                
+                
                 if($closing_p == '<img>'){   
                     
                 if($paragraph_id){
-                    
-                 preg_match_all( '/<img[^>]+\>/' , $content, $match );
-                 $adsforwp_images = array_pop($match);                    
-                 $image_ad        = $adsforwp_images[$paragraph_id-1].$ad_code;               
-                 $content         = str_replace( $adsforwp_images[$paragraph_id-1], $image_ad, $content ); 
-                 
+                                        
+                    if($this->is_amp){
+                        
+                        preg_match_all( '/<amp-img[^>]+\>/' , $content, $match );
+                        
+                    }else{
+                        
+                        preg_match_all( '/<img[^>]+\>/' , $content, $match );
+                        
+                    }
+                                                    
+                    $paragraphs       = array_pop($match);                      
+                    $p_number         = $paragraph_id;  
+                   
+                    foreach ($paragraphs as $index => $paragraph) {
+                                                                     
+                       if($every_paragraphs == 1){
+                                                                                
+                           if ( $paragraph_id == $index + 1 ) {
+                                $paragraphs[$index] .= $ad_code;
+                                $paragraph_id += $p_number;
+                           }
+                           
+                       }else{
+                           
+                            if ( $paragraph_id == $index + 1 ) {
+                                $paragraphs[$index] .= $ad_code;
+                            }
+                           
+                       }
+                       
+                     }
+                     
+                  $content = implode( '', $paragraphs );  
+                                     
                 }
                                
                 }else{
                     
-                 $paragraphs = explode( $closing_p, $content );                  
-                 
+                   $paragraphs       = explode( $closing_p, $content );                   
+                   $p_number         = $paragraph_id;  
+                   
                     foreach ($paragraphs as $index => $paragraph) {
 
-                     if ( trim( $paragraph ) ) {
+                       if ( trim( $paragraph ) ) {
                            $paragraphs[$index] .= $closing_p;
                        }
-                       if ( $paragraph_id == $index + 1 ) {
-                           $paragraphs[$index] .= $ad_code;
+                                                                     
+                       if($every_paragraphs == 1){
+                                                                                
+                           if ( $paragraph_id == $index + 1 ) {
+                                $paragraphs[$index] .= $ad_code;
+                                $paragraph_id += $p_number;
+                           }
+                           
+                       }else{
+                           
+                            if ( $paragraph_id == $index + 1 ) {
+                                $paragraphs[$index] .= $ad_code;
+                            }
+                           
                        }
+                       
                      }
                      
                   $content = implode( '', $paragraphs );   
@@ -1324,21 +1374,106 @@ class adsforwp_output_functions{
              case 'between_the_content':      
                  
               if($adposition == 'number_of_paragraph'){
-                  
-                $paragraph_id = adsforwp_rmv_warnings($post_meta_dataset, 'paragraph_number', 'adsforwp_array');   
-                $closing_p    = '</p>';
-                $paragraphs   = explode( $closing_p, $content );   
                 
-                foreach ($paragraphs as $index => $paragraph) {
+                $entered_tag_name     = '';                
+                $display_tag_name     = '';  
+                $every_paragraphs     = 0;
+                
+                $every_paragraphs    = adsforwp_rmv_warnings($post_meta_dataset, 'ads_on_every_paragraphs_number', 'adsforwp_array');
+                
+                $paragraph_id        = adsforwp_rmv_warnings($post_meta_dataset, 'paragraph_number', 'adsforwp_array');   
+                                                
+                $display_tag_name    = adsforwp_rmv_warnings($post_meta_dataset, 'display_tag_name', 'adsforwp_array');                                  
+                
+                $entered_tag_name    = '</'.adsforwp_rmv_warnings($post_meta_dataset, 'entered_tag_name', 'adsforwp_array').'>';                  
+                               
+                if($display_tag_name !=''){   
+                    
+                    if($display_tag_name == 'custom_tag'){
+                        
+                     $closing_p = $entered_tag_name;   
+                     
+                    }else{   
+                        
+                     $closing_p = array_search($display_tag_name,$this->_display_tag_list);   
+                     
+                    }                                     
+                }else{
+                 $closing_p = '</p>';   
+                }
+                
+                
+                
+                if($closing_p == '<img>'){   
+                    
+                if($paragraph_id){
+                                        
+                    if($this->is_amp){
+                        
+                        preg_match_all( '/<amp-img[^>]+\>/' , $content, $match );
+                        
+                    }else{
+                        
+                        preg_match_all( '/<img[^>]+\>/' , $content, $match );
+                        
+                    }
+                                                    
+                    $paragraphs       = array_pop($match);                      
+                    $p_number         = $paragraph_id;  
+                   
+                    foreach ($paragraphs as $index => $paragraph) {
+                                                                     
+                       if($every_paragraphs == 1){
+                                                                                
+                           if ( $paragraph_id == $index + 1 ) {
+                                $paragraphs[$index] .= $ad_code;
+                                $paragraph_id += $p_number;
+                           }
+                           
+                       }else{
+                           
+                            if ( $paragraph_id == $index + 1 ) {
+                                $paragraphs[$index] .= $ad_code;
+                            }
+                           
+                       }
+                       
+                     }
+                     
+                  $content = implode( '', $paragraphs );  
+                                     
+                }
+                               
+                }else{
+                    
+                   $paragraphs       = explode( $closing_p, $content );                   
+                   $p_number         = $paragraph_id;  
+                   
+                    foreach ($paragraphs as $index => $paragraph) {
 
-                 if ( trim( $paragraph ) ) {
-                       $paragraphs[$index] .= $closing_p;
-                   }
-                   if ( $paragraph_id == $index + 1 ) {
-                       $paragraphs[$index] .= $ad_code;
-                   }
-                 }
-                        $content = implode( '', $paragraphs );
+                       if ( trim( $paragraph ) ) {
+                           $paragraphs[$index] .= $closing_p;
+                       }
+                                                                     
+                       if($every_paragraphs == 1){
+                                                                                
+                           if ( $paragraph_id == $index + 1 ) {
+                                $paragraphs[$index] .= $ad_code;
+                                $paragraph_id += $p_number;
+                           }
+                           
+                       }else{
+                           
+                            if ( $paragraph_id == $index + 1 ) {
+                                $paragraphs[$index] .= $ad_code;
+                            }
+                           
+                       }
+                       
+                     }
+                     
+                  $content = implode( '', $paragraphs );   
+                }                                               
                 }
         
                if($adposition == '50_of_the_content'){
@@ -1381,7 +1516,8 @@ class adsforwp_output_functions{
      */
     public function adsforwp_get_ad_code($post_ad_id, $type){
                         
-            
+            $settings                   = adsforwp_defaultSettings();
+        
             $visitor_condition_status = '';
             $condition_status =         '';
             
@@ -1474,7 +1610,12 @@ class adsforwp_output_functions{
                         
             $ad_expire_days              = get_post_meta($post_ad_id,$key='adsforwp_ad_expire_days',true);
             
+            $sponsership_label           = '';
             
+            if(isset($settings['ad_sponsorship_label']) && isset($settings['ad_sponsorship_label_text']) && $settings['ad_sponsorship_label_text'] !=''){
+                $sponsership_label = '<div style="text-align:'.$ad_alignment.';">'.$settings['ad_sponsorship_label_text'].'</div>';
+            }
+                                    
             if($ad_type !=""){  
                             
             $amp_compatibility = adsforwp_rmv_warnings($post_meta_dataset, 'ads-for-wp_amp_compatibilty', 'adsforwp_array');                          
@@ -1485,17 +1626,20 @@ class adsforwp_output_functions{
                     if($this->is_amp){
                      if($amp_compatibility != 'disable'){
                      $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                                        '.$sponsership_label.'
 							'.$custom_ad_code.'
 							</div>';    
                     }   
                     }else{
                     if($non_amp_visibility !='hide'){
                     $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_custom  afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                                        '.$sponsership_label.'
 							'.$custom_ad_code.'
 							</div>';     
                     }                               
                     }                                                                                
             break;
+            
             case 'ad_image':
                     
                     $ad_img_width  = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_img_width', 'adsforwp_array');
@@ -1506,10 +1650,13 @@ class adsforwp_output_functions{
                      
                      if($ad_responsive == 1){
                      $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                                        '.$sponsership_label.'   
 							<div class="afw_ad_amp_achor afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"><a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><amp-img layout="responsive" class="afw_ad_amp_'.esc_attr($post_ad_id).'" src="'.esc_url($ad_image).'" height="'. esc_attr($ad_img_height).'" width="'.esc_attr($ad_img_width).'"></amp-img></a></div>
+                                                           
 							</div>';    
                      }else{
                      $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                                        '.$sponsership_label.'
 							<div class="afw_ad_amp_achor afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"><a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><amp-img class="afw_ad_amp_'.esc_attr($post_ad_id).'" src="'.esc_url($ad_image).'" height="'. esc_attr($ad_img_height).'" width="'.esc_attr($ad_img_width).'"></amp-img></a></div>
 							</div>';    
                      }
@@ -1521,6 +1668,7 @@ class adsforwp_output_functions{
                         if($ad_responsive == 1){
                              
                              $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                                            '.$sponsership_label.'
 							<a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><img height="auto" max-width="100%" src="'.esc_url($ad_image).'"></a>
 							</div>';  
                          }else{
@@ -1548,6 +1696,7 @@ class adsforwp_output_functions{
                     if($amp_compatibility != 'disable'){
                         
                     $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                                        '.$sponsership_label.'
                                                         <a class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'">
 							<amp-ad
                                                                 class="afw_ad_amp_'.esc_attr($post_ad_id).'"
@@ -1565,6 +1714,7 @@ class adsforwp_output_functions{
                       if($non_amp_visibility !='hide'){  
                           
                         $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                                        '.$sponsership_label.'
 							<div id="contentad'.$contentad_widget_id.'"></div><!-- Load Widget Here --></div>
                                                             <script type="text/javascript">
                                                             (function(d) {
@@ -1673,6 +1823,7 @@ class adsforwp_output_functions{
                          if($ad_responsive == 1){
                            
                              $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                    '.$sponsership_label.'
                                      <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'">
                                        <amp-ad width="100vw" height=320                                        
                                         type="adsense"                                        
@@ -1688,6 +1839,7 @@ class adsforwp_output_functions{
                          }else{
                            
                           $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                    '.$sponsership_label.'
                                      <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'">
                                        <amp-ad 
                                         class="afw_ad_amp_'.esc_attr($post_ad_id).'"
@@ -1709,6 +1861,7 @@ class adsforwp_output_functions{
                       if($ad_responsive == 1){
                            
                           $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                                                '.$sponsership_label.'
                                                                 <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
                                                                 </script>
                                                                 <ins 
@@ -1724,6 +1877,7 @@ class adsforwp_output_functions{
                                                         </div>';
                       }else{
                         $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                                                '.$sponsership_label.'
                                                                 <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
                                                                 </script>
                                                                 <ins class="adsbygoogle" style="display:inline-block;width:'.esc_attr($width).'px;height:'.esc_attr($height).'px" data-ad-client="'.esc_attr($ad_client).'" data-ad-slot="'.esc_attr($ad_slot).'">
@@ -1750,8 +1904,8 @@ class adsforwp_output_functions{
             $ad_data_cid  = adsforwp_rmv_warnings($post_meta_dataset, 'data_cid', 'adsforwp_array');                           
             $ad_data_crid = adsforwp_rmv_warnings($post_meta_dataset, 'data_crid', 'adsforwp_array');       
             
-            $width='200';
-            $height='200';
+            $width  = '200';
+            $height = '200';
             $banner_size = adsforwp_rmv_warnings($post_meta_dataset, 'banner_size', 'adsforwp_array');    
             
             if($banner_size !=''){
@@ -1768,6 +1922,7 @@ class adsforwp_output_functions{
                  $this->amp_ads_id[] = $post_ad_id;
                  $ad_code = 
                             '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw-md afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                    '.$sponsership_label.'
                             <a class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'">
                             <amp-ad 
                                 class="afw_ad_amp_'.esc_attr($post_ad_id).'"
@@ -1787,6 +1942,7 @@ class adsforwp_output_functions{
             if($non_amp_visibility !='hide'){
                 
              $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw-md afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                                '.$sponsership_label.'
 						<script id="mNCC" language="javascript">
                                                             medianet_width = "'.esc_attr($width).'";
                                                             medianet_height = "'.esc_attr($height).'";
@@ -1861,7 +2017,7 @@ class adsforwp_output_functions{
          set_transient('adsforwp_transient_amp_ids', $amp_ads_id_json); 
         
             $current_date = date("Y-m-d"); 
-            
+                                    
             if($ad_expire_enable){
                 
              if($ad_expire_from && $ad_expire_to )  {     

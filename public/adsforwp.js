@@ -785,7 +785,15 @@ jQuery( document ).ready(function($) {
      
      
     }).change();
-            
+    
+    $("#paragraph_number").change(function(){       
+        
+        console.log($(this).val());
+        
+      $(".adsforwp-every-paragraphs-text").text('Display After Every '+ $(this).val());
+      
+    }).change();  
+    
     $("#adposition").change(function(){        
       $(this).find("option:selected").each(function(){  
           var optionValue = $(this).attr("value");    

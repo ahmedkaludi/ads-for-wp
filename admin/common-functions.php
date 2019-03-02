@@ -472,25 +472,26 @@ class adsforwp_admin_common_functions {
     
     public function adsforwp_migrate_ampforwp_ads(){
         
-        $result           = array();
-        $adforwp_meta_key = array();
-        $amp_options      = get_option('redux_builder_amp');    
-       
-        $user_id          = get_current_user_id();
-               
-        //$placement = array('1'=> 'Single','2'=> 'Global','3'=> 'Custom Post Types','4'=> 'Pages');
-        $ad_size   = array('1'=> '300x250','2'=> '336x280','3'=> '728x90','4'=> '300x600', '5'=> '320x100', '6'=> '200x50', '7'=> '320x50');
-        $wheretodisplayamp = array(                    
-                    '1'=>'adsforwp_below_the_header',
-                    '2'=>'adsforwp_below_the_footer',                   
-                    '3'=>'adsforwp_above_the_post_content',
-                    '4'=>'adsforwp_below_the_post_content',
-                    '5'=>'adsforwp_below_the_title',
-                    '6'=>'adsforwp_above_related_post',                    
+        $result            = array();
+        $adforwp_meta_key  = array();
+        $amp_options       = get_option('redux_builder_amp');    
+        
+     
+        $user_id           = get_current_user_id();                    
+        $ad_size           = array('1'=> '300x250','2'=> '336x280','3'=> '728x90','4'=> '300x600', '5'=> '320x100', '6'=> '200x50', '7'=> '320x50');
+        $wheretodisplayamp = array(  
+            
+                    '1' => 'adsforwp_below_the_header',
+                    '2' => 'adsforwp_below_the_footer',                   
+                    '3' => 'adsforwp_above_the_post_content',
+                    '4' => 'adsforwp_below_the_post_content',
+                    '5' => 'adsforwp_below_the_title',
+                    '6' => 'adsforwp_above_related_post', 
+            
                     );
         if($amp_options){
             
-            for($i=1;$i<=6; $i++){
+            for($i=1; $i<=6; $i++){
                 
               $amp_options['enable-amp-ads-select-'.$i];   
               $amp_options['enable-amp-ads-text-feild-client-'.$i]; 
@@ -498,14 +499,14 @@ class adsforwp_admin_common_functions {
                             
         $ads_post = array(
                     'post_author' => $user_id,                                                            
-                    'post_title' => 'Adsense Ad '.$i.' (Migrated from AMP)',                    
+                    'post_title'  => 'Adsense Ad '.$i.' (Migrated from AMP)',                    
                     'post_status' => 'publish',                                                            
-                    'post_name' =>  'Adsense Ad '.$i.' (Migrated from AMP)',                    
-                    'post_type' => 'adsforwp',
+                    'post_name'   => 'Adsense Ad '.$i.' (Migrated from AMP)',                    
+                    'post_type'   => 'adsforwp',
                     
                 );  
         
-        if($amp_options['enable-amp-ads-'.$i] ==1){ 
+        if($amp_options['enable-amp-ads-'.$i] == 1){ 
             
                 $post_id          = wp_insert_post($ads_post);
                 $data_group_array = array();
@@ -515,48 +516,83 @@ class adsforwp_admin_common_functions {
                     
                 if(isset($amp_options['made-amp-ad-3-global'])){                
                     
-                $conditions = $amp_options['made-amp-ad-3-global'];                
-                
-                if(!in_array(4, $conditions)){ 
+                $conditions = $amp_options['made-amp-ad-3-global'];      
+                                
+                if(!empty($conditions)){ 
                    
                 for($k = 0; $k <count($conditions); $k++){   
                     
-                      $displayon = '';  
+                      $displayon = ''; 
+                      $key_type  = ''; 
                       
-                    if($conditions[$k] == 1){
+                    if($conditions[$k] == 1){ //Single 
                         
                       $displayon = 'post';  
+                      $key_type  = 'post_type'; 
                       
-                    }else if($conditions[$k] == 3){
+                    }else if($conditions[$k] == 2){ //pages
+                        
+                         $displayon = 'page'; 
+                         $key_type  = 'post_type'; 
+                         
+                    }else if($conditions[$k] == 3){ //custom post type
                         
                       $displayon = 'post';  
+                      $key_type  = 'post_type'; 
                       
-                    }else if ($conditions[$k] == 2){
+                    }else if ($conditions[$k] == 4){  //global
                         
-                      $displayon = 'page';  
+                        unset($data_group_array);
+                        $displayon = 'post';
+                        $key_type  = 'show_globally'; 
+                     
                       
                     }    
                     
-                    $data_group_array['group-'.$k] =array(
+                    $data_group_array['group-'.$k] = array(
                         
                                         'data_array' => array(
                                                             array(
-                                                            'key_1' => 'post_type',
-                                                            'key_2' => 'equal',
-                                                            'key_3' => $displayon,
+                                                                'key_1' => $key_type,
+                                                                'key_2' => 'equal',
+                                                                'key_3' => $displayon,
                                                             )
                                                      )               
                                                  );                     
                 }   
-                
+                               
+                }else{
+                    
+                      $data_group_array['group-0'] = array(
+                          
+                                    'data_array' => array(
+                                                        array(
+                                                        'key_1' => 'show_globally',
+                                                        'key_2' => 'equal',
+                                                        'key_3' => 'post',
+                                                        )
+                                                     )               
+                                                 );
+                    
                 }
                 }    
                 }else{  
                     
+                    if($i == 4 || $i == 5 || $i == 6){
+                        
+                        $con_key = 'post_type';  
+                        
+                    }else{            
+                        
+                        $con_key = 'show_globally';
+                        
+                    }
+                    
+                    
                  $data_group_array['group-0'] =array(
                                     'data_array' => array(
                                                         array(
-                                                        'key_1' => 'show_globally',
+                                                        'key_1' => $con_key,
                                                         'key_2' => 'equal',
                                                         'key_3' => 'post',
                                                         )
@@ -572,6 +608,7 @@ class adsforwp_admin_common_functions {
                     'banner_size'               => $ad_size[$amp_options['enable-amp-ads-select-'.$i]],                     
                     'adsforwp_ad_responsive'    => $amp_options['enable-amp-ads-resp-'.$i],
                     'wheretodisplay'            => $wheretodisplayamp[$i],
+                    'adsforwp_ad_align'         => 'center',
                     'imported_from'             => 'ampforwp_ads',
                     'data_group_array'          => $data_group_array
                 );
@@ -586,6 +623,17 @@ class adsforwp_admin_common_functions {
         
             }
              
+            $options = array();    
+            
+            $settings = get_option( 'adsforwp_settings');    
+                                     
+            $options['ad_sponsorship_label']        = $amp_options['ampforwp-ads-sponsorship'];
+            $options['ad_sponsorship_label_text']   = $amp_options['ampforwp-ads-sponsorship-label'];
+           
+            $options  = array_merge($settings,$options);  
+            
+            update_option('adsforwp_settings', $options);
+                        
         }
         return $result;
     }

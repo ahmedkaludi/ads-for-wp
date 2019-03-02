@@ -381,8 +381,33 @@ class adsforwp_view_display {
                                               }
                                               
                                        }
-    
-					$input = sprintf(
+                                       
+                                       
+                                       switch ($meta_field['id']) {
+                                           case 'paragraph_number':
+                                                $paragraphs_checked = '';
+                                                $paragraphs_number = 0;
+                                                $paragraphs_number = get_post_meta( $post->ID, 'ads_on_every_paragraphs_number', true );
+                                                
+                                               
+                                                if($paragraphs_number == 1 ){
+                                                    $paragraphs_checked = 'checked';                                                    
+                                                }
+                                                $input = sprintf(
+						'<input class="afw_input" %s id="%s" name="%s" type="%s" value="%s" %s> <input type="checkbox" id="ads_on_every_paragraphs_number" name="ads_on_every_paragraphs_number" value="1" '.$paragraphs_checked.'> <span class="adsforwp-every-paragraphs-text"></span>',
+						$meta_field['type'] !== 'color' ? '' : '',
+						$meta_field['id'],
+						$meta_field['id'],
+						$meta_field['type'],
+						$meta_value,
+                                                $attributes    
+					   );
+
+                                               break;
+
+                                           default:
+                                               
+                                               $input = sprintf(
 						'<input class="afw_input" %s id="%s" name="%s" type="%s" value="%s" %s>',
 						$meta_field['type'] !== 'color' ? '' : '',
 						$meta_field['id'],
@@ -390,7 +415,11 @@ class adsforwp_view_display {
 						$meta_field['type'],
 						$meta_value,
                                                 $attributes    
-					);
+					   );
+                                               
+                                               break;
+                                       }
+    					
 			}
 			$output .= $this->adsforwp_format_rows( $label, $input );
 		}
@@ -425,6 +454,13 @@ class adsforwp_view_display {
                 $ad_margin = array();                     
                 $ad_margin = array_map('sanitize_text_field', $_POST['adsforwp_ad_margin']);                      
                 update_post_meta($post_id, 'adsforwp_ad_margin', $ad_margin);
+                
+                if(isset($_POST['ads_on_every_paragraphs_number'])){
+                    
+                     update_post_meta($post_id, 'ads_on_every_paragraphs_number', sanitize_text_field($_POST['ads_on_every_paragraphs_number']));
+                }else{
+                     update_post_meta($post_id, 'ads_on_every_paragraphs_number', '0');
+                }
                 
 		foreach ( $this->meta_fields as $meta_field ) {
                     if($meta_field['id'] != 'adsforwp_ad_margin'){ 
