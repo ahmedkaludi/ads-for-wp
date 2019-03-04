@@ -871,6 +871,14 @@ jQuery( document ).ready(function($) {
        $(".afw_revenue_divider").hide(); 
      }     
  }).change();
+ 
+ $(".afw_sponsorship_label").change(function(){
+     if($(this).is(':checked')){
+       $(".afw_sponsorship_divider").show();
+     }else{
+       $(".afw_sponsorship_divider").hide(); 
+     }     
+ }).change();
     
     $("#adsforwp_owner_revenue_per").keyup(function(){
         var owner_per = $(this).val();
