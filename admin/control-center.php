@@ -1,4 +1,60 @@
 <?php
+
+add_action( 'init', 'adsforwp_store_user_info_client_side' );
+
+function adsforwp_store_user_info_client_side(){
+     
+                  if(!is_admin()){
+                      
+                   $visitor_obj  = new adsforwp_view_visitor_condition();
+                   $user_ip      =  $visitor_obj->adsforwp_get_client_ip();    
+                   
+                   $saved_ip ='';
+                   $saved_ip_list = array();
+                   
+                   if(isset($_COOKIE['adsforwp-user-info'])){
+                    
+                    $saved_ip_list = $_COOKIE['adsforwp-user-info']; 
+                    $saved_ip = trim(base64_decode($saved_ip_list[0]));  
+                    
+                   }
+                   
+                   if(empty($saved_ip_list) && $saved_ip != $user_ip){
+                       $request_day_count  = get_option("adsforwp_ip_request_".date('Y-m-d'));   
+                     
+                    if($request_day_count){ 
+                        
+                        $request_day_count += 1;  
+                        
+                    }else{
+                        
+                        $request_day_count = 1;
+                        
+                    }
+                       
+                    update_option("adsforwp_ip_request_".date('Y-m-d'), $request_day_count);  
+                    
+                    $settings = adsforwp_defaultSettings(); 
+                    
+                    if(isset($settings['adsforwp_geolocation_api']) && $settings['adsforwp_geolocation_api'] !=''){
+                    
+                    $geo_location_data = wp_remote_get('https://api.ipgeolocation.io/ipgeo?apiKey='.$settings['adsforwp_geolocation_api'].'&ip='.$user_ip.'&fields=country_code3' );	
+											
+                    $geo_location_arr  = json_decode($geo_location_data['body'], true);	
+                   
+                                                                              
+                    if(isset($geo_location_arr['ip']) && isset($geo_location_arr['country_code3'])){
+                    
+                        setcookie('adsforwp-user-info[0]', trim(base64_encode($geo_location_arr['ip'])), time() + (86400 * 60), "/"); 
+                        setcookie('adsforwp-user-info[1]', trim(base64_encode ($geo_location_arr['country_code3'])), time() + (86400 * 60), "/"); 
+                        
+                    }
+                    										                   
+                    }
+                   }                                            
+              }                                                                                                                                                                                                                                                                                                                                                         
+} 
+
 /**
  * Function to reset all the settings and delete the ads and groups list
  * @return type json

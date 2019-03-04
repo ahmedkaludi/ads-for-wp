@@ -126,8 +126,7 @@ public function adsforwp_settings_init(){
                             'adsforwp_general_section',							// Page slug
                             'adsforwp_general_section'							// Settings Section ID
                     );
-                
-                add_settings_section('adsforwp_general_section', 'Settings', '__return_false', 'adsforwp_general_section');		              
+                                
                     add_settings_field(
                             'adsforwp_ad_performance_tracking',								// ID
                             'Ad Performance Tracking',			// Title
@@ -135,15 +134,22 @@ public function adsforwp_settings_init(){
                             'adsforwp_general_section',							// Page slug
                             'adsforwp_general_section'							// Settings Section ID
                     );    
-                    
-                add_settings_section('adsforwp_general_section', 'Settings', '__return_false', 'adsforwp_general_section');		              
+                                   
                     add_settings_field(
                             'adsforwp_ad_revenue_sharing',								// ID
                             'Revenue Sharing',			// Title
                              array($this, 'adsforwp_ad_revenue_sharing_callback'),					// Callback
                             'adsforwp_general_section',							// Page slug
                             'adsforwp_general_section'							// Settings Section ID
-                    );   
+                    ); 
+                    
+                    add_settings_field(
+                            'adsforwp_ad_sponsorship_label',								// ID
+                            'Sponsorship Label',			// Title
+                             array($this, 'adsforwp_ad_sponsorship_label_callback'),					// Callback
+                            'adsforwp_general_section',							// Page slug
+                            'adsforwp_general_section'							// Settings Section ID
+                    ); 
                     
                  add_settings_section('adsforwp_support_section', 'Contact Us', '__return_false', 'adsforwp_support_section');		              
                     add_settings_field(
@@ -238,22 +244,22 @@ public function adsforwp_import_callback(){
         
         ?>	
             <ul>
-                <li><div class="adsforwp-tools-field-title"><div class="adsforwp-tooltip"><strong><?php echo esc_html__('Advanced Ads Plugin','ads-for-wp'); ?></strong></div><button data-id="advanced_ads" class="button adsforwp-import-plugins"><?php echo esc_html__('Start Importing','ads-for-wp'); ?></button>
+                <li><div class="adsforwp-tools-field-title"><div class="adsforwp-tooltip"><strong><?php echo esc_html__('Advanced Ads Plugin','ads-for-wp'); ?></strong></div><button data-id="advanced_ads" class="button adsforwp-import-plugins"><?php echo esc_html__('Import','ads-for-wp'); ?></button>
                         <p class="adsforwp-imported-message"></p>
                         <?php echo $schema_message; ?>    
                     </div>
                 </li> 
-                <li><div class="adsforwp-tools-field-title"><div class="adsforwp-tooltip"><strong><?php echo esc_html__('AMP for WP Ads','ads-for-wp'); ?></strong></div><button data-id="ampforwp_ads" class="button adsforwp-import-plugins"><?php echo esc_html__('Start Importing','ads-for-wp'); ?></button>
+                <li><div class="adsforwp-tools-field-title"><div class="adsforwp-tooltip"><strong><?php echo esc_html__('AMP for WP Ads','ads-for-wp'); ?></strong></div><button data-id="ampforwp_ads" class="button adsforwp-import-plugins"><?php echo esc_html__('Import','ads-for-wp'); ?></button>
                         <p class="adsforwp-imported-message"></p>
                         <?php echo $ampforwp_ads_message; ?>    
                     </div>
                 </li>
-                <li><div class="adsforwp-tools-field-title"><div class="adsforwp-tooltip"><strong><?php echo esc_html__('AMP for WP Advanced Ads','ads-for-wp'); ?></strong></div><button data-id="ampforwp_advanced_ads" class="button adsforwp-import-plugins"><?php echo esc_html__('Start Importing','ads-for-wp'); ?></button>
+                <li><div class="adsforwp-tools-field-title"><div class="adsforwp-tooltip"><strong><?php echo esc_html__('AMP for WP Advanced Ads','ads-for-wp'); ?></strong></div><button data-id="ampforwp_advanced_ads" class="button adsforwp-import-plugins"><?php echo esc_html__('Import','ads-for-wp'); ?></button>
                         <p class="adsforwp-imported-message"></p>
                         <?php echo $ampforwp_advanced_ads_message; ?>    
                     </div>
                 </li>
-                <li><div class="adsforwp-tools-field-title"><div class="adsforwp-tooltip"><strong><?php echo esc_html__('Ad Inserter','ads-for-wp'); ?></strong></div><button data-id="ad_inserter" class="button adsforwp-import-plugins"><?php echo esc_html__('Start Importing','ads-for-wp'); ?></button>
+                <li><div class="adsforwp-tools-field-title"><div class="adsforwp-tooltip"><strong><?php echo esc_html__('Ad Inserter','ads-for-wp'); ?></strong></div><button data-id="ad_inserter" class="button adsforwp-import-plugins"><?php echo esc_html__('Import','ads-for-wp'); ?></button>
                        <p>This will work perfectly with plugin which is available on wordpress.org</p> 
                         <p class="adsforwp-imported-message"></p>
                         
@@ -356,6 +362,27 @@ public function adsforwp_ad_revenue_sharing_callback(){
         <div class="afw_revenue_divider"><p><?php echo esc_html__('Enter the percentage of revenue that you would like to share', 'ads-for-wp') ?></p>
             <strong><?php echo esc_html__('Owner', 'ads-for-wp') ?></strong> <input type="number" placeholder="percentage" id="adsforwp_owner_revenue_per" name="adsforwp_settings[ad_owner_revenue_per]" value="<?php echo isset( $settings['ad_owner_revenue_per'] ) ? esc_attr( $settings['ad_owner_revenue_per']) : ''; ?>">
             <strong><?php echo esc_html__('Author', 'ads-for-wp') ?></strong> <input type="number"  placeholder="percentage" id="adsforwp_author_revenue_per" name="adsforwp_settings[ad_author_revenue_per]" value="<?php echo isset( $settings['ad_author_revenue_per'] ) ? esc_attr( $settings['ad_author_revenue_per']) : ''; ?>">
+        </div>
+	<?php        
+}
+
+public function adsforwp_ad_sponsorship_label_callback(){	        
+	$settings = adsforwp_defaultSettings();   
+        
+        ?>	
+	<fieldset>
+            <?php
+           
+            if(isset($settings['ad_sponsorship_label'])){
+                echo '<input type="checkbox" name="adsforwp_settings[ad_sponsorship_label]" class="regular-text afw_sponsorship_label" value="1" checked> ';
+            }else{
+                echo '<input type="checkbox" name="adsforwp_settings[ad_sponsorship_label]" class="regular-text afw_sponsorship_label" value="1" >';
+            }
+            
+            ?>		
+	</fieldset>
+        <div class="afw_sponsorship_divider"><p><?php echo esc_html__('Enter the label', 'ads-for-wp') ?></p>
+            <strong><?php echo esc_html__('Label', 'ads-for-wp') ?></strong> <input type="text" placeholder="Enter the label" id="ad_sponsorship_label_text" name="adsforwp_settings[ad_sponsorship_label_text]" value="<?php echo isset( $settings['ad_sponsorship_label_text'] ) ? esc_attr( $settings['ad_sponsorship_label_text']) : ''; ?>">            
         </div>
 	<?php        
 }

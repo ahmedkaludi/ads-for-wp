@@ -785,7 +785,15 @@ jQuery( document ).ready(function($) {
      
      
     }).change();
-            
+    
+    $("#paragraph_number").change(function(){       
+        
+        console.log($(this).val());
+        
+      $(".adsforwp-every-paragraphs-text").text('Display After Every '+ $(this).val());
+      
+    }).change();  
+    
     $("#adposition").change(function(){        
       $(this).find("option:selected").each(function(){  
           var optionValue = $(this).attr("value");    
@@ -861,6 +869,14 @@ jQuery( document ).ready(function($) {
        $(".afw_revenue_divider").show();
      }else{
        $(".afw_revenue_divider").hide(); 
+     }     
+ }).change();
+ 
+ $(".afw_sponsorship_label").change(function(){
+     if($(this).is(':checked')){
+       $(".afw_sponsorship_divider").show();
+     }else{
+       $(".afw_sponsorship_divider").hide(); 
      }     
  }).change();
     

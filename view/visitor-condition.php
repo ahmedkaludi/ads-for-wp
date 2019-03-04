@@ -286,7 +286,7 @@ class adsforwp_view_visitor_condition {
                     if(isset($_COOKIE['adsforwp-user-info'])){
                         
                          $saved_ip_list = $_COOKIE['adsforwp-user-info']; 
-                         $saved_ip = $saved_ip_list[0];	
+                         $saved_ip = trim(base64_decode($saved_ip_list[0]));	
                          
                     }						
                    
@@ -294,51 +294,11 @@ class adsforwp_view_visitor_condition {
 				
                     if(isset($saved_ip_list[1])){
                         
-                        $country_code = $saved_ip_list[1]; 
+                        $country_code = trim(base64_decode($saved_ip_list[1])); 
                         
-                    }   
-                    
-                    
-                   }else{
-                      
-                    $request_day_count  = get_option("adsforwp_ip_request_".date('Y-m-d'));   
-                     
-                    if($request_day_count){ 
-                        
-                        $request_day_count += 1;  
-                        
-                    }else{
-                        
-                        $request_day_count = 1;
-                        
-                    }
-                    
-                    update_option("adsforwp_ip_request_".date('Y-m-d'), $request_day_count);        
-                       
-                    $settings = adsforwp_defaultSettings(); 
-                    
-                    if(isset($settings['adsforwp_geolocation_api']) && $settings['adsforwp_geolocation_api'] !=''){
-                    
-                    $geo_location_data = wp_remote_get('https://api.ipgeolocation.io/ipgeo?apiKey='.$settings['adsforwp_geolocation_api'].'&ip='.$user_ip )	;	
-											
-                    $geo_location_arr  = json_decode($geo_location_data['body'], true);	
-                    
-                    if(isset($geo_location_arr['country_code3'])){
-                    
-                        $country_code = $geo_location_arr['country_code3']; 
-                        
-                    }
-                                                                              
-                    if(isset($geo_location_arr['ip']) && isset($geo_location_arr['country_code3'])){
-                    
-                        setcookie('adsforwp-user-info[0]', $geo_location_arr['ip'], time() + (86400 * 60), "/"); 
-                        setcookie('adsforwp-user-info[1]', $geo_location_arr['country_code3'], time() + (86400 * 60), "/"); 
-                        
-                    }
-                    										                   
                     }   
                                         
-                   }                                                                                              
+                   }                                                                                             
                     if ( $comparison == 'equal' ) {
                           if ( $country_code == $data ) {
                             $result = true;
