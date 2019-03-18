@@ -312,7 +312,7 @@ class adsforwp_view_visitor_condition {
           break;
           
           case 'url_parameter':                      
-                   $url = $_SERVER['REQUEST_URI'];                       
+                   $url = esc_url($_SERVER['REQUEST_URI']);                       
                   if ( $comparison == 'equal' ) {                                            
                         if ( strpos($url,$data) !== false ) {                           
                           $result = true;

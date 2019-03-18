@@ -185,7 +185,7 @@ class adsforwp_view_display {
 		$output = '';
 		foreach ( $this->meta_fields as $meta_field ) {
                         $attributes ='';
-			$label = '<label for="' . $meta_field['id'] . '">' . esc_html__( $meta_field['label'], 'ads-for-wp' ) . '</label>';
+			$label = '<label for="' . esc_attr($meta_field['id']) . '">' . esc_html__( $meta_field['label'], 'ads-for-wp' ) . '</label>';
 			$meta_value = get_post_meta( $post->ID, $meta_field['id'], true );
 			if ( empty( $meta_value ) ) {
                                 if($meta_field['id'] == 'adsforwp_new_element'){
@@ -203,19 +203,19 @@ class adsforwp_view_display {
                                         case 'adposition':
                                             $input = sprintf(
 						'<select class="afw_select" id="%s" name="%s">',
-						$meta_field['id'],
-						$meta_field['id']
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['id'])
 					);
 					foreach ( $meta_field['options'] as $key => $value ) {
 						$meta_field_value = !is_numeric( $key ) ? $key : $value;
 						$input .= sprintf(
 							'<option %s value="%s">%s</option>',
 							$meta_value === $meta_field_value ? 'selected' : '',
-							$meta_field_value,
+							esc_attr($meta_field_value),
 							esc_html__($value, 'ads-for-wp')                                                        
 						);
 					}
-					$input .= '</select><a href="#" class="adsforwp-advance-option-click">Advance Option</a>';
+					$input .= '</select><a href="#" class="adsforwp-advance-option-click">'. esc_html__('Advance Option', 'ads-for-wp').'</a>';
 
                                             break;
                                         
@@ -233,8 +233,8 @@ class adsforwp_view_display {
                                             }
                                             $input = sprintf(
 						'<select class="afw_select" id="%s" name="%s">',
-						$meta_field['id'],
-						$meta_field['id']
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['id'])
 					   );
                                             
                                             foreach($meta_field['optgroup'] as $dtype => $options){
@@ -255,7 +255,7 @@ class adsforwp_view_display {
                                                     $input .= sprintf(
                                                             '<option %s value="%s">%s</option>',
                                                             $meta_value === $meta_field_value ? 'selected' : '',
-                                                            $meta_field_value,
+                                                            esc_attr($meta_field_value),
                                                             esc_html__($value, 'ads-for-wp')                                                        
                                                     );
                                                }
@@ -272,8 +272,8 @@ class adsforwp_view_display {
                                         default:
                                             $input = sprintf(
 						'<select class="afw_select" id="%s" name="%s">',
-						$meta_field['id'],
-						$meta_field['id']
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['id'])
 					   );
                                             foreach ( $meta_field['options'] as $key => $value ) {
                                                     $meta_field_value = !is_numeric( $key ) ? $key : $value;
@@ -300,11 +300,11 @@ class adsforwp_view_display {
                                         $input.= sprintf(
 						'<input class="afw_input" %s id="%s" name="adsforwp_ad_margin[%s]" type="%s" placeholder="%s" value="%s">',
 						$meta_field['type'] !== 'color' ? '' : '',
-						$field['id'],
-						$field['id'],
-						$field['type'],
-						$field['label'],   
-                                                $margin_value
+						esc_attr($field['id']),
+						esc_attr($field['id']),
+						esc_attr($field['type']),
+						esc_attr($field['label']),   
+                                                esc_attr($margin_value)
                                              );                                        
                                         }
 					$input .='</div>';
@@ -347,17 +347,17 @@ class adsforwp_view_display {
                                             case 'adsforwp_custom_target_position':
                                                 
                                                 $input = '<fieldset class="adsforwp-custom-target-fields">';
-                                                $input .= '<legend class="screen-reader-text">' . $meta_field['label'] . '</legend>';
+                                                $input .= '<legend class="screen-reader-text">' . esc_html__($meta_field['label'],'ads-for-wp') . '</legend>';
                                                 $i = 0;
                                                 foreach ( $meta_field['options'] as $key => $value ) {
                                                         $meta_field_value = !is_numeric( $key ) ? $key : $value;
                                                         $input .= sprintf(
                                                                 '<label style="padding-right:10px;"><input %s id="%s" name="%s" type="radio" value="%s">%s</label>%s',
                                                                 $meta_value === $meta_field_value ? 'checked' : '',
-                                                                $meta_field['id'],
-                                                                $meta_field['id'],
-                                                                $meta_field_value,
-                                                                $value,
+                                                                esc_attr($meta_field['id']),
+                                                                esc_attr($meta_field['id']),
+                                                                esc_attr($meta_field_value),
+                                                                esc_html__($value,'ads-for-wp'),
                                                                 $i < count( $meta_field['options'] ) - 1 ? '' : ''
                                                         );
                                                         $i++;
@@ -396,11 +396,11 @@ class adsforwp_view_display {
                                                 $input = sprintf(
 						'<input class="afw_input" %s id="%s" name="%s" type="%s" value="%s" %s> <input type="checkbox" id="ads_on_every_paragraphs_number" name="ads_on_every_paragraphs_number" value="1" '.$paragraphs_checked.'> <span class="adsforwp-every-paragraphs-text"></span>',
 						$meta_field['type'] !== 'color' ? '' : '',
-						$meta_field['id'],
-						$meta_field['id'],
-						$meta_field['type'],
-						$meta_value,
-                                                $attributes    
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['type']),
+						esc_attr($meta_value),
+                                                esc_attr($attributes)    
 					   );
 
                                                break;
@@ -410,11 +410,11 @@ class adsforwp_view_display {
                                                $input = sprintf(
 						'<input class="afw_input" %s id="%s" name="%s" type="%s" value="%s" %s>',
 						$meta_field['type'] !== 'color' ? '' : '',
-						$meta_field['id'],
-						$meta_field['id'],
-						$meta_field['type'],
-						$meta_value,
-                                                $attributes    
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['type']),
+						esc_attr($meta_value),
+                                                esc_attr($attributes)    
 					   );
                                                
                                                break;

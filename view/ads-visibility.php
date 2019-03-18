@@ -89,6 +89,7 @@ class adsforwp_view_ads_visibility {
 		return '<tr><td style="padding:0px;">'.$input.'</td></tr>';
 	}
 	public function adsforwp_save_fields( $post_id ) {
+		$meta_field_id = '';
 		if ( ! isset( $_POST['adsforwp_showadscurrent_nonce'] ) )
 			return $post_id;		
 		if ( !wp_verify_nonce( $_POST['adsforwp_showadscurrent_nonce'], 'adsforwp_showadscurrent_data' ) )
@@ -99,13 +100,13 @@ class adsforwp_view_ads_visibility {
 			if ( isset( $_POST[ $meta_field['id'] ] ) ) {
 				switch ( $meta_field['type'] ) {
 					case 'email':
-						$_POST[ $meta_field['id'] ] = sanitize_email( $_POST[ $meta_field['id'] ] );
+						$meta_field_id = sanitize_email( $_POST[ $meta_field['id'] ] );
 						break;
 					case 'text':
-						$_POST[ $meta_field['id'] ] = sanitize_text_field( $_POST[ $meta_field['id'] ] );
+						$meta_field_id = sanitize_text_field( $_POST[ $meta_field['id'] ] );
 						break;
 				}
-				update_post_meta( $post_id, $meta_field['id'], $_POST[ $meta_field['id'] ] );
+				update_post_meta( $post_id, $meta_field['id'], $meta_field_id );
 			} else if ( $meta_field['type'] === 'checkbox' ) {
 				update_post_meta( $post_id, $meta_field['id'], '0' );
 			}

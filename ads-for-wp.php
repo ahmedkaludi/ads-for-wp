@@ -86,7 +86,7 @@ add_action( 'admin_init', 'adsforwp_check_plugin' );
 function adsforwp_action_links ( $links ) {
     
         $mylinks = array(
-            '<a href="' . admin_url( 'edit.php?post_type=adsforwp&page=adsforwp' ) . '">'.esc_html__('Settings', 'ads-for-wp').'</a>',
+            '<a href="' . esc_url_raw(admin_url( 'edit.php?post_type=adsforwp&page=adsforwp' )) . '">'.esc_html__('Settings', 'ads-for-wp').'</a>',
         );
         return array_merge( $links, $mylinks );
     

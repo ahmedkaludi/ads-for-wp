@@ -40,8 +40,8 @@ class adsforwp_amp_compatibility {
                         <div id="afw-amp-status-select" class="hide-if-js">                           
                            <label for="afw_amp_status" class="screen-reader-text"><?php echo esc_html__('Set Status', 'ads-for-wp') ?></label>
                            <select name="ads-for-wp_amp_compatibilty" id="ads-for-wp_amp_compatibilty">                                
-                                <option value="enable" <?php echo ($this->adsforwp_amp_comp_get_meta( 'ads-for-wp_amp_compatibilty' ) === 'enable' ) ? 'selected' : '' ?> ><?php echo esc_html__('Enable', 'ads-for-wp') ?></option>
-                                <option value="disable" <?php echo ($this->adsforwp_amp_comp_get_meta( 'ads-for-wp_amp_compatibilty' ) === 'disable' ) ? 'selected' : '' ?>><?php echo esc_html__('Disable', 'ads-for-wp') ?></option>
+                                <option value="enable" <?php echo esc_attr( ($this->adsforwp_amp_comp_get_meta( 'ads-for-wp_amp_compatibilty' ) === 'enable' ) ? 'selected' : '') ?> ><?php echo esc_html__('Enable', 'ads-for-wp') ?></option>
+                                <option value="disable" <?php echo esc_attr( ($this->adsforwp_amp_comp_get_meta( 'ads-for-wp_amp_compatibilty' ) === 'disable' ) ? 'selected' : '') ?>><?php echo esc_html__('Disable', 'ads-for-wp') ?></option>
                            </select>
                          <a href="#" class="afw-amp-status-save hide-if-no-js button"><?php echo esc_html__('OK', 'ads-for-wp') ?></a>
                          <a href="#" class="afw-amp-status-cancel hide-if-no-js button-cancel"><?php echo esc_html__('Cancel', 'ads-for-wp') ?></a>
