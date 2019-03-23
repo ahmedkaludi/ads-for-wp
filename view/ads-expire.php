@@ -178,35 +178,37 @@ class adsforwp_view_expiredate {
 		return '<tr><td>'.$label.'</td><td>'.$input.'</td></tr>';
 	}
 	public function save_fields( $post_id ) {
-		$meta_field_id = '';
-		if ( ! isset( $_POST['setexpiredate_nonce'] ) )
-			return $post_id;		
-		if ( !wp_verify_nonce( $_POST['setexpiredate_nonce'], 'setexpiredate_data' ) )
-			return $post_id;
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
-			return $post_id;
-                
-                      
-                    $adsforwp_days_array = array();                     
-                    $adsforwp_days_array = array_map('sanitize_text_field', $_POST['adsforwp_ad_expire_days']);                      
-                    update_post_meta($post_id, 'adsforwp_ad_expire_days', $adsforwp_days_array);
-                    
-		foreach ( $this->meta_fields as $meta_field ) {
-                        if($meta_field['id'] != 'adsforwp_ad_expire_days'){ 
-			if ( isset( $_POST[ $meta_field['id'] ] ) ) {
-				switch ( $meta_field['type'] ) {
-					case 'email':
-						$meta_field_id = sanitize_email( $_POST[ $meta_field['id'] ] );
-						break;
-					case 'text':
-						$meta_field_id = sanitize_text_field( $_POST[ $meta_field['id'] ] );
-						break;
+		if ( current_user_can( 'manage_options' ) ) {
+			$meta_field_id = '';
+			if ( ! isset( $_POST['setexpiredate_nonce'] ) )
+				return $post_id;		
+			if ( !wp_verify_nonce( $_POST['setexpiredate_nonce'], 'setexpiredate_data' ) )
+				return $post_id;
+			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+				return $post_id;
+	                
+	                      
+	                    $adsforwp_days_array = array();                     
+	                    $adsforwp_days_array = array_map('sanitize_text_field', $_POST['adsforwp_ad_expire_days']);                      
+	                    update_post_meta($post_id, 'adsforwp_ad_expire_days', $adsforwp_days_array);
+	                    
+			foreach ( $this->meta_fields as $meta_field ) {
+	                        if($meta_field['id'] != 'adsforwp_ad_expire_days'){ 
+				if ( isset( $_POST[ $meta_field['id'] ] ) ) {
+					switch ( $meta_field['type'] ) {
+						case 'email':
+							$meta_field_id = sanitize_email( $_POST[ $meta_field['id'] ] );
+							break;
+						case 'text':
+							$meta_field_id = sanitize_text_field( $_POST[ $meta_field['id'] ] );
+							break;
+					}
+					update_post_meta( $post_id, $meta_field['id'], $meta_field_id );
+				} else if ( $meta_field['type'] === 'checkbox' ) {
+					update_post_meta( $post_id, $meta_field['id'], '0' );
 				}
-				update_post_meta( $post_id, $meta_field['id'], $meta_field_id );
-			} else if ( $meta_field['type'] === 'checkbox' ) {
-				update_post_meta( $post_id, $meta_field['id'], '0' );
+	                 }
 			}
-                 }
 		}
 	}
 }
