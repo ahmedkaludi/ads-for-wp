@@ -79,23 +79,32 @@ class adsforwp_view_ad_groups {
 		$this->adsforwp_field_generator( $post );
 	}
 	public function adsforwp_field_generator( $post ) {
+            
                 $common_function_obj = new adsforwp_admin_common_functions();
                 $all_ads = $common_function_obj->adsforwp_fetch_all_ads();
-		$output = '';                    
+		$output = '';    
+                
 		foreach ( $this->meta_fields as $meta_field ) {
-			$id =''; 
-                        $attributes ='';
-                        $metafieldlabel ='';
+                    
+			$id             = ''; 
+                        $attributes     = '';
+                        $metafieldlabel = '';
+                        
                         if(array_key_exists('id', $meta_field)){
-                          $id  =$meta_field['id'];
+                          $id  = $meta_field['id'];
                         }
+                        
                         if(array_key_exists('label', $meta_field)){
-                          $metafieldlabel  =$meta_field['label'];
+                          $metafieldlabel  = $meta_field['label'];
                         }
+                        
                         $label = '<label for="' . esc_attr($id) . '">' . esc_html__($metafieldlabel, 'ads-for-wp' ) . '</label>';
-			$meta_value = get_post_meta( $post->ID, $id, true );                           
+			$meta_value = get_post_meta( $post->ID, $id, true );   
+                        
 			if ( empty( $meta_value ) ) {
-				$meta_value = isset($meta_field['default']); }
+				$meta_value = isset($meta_field['default']); 
+                                
+                        }
 			switch ( $meta_field['type'] ) {
 				case 'checkbox':                                   
                                             $input = sprintf(
@@ -107,8 +116,9 @@ class adsforwp_view_ad_groups {
 					break;
                                 case 'div':
                                             $this->added_ad_list = $meta_value;                                            
-                                            $input = '<div id="'.esc_attr($meta_field['id']).'" class="'.esc_attr($meta_field['class']).'"> <table class="afw-group-ads">';                                            
-                                            $input .= '<tbody>';   
+                                            $input  = '<div id="'.esc_attr($meta_field['id']).'" class="'.esc_attr($meta_field['class']).'"> <table class="afw-group-ads">';                                            
+                                            $input .= '<tbody>';  
+                                            
                                             if($meta_value){
                                               foreach($meta_value as $key => $val){
                                              
@@ -126,13 +136,16 @@ class adsforwp_view_ad_groups {
                                                                                                                                                                                           
                                               }                                            
                                               }
+                                              
                                             $input .= '</tbody>';
                                             $input .= '</table>';                                            
                                             $input .= '</div>';  
                                             $input .= '<a class="button afw_add_more" style="margin:20px;">'. esc_html__('Add More...', 'ads-for-wp').'</a>';
 					
-					break;    
+					break;  
+                                        
 				case 'radio':
+                                    
                                         if($meta_value === 'ordered' || $meta_value === 'rand'){
                                         $default_val = $meta_value;                                            
                                         }else{
@@ -144,7 +157,7 @@ class adsforwp_view_ad_groups {
 					foreach ( $meta_field['options'] as $key => $value ) {
 						$meta_field_value = !is_numeric( $key ) ? $key : $value;
 						$input .= sprintf(
-							'<label ><input %s id="%s" name="% s" type="radio" value="% s"> %s</label>%s',
+							'<label ><input %s id="%s" name="%s" type="radio" value="%s"> %s</label>%s',
 							$default_val === $meta_field_value ? 'checked' : '',
 							esc_attr($id),
 							esc_attr($id),
@@ -156,8 +169,11 @@ class adsforwp_view_ad_groups {
 					}
 					$input .= '</fieldset>';
 					break;
-				case 'select':					
+                                        
+				case 'select':	
+                                    
                                         switch ($id) {
+                                    
                                             case 'adsforwp_group_ad_list':                                                  
                                                 $input = sprintf(
 						'<span class="afw-error afw-add-new-note">'. esc_html__('You have added all ads', 'ads-for-wp').'</span><br><select class="afw_select afw_group_ad_list" id="%s" name="%s">',
@@ -166,14 +182,19 @@ class adsforwp_view_ad_groups {
                                                 );                                                                                                  
 
                                                 foreach($all_ads as $ad){
+                                                    
                                                     $this->ads_list[] =  array(
-                                                              'ad_id' => $ad->ID,
+                                                              'ad_id'   => $ad->ID,
                                                               'ad_name' => $ad->post_title
-                                                              );         
+                                                              );   
+                                                    
                                                 }                                                  
-                                                foreach($this->ads_list as $value){                                                
-                                                if($this->added_ad_list){   
-                                                if(!array_key_exists($value['ad_id'], $this->added_ad_list)) {   
+                                                foreach($this->ads_list as $value){  
+                                                    
+                                                if($this->added_ad_list){  
+                                                    
+                                                if(!array_key_exists($value['ad_id'], $this->added_ad_list)) { 
+                                                    
                                                 $meta_field_value = '['.$value['ad_id'].']';
 						$input .= sprintf(
 							'<option %s value="adsforwp_ads%s">%s</option>',
@@ -183,6 +204,7 @@ class adsforwp_view_ad_groups {
 						);
                                                 
                                                 }
+                                                
                                                 }else{
                                                 $meta_field_value = '['.$value['ad_id'].']';
 						$input .= sprintf(
@@ -203,13 +225,14 @@ class adsforwp_view_ad_groups {
 						esc_attr($id)
                                                 );
                                                 foreach ( $meta_field['options'] as $key => $value ) {
-						$meta_field_value = !is_numeric( $key ) ? $key : $value;
-						$input .= sprintf(
-							'<option %s value="%s">%s</option>',
-							$meta_value === $meta_field_value ? 'selected' : '',
-							$meta_field_value,
-							esc_html__($value, 'ads-for-wp')
-						);
+                                                    
+                                                    $meta_field_value = !is_numeric( $key ) ? $key : $value;
+                                                    $input .= sprintf(
+                                                            '<option %s value="%s">%s</option>',
+                                                            $meta_value === $meta_field_value ? 'selected' : '',
+                                                            $meta_field_value,
+                                                            esc_html__($value, 'ads-for-wp')
+                                                    );
                                                  }
                                                 $input .= '</select>';
                                                 break;
@@ -258,9 +281,12 @@ class adsforwp_view_ad_groups {
 	public function adsforwp_format_rows( $label, $input ) {
 		return '<tr><th>'.$label.'</th><td>'.$input.'</td></tr>';
 	}
-	public function adsforwp_save_fields( $post_id ) {    
+	public function adsforwp_save_fields( $post_id ) {  
+            
 		if ( current_user_can( 'manage_options' ) ) {
-			$meta_field_id = '';                
+                    
+			$meta_field_id = ''; 
+                        
 			if ( ! isset( $_POST['adgroup_nonce'] ) )
 				return $post_id;		
 			if ( !wp_verify_nonce( $_POST['adgroup_nonce'], 'adgroup_data' ) )
@@ -273,8 +299,11 @@ class adsforwp_view_ad_groups {
 	                    update_post_meta($post_id, 'adsforwp_ads', $adsforwp_ads_array);
 	                            
 			foreach ( $this->meta_fields as $meta_field ) {
-	                    if($meta_field['id'] != 'adsforwp_ads'){                    
+                            
+	                    if($meta_field['id'] != 'adsforwp_ads'){ 
+                                
 				if ( isset( $_POST[ $meta_field['id'] ] ) ) {
+                                    
 					switch ( $meta_field['type'] ) {
 						case 'email':
 							$meta_field_id = sanitize_email( $_POST[ $meta_field['id'] ] );
@@ -283,7 +312,9 @@ class adsforwp_view_ad_groups {
 							$meta_field_id = sanitize_text_field( $_POST[ $meta_field['id'] ] );
 							break;
 					}
+                                        
 					update_post_meta( $post_id, $meta_field['id'], $meta_field_id );
+                                        
 				} else if ( $meta_field['type'] === 'checkbox' ) {
 					update_post_meta( $post_id, $meta_field['id'], '0' );
 				}

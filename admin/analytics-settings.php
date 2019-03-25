@@ -429,7 +429,7 @@ public function adsforwp_admin_analytics_interface_render(){
 /*
 	WP Settings API
 */
-	function adsforwp_admin_analytics_render(){
+    function adsforwp_admin_analytics_render(){
        global $GLOBALS;
         $GLOBALS['ADSFORWP']->authentication();
     }
