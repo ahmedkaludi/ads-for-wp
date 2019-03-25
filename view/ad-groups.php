@@ -283,45 +283,42 @@ class adsforwp_view_ad_groups {
 	}
 	public function adsforwp_save_fields( $post_id ) {  
             
-		if ( current_user_can( 'manage_options' ) ) {
+		if ( ! isset( $_POST['adgroup_nonce'] ) )
+			return $post_id;		
+		if ( !wp_verify_nonce( $_POST['adgroup_nonce'], 'adgroup_data' ) )
+			return $post_id;
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+			return $post_id;
+                  
+                if ( current_user_can( 'manage_options' ) ) {
                     
-			$meta_field_id = ''; 
-                        
-			if ( ! isset( $_POST['adgroup_nonce'] ) )
-				return $post_id;		
-			if ( !wp_verify_nonce( $_POST['adgroup_nonce'], 'adgroup_data' ) )
-				return $post_id;
-			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
-				return $post_id;
-	                               
-	                    $adsforwp_ads_array = array();                     
-	                    $adsforwp_ads_array = array_map('sanitize_text_field', $_POST['adsforwp_ads']);                      
-	                    update_post_meta($post_id, 'adsforwp_ads', $adsforwp_ads_array);
-	                            
-			foreach ( $this->meta_fields as $meta_field ) {
+                $post_meta = array();    
+                
+                $post_meta = $_POST; 
+                
+                $adsforwp_ads_array = array();                     
+                $adsforwp_ads_array = array_map('sanitize_text_field', $_POST['adsforwp_ads']);                      
+                update_post_meta($post_id, 'adsforwp_ads', $adsforwp_ads_array);
                             
-	                    if($meta_field['id'] != 'adsforwp_ads'){ 
-                                
-				if ( isset( $_POST[ $meta_field['id'] ] ) ) {
-                                    
-					switch ( $meta_field['type'] ) {
-						case 'email':
-							$meta_field_id = sanitize_email( $_POST[ $meta_field['id'] ] );
-							break;
-						case 'text':
-							$meta_field_id = sanitize_text_field( $_POST[ $meta_field['id'] ] );
-							break;
-					}
-                                        
-					update_post_meta( $post_id, $meta_field['id'], $meta_field_id );
-                                        
-				} else if ( $meta_field['type'] === 'checkbox' ) {
-					update_post_meta( $post_id, $meta_field['id'], '0' );
+		foreach ( $this->meta_fields as $meta_field ) {
+                    if($meta_field['id'] != 'adsforwp_ads'){                    
+			if ( isset( $post_meta[ $meta_field['id'] ] ) ) {
+				switch ( $meta_field['type'] ) {
+					case 'email':
+						$post_meta[ $meta_field['id'] ] = sanitize_email( $post_meta[ $meta_field['id'] ] );
+						break;
+					case 'text':
+						$post_meta[ $meta_field['id'] ] = sanitize_text_field( $post_meta[ $meta_field['id'] ] );
+						break;
 				}
-	                    }
-	                        
+				update_post_meta( $post_id, $meta_field['id'], $post_meta[ $meta_field['id'] ] );
+			} else if ( $meta_field['type'] === 'checkbox' ) {
+				update_post_meta( $post_id, $meta_field['id'], '0' );
 			}
+                    }
+                        
 		}
+        }
 	}
 }
 if (class_exists('adsforwp_view_ad_groups')) {
