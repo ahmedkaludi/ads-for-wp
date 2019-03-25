@@ -56,7 +56,7 @@ Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp).
 
 = 1.6 (25 March 2019) =
 
-* Bug Fixed: Security issue improvement.
+* Bug Fixed: Security improvement.
 
 
 = 1.5 (04 March 2019) =
