@@ -2,8 +2,8 @@
 Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
 Tags: Ads, Advanced Ads, Ad Inserter, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
-Tested up to: 5.0.2
-Stable tag: 1.5
+Tested up to: 5.1
+Stable tag: 1.6
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -53,6 +53,11 @@ Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp).
 
 
 == Changelog ==
+
+= 1.6 (25 March 2019) =
+
+* Bug Fixed: Security issue improvement.
+
 
 = 1.5 (04 March 2019) =
 * Added : AD to be displayed after every number(XX) of paragraphs #154
