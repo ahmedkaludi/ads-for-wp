@@ -65,7 +65,7 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
 
             $choices = array(
                 'desktop' => 'Desktop',
-                'mobile' => 'Mobile or Tablet',                             
+                'mobile'  => 'Mobile or Tablet',                             
             );                       
             break;
           
@@ -535,7 +535,7 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
 public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $current_number = '', $current_group_number  = '') {
  
     $response = $data;
-    $is_ajax = false;
+    $is_ajax  = false;
     
     if( $_SERVER['REQUEST_METHOD']=='POST'){
         
@@ -663,9 +663,9 @@ public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $curre
               {
 
                 $posts = get_posts(array(
-                  'numberposts' => '-1',
-                  'post_type' => $post_type,
-                  'post_status' => array('publish', 'private', 'draft', 'inherit', 'future'),
+                  'numberposts'      => '-1',
+                  'post_type'        => $post_type,
+                  'post_status'      => array('publish', 'private', 'draft', 'inherit', 'future'),
                   'suppress_filters' => false,
                 ));
 
@@ -915,6 +915,7 @@ public function adsforwp_create_ajax_select_taxonomy($selectedParentValue = '',$
 }
 
 }
+
 if (class_exists('adsforwp_ajax_selectbox')) {
 	new adsforwp_ajax_selectbox;
 };

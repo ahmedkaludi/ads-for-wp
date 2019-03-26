@@ -1,5 +1,6 @@
 <?php 
 class adsforwp_view_expiredate {
+    
 	private $screen = array(
 		'adsforwp',
 	);
@@ -74,7 +75,7 @@ class adsforwp_view_expiredate {
 	public function field_generator( $post ) {
 		$output = '';                                 
 		foreach ( $this->meta_fields as $meta_field ) {
-			$label = '<label for="' . $meta_field['id'] . '">' . esc_html__($meta_field['label'], 'ads-for-wp') . '</label>';
+			$label = '<label for="' . esc_attr($meta_field['id']) . '">' . esc_html__($meta_field['label'], 'ads-for-wp') . '</label>';
 			$meta_value = get_post_meta( $post->ID, $meta_field['id'], true );
 			if ( empty( $meta_value ) ) {
 				$meta_value = isset($meta_field['default']); }
@@ -83,8 +84,8 @@ class adsforwp_view_expiredate {
 					$input = sprintf(
 						'<input %s id="%s" name="% s" type="checkbox" value="1">',
 						$meta_value === '1' ? 'checked' : '',
-						$meta_field['id'],
-						$meta_field['id']
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['id'])
 						);
 					break;
 				case 'select':
@@ -94,8 +95,8 @@ class adsforwp_view_expiredate {
                                         case 'adsforwp_ad_expire_time':
                                             $input = sprintf(
 						'<select id="%s" name="%s">',
-						$meta_field['id'],
-						$meta_field['id']
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['id'])
 					);                                            
                                             $start = "00:00"; //you can write here 00:00:00 but not need to it
                                             $end = "23:30";
@@ -116,8 +117,8 @@ class adsforwp_view_expiredate {
                                         case 'adsforwp_ad_expire_days':                                               
                                             $input = sprintf(
 						'<select multiple id="%s" name="%s[]" style="height:146px; width:auto;">',
-						$meta_field['id'],
-						$meta_field['id']
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['id'])
                                                     
 					);
                                         $specific_days = array();  
@@ -129,7 +130,7 @@ class adsforwp_view_expiredate {
 						$input .= sprintf(
 							'<option %s value="%s">%s</option>',
                                                         in_array($meta_field_value, $specific_days) ? 'selected' : '',							
-							$meta_field_value,
+							esc_attr($meta_field_value),
 							esc_html__($value, 'ads-for-wp')
 						);
 					}
@@ -139,15 +140,15 @@ class adsforwp_view_expiredate {
                                         default:
                                             $input = sprintf(
 						'<select id="%s" name="%s">',
-						$meta_field['id'],
-						$meta_field['id']
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['id'])
 					);
 					foreach ( $meta_field['options'] as $key => $value ) {
 						$meta_field_value = !is_numeric( $key ) ? $key : $value;
 						$input .= sprintf(
 							'<option %s value="%s">%s</option>',
 							$meta_value === $meta_field_value ? 'selected' : '',
-							$meta_field_value,
+							esc_attr($meta_field_value),
 							esc_html__($value, 'ads-for-wp')
 						);
 					}
@@ -161,11 +162,11 @@ class adsforwp_view_expiredate {
 					$input = sprintf(
 						'<input %s id="%s" name="%s" type="%s" value="%s" readonly><span class="dashicons-before dashicons-calendar-alt %s_span"><span>',
 						$meta_field['type'] !== 'color' ? 'style="width: 100%; background:#fff"' : '',
-						$meta_field['id'],
-						$meta_field['id'],
-						$meta_field['type'],
-						$meta_value,
-                                                $meta_field['id']
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['type']),
+						esc_attr($meta_value),
+                                                esc_attr($meta_field['id'])
 					);
 			}
 			$output .= $this->format_rows( $label, $input );
@@ -185,28 +186,38 @@ class adsforwp_view_expiredate {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 			return $post_id;
                 
-                      
-                    $adsforwp_days_array = array();                     
-                    $adsforwp_days_array = array_map('sanitize_text_field', $_POST['adsforwp_ad_expire_days']);                      
-                    update_post_meta($post_id, 'adsforwp_ad_expire_days', $adsforwp_days_array);
+                
+                if ( current_user_can( 'manage_options' ) ) {
+                    
+                $post_meta = array();    
+                
+                $post_meta = $_POST;     
+                    
+                $adsforwp_days_array = array();                     
+                $adsforwp_days_array = array_map('sanitize_text_field', $_POST['adsforwp_ad_expire_days']);                      
+                update_post_meta($post_id, 'adsforwp_ad_expire_days', $adsforwp_days_array);
                     
 		foreach ( $this->meta_fields as $meta_field ) {
+                    
                         if($meta_field['id'] != 'adsforwp_ad_expire_days'){ 
-			if ( isset( $_POST[ $meta_field['id'] ] ) ) {
+                            
+			if ( isset( $post_meta[ $meta_field['id'] ] ) ) {
 				switch ( $meta_field['type'] ) {
 					case 'email':
-						$_POST[ $meta_field['id'] ] = sanitize_email( $_POST[ $meta_field['id'] ] );
+						$post_meta[ $meta_field['id'] ] = sanitize_email( $post_meta[ $meta_field['id'] ] );
 						break;
 					case 'text':
-						$_POST[ $meta_field['id'] ] = sanitize_text_field( $_POST[ $meta_field['id'] ] );
+						$post_meta[ $meta_field['id'] ] = sanitize_text_field( $post_meta[ $meta_field['id'] ] );
 						break;
 				}
-				update_post_meta( $post_id, $meta_field['id'], $_POST[ $meta_field['id'] ] );
+				update_post_meta( $post_id, $meta_field['id'], $post_meta[ $meta_field['id'] ] );
 			} else if ( $meta_field['type'] === 'checkbox' ) {
 				update_post_meta( $post_id, $meta_field['id'], '0' );
 			}
                  }
+                 
 		}
+          }
 	}
 }
 if (class_exists('adsforwp_view_expiredate')) {

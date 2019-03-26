@@ -2,10 +2,7 @@
 /**
  * This class handles displaying ads according to amp display conditions
  */
-class adsforwp_output_amp_condition_display{
-        
-    public function __construct() {     
-    }
+class adsforwp_output_amp_condition_display{            
     /**
      * List of all hooks which are used in this class
      */

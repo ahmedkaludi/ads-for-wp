@@ -61,7 +61,7 @@ class Adsforwp_analyticsSettings{
 			}
 			if(isset($_POST['adsforwp_profile_entry'])){
 				$savedOpt = get_option('adsforwp_analytics');
-				$profile_for_dashboard = $_POST['profile_for_dashboard'];
+				$profile_for_dashboard = esc_html($_POST['profile_for_dashboard']);
 				$savedOpt['profile_for_post'] = $profile_for_dashboard;
 				$savedOpt['profile_for_dashboard'] = $profile_for_dashboard;
 				update_option( 'adsforwp_analytics', $savedOpt );

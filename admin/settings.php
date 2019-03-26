@@ -2,9 +2,11 @@
 class adsforwp_admin_settings{
     
 public function __construct() {
+    
       add_action( 'admin_menu', array($this, 'adsforwp_add_menu_links'));        
       add_action('admin_init', array($this, 'adsforwp_settings_init'));
       add_action('upload_mimes', array($this, 'adsforwp_custom_upload_mimes'));
+      
     }
 public function adsforwp_add_menu_links() {	
 	// Settings page - Same as main menu page
@@ -24,9 +26,11 @@ public function adsforwp_admin_interface_render(){
 		return;
 	}     	       
 	// Handing save settings
-	if ( isset( $_GET['settings-updated'] ) ) {	
+	if ( isset( $_GET['settings-updated'] ) ) {
+            
             $settings = adsforwp_defaultSettings();              
             $file_creation = new adsforwp_file_creation();
+            
             if(isset($settings['ad_blocker_support'])){                
                 $result = $file_creation->adsforwp_create_adblocker_support_js();                
             }else{
@@ -182,17 +186,20 @@ public function adsforwp_handle_file_upload($option){
 }
 
 public function adsforwp_check_data_imported_from($plugin_post_type_name){
+    
        $cc_args = array(
                         'posts_per_page'   => -1,
                         'post_type'        => 'adsforwp',
                         'meta_key'         => 'imported_from',
-                        'meta_value'         => $plugin_post_type_name,
+                        'meta_value'       => $plugin_post_type_name,
                     );					
 	$imported_from = new WP_Query( $cc_args ); 
         return $imported_from;
+        
 }
 
 public function adsforwp_advance_callback(){
+    
     $settings = adsforwp_defaultSettings();
     
     ?>
@@ -213,10 +220,11 @@ public function adsforwp_advance_callback(){
 }
 
 public function adsforwp_import_callback(){
-	$message = '<p>'.esc_html__('This plugin\'s data already has been imported. Do you want to import again?. click on button above button.','ads-for-wp').'</p>';
+    
+	$message                       = '<p>'.esc_html__('This plugin\'s data already has been imported. Do you want to import again?. click on button above button.','ads-for-wp').'</p>';
         $schema_message                = '';
         $ampforwp_ads_message          = '';
-        $ampforwp_advanced_ads_message = '';
+        $ampforwp_advanced_ads_msg     = '';
         $ad_inserter_message           = '';
         
         
@@ -235,7 +243,7 @@ public function adsforwp_import_callback(){
          $ampforwp_ads_message =$message;   
         }
         if($ampforwp_advanced_ads->post_count !=0){
-         $ampforwp_advanced_ads_message =$message;   
+         $ampforwp_advanced_ads_msg =$message;   
         }
         
         if($ad_inserter->post_count !=0){
@@ -256,11 +264,11 @@ public function adsforwp_import_callback(){
                 </li>
                 <li><div class="adsforwp-tools-field-title"><div class="adsforwp-tooltip"><strong><?php echo esc_html__('AMP for WP Advanced Ads','ads-for-wp'); ?></strong></div><button data-id="ampforwp_advanced_ads" class="button adsforwp-import-plugins"><?php echo esc_html__('Import','ads-for-wp'); ?></button>
                         <p class="adsforwp-imported-message"></p>
-                        <?php echo $ampforwp_advanced_ads_message; ?>    
+                        <?php echo $ampforwp_advanced_ads_msg; ?>    
                     </div>
                 </li>
                 <li><div class="adsforwp-tools-field-title"><div class="adsforwp-tooltip"><strong><?php echo esc_html__('Ad Inserter','ads-for-wp'); ?></strong></div><button data-id="ad_inserter" class="button adsforwp-import-plugins"><?php echo esc_html__('Import','ads-for-wp'); ?></button>
-                       <p>This will work perfectly with plugin which is available on wordpress.org</p> 
+                       <p><?php echo esc_html__('This will work perfectly with plugin which is available on wordpress.org', 'ads-for-wp'); ?></p> 
                         <p class="adsforwp-imported-message"></p>
                         
                         <?php echo $ad_inserter_message; ?>    
@@ -366,9 +374,9 @@ public function adsforwp_ad_revenue_sharing_callback(){
 	<?php        
 }
 
-public function adsforwp_ad_sponsorship_label_callback(){	        
-	$settings = adsforwp_defaultSettings();   
-        
+public function adsforwp_ad_sponsorship_label_callback(){
+    
+	$settings = adsforwp_defaultSettings();           
         ?>	
 	<fieldset>
             <?php
@@ -384,12 +392,12 @@ public function adsforwp_ad_sponsorship_label_callback(){
         <div class="afw_sponsorship_divider"><p><?php echo esc_html__('Enter the label', 'ads-for-wp') ?></p>
             <strong><?php echo esc_html__('Label', 'ads-for-wp') ?></strong> <input type="text" placeholder="Enter the label" id="ad_sponsorship_label_text" name="adsforwp_settings[ad_sponsorship_label_text]" value="<?php echo isset( $settings['ad_sponsorship_label_text'] ) ? esc_attr( $settings['ad_sponsorship_label_text']) : ''; ?>">            
         </div>
+        
 	<?php        
 }
 
 public function adsforwp_contact_us_form_callback(){	        	        
-        ?>		
-        
+        ?>		        
         <div class="afw_contact_us_div">
             <strong><?php echo esc_html__('If you have any query, please write the query in below box or email us at', 'ads-for-wp') ?> <a href="mailto:team@magazine3.com">team@magazine3.com</a>. <?php echo esc_html__('We will reply to your email address shortly', 'ads-for-wp') ?></strong>
        

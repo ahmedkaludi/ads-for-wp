@@ -436,34 +436,40 @@ class adsforwp_view_ads_type {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 			return $post_id;
                     
+                if ( current_user_can( 'manage_options' ) ) {
+                
+                  $post_meta = array();                    
+                  $post_meta = $_POST;   
+                    
 		foreach ( $this->meta_fields as $meta_field ) {
                     
-			if ( isset( $_POST[ $meta_field['id'] ] ) ) {
+			if ( isset( $post_meta[ $meta_field['id'] ] ) ) {
 				switch ( $meta_field['type'] ) {
                                                                                                                                                  
 					case 'email':
-						$_POST[ $meta_field['id'] ] = sanitize_email( $_POST[ $meta_field['id'] ] );
+						$post_meta[ $meta_field['id'] ] = sanitize_email( $post_meta[ $meta_field['id'] ] );
 						break;
 					case 'text':
-						$_POST[ $meta_field['id'] ] = sanitize_text_field( $_POST[ $meta_field['id'] ] );
+						$post_meta[ $meta_field['id'] ] = sanitize_text_field( $post_meta[ $meta_field['id'] ] );
 						break;
 				}
                                 if($meta_field['id'] == 'ad_background_image'){
                                     
-                                                $media_key = $meta_field['id'].'_detail';                                                     
-                                                $media_height = sanitize_text_field( $_POST[ $meta_field['id'].'_height' ] );
-                                                $media_width = sanitize_text_field( $_POST[ $meta_field['id'].'_width' ] );
-                                                $media_thumbnail = sanitize_text_field( $_POST[ $meta_field['id'].'_thumbnail' ] );
+                                                $media_key       = $meta_field['id'].'_detail';                                                     
+                                                $media_height    = sanitize_text_field( $post_meta[ $meta_field['id'].'_height' ] );
+                                                $media_width     = sanitize_text_field( $post_meta[ $meta_field['id'].'_width' ] );
+                                                $media_thumbnail = sanitize_text_field( $post_meta[ $meta_field['id'].'_thumbnail' ] );
+                                                
                                                 $media_detail = array(                                                    
-                                                    'height' =>$media_height,
-                                                    'width' =>$media_width,
-                                                    'thumbnail' =>$media_thumbnail,
+                                                    'height'    => $media_height,
+                                                    'width'     => $media_width,
+                                                    'thumbnail' => $media_thumbnail,
                                                 );                                                    
                                                 update_post_meta( $post_id, $media_key, $media_detail);                                                                                                                    
                                     
                                 }else{ 
                                     
-                                    update_post_meta( $post_id, $meta_field['id'], $_POST[ $meta_field['id'] ] );
+                                    update_post_meta( $post_id, $meta_field['id'], $post_meta[ $meta_field['id'] ] );
                                     
                                 }
                                 
@@ -473,6 +479,7 @@ class adsforwp_view_ads_type {
 			}
                    
 		}
+                }
 	}
 }
 if (class_exists('adsforwp_view_ads_type')) {

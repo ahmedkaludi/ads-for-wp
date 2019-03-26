@@ -3,7 +3,7 @@
 Plugin Name: Ads for WP - Advanced Ads & Adsense Solution for WP & AMP
 Plugin URI: https://wordpress.org/plugins/ads-for-wp/
 Description: ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy to Use, Unlimited Incontent Ads, Adsense, Premium Features and more
-Version: 1.5
+Version: 1.6
 Author: Ahmed Kaludi, Mohammed Kaludi
 Author URI: http://adsforwp.com/
 Donate link: https://www.paypal.me/Kaludi/25usd
@@ -19,7 +19,7 @@ define('ADSFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('ADSFORWP_PLUGIN_DIR_URI', plugin_dir_url(__FILE__));
 define( 'ADSFORWP_LIB_PATH', dirname( __FILE__ ) . '/admin/inc/' );
 if ( ! defined( 'ADSFORWP_VERSION' ) ) {
-	define( 'ADSFORWP_VERSION', '1.5' );
+	define( 'ADSFORWP_VERSION', '1.6' );
 }
 /* Loading Backend files files*/
 require_once  ADSFORWP_PLUGIN_DIR.'/admin/ads-setup.php';
@@ -86,7 +86,7 @@ add_action( 'admin_init', 'adsforwp_check_plugin' );
 function adsforwp_action_links ( $links ) {
     
         $mylinks = array(
-            '<a href="' . admin_url( 'edit.php?post_type=adsforwp&page=adsforwp' ) . '">'.esc_html__('Settings', 'ads-for-wp').'</a>',
+            '<a href="' . esc_url(admin_url( 'edit.php?post_type=adsforwp&page=adsforwp' )) . '">'.esc_html__('Settings', 'ads-for-wp').'</a>',
         );
         return array_merge( $links, $mylinks );
     
@@ -104,7 +104,7 @@ function adsforwp_admin_notice(){
         
         echo '<div class="updated notice is-dismissible message notice notice-alt adsforwp-setup-notice">
              <p><span class="dashicons dashicons-thumbs-up"></span>'.esc_html__('Thank you for using Ads For WP plugin!', 'ads-for-wp').'               
-             <a href="'.esc_url( admin_url( 'edit.php?post_type=adsforwp' ) ).'"> '.esc_html__('Start adding ads', 'schema-and-structured-data-for-wp') .'</a>
+             <a href="'.esc_url( admin_url( 'edit.php?post_type=adsforwp' ) ).'"> '.esc_html__('Start adding ads', 'ads-for-wp') .'</a>
              </p></div>';     
         
         /* Delete transient, only display this notice once. */
