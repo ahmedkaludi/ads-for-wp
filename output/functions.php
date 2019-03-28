@@ -391,7 +391,7 @@ class adsforwp_output_functions{
             
              if($wheretodisplay == 'sticky'){  
                  
-               $widget = '';
+               $widget  = '';
                $ad_code =  $this->adsforwp_group_ads($atts=null, $ad_id, $widget); 
                
                if($ad_code){
@@ -2131,11 +2131,11 @@ class adsforwp_output_functions{
         
         $placement_obj            = new adsforwp_view_placement();
         $condition_status         = $placement_obj->adsforwp_get_post_conditions_status($post_group_id);  
-                                
+           
+        $group_status = get_post_status($post_group_id);   
         
-        if(($condition_status ===1 || $condition_status==='notset') || $widget =='widget'){
-        
-            
+        if((($condition_status ===1 || $condition_status==='notset') || $widget =='widget') &&  $group_status == 'publish' ){
+                    
             $visitor_condition_obj    = new adsforwp_view_visitor_condition();
             $visitor_condition_status = '';
             

@@ -453,8 +453,9 @@ function adsforwp_the_ad($ad_id){
 function adsforwp_the_group($group_id){
     
    $output_function_obj = new adsforwp_output_functions();
-   $group_code =  $output_function_obj->adsforwp_group_ads($atts=null, $group_id, 'widget');     
+   $group_code =  $output_function_obj->adsforwp_group_ads($atts=null, $group_id);     
    echo $group_code;
+      
 }   
 
 /**
