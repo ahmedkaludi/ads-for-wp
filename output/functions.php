@@ -2138,6 +2138,7 @@ class adsforwp_output_functions{
             
             $visitor_condition_obj    = new adsforwp_view_visitor_condition();
             $visitor_condition_status = '';
+            
             if($post_group_id){
 
                 $visitor_condition_status = $visitor_condition_obj->adsforwp_visitor_conditions_status($post_group_id);
@@ -2146,7 +2147,7 @@ class adsforwp_output_functions{
             
         if(($visitor_condition_status ===1 || $visitor_condition_status==='notset') || $widget =='widget'){
             
-            if($this->visibility != 'hide') {
+        if($this->visibility != 'hide') {
         
         $ad_alignment                   = ''; 
         $wheretodisplay                 = '';       
