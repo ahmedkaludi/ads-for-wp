@@ -1222,8 +1222,8 @@ class adsforwp_admin_common_functions {
               $all_ads = get_posts(
                     array(
                             'post_type' 	 => 'adsforwp',
-                            'posts_per_page' => -1,   
-                            'post_status' => 'publish',
+                            'posts_per_page'     => -1,   
+                            'post_status'        => 'publish',
                     )
                  ); 
               

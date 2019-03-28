@@ -1039,8 +1039,8 @@ function adsforwp_published(){
         $all_ads_post = get_posts(
             array(
                     'post_type' 	 => 'adsforwp',
-                    'posts_per_page' => -1,
-                    'post_status' => 'publish',
+                    'posts_per_page'     => -1,
+                    'post_status'        => 'publish',
             )
         ); 
         
@@ -1065,6 +1065,7 @@ function adsforwp_update_ids_on_trash(){
 function adsforwp_update_ids_on_untrash(){     
      adsforwp_published();    
 }
+    add_action( 'save_post_adsforwp', 'adsforwp_published');
     add_action( 'publish_adsforwp', 'adsforwp_published');
     add_action( 'trash_adsforwp', 'adsforwp_update_ids_on_trash');    
     add_action( 'untrash_adsforwp', 'adsforwp_update_ids_on_untrash');
@@ -1103,9 +1104,10 @@ function adsforwp_groups_update_ids_on_trash(){
 function adsforwp_groups_update_ids_on_untrash(){     
      adsforwp_groups_published();    
 }
-    add_action( 'publish_adsforwp-groups', 'adsforwp_groups_published');
-    add_action( 'trash_adsforwp-groups', 'adsforwp_groups_update_ids_on_trash');    
-    add_action( 'untrash_adsforwp-groups', 'adsforwp_groups_update_ids_on_untrash');    
+    add_action( 'save_post_adsforwp-groups', 'adsforwp_groups_published');
+    add_action( 'publish_adsforwp-groups',   'adsforwp_groups_published');
+    add_action( 'trash_adsforwp-groups',     'adsforwp_groups_update_ids_on_trash');    
+    add_action( 'untrash_adsforwp-groups',   'adsforwp_groups_update_ids_on_untrash');    
 
 /**
  * Here, We are displaying notice in admin panel on different different actions or conditions

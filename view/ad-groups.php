@@ -200,7 +200,7 @@ class adsforwp_view_ad_groups {
 							'<option %s value="adsforwp_ads%s">%s</option>',
 							$meta_value === $meta_field_value ? 'selected' : '',
 							esc_attr($meta_field_value),
-							esc_html__($value['ad_name'], 'ads-for-wp')
+							esc_attr($value['ad_name'])
 						);
                                                 
                                                 }
