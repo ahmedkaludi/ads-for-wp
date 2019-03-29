@@ -3,8 +3,7 @@ class adsforwp_output_service{
     
    public function adsforwp_enque_amp_popup_ad_css($ad_id){
         
-    global $redux_builder_amp;
-
+    
     $post_meta_dataset = get_post_meta($ad_id,$key = '',true);       
     $ad_img_width  = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_img_width', 'adsforwp_array');
     $ad_img_height = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_img_height', 'adsforwp_array');                     
@@ -19,7 +18,8 @@ class adsforwp_output_service{
 body #adsforwp-popup-ad-<?php echo $ad_id ?>.amp-active {border-color: #242323b3; z-index: 10000; height: -webkit-fill-available; height: -moz-fill-available; top:0; visibility: hidden; animation: 0s linear <?php echo esc_attr($delay_time); ?>s forwards amp-Pop-up-delay;
 }
 
-.adsforwp-popup-ad { position: fixed;
+.adsforwp-amp-popup-ad{ 
+    position: fixed;
     -webkit-overflow-scrolling: touch; 
     top: 0;    
     left: 0; 
@@ -29,10 +29,9 @@ body #adsforwp-popup-ad-<?php echo $ad_id ?>.amp-active {border-color: #242323b3
     center;margin:0 auto;
     width:100%;
     height:100%;
-    background: hsla(0,0%,100%,0.7);
-    
+    background: hsla(0,0%,100%,0.7);    
 }
-.adsforwp-popup-ad .afw_ad_image{position:relative;}
+.adsforwp-amp-popup-ad .afw_ad_image{position:relative;}
 
     #adsforwp-popup-ad-<?php echo $ad_id; ?> amp-img{
         width:<?php echo esc_attr($ad_img_width); ?>px;

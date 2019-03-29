@@ -469,7 +469,7 @@ class adsforwp_output_functions{
                 echo '<amp-user-notification
                         layout="nodisplay"
                         id="amp-user-notification_'.esc_attr($ad_id).'">                          
-                        <div class="adsforwp-popup-ad">'.$ad_code.'</div>                                              
+                        <div class="adsforwp-amp-popup-ad" id="adsforwp-popup-ad-'.esc_attr($ad_id).'">'.$ad_code.'</div>                                              
                      </amp-user-notification>';
                }
                
@@ -498,7 +498,7 @@ class adsforwp_output_functions{
                 echo '<amp-user-notification
                         layout="nodisplay"
                         id="amp-user-notification_'.esc_attr($ad_id).'">                          
-                        <div class="adsforwp-stick-ad">'.$ad_code.'</div>                                              
+                        <div class="adsforwp-amp-popup-ad" id="adsforwp-popup-ad-'.esc_attr($ad_id).'">'.$ad_code.'</div>                                              
                      </amp-user-notification>';
                }
                
