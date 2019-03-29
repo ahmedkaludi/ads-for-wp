@@ -19,6 +19,7 @@ class adsforwp_view_display {
                                             'after_the_content'   => 'After the Content (Automatic)',
                                             'before_the_content'  => 'Before the Content (Automatic)',
                                             'custom_target'       => 'Custom Target',
+                                            'popup'               => 'Popup',
                                             'sticky'              => 'Sticky',
                                 ),
                                 
@@ -124,11 +125,15 @@ class adsforwp_view_display {
 			'id' => 'adsforwp_existing_element_action',
 			'type' => 'select',
                         'options' => array(
-                                'prepend_content'=>'Prepend Content',
-				'append_content'=>'Append Content', 
-                               // 'replace_content'=>'Replace Content',
-                               // 'replace_element'=>'Replace Element',
+                                'prepend_content' => 'Prepend Content',
+				'append_content'  => 'Append Content',                                                               
                         )
+		),
+                array(
+			'label'  => 'Delay Time (eg: 3)',
+			'id'     => 'adsforwp_delay_time',
+			'type'   => 'text',
+                        'default'=> 3,
 		),
                 array(		
                         'label' => 'Margin',

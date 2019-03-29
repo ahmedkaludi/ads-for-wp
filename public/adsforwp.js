@@ -450,6 +450,10 @@ jQuery( document ).ready(function($) {
                   if($("#wheretodisplay option:selected").val() != 'sticky'){
                     $("#wheretodisplay option[value='sticky']").remove();
                   }
+                  
+                  if($("#wheretodisplay option:selected").val() != 'popup'){
+                    $("#wheretodisplay option[value='popup']").remove();
+                  }
             
                   $(".afw-amp-support").addClass('afw_hide'); 
                   $(".afw-amp-support").addClass('afw_hide');
@@ -549,7 +553,13 @@ jQuery( document ).ready(function($) {
                            
                         $("#wheretodisplay option[value='custom_target']").after('<option value="sticky">Sticky</option>');   
                         
-                       } 
+                       }
+                       
+                       if($("#wheretodisplay option:selected").val() != 'popup'){
+                           
+                        $("#wheretodisplay option[value='custom_target']").after('<option value="popup">Popup</option>');   
+                        
+                       }
                                                 
                       $("#display-metabox").show();
                       $("#adsforwp_visitor_condition_metabox").show();
@@ -713,7 +723,10 @@ jQuery( document ).ready(function($) {
                     break;
                 case "before_the_content":                      
                     $(".afw_ad_align_field").parent().parent("tr").show();
-                    break;     
+                    break;
+                case "popup":                      
+                    $("#adsforwp_delay_time").parent().parent("tr").show();
+                    break;
                 case "custom_target":                      
                    $(".afw_ad_img_margin").parent().parent("tr").hide();
                    $(".adsforwp-custom-target-fields").parent().parent("tr").show();

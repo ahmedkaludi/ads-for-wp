@@ -64,7 +64,9 @@ class adsforwp_output_functions{
         
         //Hooks for sticky ads
         add_action('wp_footer', array($this, 'adsforwp_display_sticky_ads')); 
-        add_action('amp_post_template_css',array($this, 'adsforwp_enque_amp_script'));
+        add_action('wp_footer', array($this, 'adsforwp_display_popup_ads')); 
+        add_action('amp_post_template_css',array($this, 'adsforwp_add_amp_stick_ad_css'));
+        add_action('amp_post_template_css',array($this, 'adsforwp_display_amp_popup_ad_css'));
         add_action('amp_post_template_css',array($this, 'adsforwp_global_css_for_amp'));
         add_action('amp_post_template_footer',array($this, 'adsforwp_display_sticky_ads_amp'));
         
@@ -75,6 +77,8 @@ class adsforwp_output_functions{
         add_action('wp_ajax_adsforwp_check_amp_sticky_ad_status', array($this, 'adsforwp_check_amp_sticky_ad_status'));
         
         add_action('amp_post_template_css',array($this, 'adsforwp_background_ad_css'));
+        
+        add_action('ampforwp_body_beginning', array($this, 'adsforwp_display_popup_ads_amp'));
     }
     
     public function init(){
@@ -250,30 +254,36 @@ class adsforwp_output_functions{
          <?php 
     }
 
-    public function adsforwp_enque_amp_script(){
-        ?>       
-        .adsforwp-stick-ad{
-            padding-top:20px;
-        }               
-        .afw_ad_amp_achor{
-            text-align:center;
-        }        
-        .adsforwp-sticky-ad-close {
-          position: absolute;
-          right: 0px;
-          top: 0px;
-          padding:2px;
-          cursor:pointer;
-          color:#000;
-          background-color:#fff;
-          border: #fff;
-        }
-        .adsforwp-sticky-ad-close:after{
-        display: inline-block;
-        content: "\00d7"; 
+    
+    
+
+    public function adsforwp_add_amp_stick_ad_css(){
+                
+        $all_ads_id = json_decode(get_transient('adsforwp_transient_ads_ids'), true);
+        
+        
+        if(!empty($all_ads_id)){
+            
+        foreach($all_ads_id as $ad_id){     
+            
+            $wheretodisplay = get_post_meta($ad_id,$key = 'wheretodisplay',true);  
+            
+             if($wheretodisplay == 'sticky'){  
+                 
+               $ad_code =  $this->adsforwp_get_ad_code($ad_id, $type="AD"); 
+               
+               if($ad_code){
+                   
+                 $output_service = new adsforwp_output_service();                      
+                 $output_service->adsforwp_enque_amp_sticky_ad_css($ad_id);
+                                      
+               }
+               
+             }
+             
+            }
         }
         
-        <?php        
     }
     
     public function adsforwp_update_amp_sticky_ad_status(){
@@ -289,9 +299,9 @@ class adsforwp_output_functions{
         $cookie_data = '';
         
         if(!isset($_COOKIE['adsforwp-stick-ad-id7']) && $_COOKIE['adsforwp-stick-ad-id7'] =='') {
-                 $cookie_data .= $ad_id;                     
+                 $cookie_data .= esc_attr($ad_id);                     
         } else {
-                 $cookie_data .= ','.$ad_id;               
+                 $cookie_data .= ','.esc_attr($ad_id);               
         }
         
         setcookie('adsforwp-stick-ad-id7', $cookie_data, time() + (86400 * 15), "/");       
@@ -346,8 +356,7 @@ class adsforwp_output_functions{
         
         //Ads stick starts here
         $all_ads_id = json_decode(get_transient('adsforwp_transient_ads_ids'), true);
-        $nonce = wp_create_nonce('adsforwp_ajax_check_front_nonce');   
-        
+                
         if(!empty($all_ads_id)){
             
         foreach($all_ads_id as $ad_id){     
@@ -359,16 +368,11 @@ class adsforwp_output_functions{
                $ad_code =  $this->adsforwp_get_ad_code($ad_id, $type="AD"); 
                
                if($ad_code){
-                   
-                $showurl = admin_url('admin-ajax.php?action=adsforwp_check_amp_sticky_ad_status&timestamp='.time().'&adsforwp_front_nonce='.$nonce.'&ad_id='.$ad_id);                                  
-                $dismissurl = admin_url('admin-ajax.php?action=adsforwp_update_amp_sticky_ad_status&timestamp='.time().'&adsforwp_front_nonce='.$nonce.'&ad_id='.$ad_id);                                  
-                
+                                                                 
                 echo '<amp-user-notification
                         layout="nodisplay"
-                        id="amp-user-notification_'.esc_attr($ad_id).'"  
-                        data-show-if-href="'.esc_url($showurl).'"
-                        data-dismiss-href="'.esc_url($dismissurl).'">
-                        <div class="adsforwp-stick-ad">'.$ad_code.'</div>                      
+                        id="amp-user-notification_'.esc_attr($ad_id).'">                          
+                        <div class="adsforwp-stick-ad">'.$ad_code.'</div>  
                         <button on="tap:amp-user-notification_'.esc_attr($ad_id).'.dismiss" class="adsforwp-sticky-ad-close"></button>
                      </amp-user-notification>';
                }
@@ -390,22 +394,111 @@ class adsforwp_output_functions{
             $wheretodisplay = get_post_meta($ad_id,$key='wheretodisplay',true); 
             
              if($wheretodisplay == 'sticky'){  
+                                
+               $ad_code =  $this->adsforwp_group_ads($atts=null, $ad_id); 
+               
+               if($ad_code){
+                                                   
+                echo '<amp-user-notification
+                        layout="nodisplay"
+                        id="amp-user-notification_'.esc_attr($ad_id).'">                       
+                        <div class="adsforwp-stick-ad">'.$ad_code.'</div>                      
+                        <button on="tap:amp-user-notification_'.esc_attr($ad_id).'.dismiss" class="adsforwp-sticky-ad-close"></button>
+                     </amp-user-notification>';
+               }
+               
+             }
+             
+            }
+        }                
+        //Group stick ends here
+        
+    }
+    
+    
+    
+
+
+    public function adsforwp_display_amp_popup_ad_css(){
+        
+        $all_ads_id = json_decode(get_transient('adsforwp_transient_ads_ids'), true);
+        
+        
+        if(!empty($all_ads_id)){
+            
+        foreach($all_ads_id as $ad_id){     
+            
+            $wheretodisplay = get_post_meta($ad_id,$key = 'wheretodisplay',true);  
+            
+             if($wheretodisplay == 'popup'){  
                  
-               $widget  = '';
-               $ad_code =  $this->adsforwp_group_ads($atts=null, $ad_id, $widget); 
+               $ad_code =  $this->adsforwp_get_ad_code($ad_id, $type="AD"); 
                
                if($ad_code){
                    
-                $showurl    = admin_url('admin-ajax.php?action=adsforwp_check_amp_sticky_ad_status&timestamp='.time().'&adsforwp_front_nonce='.$nonce.'&ad_id='.$ad_id);                                  
-                $dismissurl = admin_url('admin-ajax.php?action=adsforwp_update_amp_sticky_ad_status&timestamp='.time().'&adsforwp_front_nonce='.$nonce.'&ad_id='.$ad_id);                                  
+                 $output_service = new adsforwp_output_service();                      
+                 $output_service->adsforwp_enque_amp_popup_ad_css($ad_id);
+                                      
+               }
+               
+             }
+             
+            }
+        }
                 
+    }
+    
+    
+    public function adsforwp_display_popup_ads_amp(){      
+        
+        //Ads stick starts here
+        $all_ads_id = json_decode(get_transient('adsforwp_transient_ads_ids'), true);        
+        
+        if(!empty($all_ads_id)){
+            
+        foreach($all_ads_id as $ad_id){     
+            
+            $wheretodisplay = get_post_meta($ad_id,$key = 'wheretodisplay',true);  
+            
+             if($wheretodisplay == 'popup'){  
+                 
+               $ad_code =  $this->adsforwp_get_ad_code($ad_id, $type="AD"); 
+               
+               if($ad_code){
+                                                   
                 echo '<amp-user-notification
                         layout="nodisplay"
-                        id="amp-user-notification_'.esc_attr($ad_id).'"  
-                        data-show-if-href="'.esc_url($showurl).'"
-                        data-dismiss-href="'.esc_url($dismissurl).'">
-                        <div class="adsforwp-stick-ad">'.$ad_code.'</div>                      
-                        <button on="tap:amp-user-notification_'.esc_attr($ad_id).'.dismiss" class="adsforwp-sticky-ad-close"></button>
+                        id="amp-user-notification_'.esc_attr($ad_id).'">                          
+                        <div class="adsforwp-popup-ad">'.$ad_code.'</div>                                              
+                     </amp-user-notification>';
+               }
+               
+             }
+             
+            }
+        }
+        //Ads stick ends here
+        
+        //Group stick starts here
+        
+        $all_group_post = json_decode(get_transient('adsforwp_groups_transient_ids'), true);          
+        
+        if(!empty($all_group_post)){
+            
+        foreach($all_group_post as $ad_id){   
+            
+            $wheretodisplay = get_post_meta($ad_id,$key='wheretodisplay',true); 
+            
+             if($wheretodisplay == 'popup'){  
+                                
+               $ad_code =  $this->adsforwp_group_ads($atts=null, $ad_id, $widget); 
+               
+               if($ad_code){
+                                                  
+                echo '<amp-user-notification
+                        layout="nodisplay"
+                        id="amp-user-notification_'.esc_attr($ad_id).'">                          
+                        <div class="adsforwp-stick-ad">'.$ad_code.'</div>                                              
                      </amp-user-notification>';
                }
                
@@ -451,7 +544,7 @@ class adsforwp_output_functions{
         
         }                    
         if($ad_code){
-            
+        
             echo '<div class="adsforwp-footer-prompt">'
            . '<a href="#" class="adsforwp-sticky-ad-close"></a>'  
            . '<div class="adsforwp-stick-ad">'.$ad_code.'</div>'                
@@ -490,6 +583,87 @@ class adsforwp_output_functions{
                 . '</div>';
             
         }    
+        //Group Sticky ends here
+    } 
+    
+    public function adsforwp_display_popup_ads(){                
+        
+        $explod_ad_id = array();
+        
+        if(isset($_COOKIE['adsforwp-stick-ad-id7'])){
+            
+        $ad_id_list = $_COOKIE['adsforwp-stick-ad-id7'];
+        $explod_ad_id = explode(',', $ad_id_list);    
+        
+        }  
+        
+        $common_function_obj = new adsforwp_admin_common_functions();
+        
+         //Ads Popup starts here
+        $ad_code    ='';
+        $all_ads_id = json_decode(get_transient('adsforwp_transient_ads_ids'), true);
+                        
+        if(!empty($all_ads_id)){
+            
+        foreach($all_ads_id as $ad_id){
+            
+            $in_group       = $common_function_obj->adsforwp_check_ads_in_group($ad_id); 
+            $wheretodisplay = get_post_meta($ad_id,$key='wheretodisplay',true);
+            $delay_sec      = get_post_meta($ad_id,$key='adsforwp_delay_time',true);
+            
+             if($wheretodisplay == 'popup' && !in_array($ad_id, $explod_ad_id) && empty($in_group)){  
+                 
+               $ad_code =  $this->adsforwp_get_ad_code($ad_id, $type="AD");   
+               
+               if($ad_code){
+                   
+                    echo '<div delay-sec="'.esc_attr($delay_sec).'" id="adsforwp-popup-'.esc_attr($ad_id).'" class="adsforwp-popup-modal adsforwp-hide">
+                            <div class="adsforwp-popup-content adsforwp-hide">                            
+                            '.$ad_code.'
+                          </div></div>';
+                    
+                }
+               
+             }
+             
+        }    
+        
+        }                    
+            
+        //Ads Popup ends here
+        
+        //Group Sticky starts here
+        $all_group_post = array();
+        $group_ad_code  = '';
+        $all_group_post = json_decode(get_transient('adsforwp_groups_transient_ids'), true); 
+        
+        if(!empty($all_group_post)){
+            
+        foreach($all_group_post as $ad_id){   
+            
+                        
+            $delay_sec      = get_post_meta($ad_id,$key='adsforwp_delay_time',true);
+            $wheretodisplay = get_post_meta($ad_id,$key='wheretodisplay',true);  
+            
+             if($wheretodisplay == 'popup' && !in_array($ad_id, $explod_ad_id)){  
+                 
+               $group_ad_code =  $this->adsforwp_group_ads($atts=null, $ad_id);   
+               
+               if($group_ad_code){
+            
+                        echo '<div delay-sec="'.esc_attr($delay_sec).'" id="adsforwp-popup-'.esc_attr($ad_id).'" class="adsforwp-popup-modal adsforwp-hide">
+                                 <div class="adsforwp-popup-content adsforwp-hide">                            
+                            '.$group_ad_code.'
+                            
+                          </div></div>';
+            
+                 }  
+               
+             }
+             
+        } 
+        
+        }                              
         //Group Sticky ends here
     }            
     /**
@@ -1517,7 +1691,8 @@ class adsforwp_output_functions{
     public function adsforwp_get_ad_code($post_ad_id, $type){
                         
             $settings                   = adsforwp_defaultSettings();
-        
+            $ad_status                  = get_post_status($post_ad_id);
+            
             $visitor_condition_status = '';
             $condition_status =         '';
             
@@ -1528,7 +1703,7 @@ class adsforwp_output_functions{
             
             }  
             
-            if(($condition_status ===1 || $condition_status==='notset') || $type=='GROUP' ){
+            if((($condition_status ===1 || $condition_status==='notset') || $type=='GROUP') && $ad_status == 'publish' ){
                 
             $visitor_condition_obj     = new adsforwp_view_visitor_condition();
             $visitor_condition_status  = '';
@@ -1645,6 +1820,12 @@ class adsforwp_output_functions{
                     $ad_img_width  = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_img_width', 'adsforwp_array');
                     $ad_img_height = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_img_height', 'adsforwp_array');                     
                     
+                    $popup_close = '';
+                    if($where_to_display == 'popup'){
+                      $popup_close = '<button on="tap:amp-user-notification_'.esc_attr($post_ad_id).'.dismiss" class="adsforwp-popup-ad-close"></button>';  
+                    }
+                    
+                    
                     if($this->is_amp){
                         
                      if($amp_compatibility != 'disable'){
@@ -1655,14 +1836,15 @@ class adsforwp_output_functions{
                          
                      $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                         '.$sponsership_label.'   
-							<div class="afw_ad_amp_achor afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"><a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><amp-img layout="responsive" class="afw_ad_amp_'.esc_attr($post_ad_id).'" src="'.esc_url($ad_image).'" height="'. esc_attr($ad_img_height).'" width="'.esc_attr($ad_img_width).'"></amp-img></a></div>
-                                                           
+							<div class="afw_ad_amp_achor afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"><a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><amp-img layout="responsive" class="afw_ad_amp_'.esc_attr($post_ad_id).'" src="'.esc_url($ad_image).'" height="'. esc_attr($ad_img_height).'" width="'.esc_attr($ad_img_width).'"></amp-img></a></div>                                                           
+                                                            '.$popup_close.'
 							</div>';    
                      }else{
                          
                      $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                         '.$sponsership_label.'
-							<div class="afw_ad_amp_achor afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"><a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><amp-img class="afw_ad_amp_'.esc_attr($post_ad_id).'" src="'.esc_url($ad_image).'" height="'. esc_attr($ad_img_height).'" width="'.esc_attr($ad_img_width).'"></amp-img></a></div>
+							<div class="afw_ad_amp_achor afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"><a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><amp-img class="afw_ad_amp_'.esc_attr($post_ad_id).'" src="'.esc_url($ad_image).'" height="'. esc_attr($ad_img_height).'" width="'.esc_attr($ad_img_width).'"></amp-img></a></div>                                                            
+                                                            '.$popup_close.'
 							</div>';    
                      }
                      
@@ -1676,11 +1858,14 @@ class adsforwp_output_functions{
                              $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                             '.$sponsership_label.'
 							<a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><img height="auto" max-width="100%" src="'.esc_url($ad_image).'"></a>
+                                                            <div class="adsforwp-popup-close"></div>
 							</div>';  
                          }else{
                              
                              $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                                        '.$sponsership_label.'
 							<a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><img height="'. esc_attr($ad_img_height).'" width="'.esc_attr($ad_img_width).'" src="'.esc_url($ad_image).'"></a>
+                                                        <div class="adsforwp-popup-close"></div>    
 							</div>';  
                              
                          }                                                              

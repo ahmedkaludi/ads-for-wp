@@ -53,9 +53,11 @@ jQuery( document ).ready(function($) {
                     container.html(content);                  
                     break;
                 case "ad_image":
-                    content +='<div class="afw afw_ad_image afw_'+adbyindex.ad_id+'">';
+                    content +='<div class="">Advertisement</div>';
+                    content +='<div class="afw afw_ad_image afw_'+adbyindex.ad_id+'">';                    
                     content +='<a target="_blank" href="'+adbyindex.ad_redirect_url+'"><img src="'+adbyindex.ad_image+'"></a>';
-                    content +='</div>';                      
+                    content +='</div>';
+                    content +='<div class="adsforwp-popup-close"></div>';
                     if(j==1){
                     container.html(content);       
                     }                    
@@ -201,6 +203,55 @@ jQuery( document ).ready(function($) {
                                   
     //Analytics js ends here
     
+    //Popup ad starts here
+    
+    
+        $(".adsforwp-popup-modal").each(function(){             
+               var current = $(this);
+               var time = $(current).attr('delay-sec');
+               setTimeout(function(){ 
+                 $(current).removeClass('adsforwp-hide');
+                 $(current).find('.adsforwp-popup-content').removeClass('adsforwp-hide');
+                },
+               time+'000');
+        });                             
+    
+    $(document).on("click",".adsforwp-popup-close", function(e){
+       e.preventDefault();        
+       var ad_id = $(this).parent().parent().find('.afw').attr('data-ad-id');
+       var group_id = $(this).parent().parent().parent().find('.afw_group').attr('data-id');
+          
+       $("#adsforwp-popup-"+ad_id).addClass('adsforwp-hide');
+       $("#adsforwp-popup-"+group_id).addClass('adsforwp-hide');
+                         
+       var afw_cookie = getCookie("adsforwp-stick-ad-id7");
+       
+            if(ad_id){
+                
+                if(afw_cookie ==""){
+                    afw_cookie += ad_id;   
+                }else{
+                    afw_cookie += ','+ad_id;   
+                }
+                
+             }
+            
+            if(group_id){
+                
+                if(afw_cookie ==""){
+                 afw_cookie += group_id;   
+                }else{
+                afw_cookie += ','+group_id;   
+                }
+            
+            }
+                        
+         setCookie("adsforwp-stick-ad-id7", afw_cookie, 7);                                 
+    });
+    
+    
+    //popup ad ends here
+    
     //Sticky Ads script starts here
     
     $(".adsforwp-sticky-ad-close").on("click", function(e){
@@ -208,18 +259,29 @@ jQuery( document ).ready(function($) {
        $(this).parent().hide();
        var ad_id = $(this).parent().find('.afw').attr('data-ad-id');
        var group_id = $(this).parent().find('.afw_group').attr('data-id');
+                            
        var afw_cookie = getCookie("adsforwp-stick-ad-id7");
-            if(afw_cookie ==""){
-             afw_cookie += ad_id;   
-            }else{
-             afw_cookie += ','+ad_id;   
-            }
+       
+            if(ad_id){
+                
+                if(afw_cookie ==""){
+                    afw_cookie += ad_id;   
+                }else{
+                    afw_cookie += ','+ad_id;   
+                }
+                
+             }
             
-            if(afw_cookie ==""){
-             afw_cookie += group_id;   
-            }else{
-             afw_cookie += ','+group_id;   
-            }            
+            if(group_id){
+                
+                if(afw_cookie ==""){
+                 afw_cookie += group_id;   
+                }else{
+                afw_cookie += ','+group_id;   
+                }
+            
+            }
+                        
          setCookie("adsforwp-stick-ad-id7", afw_cookie, 7);                                 
     });
     
