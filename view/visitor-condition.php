@@ -9,7 +9,18 @@ class adsforwp_view_visitor_condition {
 	}
         
  public function adsforwp_visitor_condition_add_meta_box() {
-	add_meta_box(
+     
+        global $post;
+        $in_group = array();
+        if(is_object($post)){
+        
+            $common_function_obj = new adsforwp_admin_common_functions();
+            $in_group = $common_function_obj->adsforwp_check_ads_in_group($post->ID); 
+            
+        }
+                        
+        if(empty($in_group)){        
+            add_meta_box(
 		'adsforwp_visitor_condition_metabox',
 		esc_html__( 'User Targeting', 'ads-for-wp' ),
 		array( $this, 'adsforwp_visitor_condition_callback' ),
@@ -17,6 +28,9 @@ class adsforwp_view_visitor_condition {
 		'normal',
 		'low'
 	);
+            
+        }
+        	
     }
         
  public function adsforwp_visitor_condition_callback( $post) {   
@@ -402,8 +416,10 @@ class adsforwp_view_visitor_condition {
 
         break;
         
-        case 'user_agent':            
-                $user_agent_name =$this->adsforwp_detect_user_agent();                               
+        case 'user_agent':     
+            
+                $user_agent_name = $this->adsforwp_detect_user_agent();  
+            
                 if(isset($input['key_5']) && $input['key_3']=='user_agent_custom'){                                        
                     if(stripos($_SERVER['HTTP_USER_AGENT'], $input['key_5'])){
                      $user_agent_name = $input['key_5'];   
