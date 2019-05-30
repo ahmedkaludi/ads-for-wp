@@ -1,5 +1,4 @@
 <?php
-
 add_action( 'init', 'adsforwp_store_user_info_client_side' );
 
 function adsforwp_store_user_info_client_side(){
@@ -442,7 +441,7 @@ add_action('wp_ajax_adsforwp_send_query_message', 'adsforwp_send_query_message')
 function adsforwp_the_ad($ad_id){
     
    $output_function_obj = new adsforwp_output_functions();
-   $ad_code =  $output_function_obj->adsforwp_get_ad_code($ad_id, $type="AD");  
+   $ad_code =  $output_function_obj->adsforwp_get_ad_code($ad_id, $type="AD",  'notset');  
    echo $ad_code;
 }
 /*
@@ -453,8 +452,9 @@ function adsforwp_the_ad($ad_id){
 function adsforwp_the_group($group_id){
     
    $output_function_obj = new adsforwp_output_functions();
-   $group_code =  $output_function_obj->adsforwp_group_ads($atts=null, $group_id, 'widget');     
+   $group_code =  $output_function_obj->adsforwp_group_ads($atts=null, $group_id, null, 'notset');     
    echo $group_code;
+      
 }   
 
 /**
@@ -956,7 +956,7 @@ add_action( 'admin_init', 'adsforwp_removing_wysiwig' );
  *	 REGISTER ALL NON-ADMIN SCRIPTS
  */
 function adsforwp_frontend_enqueue(){
-    
+        
         $settings = adsforwp_defaultSettings();
                    
         wp_register_script('adsforwp-ads-front-js', ADSFORWP_PLUGIN_DIR_URI . 'public/ads-front.js', array( 'jquery' ), ADSFORWP_VERSION, true);
@@ -1039,8 +1039,8 @@ function adsforwp_published(){
         $all_ads_post = get_posts(
             array(
                     'post_type' 	 => 'adsforwp',
-                    'posts_per_page' => -1,
-                    'post_status' => 'publish',
+                    'posts_per_page'     => -1,
+                    'post_status'        => 'publish',
             )
         ); 
         
@@ -1065,6 +1065,7 @@ function adsforwp_update_ids_on_trash(){
 function adsforwp_update_ids_on_untrash(){     
      adsforwp_published();    
 }
+    add_action( 'save_post_adsforwp', 'adsforwp_published');
     add_action( 'publish_adsforwp', 'adsforwp_published');
     add_action( 'trash_adsforwp', 'adsforwp_update_ids_on_trash');    
     add_action( 'untrash_adsforwp', 'adsforwp_update_ids_on_untrash');
@@ -1103,9 +1104,10 @@ function adsforwp_groups_update_ids_on_trash(){
 function adsforwp_groups_update_ids_on_untrash(){     
      adsforwp_groups_published();    
 }
-    add_action( 'publish_adsforwp-groups', 'adsforwp_groups_published');
-    add_action( 'trash_adsforwp-groups', 'adsforwp_groups_update_ids_on_trash');    
-    add_action( 'untrash_adsforwp-groups', 'adsforwp_groups_update_ids_on_untrash');    
+    add_action( 'save_post_adsforwp-groups', 'adsforwp_groups_published');
+    add_action( 'publish_adsforwp-groups',   'adsforwp_groups_published');
+    add_action( 'trash_adsforwp-groups',     'adsforwp_groups_update_ids_on_trash');    
+    add_action( 'untrash_adsforwp-groups',   'adsforwp_groups_update_ids_on_untrash');    
 
 /**
  * Here, We are displaying notice in admin panel on different different actions or conditions

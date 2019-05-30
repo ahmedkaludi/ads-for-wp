@@ -49,11 +49,12 @@ class adsforwp_output_amp_condition_display{
             
     }
     
-    public function adsforwp_display_ads_between_loop($count){     
-        
-            $this->adsforwp_amp_condition_ad_code('adsforwp_ads_in_loops', $count);    
-            
+    public function adsforwp_display_ads_between_loop($count){                     
+                        
+      $this->adsforwp_amp_condition_ad_code('adsforwp_ads_in_loops', $count);                
+                        
     }    
+    
     public function adsforwp_display_ads_below_author_box(){    
         
             $this->adsforwp_amp_condition_ad_code('adsforwp_below_author_box');      

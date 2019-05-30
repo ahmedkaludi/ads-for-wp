@@ -10,12 +10,12 @@
 .adsforwp-footer-prompt{               
     width: 100vw;
     line-height: 2em;
-    background-color: #fff;
+    background: hsla(0,0%,100%,0.7);
     color: #333;
     text-align: center;
     text-decoration: none;    
     min-height: 10%;
-    padding-top:20px;
+    padding-top:0px;
     position: fixed;
     bottom: 0;
     justify-content: flex-end;
@@ -73,3 +73,7 @@
     right: auto;
     margin: 0px 16%;
  }      
+ .adsforwp-hide{
+     display: none;
+ }
+ 

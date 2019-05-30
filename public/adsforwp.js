@@ -450,7 +450,7 @@ jQuery( document ).ready(function($) {
                   if($("#wheretodisplay option:selected").val() != 'sticky'){
                     $("#wheretodisplay option[value='sticky']").remove();
                   }
-            
+                                               
                   $(".afw-amp-support").addClass('afw_hide'); 
                   $(".afw-amp-support").addClass('afw_hide');
                   $(".afw-amp-support span").text("");
@@ -471,7 +471,7 @@ jQuery( document ).ready(function($) {
 
                     case "custom":
                        $("#display-metabox").show();  
-                       $("#adsforwp_visitor_condition_metabox").show();
+                       $("#adsforwp_visitor_condition_metabox, #adsforwp_placement_metabox").show();
                        $("#custom_code").parent().parent("tr").show();                                                             
                        $("#custom_code").attr("required",true);                                           
                         break;
@@ -481,7 +481,7 @@ jQuery( document ).ready(function($) {
                       switch(adsense_type){
                           case "normal":  
                                $("#display-metabox").show();  
-                               $("#adsforwp_visitor_condition_metabox").show();
+                               $("#adsforwp_visitor_condition_metabox, #adsforwp_placement_metabox").show();
                                $("#banner_size, #data_client_id, #data_ad_slot, #adsforwp_ad_responsive").parent().parent("tr").show();
                                $("#banner_size, #data_client_id, #data_ad_slot").attr("required",true);
                               
@@ -489,7 +489,7 @@ jQuery( document ).ready(function($) {
                           case "adsense_sticky_ads":  
                                $("#display-metabox").hide();
                                $("#adsforwp-location").hide();
-                               $("#adsforwp_visitor_condition_metabox").show();
+                               $("#adsforwp_visitor_condition_metabox, #adsforwp_placement_metabox").show();
                                $("#banner_size, #data_client_id, #data_ad_slot").parent().parent("tr").show();
                                $("#banner_size, #data_client_id, #data_ad_slot").attr("required",true);
                               
@@ -504,7 +504,7 @@ jQuery( document ).ready(function($) {
                               break;
                           default:
                               $("#display-metabox").show();
-                              $("#adsforwp_visitor_condition_metabox").show();
+                              $("#adsforwp_visitor_condition_metabox, #adsforwp_placement_metabox").show();
                                                             
                               break;
                       }                                     
@@ -512,14 +512,14 @@ jQuery( document ).ready(function($) {
                         break
                     case "media_net":
                       $("#display-metabox").show();
-                      $("#adsforwp_visitor_condition_metabox").show();
+                      $("#adsforwp_visitor_condition_metabox, #adsforwp_placement_metabox").show();
                       $("#data_cid, #banner_size, #data_crid").parent().parent("tr").show();                                                                            
                       $("#banner_size, #data_crid, #data_cid").attr("required",true);                                                                                                 
                         break
                     
                     case "doubleclick":
                       $("#display-metabox").show();
-                      $("#adsforwp_visitor_condition_metabox").show();
+                      $("#adsforwp_visitor_condition_metabox, #adsforwp_placement_metabox").show();
                       $("#banner_size").parent().parent("tr").show();
                       $(".adsforwp_dfp").show();     
                                                                                                                                             
@@ -527,13 +527,13 @@ jQuery( document ).ready(function($) {
                     
                     case "contentad":
                       $("#display-metabox").show();
-                      $("#adsforwp_visitor_condition_metabox").show();
+                      $("#adsforwp_visitor_condition_metabox, #adsforwp_placement_metabox").show();
                       $("#contentad_id, #contentad_id_d, #contentad_widget_id").parent().parent("tr").show();                                                                                                                 
                       $("#contentad_id, #contentad_id_d, #contentad_widget_id").attr("required",true);                                                                                                                 
                         break     
                     case "infolinks":
                       $("#display-metabox").show();
-                      $("#adsforwp_visitor_condition_metabox").show();
+                      $("#adsforwp_visitor_condition_metabox, #adsforwp_placement_metabox").show();
                       $("#infolinks_pid, #infolinks_wsid").parent().parent("tr").show();                                         
                       $("#infolinks_pid, #infolinks_wsid").attr("required",true);                                                                                                  
                       $(".afw-amp-support").removeClass('afw_hide');
@@ -549,10 +549,10 @@ jQuery( document ).ready(function($) {
                            
                         $("#wheretodisplay option[value='custom_target']").after('<option value="sticky">Sticky</option>');   
                         
-                       } 
+                       }                       
                                                 
                       $("#display-metabox").show();
-                      $("#adsforwp_visitor_condition_metabox").show();
+                      $("#adsforwp_visitor_condition_metabox, #adsforwp_placement_metabox").show();
                       $("#adsforwp_ad_image").attr("required",true); 
                       $("#adsforwp_ad_image").attr("readonly",true);                      
                       $("#adsforwp_ad_image, #adsforwp_ad_redirect_url, #adsforwp_ad_responsive").parent().parent("tr").show();                                                                                                
@@ -562,16 +562,15 @@ jQuery( document ).ready(function($) {
                                                         
                       $("#display-metabox").hide();
                       $("#adsforwp-location").hide();
-                      $("#adsforwp_visitor_condition_metabox").show();
+                      $("#adsforwp_visitor_condition_metabox, #adsforwp_placement_metabox").show();
                       $("#ad_background_image").attr("required",true); 
                       $("#ad_background_image").attr("readonly",true);                      
                       $("#ad_background_image, #ad_background_redirect_url").parent().parent("tr").show();  
                       $("#ad_background_image").parent().parent().parent("tr").show();  
-                        break
-                    
+                        break                                                                    
                     case "ad_now":
                       $("#display-metabox").show();
-                      $("#adsforwp_visitor_condition_metabox").show();
+                      $("#adsforwp_visitor_condition_metabox, #adsforwp_placement_metabox").show();
                       $("#ad_now_widget_id").attr("required",true);                                        
                       $("#ad_now_widget_id").parent().parent("tr").show();                                                                                                 
                       $(".afw-amp-support").removeClass('afw_hide');
@@ -582,7 +581,7 @@ jQuery( document ).ready(function($) {
                         break     
                     default:
                       $("#display-metabox").show();   
-                      $("#adsforwp_visitor_condition_metabox").show();
+                      $("#adsforwp_visitor_condition_metabox, #adsforwp_placement_metabox").show();
                       $(".afw_pointer").hide();
                       break;   
                     }                                                     
@@ -605,7 +604,7 @@ jQuery( document ).ready(function($) {
                     $("#banner_size, #data_client_id, #data_ad_slot").attr("required",true);                    
                     $("#display-metabox").show();
                     $("#adsforwp-location").show(); 
-                    $("#adsforwp_visitor_condition_metabox").show();
+                    $("#adsforwp_visitor_condition_metabox, #adsforwp_placement_metabox").show();
                     $(".afw-select-post-type option[value=post_type]").attr("selected", "selected");
                             var tdindex = [1,2,3,4]; 
                             $.each(tdindex, function(i,e){  
@@ -618,7 +617,7 @@ jQuery( document ).ready(function($) {
                     $("#banner_size, #data_client_id, #data_ad_slot").attr("required",true);                    
                     $("#display-metabox").hide();
                     $("#adsforwp-location").hide(); 
-                    $("#adsforwp_visitor_condition_metabox").show();                    
+                    $("#adsforwp_visitor_condition_metabox, #adsforwp_placement_metabox").show();                    
                           
                     break;
                 
@@ -713,7 +712,7 @@ jQuery( document ).ready(function($) {
                     break;
                 case "before_the_content":                      
                     $(".afw_ad_align_field").parent().parent("tr").show();
-                    break;     
+                    break;                
                 case "custom_target":                      
                    $(".afw_ad_img_margin").parent().parent("tr").hide();
                    $(".adsforwp-custom-target-fields").parent().parent("tr").show();
@@ -763,7 +762,7 @@ jQuery( document ).ready(function($) {
                 }                          
           }      
       });
-    }).change();  
+    }).change();
     
     $('input[name=adsforwp_custom_target_position]').change(function() {
         $("#adsforwp_new_element").parent().parent("tr").hide(); 

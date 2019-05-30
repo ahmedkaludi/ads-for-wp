@@ -48,6 +48,7 @@ require_once  ADSFORWP_PLUGIN_DIR.'/view/visitor-condition.php';
 
 /* Loading frontend files*/
 require_once  ADSFORWP_PLUGIN_DIR.'/output/functions.php';
+require_once  ADSFORWP_PLUGIN_DIR.'/output/service.php';
 require_once  ADSFORWP_PLUGIN_DIR.'/output/amp-condition-display.php';
 
 
