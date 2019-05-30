@@ -10,12 +10,12 @@
 .adsforwp-footer-prompt{               
     width: 100vw;
     line-height: 2em;
-    background-color: #fff;
+    background: hsla(0,0%,100%,0.7);
     color: #333;
     text-align: center;
     text-decoration: none;    
     min-height: 10%;
-    padding-top:20px;
+    padding-top:0px;
     position: fixed;
     bottom: 0;
     justify-content: flex-end;
@@ -73,72 +73,7 @@
     right: auto;
     margin: 0px 16%;
  }      
- 
- 
- /*
- popup ad css starts here
- */
- 
- /* The Modal (background) */
- 
- @keyframes adsforwp-popup-ad-delay {
-  to {
-    visibility: visible;
-  }
-}
-.adsforwp-popup-modal {  
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  background: rgba(240, 240, 240, 0.83);
-}
-
-/* Modal Content */
-.adsforwp-popup-content {
-    background-color: transparent;
-    margin: auto;
-    padding: 20px;    
-    position: relative;
-    text-align: center;
-}
-
-/* The Close Button */
-.adsforwp-popup-content .adsforwp-popup-close {
-    color: #aaaaaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    position: absolute;
-    top: 13px;
-    right: 0;
-    line-height: 0;
-}
-.adsforwp-popup-content .adsforwp-popup-close:after {
-    display: inline-block;
-    content: "\00d7";
-}
-
-.adsforwp-popup-content .adsforwp-popup-close:hover,
-.adsforwp-popup-content .adsforwp-popup-close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-}
-.adsforwp-popup-content .afw{
-    display: inline-block;
-    margin: 0 auto;
-    position: relative;
-}
- /*
- popup ad css ends here
- */
  .adsforwp-hide{
      display: none;
  }
+ 

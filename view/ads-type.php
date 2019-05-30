@@ -21,7 +21,7 @@ class adsforwp_view_ads_type {
                                 'contentad'     => 'Content.ad',
                                 'infolinks'     => 'Infolinks',
                                 'ad_image'      => 'Image Banner Ad',
-                                'ad_background' => 'Background Ad',
+                                'ad_background' => 'Background Ad',                                
                                 'custom'        => 'Custom Code',
                             
 			),
@@ -152,6 +152,7 @@ class adsforwp_view_ads_type {
 			'id'        => 'adsforwp_ad_redirect_url',                        
 			'type'      => 'text',
 		),
+              
                 array(
 			'label'     => 'AdNow Widget ID',
 			'id'        => 'ad_now_widget_id',                        
@@ -257,11 +258,13 @@ class adsforwp_view_ads_type {
 			switch ( $meta_field['type'] ) {
 				case 'select':                                                                        
                     
-                    if(isset($meta_field['attributes'])){
-                        foreach ( $meta_field['attributes'] as $key => $value ) {
-                        	$attributes .=  $key."=".'"'.$value.'"'.' ';
-                        }
-                    }
+                                        if(isset($meta_field['attributes'])){
+                                            
+                                                foreach ( $meta_field['attributes'] as $key => $value ) {
+                                                        $attributes .=  $key."=".'"'.$value.'"'.' ';
+                                                }
+                                                
+                                        }
                                     
 					$input = sprintf(
 						'<select class="afw_select" id="%s" name="%s" %s>',

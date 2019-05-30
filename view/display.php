@@ -18,8 +18,7 @@ class adsforwp_view_display {
                                             'between_the_content' => 'Between the Content (Automatic)',
                                             'after_the_content'   => 'After the Content (Automatic)',
                                             'before_the_content'  => 'Before the Content (Automatic)',
-                                            'custom_target'       => 'Custom Target',
-                                            'popup'               => 'Popup',
+                                            'custom_target'       => 'Custom Target',                                            
                                             'sticky'              => 'Sticky',
                                 ),
                                 
@@ -128,27 +127,21 @@ class adsforwp_view_display {
                                 'prepend_content' => 'Prepend Content',
 				'append_content'  => 'Append Content',                                                               
                         )
-		),
-                array(
-			'label'  => 'Delay Time (eg: 3)',
-			'id'     => 'adsforwp_delay_time',
-			'type'   => 'text',
-                        'default'=> 3,
-		),
+		),                                
                 array(		
-                        'label' => 'Margin',
-			'id' => 'adsforwp_ad_margin',                        
-			'type' => 'multiple-text',
-                        'fields'=> array(
+                        'label'  => 'Margin',
+			'id'     => 'adsforwp_ad_margin',                        
+			'type'   => 'multiple-text',
+                        'fields' => array(
                             array(	
                             'label' => 'Top',    
-                            'id' => 'ad_margin_top',                        
-                            'type' => 'number',
+                            'id'    => 'ad_margin_top',                        
+                            'type'  => 'number',
                           ),
                             array(	
                             'label' => 'Bottom',    
-                            'id' => 'ad_margin_bottom',                        
-                            'type' => 'number',
+                            'id'    => 'ad_margin_bottom',                        
+                            'type'  => 'number',
                           ),
                             array(	
                             'label' => 'Left',    
@@ -439,6 +432,7 @@ class adsforwp_view_display {
                         }
                         echo '<p>'.esc_html__('This ad is associated with ', 'ads-for-wp').''.html_entity_decode(esc_html($group_links)).'group</p>';   
                         echo '<table class="form-table" style="display:none;"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table><div id="afw-embed-code-div"></div>';      
+                        
                 }else{
                         echo '<table class="form-table adsforwp-display-table"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table><div style="display:none;" id="afw-embed-code-div"></div>';   
                 }
