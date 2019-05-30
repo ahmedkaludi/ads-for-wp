@@ -579,6 +579,12 @@ public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $curre
     
         switch($options['param'])
         {
+          case "homepage":
+              $choices = array(
+                'true'  => 'True',
+                'false' => 'False',                                
+            ); 
+              break;
           case "post_type":
 
             $choices = $this->adsforwp_post_type_generator();
@@ -817,12 +823,15 @@ public function adsforwp_post_taxonomy_generator(){
     $taxonomies = get_taxonomies( array('public' => true), 'objects' );
     
 
-      foreach($taxonomies as $taxonomy) {
+      if($taxonomies){
+         
+          foreach($taxonomies as $taxonomy) {
           
             $choices[ $taxonomy->name ] = $taxonomy->labels->name;
         
-      }
-      
+          }
+          
+      }              
       // unset post_format (why is this a public taxonomy?)
       if( isset($choices['post_format']) ) {
           
