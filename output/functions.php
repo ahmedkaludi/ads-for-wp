@@ -2151,7 +2151,11 @@ class adsforwp_output_functions{
         switch ($ads_group_type) {
             
             case 'rand':
-            $ad_code =  $this->adsforwp_get_ad_code(array_rand($ads_group_data), $type="GROUP");
+                
+                if(is_array($ads_group_data)){
+                    $ad_code =  $this->adsforwp_get_ad_code(array_rand($ads_group_data), $type="GROUP");
+                }
+            
                 break;            
             case 'ordered':                
             $ad_code =  $this->adsforwp_get_ad_code($ad_id, $type="GROUP");    

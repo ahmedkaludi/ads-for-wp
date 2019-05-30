@@ -193,8 +193,12 @@ class adsforwp_view_expiredate {
                 
                 $post_meta = $_POST;     
                     
-                $adsforwp_days_array = array();                     
-                $adsforwp_days_array = array_map('sanitize_text_field', $_POST['adsforwp_ad_expire_days']);                      
+                $adsforwp_days_array = array();     
+                
+                if(is_array($_POST['adsforwp_ad_expire_days'])){
+                    $adsforwp_days_array = array_map('sanitize_text_field', $_POST['adsforwp_ad_expire_days']);                      
+                }
+                
                 update_post_meta($post_id, 'adsforwp_ad_expire_days', $adsforwp_days_array);
                     
 		foreach ( $this->meta_fields as $meta_field ) {

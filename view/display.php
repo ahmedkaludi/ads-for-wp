@@ -454,8 +454,12 @@ class adsforwp_view_display {
                 $post_meta = array();                    
                 $post_meta = $_POST; 
                 
-                $ad_margin = array();                     
-                $ad_margin = array_map('sanitize_text_field', $post_meta['adsforwp_ad_margin']);                      
+                $ad_margin = array();    
+                
+                if(is_array($post_meta['adsforwp_ad_margin'])){
+                    $ad_margin = array_map('sanitize_text_field', $post_meta['adsforwp_ad_margin']);  
+                }
+                                
                 update_post_meta($post_id, 'adsforwp_ad_margin', $ad_margin);
                 
                 if(isset($post_meta['ads_on_every_paragraphs_number'])){
