@@ -6,15 +6,30 @@ class adsforwp_amp_compatibility {
 		add_action( 'save_post', array( $this, 'adsforwp_amp_comp_save' ) );
 	}
         function adsforwp_amp_comp_add_meta_box() {
-	add_meta_box(
-		'adsforwp-location',
-		esc_html__( 'AMP', 'ads-for-wp' ),
-		array( $this, 'adsforwp_meta_box_callback' ),
-		array('adsforwp','adsforwp-groups'),
-		'side',
-		'low'
-	);
-    }
+            
+                global $post;
+                $in_group = array();
+                if(is_object($post)){
+
+                    $common_function_obj = new adsforwp_admin_common_functions();
+                    $in_group = $common_function_obj->adsforwp_check_ads_in_group($post->ID); 
+
+                }
+            
+                if(empty($in_group)){
+                    
+                    add_meta_box(
+                        'adsforwp-location',
+                        esc_html__( 'AMP', 'ads-for-wp' ),
+                        array( $this, 'adsforwp_meta_box_callback' ),
+                        array('adsforwp','adsforwp-groups'),
+                        'side',
+                        'low'
+                    );
+                    
+                }            
+                        
+        }
         function adsforwp_amp_comp_get_meta( $value ) {
             
             global $post;
