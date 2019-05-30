@@ -7,30 +7,51 @@ class adsforwp_view_placement {
 	}
         
  public function adsforwp_placement_add_meta_box() {
-	add_meta_box(
+     
+        global $post;
+        $in_group = array();
+        
+        if(is_object($post)){
+        
+            $common_function_obj = new adsforwp_admin_common_functions();
+            $in_group = $common_function_obj->adsforwp_check_ads_in_group($post->ID); 
+            
+        }
+     
+        if(empty($in_group)){
+            
+            add_meta_box(
 		'adsforwp_placement_metabox',
 		esc_html__( 'Advanced Display Conditions', 'ads-for-wp' ),
 		array( $this, 'adsforwp_meta_box_callback' ),
 		array('adsforwp', 'adsforwp-groups'),
 		'normal',
 		'low'
-	);
+            );
+            
+        }
+	
     }
         
  public function adsforwp_meta_box_callback( $post) {   
      
             $data_group_array =  esc_sql ( get_post_meta($post->ID, 'data_group_array', true)  );              
-            $data_group_array = is_array($data_group_array)? array_values($data_group_array): array();      
+            $data_group_array = is_array($data_group_array)? array_values($data_group_array): array(); 
+            
             if ( empty( $data_group_array ) ) {
-                       $data_group_array[0] =array(
+                
+                       $data_group_array[0] = array(
+                           
                            'data_array' => array(
                                     array(
                                     'key_1' => 'post_type',
                                     'key_2' => 'equal',
                                     'key_3' => 'none',
                                     )
-                       )               
+                       )      
+                           
                    );
+                       
             }
     //security check
     wp_nonce_field( 'adsforwp_select_action_nonce', 'adsforwp_select_name_nonce' );?>
@@ -40,7 +61,8 @@ class adsforwp_view_placement {
       $choices = array(
         esc_html__("Basic",'ads-for-wp') => array(                    
           'post_type'       =>  esc_html__("Post Type",'ads-for-wp'),
-          'show_globally'   =>  esc_html__("Show Globally",'ads-for-wp'),  
+          'show_globally'   =>  esc_html__("Show Globally",'ads-for-wp'),
+          'homepage'        =>  esc_html__("HomePage",'ads-for-wp'),  
           'user_type'       =>  esc_html__("Logged in User Type",'ads-for-wp'),
         ),
         esc_html__("Post",'ads-for-wp') => array(
@@ -67,26 +89,34 @@ class adsforwp_view_placement {
 <div class="afw-placement-groups">
       
     <?php for ($j=0; $j < $total_group_fields; $j++) {
-        $data_array = $data_group_array[$j]['data_array'];
         
+        $data_array = $data_group_array[$j]['data_array'];        
         $total_fields = count( $data_array );
+        
         ?>
     <div class="afw-placement-group" name="data_group_array[<?php echo esc_attr( $j) ?>]" data-id="<?php echo esc_attr($j); ?>">           
      <?php 
-     if($j>0){
-     echo '<span style="margin-left:10px;font-weight:600">Or</span>';    
-     }     
+        if($j>0){
+        echo '<span style="margin-left:10px;font-weight:600">Or</span>';    
+        }     
      ?>   
      <table class="widefat afw-widefat">
         <tbody id="afw-repeater-tbody" class="fields-wrapper-1">
-        <?php  for ($i=0; $i < $total_fields; $i++) {  
-          $selected_val_key_1 = $data_array[$i]['key_1']; 
-          $selected_val_key_2 = $data_array[$i]['key_2']; 
-          $selected_val_key_3 = $data_array[$i]['key_3'];
-          $selected_val_key_4 = '';
-          if(isset($data_array[$i]['key_4'])){
-            $selected_val_key_4 = $data_array[$i]['key_4'];
-          }          
+        <?php 
+        
+        for ($i=0; $i < $total_fields; $i++) {  
+            
+            $selected_val_key_1 = $data_array[$i]['key_1']; 
+            $selected_val_key_2 = $data_array[$i]['key_2']; 
+            $selected_val_key_3 = $data_array[$i]['key_3'];
+            
+            $selected_val_key_4 = '';
+            
+            if(isset($data_array[$i]['key_4'])){
+                
+                $selected_val_key_4 = $data_array[$i]['key_4'];
+              
+            }          
             
           ?>
             
@@ -171,34 +201,46 @@ class adsforwp_view_placement {
             
             if(isset($_POST['data_group_array'])){
                 
-            $post_data_group_array = $_POST['data_group_array'];    
-                foreach($post_data_group_array as $groups){        
-                      foreach($groups['data_array'] as $group ){              
+            $post_data_group_array = $_POST['data_group_array'];   
+            
+                foreach($post_data_group_array as $groups){ 
+                    
+                      foreach($groups['data_array'] as $group ){  
+                          
                         if(array_search('show_globally', $group))
                         {
+                            
                           $temp_condition_array[0] =  $group;  
-                          $show_globally = true;              
+                          $show_globally = true;  
+                          
                         }
+                        
                       }
+                      
                    }    
                 if($show_globally){
-                unset($post_data_group_array);
-                $post_data_group_array['group-0']['data_array'] = $temp_condition_array;       
+                    
+                    unset($post_data_group_array);
+                    $post_data_group_array['group-0']['data_array'] = $temp_condition_array;
+                
                 }  
                 
             }
             if(isset($_POST['data_group_array'])){
+                
                 update_post_meta(
                   $post_id, 
                   'data_group_array', 
                   $post_data_group_array 
                 );     
+                
               }
          }  
     
     
     
  public function adsforwp_comparison_logic_checker($input){
+     
         global $post;        
         $type       = $input['key_1'];
         $comparison = $input['key_2'];
@@ -210,6 +252,27 @@ class adsforwp_view_placement {
 
         switch ($type) {
         // Basic Controls ------------ 
+        
+         case 'homepage':    
+          
+            $homepage ='false';  
+          
+            if(is_home() || is_front_page() || ampforwp_is_home()){
+               $homepage = 'true';  
+            }
+                      
+            if ( $comparison == 'equal' ) {
+                if ( $homepage == $data ) {
+                  $result = true;
+                }
+            }
+            if ( $comparison == 'not_equal') {              
+                if ( $homepage != $data ) {
+                  $result = true;
+                }
+            }
+        break;   
+                        
           // Posts Type
           
           case 'show_globally': 
@@ -303,8 +366,10 @@ class adsforwp_view_placement {
 
       // Post Category
       case 'post_category':
+          
           $current_category = '';
           $postcat = get_the_category( $post->ID );
+          
           if(!empty($postcat)){
               if(is_object($postcat[0])){                 
                 $current_category = $postcat[0]->cat_ID;                   
@@ -324,14 +389,18 @@ class adsforwp_view_placement {
         break;
       // Post Format
       case 'post_format':
+          
           $current_post_format = get_post_format( $post->ID );
+          
           if ( $current_post_format === false ) {
               $current_post_format = 'standard';
           }
           if ( $comparison == 'equal') {
+              
               if ( $data == $current_post_format ) {
                   $result = true;
               }
+              
           }
           if ( $comparison == 'not_equal') {
               if ( $data != $current_post_format ) {
@@ -410,12 +479,18 @@ class adsforwp_view_placement {
                 }
             }
             if($result==true && isset( $input['key_4'] ) && $input['key_4'] !='all'){
+                
               $term_data       = $input['key_4'];
-              $terms = wp_get_post_terms( $post->ID ,$data);
+              $terms           = wp_get_post_terms( $post->ID ,$data);
+              
               if(count($terms)>0){
+                  
                 $termChoices = array();
+                
                 foreach ($terms as $key => $termvalue) {
+                    
                    $termChoices[] = $termvalue->slug;
+                   
                  } 
               }
               $result = false;
@@ -493,11 +568,12 @@ class adsforwp_view_placement {
           }
           
           $array_is_true = in_array(true,$condition_array);
+          
           if($array_is_true){
-          $unique_checker = 1;    
+                $unique_checker = 1;    
           }          
           }else{
-           $unique_checker ='notset';   
+                $unique_checker ='notset';   
           }
                    
        return $unique_checker;
