@@ -101,5 +101,57 @@ class adsforwp_output_service{
         }
               
    } 
+   
+   public function adsforwp_is_condition($ad_id){
+       
+            $status    = false;
+            $published = get_post_status($ad_id);
+            
+            $placement_obj = new adsforwp_view_placement();
+            $advn_display_status = $placement_obj->adsforwp_get_post_conditions_status($ad_id);
+        
+            if ( ($advn_display_status === 1 || $advn_display_status==='notset') && $published == 'publish' ) {
+            
+                $visitor_condition_obj = new adsforwp_view_visitor_condition();                               
+                $user_targeting_status = $visitor_condition_obj->adsforwp_visitor_conditions_status($ad_id);
+              
+                if($user_targeting_status === 1 || $user_targeting_status === 'notset'){
+                                                                                                        
+                        $expiry_status = $this->adsforwp_check_ad_expiry_date($ad_id);
+                        
+                        if($expiry_status){
+                        
+                            $ad_post_meta   = get_post_meta($ad_id,$key='',true);
+                                                        
+                            $post_visibility    = get_post_meta(get_the_ID(),$key='ads-for-wp-visibility',true);
+                            $non_amp_visibility = adsforwp_rmv_warnings($ad_post_meta, 'ads_for_wp_non_amp_visibility', 'adsforwp_array');                
+                            $amp_compatibility  = adsforwp_rmv_warnings($ad_post_meta, 'ads-for-wp_amp_compatibilty', 'adsforwp_array');              
+                            
+                            if($post_visibility != 'hide'){
+                                
+                                if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {
+                                    
+                                    if($amp_compatibility != 'disable'){
+                                       $status = true;
+                                    }
+                                     
+                                }else{
+                                    
+                                    if($non_amp_visibility != 'hide'){
+                                        $status = true;
+                                     }
+                                }
+                                
+                            }
+                                                        
+                        }
+                                                                                    
+                }
+            
+           }
+           
+           return $status;
+              
+   }
             
 }
