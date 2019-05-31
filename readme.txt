@@ -54,6 +54,14 @@ Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp).
 
 == Changelog ==
 
+= 1.7 (31 May 2019) =
+
+* Bug Fixed: Auto ads loads with extra sticky ad amp tag #192
+* Bug Fixed: Amp compatiblity option is not working on auto ads #189
+* Bug Fixed: Draft group post and still is being displayed. #164
+* Bug Fixed: Debug Warnings (#179, #188)
+* Bug Fixed: Debug Notice #159
+
 = 1.6 (25 March 2019) =
 
 * Bug Fixed: Security improvement.
