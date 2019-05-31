@@ -3,6 +3,7 @@ class adsforwp_view_expiredate {
     
 	private $screen = array(
 		'adsforwp',
+                'adsforwp-groups'
 	);
 	private $meta_fields = array(
 		array(
@@ -38,23 +39,11 @@ class adsforwp_view_expiredate {
                             '5' => 'Saturday',
                             '6' => 'Sunday'
                         )
-		),
-//		array(
-//			'label' => 'Time',
-//			'id' => 'adsforwp_ad_expire_time',
-//			'type' => 'select',
-//			'options' => array(
-//				'',
-//			),
-//		),
+		)
 	);
 	public function __construct() {
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
-		add_action( 'save_post', array( $this, 'save_fields' ) );                
-                
-                
-                
-                
+		add_action( 'save_post', array( $this, 'save_fields' ) );                                                                                
 	}
 	public function add_meta_boxes() {
 		foreach ( $this->screen as $single_screen ) {
@@ -193,8 +182,12 @@ class adsforwp_view_expiredate {
                 
                 $post_meta = $_POST;     
                     
-                $adsforwp_days_array = array();                     
-                $adsforwp_days_array = array_map('sanitize_text_field', $_POST['adsforwp_ad_expire_days']);                      
+                $adsforwp_days_array = array();     
+                
+                if(isset($_POST['adsforwp_ad_expire_days']) && is_array($_POST['adsforwp_ad_expire_days'])){
+                    $adsforwp_days_array = array_map('sanitize_text_field', $_POST['adsforwp_ad_expire_days']);                      
+                }
+                
                 update_post_meta($post_id, 'adsforwp_ad_expire_days', $adsforwp_days_array);
                     
 		foreach ( $this->meta_fields as $meta_field ) {

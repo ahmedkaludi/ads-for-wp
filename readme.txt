@@ -3,7 +3,7 @@ Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
 Tags: Ads, Advanced Ads, Ad Inserter, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
 Tested up to: 5.1
-Stable tag: 1.6
+Stable tag: 1.7
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -53,6 +53,14 @@ Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp).
 
 
 == Changelog ==
+
+= 1.7 (31 May 2019) =
+
+* Bug Fixed: Auto ads loads with extra sticky ad amp tag #192
+* Bug Fixed: Amp compatiblity option is not working on auto ads #189
+* Bug Fixed: Draft group post and still is being displayed. #164
+* Bug Fixed: Debug Warnings (#179, #188)
+* Bug Fixed: Debug Notice #159
 
 = 1.6 (25 March 2019) =
 

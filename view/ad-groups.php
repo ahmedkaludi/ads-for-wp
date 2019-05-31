@@ -296,8 +296,12 @@ class adsforwp_view_ad_groups {
                 
                 $post_meta = $_POST; 
                 
-                $adsforwp_ads_array = array();                     
-                $adsforwp_ads_array = array_map('sanitize_text_field', $_POST['adsforwp_ads']);                      
+                $adsforwp_ads_array = array();    
+                
+                if(isset($_POST['adsforwp_ads']) && is_array($_POST['adsforwp_ads'])){
+                    $adsforwp_ads_array = array_map('sanitize_text_field', $_POST['adsforwp_ads']);                      
+                }
+                                
                 update_post_meta($post_id, 'adsforwp_ads', $adsforwp_ads_array);
                             
 		foreach ( $this->meta_fields as $meta_field ) {
