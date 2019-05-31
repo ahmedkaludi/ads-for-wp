@@ -85,6 +85,11 @@ class adsforwp_output_functions{
             ob_start(array($this, "adsforwp_display_background_ad"));       
         
     }
+    /**
+     * This function is used to show ads based on html element target by user 
+     * @param type $content
+     * @return type string
+     */
     public function adsforwp_display_custom_target_ad($content){       
                                  
                  //For single ad starts here
@@ -241,7 +246,10 @@ class adsforwp_output_functions{
                  }                 
                  //For group ads ends here                                  
                  return $content;
-    }           
+    }      
+    /**
+     * Function to add css globally on AMP
+     */
     public function adsforwp_global_css_for_amp(){
          ?>
            ins{
@@ -252,6 +260,9 @@ class adsforwp_output_functions{
             }
          <?php 
     }       
+    /**
+     * Function to add css for sticky ads on AMP
+     */
     public function adsforwp_add_amp_stick_ad_css(){
                 
         $all_ads_id = json_decode(get_transient('adsforwp_transient_ads_ids'), true);
@@ -280,6 +291,7 @@ class adsforwp_output_functions{
         }
         
     }    
+    
     public function adsforwp_update_amp_sticky_ad_status(){
         
         if ( ! isset( $_GET['adsforwp_front_nonce'] ) ){
@@ -299,7 +311,8 @@ class adsforwp_output_functions{
         }
         
         setcookie('adsforwp-stick-ad-id7', $cookie_data, time() + (86400 * 15), "/");       
-    }    
+    }   
+    
     public function adsforwp_check_amp_sticky_ad_status(){        
         
         if ( ! isset( $_GET['adsforwp_front_nonce'] ) ){
@@ -343,7 +356,8 @@ class adsforwp_output_functions{
                                            
         wp_die();
         
-    }    
+    } 
+    
     public function adsforwp_display_sticky_ads_amp(){      
         
         //Ads stick starts here
@@ -513,6 +527,7 @@ class adsforwp_output_functions{
                     }                           
                     return $author_adsense_ids;                    
     }
+    
     public function adsforwp_get_adsense_publisher_id(){     
         
                     $data_ad_client ='';
@@ -548,6 +563,11 @@ class adsforwp_output_functions{
                     
                     return $response;
     }    
+    /**
+     * Function to display background
+     * @param type $content
+     * @return type string
+     */
     public function adsforwp_display_background_ad($content){
                 
           $all_ads_id = json_decode(get_transient('adsforwp_transient_ads_ids'), true); 
@@ -597,7 +617,10 @@ class adsforwp_output_functions{
           
           return $content; 
         
-    }                    
+    }   
+    /**
+     * Function to add background ad css in Non AMP
+     */
     public function adsforwp_background_ad_css(){
         
           $all_ads_id = json_decode(get_transient('adsforwp_transient_ads_ids'), true); 
@@ -708,7 +731,7 @@ class adsforwp_output_functions{
             if($result){
                 
             $post_id = $result['post_id'];
-            $content =  '<amp-auto-ads
+            $content =  '<amp-auto-ads class="amp-auto-ads afw_'.esc_attr($post_id).'"
                                 type="adsense"
                                 data-ad-client="'.esc_attr(adsforwp_rmv_warnings($result, 'data_ad_client', 'adsforwp_string')).'">
                             </amp-auto-ads>';
@@ -749,7 +772,8 @@ class adsforwp_output_functions{
             
             }
            
-    }        
+    }   
+    
     public function adsforwp_insert_sticky_ads_code(){                                   
                    
             $all_ads_id    = json_decode(get_transient('adsforwp_transient_ads_ids'), true); 
@@ -786,13 +810,11 @@ class adsforwp_output_functions{
                             $height       = adsforwp_rmv_warnings($explode_size, 1, 'adsforwp_string');                               
 
                          }
-                                                                                                                                                                                                                                                                                                                                                
-                        }
+                         
+                         $service = new adsforwp_output_service();
+                         $ad_status = $service->adsforwp_is_condition($ad_id);
                         
-                        $service = new adsforwp_output_service();
-                        $ad_status = $service->adsforwp_is_condition($ad_id);
-                        
-                        if($ad_status){
+                            if($ad_status){
                             
                                $output  = '<amp-sticky-ad layout="nodisplay">';
                                $output .= '<amp-ad class="amp-sticky-ads afw_'.esc_attr($ad_id).'"
@@ -806,14 +828,16 @@ class adsforwp_output_functions{
                                echo $output;
                                
                               }
+                                                                                                                                                                                                                                                                                                                                                
+                        }                                                
                         
-                             }
+                       }
                                
-                            }
-                                                       
+                    }                                                       
             }                                                    
         
-    }           
+    }     
+    
     public function adsforwp_doubleclick_head_code(){
                             
             $data_slot  = '';                   
@@ -1947,6 +1971,9 @@ class adsforwp_output_functions{
         
            wp_die();           
 }
+    /**
+     * Function to detect adblocker 
+     */
     public function adsforwp_adblocker_detector(){
         ?>
         <script type="text/javascript">              

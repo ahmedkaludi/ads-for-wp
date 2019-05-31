@@ -3,6 +3,7 @@ class adsforwp_view_expiredate {
     
 	private $screen = array(
 		'adsforwp',
+                'adsforwp-groups'
 	);
 	private $meta_fields = array(
 		array(
@@ -38,15 +39,7 @@ class adsforwp_view_expiredate {
                             '5' => 'Saturday',
                             '6' => 'Sunday'
                         )
-		),
-//		array(
-//			'label' => 'Time',
-//			'id' => 'adsforwp_ad_expire_time',
-//			'type' => 'select',
-//			'options' => array(
-//				'',
-//			),
-//		),
+		)
 	);
 	public function __construct() {
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
