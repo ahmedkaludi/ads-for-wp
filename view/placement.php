@@ -241,12 +241,18 @@ class adsforwp_view_placement {
     
  public function adsforwp_comparison_logic_checker($input){
      
-        global $post;        
-        $type       = $input['key_1'];
-        $comparison = $input['key_2'];
-        $data       = $input['key_3'];
-        $result             = ''; 
-       
+        global $post;  
+        
+        $type = $comparison = $data = $result = '';
+        
+        if(is_array($input)){
+            
+        $type       = array_key_exists('key_1', $input) ? $input['key_1'] : '';
+        $comparison = array_key_exists('key_2', $input) ? $input['key_2'] : '';
+        $data       = array_key_exists('key_3', $input) ? $input['key_3'] : '';
+            
+        }
+        
         // Get all the users registered
         $user               = wp_get_current_user();
 
