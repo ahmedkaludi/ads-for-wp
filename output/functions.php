@@ -509,7 +509,7 @@ class adsforwp_output_functions{
                     $display_per_in_minute      = '';
                     $author_adsense_ids         = array();
                     
-                    if(array_key_exists('ad_revenue_sharing', $settings)){
+                    if(is_array($settings) && array_key_exists('ad_revenue_sharing', $settings)){
                         
                     $ad_revenue_sharing         = adsforwp_rmv_warnings($settings, 'ad_revenue_sharing', 'adsforwp_string');  
                     $ad_owner_revenue_per       = adsforwp_rmv_warnings($settings, 'ad_owner_revenue_per', 'adsforwp_string');
