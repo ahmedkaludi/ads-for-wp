@@ -224,14 +224,18 @@ class adsforwp_view_visitor_condition {
          }              
  public function adsforwp_visitor_condition_logic_checker($input){
         global $post;        
-        $type               = $input['key_1'];
         
-        $comparison         = $input['key_2'];
-        $data               = $input['key_3'];       
+        $type = $comparison = $data = $result = '';
         
-        
-        $result             = ''; 
-       
+        if(is_array($input)){
+            
+          $type               = array_key_exists('key_1', $input) ? $input['key_1'] : '';        
+          $comparison         = array_key_exists('key_2', $input) ? $input['key_2'] : '';
+          $data               = array_key_exists('key_3', $input) ? $input['key_3'] : '';
+          
+        }
+            
+                               
         // Get all the users registered
         $user               = wp_get_current_user();
 
@@ -506,36 +510,43 @@ class adsforwp_view_visitor_condition {
 
  public function adsforwp_visitor_conditions_status($post_id){
      
-          $unique_checker ='';
+          $unique_checker = '';
           $visitor_condition_enable = get_post_meta($post_id, $key='adsforwp_v_condition_enable', true);
                     
           if(isset($visitor_condition_enable) && $visitor_condition_enable =='enable'){
           
           $resultset = $this->adsforwp_visitor_condition_field_data( $post_id ); 
+          
           if($resultset){
               
           $condition_array = array(); 
           
           foreach ($resultset as $result){
           
-             $data = array_filter($result);          
+             $data             = array_filter($result);          
              $number_of_fields = count($data);
-             $checker = 0;
+             $checker          = 0;
              
              if ( $number_of_fields > 0 ) {                    
+                 
                 $checker = count( array_unique($data) );             
                 $array_is_false =  in_array(false, $result);           
+                
             if (  $array_is_false ) {
+                
                 $checker = 0;
+                
             }
+            
            }
              
           $condition_array[] = $checker;    
           }
           
           $array_is_true = in_array(true,$condition_array);
+          
           if($array_is_true){
-          $unique_checker = 1;    
+            $unique_checker = 1;    
           }          
           }else{
            $unique_checker ='notset';   

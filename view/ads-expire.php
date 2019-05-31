@@ -43,11 +43,7 @@ class adsforwp_view_expiredate {
 	);
 	public function __construct() {
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
-		add_action( 'save_post', array( $this, 'save_fields' ) );                
-                
-                
-                
-                
+		add_action( 'save_post', array( $this, 'save_fields' ) );                                                                                
 	}
 	public function add_meta_boxes() {
 		foreach ( $this->screen as $single_screen ) {

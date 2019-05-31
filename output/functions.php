@@ -501,13 +501,14 @@ class adsforwp_output_functions{
      * @return type
      */    
     public function adsforwp_get_pub_id_on_revenue_percentage(){
-        
-                    $settings                   = adsforwp_defaultSettings();  
+                              
                     $ad_revenue_sharing         = '';
                     $ad_owner_revenue_per       = '';
                     $ad_author_revenue_per      = '';  
                     $display_per_in_minute      = '';
                     $author_adsense_ids         = array();
+                    
+                    $settings                   = adsforwp_defaultSettings();
                     
                     if(is_array($settings) && array_key_exists('ad_revenue_sharing', $settings)){
                         
@@ -558,7 +559,7 @@ class adsforwp_output_functions{
                         }   
                     }   
                     
-                    $response = array('post_id' => $auto_adsense_post[0]->ID, 'data_ad_client' => $data_ad_client);
+                        $response = array('post_id' => $auto_adsense_post[0]->ID, 'data_ad_client' => $data_ad_client);
                     }     
                     
                     return $response;
@@ -1279,14 +1280,9 @@ class adsforwp_output_functions{
             $ad_code                    ='';               
             
             $custom_ad_code             ='';
-            $where_to_display           ='';                        
-            $amp_compatibility          ='';              
-                                    
-            
-            $non_amp_visibility         ='';
+            $where_to_display           ='';                                                                                                             
             $ad_responsive              ='';
-            
-            
+                        
             $ad_margin_top              = 0;
             $ad_margin_bottom           = 0;
             $ad_margin_left             = 0;
@@ -1324,8 +1320,7 @@ class adsforwp_output_functions{
             $custom_ad_code              = adsforwp_rmv_warnings($post_meta_dataset, 'custom_code', 'adsforwp_array');                            
             $ad_image                    = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_image', 'adsforwp_array');                            
             $ad_redirect_url             = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_redirect_url', 'adsforwp_array');                                                  
-            $ad_type                     = adsforwp_rmv_warnings($post_meta_dataset, 'select_adtype', 'adsforwp_array');                                          
-            $non_amp_visibility          = adsforwp_rmv_warnings($post_meta_dataset, 'ads_for_wp_non_amp_visibility', 'adsforwp_array');      
+            $ad_type                     = adsforwp_rmv_warnings($post_meta_dataset, 'select_adtype', 'adsforwp_array');                                                      
                                                 
             $sponsership_label           = '';
             
@@ -1334,9 +1329,7 @@ class adsforwp_output_functions{
             }
                                     
             if($ad_type !=""){  
-                            
-            $amp_compatibility = adsforwp_rmv_warnings($post_meta_dataset, 'ads-for-wp_amp_compatibilty', 'adsforwp_array');                          
-                                         
+                                                                                 
             switch ($ad_type) {
                 
             case 'custom':
@@ -1634,8 +1627,7 @@ class adsforwp_output_functions{
             
             case 'media_net':
                 
-            $ad_data_cid ='';            
-            $ad_data_crid ='';
+            $ad_data_cid  = $ad_data_crid = '';                         
                         
             $ad_data_cid  = adsforwp_rmv_warnings($post_meta_dataset, 'data_cid', 'adsforwp_array');                           
             $ad_data_crid = adsforwp_rmv_warnings($post_meta_dataset, 'data_crid', 'adsforwp_array');       
@@ -1782,7 +1774,7 @@ class adsforwp_output_functions{
         
         if($group_id){
             
-        $post_group_id  =   $group_id;     
+            $post_group_id  =   $group_id;     
         
         } 
         
@@ -1791,16 +1783,9 @@ class adsforwp_output_functions{
         
         if($ad_status || $widget =='widget' || $all_condition_status){
                                                                
-        $ad_alignment                   = ''; 
-        $wheretodisplay                 = '';       
-        $amp_compatibility              = '';
-        $non_amp_visibility             = '';
-        $ad_margin_top                  = 0;
-        $ad_margin_bottom               = 0;
-        $ad_margin_left                 = 0;
-        $ad_margin_right                = 0;
-        
-        
+        $ad_alignment = $wheretodisplay = '';                        
+        $ad_margin_top = $ad_margin_bottom = $ad_margin_left = $ad_margin_right = 0;
+                        
         $post_group_data                = get_post_meta($post_group_id,$key='adsforwp_ads',true);
         $post_group_meta                = get_post_meta($post_group_id,$key='',true);
         $margin_post_meta               = get_post_meta($post_group_id, $key='adsforwp_ad_margin',true);
@@ -1811,9 +1796,7 @@ class adsforwp_output_functions{
         $ad_margin_left                 = adsforwp_rmv_warnings($margin_post_meta, 'ad_margin_left', 'adsforwp_string');                
         $ad_margin_right                = adsforwp_rmv_warnings($margin_post_meta, 'ad_margin_right', 'adsforwp_string');  
         
-        $wheretodisplay                 = adsforwp_rmv_warnings($post_group_meta, 'wheretodisplay', 'adsforwp_array');                
-        $non_amp_visibility             = adsforwp_rmv_warnings($post_group_meta, 'ads_for_wp_non_amp_visibility', 'adsforwp_array');                
-        $amp_compatibility              = adsforwp_rmv_warnings($post_group_meta, 'ads-for-wp_amp_compatibilty', 'adsforwp_array');              
+        $wheretodisplay                 = adsforwp_rmv_warnings($post_group_meta, 'wheretodisplay', 'adsforwp_array');                                
         
         if($wheretodisplay !='ad_shortcode' && isset($post_group_meta['adsforwp_ad_align'])){
             
@@ -1826,9 +1809,7 @@ class adsforwp_output_functions{
         $filter_group_ids   = array();   
         
         if($this->is_amp){            
-        
-        if($amp_compatibility != 'disable'){
-            
+                            
         if($post_group_data){
             
            foreach ($post_group_data as $group_id=>$value){
@@ -1843,12 +1824,9 @@ class adsforwp_output_functions{
         
         
         }  
-        
-        }
+               
         }else{   
-            
-        if($non_amp_visibility !='hide'){  
-            
+                                
         $post_data = get_post_meta($post_group_id,$key='',true);  
         
         if($post_group_data){
@@ -1917,11 +1895,10 @@ class adsforwp_output_functions{
             if($filter_group_ids){
                 $ad_code =  $this->adsforwp_get_ad_code(array_rand($filter_group_ids), $type="GROUP"); 
             }
-              
-                
+                              
           }        
          }
-        }                           
+                              
        } 
                                       
        $group_ad_code  = '<div data-id="'.esc_attr($post_group_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_group afw_group afwadgroupid-'.esc_attr($post_group_id).'">';
@@ -1929,11 +1906,8 @@ class adsforwp_output_functions{
        $group_ad_code .='</div>';       
               
        return $group_ad_code;
-      
-            
-        
-            
-        }    
+       
+      }    
                
     }
     /**
@@ -1957,7 +1931,7 @@ class adsforwp_output_functions{
             
                 break;            
             case 'ordered':                
-            $ad_code =  $this->adsforwp_get_ad_code($ad_id, $type="GROUP");    
+                    $ad_code =  $this->adsforwp_get_ad_code($ad_id, $type="GROUP");    
                 break;
             
             default:

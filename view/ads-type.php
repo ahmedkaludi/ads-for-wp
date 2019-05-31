@@ -231,9 +231,9 @@ class adsforwp_view_ads_type {
 	public function adsforwp_field_generator( $post ) {
 		$output = '';                     
 		foreach ( $this->meta_fields as $meta_field ) {
-                    $attributes ='';
-                    $provider_type = '';
-                    $label ='';
+                    
+                    $attributes = $provider_type = $label = '';
+                    
                     if(isset($meta_field['label'])){
                       $label =  $meta_field['label']; 
                     }
