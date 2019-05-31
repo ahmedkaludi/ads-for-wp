@@ -298,7 +298,7 @@ class adsforwp_view_ad_groups {
                 
                 $adsforwp_ads_array = array();    
                 
-                if(is_array($_POST['adsforwp_ads'])){
+                if(isset($_POST['adsforwp_ads']) && is_array($_POST['adsforwp_ads'])){
                     $adsforwp_ads_array = array_map('sanitize_text_field', $_POST['adsforwp_ads']);                      
                 }
                                 
