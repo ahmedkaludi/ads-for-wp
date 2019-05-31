@@ -848,8 +848,9 @@ class adsforwp_output_functions{
                 foreach($all_ads_id as $ad_id){
                     
                     $post_type = get_post_meta( $ad_id, 'select_adtype', true );  
-                           
+                    $ad_div_gpt = $ad_slot_id = $height = $width ='';
                     if($post_type == 'doubleclick'){
+                        
                         
                         
                         $post_meta_dataset          = array();                      

@@ -44,7 +44,7 @@ class Adsforwp_Ads_Widget extends WP_Widget {
                     if($ad->ID == $instance['ads']){   
                         
                             $output_function_obj = new adsforwp_output_functions();
-                            $ad_code =  $output_function_obj->adsforwp_get_ad_code($instance['ads'], $type="AD");          
+                            $ad_code =  $output_function_obj->adsforwp_get_ad_code($instance['ads'], $type="AD", 'notset');          
                             echo $ad_code;    
                             
                     }   
@@ -56,7 +56,7 @@ class Adsforwp_Ads_Widget extends WP_Widget {
                      
                         $output_function_obj = new adsforwp_output_functions();
                         $widget = 'widget';
-                        $ad_code =  $output_function_obj->adsforwp_group_ads($atts=null, $instance['ads'], $widget);                   
+                        $ad_code =  $output_function_obj->adsforwp_group_ads($atts=null, $instance['ads'], $widget, 'notset');                   
                         echo $ad_code;     
                         
                 }  

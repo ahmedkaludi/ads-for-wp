@@ -188,7 +188,7 @@ class adsforwp_view_expiredate {
                     
                 $adsforwp_days_array = array();     
                 
-                if(is_array($_POST['adsforwp_ad_expire_days'])){
+                if(isset($_POST['adsforwp_ad_expire_days']) && is_array($_POST['adsforwp_ad_expire_days'])){
                     $adsforwp_days_array = array_map('sanitize_text_field', $_POST['adsforwp_ad_expire_days']);                      
                 }
                 
