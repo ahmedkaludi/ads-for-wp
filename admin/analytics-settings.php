@@ -42,7 +42,7 @@ public function adsforwp_admin_analytics_interface_render(){
             if ( ! current_user_can( 'manage_options' ) ) {
                     return;
             }     	       	        
-            $all_ads_post = json_decode(get_transient('adsforwp_transient_ads_ids'), true);  
+            $all_ads_post = adsforwp_get_ad_ids();  
             $total_ads_impression = 0;
             $total_ads_clicks = 0;
             if($all_ads_post){

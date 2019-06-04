@@ -196,8 +196,7 @@ class adsforwp_admin_common_functions {
              update_option('adsforwp_settings', $adsforwp_settings); 
              update_option('adsforwp-file-upload_url','');
              
-            }                                    
-            if (is_wp_error($result) ){
+             if (is_wp_error($result) ){
                 
               echo esc_attr($result->get_error_message()); 
               
@@ -205,7 +204,9 @@ class adsforwp_admin_common_functions {
             }else{
               $wpdb->query('COMMIT'); 
               return true;
-            }            
+            }
+             
+            }                                                            
                                      
     }
     

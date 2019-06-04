@@ -93,7 +93,7 @@ class adsforwp_output_functions{
     public function adsforwp_display_custom_target_ad($content){       
                                  
                  //For single ad starts here
-                 $all_ads_id = json_decode(get_transient('adsforwp_transient_ads_ids'), true);
+                 $all_ads_id = adsforwp_get_ad_ids();
                  
                  if(!empty($all_ads_id)){
                      
@@ -171,7 +171,7 @@ class adsforwp_output_functions{
                  
                  //For group ads starts here
                  
-                 $all_ads_id = json_decode(get_transient('adsforwp_groups_transient_ids'), true);    
+                 $all_ads_id = adsforwp_get_group_ad_ids();    
                  
                  if(!empty($all_ads_id)){
                      
@@ -265,7 +265,7 @@ class adsforwp_output_functions{
      */
     public function adsforwp_add_amp_stick_ad_css(){
                 
-        $all_ads_id = json_decode(get_transient('adsforwp_transient_ads_ids'), true);
+        $all_ads_id = adsforwp_get_ad_ids();
         
         
         if(!empty($all_ads_id)){
@@ -361,7 +361,7 @@ class adsforwp_output_functions{
     public function adsforwp_display_sticky_ads_amp(){      
         
         //Ads stick starts here
-        $all_ads_id = json_decode(get_transient('adsforwp_transient_ads_ids'), true);
+        $all_ads_id = adsforwp_get_ad_ids();
                 
         if(!empty($all_ads_id)){
             
@@ -391,7 +391,7 @@ class adsforwp_output_functions{
         
         //Group stick starts here
         
-        $all_group_post = json_decode(get_transient('adsforwp_groups_transient_ids'), true);          
+        $all_group_post = adsforwp_get_group_ad_ids();          
         
         if(!empty($all_group_post)){
             
@@ -436,7 +436,7 @@ class adsforwp_output_functions{
         
          //Ads Sticky starts here
         $ad_code    ='';
-        $all_ads_id = json_decode(get_transient('adsforwp_transient_ads_ids'), true);
+        $all_ads_id = adsforwp_get_ad_ids();
                         
         if(!empty($all_ads_id)){
             
@@ -467,7 +467,7 @@ class adsforwp_output_functions{
         //Group Sticky starts here
         $all_group_post = array();
         $group_ad_code  = '';
-        $all_group_post = json_decode(get_transient('adsforwp_groups_transient_ids'), true); 
+        $all_group_post = adsforwp_get_group_ad_ids();
         
         if(!empty($all_group_post)){
             
@@ -571,7 +571,7 @@ class adsforwp_output_functions{
      */
     public function adsforwp_display_background_ad($content){
                 
-          $all_ads_id = json_decode(get_transient('adsforwp_transient_ads_ids'), true); 
+          $all_ads_id = adsforwp_get_ad_ids(); 
          
           if($all_ads_id){
               
@@ -624,7 +624,7 @@ class adsforwp_output_functions{
      */
     public function adsforwp_background_ad_css(){
         
-          $all_ads_id = json_decode(get_transient('adsforwp_transient_ads_ids'), true); 
+          $all_ads_id = adsforwp_get_ad_ids(); 
           
           if($all_ads_id){
               
@@ -777,7 +777,7 @@ class adsforwp_output_functions{
     
     public function adsforwp_insert_sticky_ads_code(){                                   
                    
-            $all_ads_id    = json_decode(get_transient('adsforwp_transient_ads_ids'), true); 
+            $all_ads_id    = adsforwp_get_ad_ids(); 
                                    
             if($all_ads_id){
             
@@ -842,7 +842,7 @@ class adsforwp_output_functions{
     public function adsforwp_doubleclick_head_code(){
                             
             $data_slot  = '';                   
-            $all_ads_id = json_decode(get_transient('adsforwp_transient_ads_ids'), true); 
+            $all_ads_id = adsforwp_get_ad_ids(); 
                                   
             if($all_ads_id){
             
@@ -917,7 +917,7 @@ class adsforwp_output_functions{
             }         
                   
             //Ads positioning starts here
-            $all_ads_post = json_decode(get_transient('adsforwp_transient_ads_ids'), true);     
+            $all_ads_post = adsforwp_get_ad_ids();     
             
             if($all_ads_post){
                 
@@ -1083,7 +1083,7 @@ class adsforwp_output_functions{
             //Ads positioning ends here
             
             //Groups positioning starts here
-            $all_group_post = json_decode(get_transient('adsforwp_groups_transient_ids'), true); 
+            $all_group_post = adsforwp_get_group_ad_ids();
             
             if($all_group_post){
                 

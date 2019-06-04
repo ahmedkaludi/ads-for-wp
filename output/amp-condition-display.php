@@ -147,7 +147,7 @@ class adsforwp_output_amp_condition_display{
     
     public function adsforwp_amp_condition_get_ad_code($condition, $count=null){
                         
-        $post_ad_id_list = json_decode(get_transient('adsforwp_transient_ads_ids'), true);    
+        $post_ad_id_list = adsforwp_get_ad_ids();    
         
         if($post_ad_id_list){
             
@@ -194,7 +194,7 @@ class adsforwp_output_amp_condition_display{
             
         }
         //For Group Ads
-        $post_group_id_list = json_decode(get_transient('adsforwp_groups_transient_ids'), true);      
+        $post_group_id_list = adsforwp_get_group_ad_ids();      
         
         if($post_group_id_list){
             

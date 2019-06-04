@@ -1030,6 +1030,34 @@ function adsforwp_admin_enqueue() {
 }
 add_action('admin_enqueue_scripts','adsforwp_admin_enqueue');
 
+function adsforwp_get_ad_ids(){
+        
+    $all_ads_id = json_decode(get_transient('adsforwp_transient_ads_ids'), true);
+    
+    
+    if(empty($all_ads_id)){
+        
+     $all_ads_post = get_posts(
+            array(
+                    'post_type' 	 => 'adsforwp',
+                    'posts_per_page'     => -1,
+                    'post_status'        => 'publish',
+            )
+        ); 
+                  
+     if($all_ads_post){
+        
+         foreach($all_ads_post as $ads){
+             $all_ads_id[] = $ads->ID;         
+         }
+                           
+     }   
+        
+    }            
+     
+     return $all_ads_id;
+}
+
 /*
  *      Storing and updating all ads post ids in transient on different actions 
  *      which we will fetch all ids from here to display our post
@@ -1069,6 +1097,34 @@ function adsforwp_update_ids_on_untrash(){
     add_action( 'publish_adsforwp', 'adsforwp_published');
     add_action( 'trash_adsforwp', 'adsforwp_update_ids_on_trash');    
     add_action( 'untrash_adsforwp', 'adsforwp_update_ids_on_untrash');
+ 
+    
+function adsforwp_get_group_ad_ids(){
+        
+    $all_ads_id = json_decode(get_transient('adsforwp_groups_transient_ids'), true);
+    
+    if(empty($all_ads_id)){
+        
+     $all_ads_post = get_posts(
+            array(
+                    'post_type' 	 => 'adsforwp-groups',
+                    'posts_per_page'     => -1,
+                    'post_status'        => 'publish',
+            )
+        ); 
+                  
+     if($all_ads_post){
+        
+         foreach($all_ads_post as $ads){
+             $all_ads_id[] = $ads->ID;         
+         }
+                           
+     }   
+        
+    }            
+     
+     return $all_ads_id;
+}    
     
 /*
  *      Storing and updating all groups post ids in transient on different actions 
