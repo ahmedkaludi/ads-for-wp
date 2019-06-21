@@ -1595,7 +1595,7 @@ class adsforwp_output_functions{
                                                                 </script>
                                                                 <ins 
                                                                 class="adsbygoogle" 
-                                                                style="display:block;                                                                                                                              
+                                                                style="display:inline-block;width:'.esc_attr($width).'px;height:'.esc_attr($height).'px"                                                                                                                           
                                                                 data-ad-client="'.esc_attr($ad_client).'"
                                                                 data-ad-slot="'.esc_attr($ad_slot).'"
                                                                 data-ad-format="auto">

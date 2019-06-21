@@ -415,7 +415,7 @@ function adsforwp_send_query_message(){
         $user_email = $user_data->user_email;       
         //php mailer variables
         $to         = 'team@magazine3.com';
-        $subject    = "Customer Query";
+        $subject    = "Ads For WP Customer Query";
         $headers    = 'From: '. esc_attr($user_email) . "\r\n" .
                       'Reply-To: ' . esc_attr($user_email) . "\r\n";
         
@@ -724,6 +724,7 @@ function adsforwp_setup_post_type() {
       	'public' 		=> true,
       	'has_archive' 		=> false,
       	'exclude_from_search'	=> true,
+        'show_in_admin_bar'     => false,
     	'publicly_queryable'	=> false,
         'menu_position'         => 100  
     );
@@ -740,6 +741,7 @@ function adsforwp_setup_post_type() {
       	'has_archive' 		=> false,
       	'exclude_from_search'	=> true,
     	'publicly_queryable'	=> false,
+        'show_in_admin_bar'     => false,    
         'show_in_menu'  =>	'edit.php?post_type=adsforwp',                
         'show_ui'           => true,
 	'show_in_nav_menus' => false,			

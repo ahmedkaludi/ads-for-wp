@@ -1,5 +1,5 @@
 === Ads for WP - Advanced Ads & Adsense Solution for WP & AMP ===
-Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
+Contributors: magazine3
 Tags: Ads, Advanced Ads, Ad Inserter, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
 Tested up to: 5.1
