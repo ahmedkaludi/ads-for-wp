@@ -1035,28 +1035,7 @@ add_action('admin_enqueue_scripts','adsforwp_admin_enqueue');
 function adsforwp_get_ad_ids(){
         
     $all_ads_id = json_decode(get_transient('adsforwp_transient_ads_ids'), true);
-    
-    
-    if(empty($all_ads_id)){
-        
-     $all_ads_post = get_posts(
-            array(
-                    'post_type' 	 => 'adsforwp',
-                    'posts_per_page'     => -1,
-                    'post_status'        => 'publish',
-            )
-        ); 
-                  
-     if($all_ads_post){
-        
-         foreach($all_ads_post as $ads){
-             $all_ads_id[] = $ads->ID;         
-         }
-                           
-     }   
-        
-    }            
-     
+                          
      return $all_ads_id;
 }
 
@@ -1066,6 +1045,8 @@ function adsforwp_get_ad_ids(){
  */    
 function adsforwp_published(){    
     
+        $ads_post_ids = array();
+        
         $all_ads_post = get_posts(
             array(
                     'post_type' 	 => 'adsforwp',
@@ -1074,15 +1055,19 @@ function adsforwp_published(){
             )
         ); 
         
-     $ads_post_ids = array();
+        if($all_ads_post){
+
+            foreach($all_ads_post as $ads){
+                $ads_post_ids[] = $ads->ID;         
+           }
+
+        }
      
-     foreach($all_ads_post as $ads){
-         $ads_post_ids[] = $ads->ID;         
+     if($ads_post_ids){
+         $ads_post_ids_json = json_encode($ads_post_ids);
+         set_transient('adsforwp_transient_ads_ids', $ads_post_ids_json); 
      }
-     
-     $ads_post_ids_json = json_encode($ads_post_ids);
-     set_transient('adsforwp_transient_ads_ids', $ads_post_ids_json); 
-     
+               
 }
 
 function adsforwp_update_ids_on_trash(){
@@ -1104,27 +1089,7 @@ function adsforwp_update_ids_on_untrash(){
 function adsforwp_get_group_ad_ids(){
         
     $all_ads_id = json_decode(get_transient('adsforwp_groups_transient_ids'), true);
-    
-    if(empty($all_ads_id)){
-        
-     $all_ads_post = get_posts(
-            array(
-                    'post_type' 	 => 'adsforwp-groups',
-                    'posts_per_page'     => -1,
-                    'post_status'        => 'publish',
-            )
-        ); 
-                  
-     if($all_ads_post){
-        
-         foreach($all_ads_post as $ads){
-             $all_ads_id[] = $ads->ID;         
-         }
-                           
-     }   
-        
-    }            
-     
+                   
      return $all_ads_id;
 }    
     
@@ -1134,21 +1099,31 @@ function adsforwp_get_group_ad_ids(){
  */    
 function adsforwp_groups_published(){   
     
-        $all_group_post = get_posts(
-            array(
-                    'post_type' 	 => 'adsforwp-groups',
-                    'posts_per_page' => -1,
-                    'post_status' => 'publish',
-            )
-        );  
+    $all_group_post = get_posts(
+        array(
+                'post_type' 	     => 'adsforwp-groups',
+                'posts_per_page'     => -1,
+                'post_status'        => 'publish',
+        )
+    );  
         
      $group_post_ids = array();
-     foreach($all_group_post as $group){
-         $group_post_ids[] = $group->ID;         
+     
+     if($all_group_post){
+     
+         foreach($all_group_post as $group){
+             $group_post_ids[] = $group->ID;         
+        }
+         
+     }
+          
+     if($group_post_ids){
+         
+         $group_post_ids_json = json_encode($group_post_ids);
+         set_transient('adsforwp_groups_transient_ids', $group_post_ids_json); 
+         
      }
      
-     $group_post_ids_json = json_encode($group_post_ids);
-     set_transient('adsforwp_groups_transient_ids', $group_post_ids_json); 
      
 }
 

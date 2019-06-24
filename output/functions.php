@@ -441,14 +441,16 @@ class adsforwp_output_functions{
         if(!empty($all_ads_id)){
             
         foreach($all_ads_id as $ad_id){
-            
-            $in_group       = $common_function_obj->adsforwp_check_ads_in_group($ad_id); 
-            $wheretodisplay = get_post_meta($ad_id,$key='wheretodisplay',true);  
-            
-             if($wheretodisplay == 'sticky' && !in_array($ad_id, $explod_ad_id) && empty($in_group)){  
+                                     
+             if($wheretodisplay == 'sticky' && !in_array($ad_id, $explod_ad_id)){  
                  
-               $ad_code .=  $this->adsforwp_get_ad_code($ad_id, $type="AD");   
-               
+              $in_group       = $common_function_obj->adsforwp_check_ads_in_group($ad_id); 
+              $wheretodisplay = get_post_meta($ad_id,$key='wheretodisplay',true);    
+              
+              if(empty($in_group)){
+                  $ad_code .=  $this->adsforwp_get_ad_code($ad_id, $type="AD");   
+              }
+              
              }
              
         }    
@@ -817,16 +819,20 @@ class adsforwp_output_functions{
                         
                             if($ad_status){
                             
-                               $output  = '<amp-sticky-ad layout="nodisplay">';
-                               $output .= '<amp-ad class="amp-sticky-ads afw_'.esc_attr($ad_id).'"
-						type="adsense"
-						width='. esc_attr($width) .'
-						height='. esc_attr($height) . '
-						data-ad-client="'. esc_attr($ad_client) .'"
-						data-ad-slot="'.  esc_attr($ad_slot) .'">';
-                               $output	.=	'</amp-ad>';
-                               $output	.= '</amp-sticky-ad>';
-                               echo $output;
+                               if($ad_client && $ad_slot){
+                                 
+                                    $output  = '<amp-sticky-ad layout="nodisplay">';
+                                    $output .= '<amp-ad class="amp-sticky-ads afw_'.esc_attr($ad_id).'"
+                                                     type="adsense"
+                                                     width='. esc_attr($width) .'
+                                                     height='. esc_attr($height) . '
+                                                     data-ad-client="'. esc_attr($ad_client) .'"
+                                                     data-ad-slot="'.  esc_attr($ad_slot) .'">';
+                                    $output	.=	'</amp-ad>';
+                                    $output	.= '</amp-sticky-ad>';
+                                    echo $output;
+                               
+                               }                                
                                
                               }
                                                                                                                                                                                                                                                                                                                                                 
@@ -917,13 +923,19 @@ class adsforwp_output_functions{
             }         
                   
             //Ads positioning starts here
-            $all_ads_post = adsforwp_get_ad_ids();     
+            $all_ads_post = adsforwp_get_ad_ids();                 
+            $service = new adsforwp_output_service();
             
             if($all_ads_post){
                 
             foreach($all_ads_post as $ads){   
                 
-            $post_ad_id          = $ads;             
+            $post_ad_id          = $ads;      
+                                    
+            $ad_status = $service->adsforwp_is_condition($post_ad_id);
+            
+            if($ad_status){
+                
             $common_function_obj = new adsforwp_admin_common_functions();
             $in_group            = $common_function_obj->adsforwp_check_ads_in_group($post_ad_id);
            
@@ -1077,8 +1089,12 @@ class adsforwp_output_functions{
                break;
           }      
           //Displays all ads according to their settings paragraphs ends here                       
-            }
-         }                          
+            }  
+                
+                
+            }                                    
+            
+            }                          
             }
             //Ads positioning ends here
             
@@ -1087,11 +1103,13 @@ class adsforwp_output_functions{
             
             if($all_group_post){
                 
-            foreach($all_group_post as $group){  
-                
+            foreach($all_group_post as $group){
+                                                
             $post_group_id = $group;             
             
-                       
+            $ad_status = $service->adsforwp_is_condition($post_group_id);
+            
+            if($ad_status){
             $where_to_display   = ''; 
             $adposition         = '';    
             $widget             = '';
@@ -1246,7 +1264,8 @@ class adsforwp_output_functions{
                break;
           }      
           //Displays all ads according to their settings paragraphs ends here   
-                               
+            }           
+                                           
          }                          
             }
             //Groups positioning ends here
@@ -1860,7 +1879,7 @@ class adsforwp_output_functions{
         
         if($ad_status || $widget =='widget' || $all_condition_status){
                                                                
-        $ad_alignment = $wheretodisplay = '';                        
+        $ad_alignment  = $wheretodisplay = '';                        
         $ad_margin_top = $ad_margin_bottom = $ad_margin_left = $ad_margin_right = 0;
                         
         $post_group_data                = get_post_meta($post_group_id,$key='adsforwp_ads',true);

@@ -1265,8 +1265,8 @@ class adsforwp_admin_common_functions {
           $all_groups = get_posts(
                     array(
                             'post_type' 	 => 'adsforwp-groups',
-                            'posts_per_page' => -1,   
-                            'post_status' => 'publish',
+                            'posts_per_page'     => -1,   
+                            'post_status'        => 'publish',
                     )
                  ); 
           
@@ -1299,26 +1299,30 @@ class adsforwp_admin_common_functions {
      */
     public function adsforwp_check_ads_in_group($ad_id){
         
-                $all_groups   = $this->adsforwp_fetch_all_groups();                  
+                $all_groups   = adsforwp_get_group_ad_ids();                  
                 $meta_value   = array(); 
                 $ad_group_ids = array();
+                                
+                if($all_groups){
                 
-                foreach($all_groups as $groups){
+                    foreach($all_groups as $groups_id){
                     
-                  $meta_value  = get_post_meta( $groups->ID, $key='adsforwp_ads', true );                    
+                    $meta_value  = get_post_meta( $groups_id, $key='adsforwp_ads', true );                    
                   
                     if($meta_value){
                         
-                        if(in_array($ad_id, array_keys($meta_value))){
+                    if(in_array($ad_id, array_keys($meta_value))){
                             
-                            $ad_group_ids[] = $groups->ID;  
+                            $ad_group_ids[] = $groups_id;  
                             
                     }
                     
                   }
                   
-                }     
-                
+                }
+                    
+                }
+                                                     
             return $ad_group_ids;
     }
 
