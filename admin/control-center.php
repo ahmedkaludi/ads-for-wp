@@ -912,16 +912,22 @@ add_action( 'manage_adsforwp_posts_custom_column' , 'adsforwp_group_custom_colum
  * @return string
  */
 
-function adsforwp_custom_columns($columns) {   
+function adsforwp_custom_columns($columns) {
+    
+    $settings = adsforwp_defaultSettings();
     
     unset($columns['date']);
     $columns['adsforwp_ad_image_preview']       = '<a>'.esc_html__( 'Preview', 'ads-for-wp' ).'<a>';
     $columns['adsforwp_expire_column']          = '<a>'.esc_html__( 'Expire On', 'ads-for-wp' ).'<a>';
     $columns['adsforwp_group_column']           = '<a>'.esc_html__( 'Groups', 'ads-for-wp' ).'<a>';
-    $columns['adsforwp_ad_impression_column']   = '<a>'.esc_html__( 'Ad Impression', 'ads-for-wp' ).'<a>';
-    $columns['adsforwp_ad_clicks_column']       = '<a>'.esc_html__( 'Ad Clicks', 'ads-for-wp' ).'<a>';
-    
-    
+        
+    if(isset($settings['ad_performance_tracker'])){
+
+       $columns['adsforwp_ad_impression_column']   = '<a>'.esc_html__( 'Ad Impression', 'ads-for-wp' ).'<a>';
+       $columns['adsforwp_ad_clicks_column']       = '<a>'.esc_html__( 'Ad Clicks', 'ads-for-wp' ).'<a>';
+
+    }
+                
     return $columns;
     
 }
