@@ -831,6 +831,7 @@ class adsforwp_output_functions{
                                     $output	.=	'</amp-ad>';
                                     $output	.= '</amp-sticky-ad>';
                                     echo $output;
+                                    break;
                                
                                }                                
                                

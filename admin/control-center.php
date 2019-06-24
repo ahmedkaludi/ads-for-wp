@@ -68,7 +68,7 @@ function adsforwp_reset_all_settings(){
            return;  
         } 
         
-        $result ='';
+        $result = '';
         
         //Deleting Settings
         update_option( 'adsforwp_settings', array());                   
@@ -213,13 +213,13 @@ function adsforwp_filter_by_ad_type() {
     if ( $typenow == 'adsforwp' ) { // Your custom post type slug
         
       $plugins = array(
-                                'adsense' =>'AdSense',
-                                'media_net' =>'Media.net',
-                                'ad_now' =>'AdNow',				                                
-                                'contentad' =>'Content.ad',
-                                'infolinks' =>'Infolinks',
-                                'ad_image' =>'Image Banner Ad',
-                                'custom' =>'Custom Code',
+                                'adsense'   => 'AdSense',
+                                'media_net' => 'Media.net',
+                                'ad_now'    => 'AdNow',				                                
+                                'contentad' => 'Content.ad',
+                                'infolinks' => 'Infolinks',
+                                'ad_image'  => 'Image Banner Ad',
+                                'custom'    => 'Custom Code',
 			); // Options for the filter select field
       
       $current_plugin = '';
@@ -249,8 +249,8 @@ function adsforwp_sort_ads_by_type( $query ) {
   // Get the post type
   $post_type = isset( $_GET['post_type'] ) ? $_GET['post_type'] : '';
   if ( is_admin() && $pagenow=='edit.php' && $post_type == 'adsforwp' && isset( $_GET['ad-type-slug'] ) && $_GET['ad-type-slug'] !='all' ) {
-    $query->query_vars['meta_key'] = 'select_adtype';
-    $query->query_vars['meta_value'] = $_GET['ad-type-slug'];
+    $query->query_vars['meta_key']     = 'select_adtype';
+    $query->query_vars['meta_value']   = $_GET['ad-type-slug'];
     $query->query_vars['meta_compare'] = '=';
   }
 }
@@ -259,12 +259,10 @@ add_filter( 'parse_query', 'adsforwp_sort_ads_by_type' );
 
 function adsforwp_review_notice_remindme(){   
         
-        if ( ! isset( $_POST['adsforwp_security_nonce'] ) ){
-            
+        if ( ! isset( $_POST['adsforwp_security_nonce'] ) ){            
            return; 
         }
-        if ( !wp_verify_nonce( $_POST['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
-            
+        if ( !wp_verify_nonce( $_POST['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){            
            return;  
         }                    
         $result =  update_option( "review_notice_bar_close_date", date("Y-m-d"));   
@@ -1029,9 +1027,9 @@ function adsforwp_admin_enqueue() {
         
         //Analytics js
         $analytics_data = array(
-            'ajax_url'  => admin_url( 'admin-ajax.php' ),
-            'id'		=> get_the_ID(),            
-            'post_type'		=> get_post_type()
+            'ajax_url'      => admin_url( 'admin-ajax.php' ),
+            'id'	    => get_the_ID(),            
+            'post_type'	    => get_post_type()
         );
         
         wp_localize_script( 'ads-for-wp-admin-analytics-js', 'adsforwp_localize_analytics_data', $analytics_data );
