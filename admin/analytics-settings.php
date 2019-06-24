@@ -41,7 +41,16 @@ public function adsforwp_admin_analytics_interface_render(){
 	// Authentication
             if ( ! current_user_can( 'manage_options' ) ) {
                     return;
-            }     	       	        
+            }   
+            
+            if ( ! isset( $_GET['wpnonce_'] ) ){
+                return;		
+            }
+			
+            if ( !wp_verify_nonce( $_GET['wpnonce_'], 'wpnonce_data' ) ){
+                return;
+            }
+			            
             $all_ads_post = adsforwp_get_ad_ids();  
             $total_ads_impression = 0;
             $total_ads_clicks = 0;
@@ -229,6 +238,7 @@ public function adsforwp_admin_analytics_interface_render(){
                         <option value="last_6_months" <?php if($_differ=='last_6_months'){echo "selected"; } ?>> <?php echo esc_html__('Last 6 month','ads-for-wp'); ?></option>                       
                         <option value="last_year" <?php if($_differ=='last_year'){echo "selected"; } ?>> <?php echo esc_html__('Last year','ads-for-wp'); ?></option>                       
                     </select>    
+                    <input type="hidden" name="wpnonce_" value="<?php echo wp_create_nonce('wpnonce_data');     ?>">
                     <button type="submit" class="btn btn-success button-primary" style="display: inline-block;
                         background: #444444;
                         border-radius: 5px;
