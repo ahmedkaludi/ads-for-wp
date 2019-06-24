@@ -609,16 +609,17 @@ class adsforwp_admin_common_functions {
                  
                 }                                                
                 $adforwp_meta_key = array(
-                    'select_adtype'             => 'adsense',  
-                    'adsense_type'              => 'normal',                    
-                    'data_client_id'            => $amp_options['enable-amp-ads-text-feild-client-'.$i], 
-                    'data_ad_slot'              => $amp_options['enable-amp-ads-text-feild-slot-'.$i],                     
-                    'banner_size'               => $ad_size[$amp_options['enable-amp-ads-select-'.$i]],                     
-                    'adsforwp_ad_responsive'    => $amp_options['enable-amp-ads-resp-'.$i],
-                    'wheretodisplay'            => $wheretodisplayamp[$i],
-                    'adsforwp_ad_align'         => 'center',
-                    'imported_from'             => 'ampforwp_ads',
-                    'data_group_array'          => $data_group_array
+                    'select_adtype'                 => 'adsense',  
+                    'adsense_type'                  => 'normal',                    
+                    'data_client_id'                => $amp_options['enable-amp-ads-text-feild-client-'.$i], 
+                    'data_ad_slot'                  => $amp_options['enable-amp-ads-text-feild-slot-'.$i],                     
+                    'banner_size'                   => $ad_size[$amp_options['enable-amp-ads-select-'.$i]],                     
+                    'adsforwp_ad_responsive'        => $amp_options['enable-amp-ads-resp-'.$i],
+                    'wheretodisplay'                => $wheretodisplayamp[$i],
+                    'adsforwp_ad_align'             => 'center',
+                    'ads_for_wp_non_amp_visibility' => 'hide',    
+                    'imported_from'                 => 'ampforwp_ads',
+                    'data_group_array'              => $data_group_array
                 );
                 
                 foreach ($adforwp_meta_key as $key => $val){    
@@ -675,11 +676,12 @@ class adsforwp_admin_common_functions {
                                                      )               
                                                  ); 
               $adforwp_meta_key = array(
-                    'select_adtype'    => 'adsense',  
-                    'adsense_type'     => 'adsense_auto_ads',                    
-                    'data_client_id'   => $explodestr[3],                     
-                    'imported_from'    => 'ampforwp_advanced_ads',
-                    'data_group_array' => $data_group_array
+                    'select_adtype'                 => 'adsense',  
+                    'adsense_type'                  => 'adsense_auto_ads',                    
+                    'data_client_id'                => $explodestr[3],         
+                    'ads_for_wp_non_amp_visibility' => 'hide', 
+                    'imported_from'                 => 'ampforwp_advanced_ads',
+                    'data_group_array'              => $data_group_array
                 );
                 foreach ($adforwp_meta_key as $key => $val){                     
                     $result[] =  update_post_meta($post_id, $key, $val);  
@@ -732,7 +734,8 @@ class adsforwp_admin_common_functions {
                             'banner_size'     => $amp_options['ampforwp-adsense-ad-width-incontent-ad-'.$i].'x'.$amp_options['ampforwp-adsense-ad-height-incontent-ad-'.$i],                     
                             'wheretodisplay'  => 'between_the_content',
                             'adposition'      => $adposition,
-                            'paragraph_number'=> $paragraph_number,    
+                            'paragraph_number'=> $paragraph_number,  
+                            'ads_for_wp_non_amp_visibility' => 'hide',
                             'imported_from'   => 'ampforwp_advanced_ads',
                             'data_group_array'=> $data_group_array
                         );
@@ -755,6 +758,7 @@ class adsforwp_admin_common_functions {
                             'wheretodisplay'   => 'between_the_content',
                             'adposition'       => $adposition,
                             'paragraph_number' => $paragraph_number,  
+                            'ads_for_wp_non_amp_visibility' => 'hide',
                             'custom_code'      => $amp_options['ampforwp-custom-advertisement-incontent-ad-'.$i],  
                             'imported_from'    => 'ampforwp_advanced_ads',
                             'data_group_array' => $data_group_array
@@ -827,6 +831,7 @@ class adsforwp_admin_common_functions {
                                         'data_ad_slot'      => $amp_options['ampforwp-after-featured-image-ad-type-1-data-ad-slot'],                     
                                         'banner_size'       => $amp_options['ampforwp-after-featured-image-ad-type-1-width'].'x'.$amp_options['ampforwp-after-featured-image-ad-type-1-height'],                     
                                         'wheretodisplay'    => 'between_the_content',
+                                        'ads_for_wp_non_amp_visibility' => 'hide',
                                         'wheretodisplay'    => 'adsforwp_after_featured_image',
                                         'imported_from'     => 'ampforwp_advanced_ads',
                                         'data_group_array'  => $data_group_array
@@ -836,7 +841,8 @@ class adsforwp_admin_common_functions {
                                     $adforwp_meta_key = array(
                                         'select_adtype'   => 'custom',                                                                                                                                     
                                         'wheretodisplay'  => 'between_the_content',
-                                        'wheretodisplay'  => 'adsforwp_after_featured_image',                                         
+                                        'wheretodisplay'  => 'adsforwp_after_featured_image',
+                                        'ads_for_wp_non_amp_visibility' => 'hide',
                                         'custom_code'     => $amp_options['ampforwp-after-featured-image-ad-custom-advertisement'],  
                                         'imported_from'   => 'ampforwp_advanced_ads',
                                         'data_group_array'=> $data_group_array
@@ -897,6 +903,7 @@ class adsforwp_admin_common_functions {
                                         'wheretodisplay'               => 'between_the_content',
                                         'wheretodisplay'               => 'adsforwp_ads_in_loops',
                                         'adsforwp_after_how_many_post' => $amp_options['ampforwp-inbetween-loop-post-num'], 
+                                        'ads_for_wp_non_amp_visibility' => 'hide',
                                         'imported_from'                => 'ampforwp_advanced_ads',
                                         'data_group_array'             => $data_group_array
                                       );                                 
@@ -907,6 +914,7 @@ class adsforwp_admin_common_functions {
                                         'wheretodisplay'   => 'between_the_content',
                                         'wheretodisplay'   => 'adsforwp_ads_in_loops',                                         
                                         'custom_code'      => $amp_options['ampforwp-inbetween-custom-advertisement'],  
+                                        'ads_for_wp_non_amp_visibility' => 'hide',
                                         'imported_from'    => 'ampforwp_advanced_ads',
                                         'data_group_array' => $data_group_array
                                      );
@@ -968,7 +976,8 @@ class adsforwp_admin_common_functions {
                             'data_ad_slot'    => $amp_options['ampforwp-adsense-ad-data-ad-slot-standard-'.$i],                     
                             'banner_size'     => $amp_options['ampforwp-adsense-ad-width-standard-'.$i].'x'.$amp_options['ampforwp-adsense-ad-height-standard-'.$i],                     
                             'wheretodisplay'  => 'between_the_content',                            
-                            'wheretodisplay'  => $placement_position[$i],    
+                            'wheretodisplay'  => $placement_position[$i],
+                            'ads_for_wp_non_amp_visibility' => 'hide',
                             'imported_from'   => 'ampforwp_advanced_ads',
                             'data_group_array'=> $data_group_array
                         );
@@ -983,6 +992,7 @@ class adsforwp_admin_common_functions {
                             'wheretodisplay'   => 'between_the_content',
                             'wheretodisplay'   => $placement_position[$i],
                             'custom_code'      => $amp_options['ampforwp-custom-advertisement-standard-'.$i],  
+                            'ads_for_wp_non_amp_visibility' => 'hide',
                             'imported_from'    => 'ampforwp_advanced_ads',
                             'data_group_array' => $data_group_array
                         );
