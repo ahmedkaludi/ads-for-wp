@@ -1154,7 +1154,7 @@ function adsforwp_groups_update_ids_on_untrash(){
 function adsforwp_general_admin_notice(){
     
      echo '<div class="message error update-message notice notice-alt notice-error afw-blocker-notice afw_hide">'
-        . '<p>'.esc_html__('Please disable your', 'ads-for-wp').' <strong>'.esc_html__('AdBlocker', 'ads-for-wp').'</strong> '.esc_html__('to use adsforwp plugin smoothly.', 'ads-for-wp').' <a target="_blank" href="https://www.google.com/">'.esc_html__('Learn More', 'ads-for-wp').'</a></p>'
+        . '<p>'.esc_html__('Please disable your', 'ads-for-wp').' <strong>'.esc_html__('AdBlocker', 'ads-for-wp').'</strong> '.esc_html__('to use adsforwp plugin smoothly.', 'ads-for-wp').' <a target="_blank" href="http://adsforwp.com/docs/article/what-is-ad-blocker-and-how-to-disable-it/">'.esc_html__('Learn More', 'ads-for-wp').'</a></p>'
         . '</div>'; 
      $post_type = get_post_type();
      
