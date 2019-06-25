@@ -1170,6 +1170,7 @@ function adsforwp_general_admin_notice(){
              });
             </script>                
     <?php
+    
      }
      
 }

@@ -29,16 +29,22 @@ class adsforwp_output_functions{
                     '</div>'  => 'div_tag',
                     '<img>'   => 'img_tag',                    
                     );
-         
-         if(!is_admin()){            
-             add_action( 'init', array( $this, 'init' ) );             
-         }
-         
+                          
     }
     /**
      * We are here calling all required hooks
      */    
     public function adsforwp_hooks(){
+        
+         if(!is_admin()){            
+             
+             if ((function_exists( 'ampforwp_is_amp_endpoint' )) || function_exists( 'is_amp_endpoint' )) {
+                       add_action( 'amp_init', array( $this, 'init' ) );             
+             }else{
+                       add_action( 'init', array( $this, 'init' ) );
+             }
+                                       
+         }         
         //Adsense Auto Ads hooks for amp and non amp starts here       
         add_filter('widget_text', 'do_shortcode');    
         
@@ -79,6 +85,8 @@ class adsforwp_output_functions{
     }
     
     public function init(){
+        
+            set_transient('adsforwp_transient_amp_ids', array());
                                                                               
             ob_start(array($this, "adsforwp_display_custom_target_ad"));
             
@@ -1682,8 +1690,7 @@ class adsforwp_output_functions{
             if($this->is_amp){
                                                     
                  $this->amp_ads_id[] = $post_ad_id;
-                 
-                 
+                                  
                     if($ad_data_cid && $ad_data_crid){
                         
                      $ad_code ='<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw-md afw_ad afwadid-'.esc_attr($post_ad_id).'">
@@ -1784,7 +1791,7 @@ class adsforwp_output_functions{
             break;
         }      
                           
-             $amp_ads_id_json = json_encode($this->amp_ads_id);
+             $amp_ads_id_json = json_encode($this->amp_ads_id);             
              set_transient('adsforwp_transient_amp_ids', $amp_ads_id_json); 
                               
              return $ad_code;
