@@ -79,7 +79,7 @@ class adsforwp_output_functions{
     }
     
     public function init(){
-                                                          
+                                                                              
             ob_start(array($this, "adsforwp_display_custom_target_ad"));
             
             ob_start(array($this, "adsforwp_display_background_ad"));       
@@ -90,10 +90,79 @@ class adsforwp_output_functions{
      * @param type $content
      * @return type string
      */
+    
+    public function adsforwp_get_custom_target_ad_code($content, $ad_id, $ad_type){
+                        
+                    if($ad_type == 'group'){                     
+                      $ad_code =  $this->$this->adsforwp_group_ads($atts=null, $ad_id, '');   
+                    }
+
+                    if($ad_type == 'ad'){
+                      $ad_code   =  $this->adsforwp_get_ad_code($ad_id, $type="AD");        
+                    }
+                                               
+                   $post_meta = get_post_meta($ad_id,$key='',true);
+                  
+                   if(adsforwp_rmv_warnings($post_meta, 'adsforwp_custom_target_position', 'adsforwp_array') == 'existing_element'){
+                       
+                                $action          = adsforwp_rmv_warnings($post_meta, 'adsforwp_existing_element_action', 'adsforwp_array');
+                                $jquery_selector = adsforwp_rmv_warnings($post_meta, 'adsforwp_jquery_selector', 'adsforwp_array');
+                                
+                                if($jquery_selector){
+                                 
+                                if(strchr($jquery_selector, '#')){
+                                  $jquery_selector = str_replace('#', '', $jquery_selector);                                                                                                                                  
+                                  preg_match_all('/<[^>]*id="[^"]*\b'.$jquery_selector.'\b[^"]*"[^>]*>(.*)<[^>]*>/', $content, $matches);
+                                  $split = preg_split('/<[^>]*id="[^"]*\b'.$jquery_selector.'\b[^"]*"[^>]*>(.*)<[^>]*>/', $content);
+                                }
+                                if(strchr($jquery_selector, '.')){
+                                  $jquery_selector = str_replace('.', '', $jquery_selector); 
+                                  preg_match_all('/<[^>]*class="[^"]*\b'.$jquery_selector.'\b[^"]*"[^>]*>(.*)<[^>]*>/', $content, $matches);
+                                  $split = preg_split('/<[^>]*class="[^"]*\b'.$jquery_selector.'\b[^"]*"[^>]*>(.*)<[^>]*>/', $content);
+                                }   
+                                                             
+                                if(is_array($split) && !empty($split)){
+                                    
+                                    $all_matches = $split;
+                                    
+                                    foreach($all_matches as $key => $match){
+                                            
+                                        if(isset($matches[0][$key])){
+                                            
+                                            if($action == 'prepend_content'){
+                                                $all_matches[$key] = $match.$ad_code.$matches[0][$key];
+                                            }
+                                        
+                                            if($action == 'append_content'){
+                                                $all_matches[$key] = $match.$matches[0][$key].$ad_code;
+                                            }
+                                            
+                                        }
+                                                                                                                                                                                                                                                                                                                                                                                                                                           
+                                    }
+                                                                                                         
+                                   $content = implode( '', $all_matches );    
+                                }
+                                    
+                           }                                
+                                             
+                   }
+                   
+                   if(adsforwp_rmv_warnings($post_meta, 'adsforwp_custom_target_position', 'adsforwp_array') == 'new_element'){
+                       
+                       $new_element_div = html_entity_decode(adsforwp_rmv_warnings($post_meta, 'adsforwp_new_element', 'adsforwp_array'));                                              
+                       $content = str_replace($new_element_div, $ad_code, $content);
+                       
+                   }
+                      
+        return $content;
+        
+    }
     public function adsforwp_display_custom_target_ad($content){       
                                  
                  //For single ad starts here
                  $all_ads_id = adsforwp_get_ad_ids();
+                 $service = new adsforwp_output_service();
                  
                  if(!empty($all_ads_id)){
                      
@@ -103,74 +172,16 @@ class adsforwp_output_functions{
                    
                    if($wheretodisplay == 'custom_target'){                                                          
                   
-                   $ad_code   =  $this->adsforwp_get_ad_code($ad_id, $type="AD");      
+                       $ad_status = $service->adsforwp_is_condition($ad_id);
                        
-                   $post_meta = get_post_meta($ad_id,$key='',true);
-                  
-                   if(adsforwp_rmv_warnings($post_meta, 'adsforwp_custom_target_position', 'adsforwp_array') == 'existing_element'){
-                       
-                       $action = adsforwp_rmv_warnings($post_meta, 'adsforwp_existing_element_action', 'adsforwp_array');
-                       $jquery_selector = adsforwp_rmv_warnings($post_meta, 'adsforwp_jquery_selector', 'adsforwp_array');
-                                                                     
-                      
-                       switch ($action) {
-                           case 'prepend_content':
-                               
-                              $explod_elemnet ='';                               
-                              if(strchr($jquery_selector, '#')){
-                                $jquery_selector = str_replace('#', '', $jquery_selector);  
-                                
-                                $jquery_selector = str_replace('.', '', $jquery_selector); 
-                                preg_match_all('/<[^>]*id="[^"]*\b'.$jquery_selector.'\b[^"]*"[^>]*>/', $content, $matches);
-                                $explod_elemnet = explode(' ', $matches[0][0]);
-                                $content = str_replace($matches[0][0], $ad_code.$explod_elemnet[0].' id="'.$jquery_selector.'">', $content);
-                                
-                              }
-                              if(strchr($jquery_selector, '.')){
-                                $jquery_selector = str_replace('.', '', $jquery_selector); 
-                                preg_match_all('/<[^>]*class="[^"]*\b'.$jquery_selector.'\b[^"]*"[^>]*>/', $content, $matches);
-                                $explod_elemnet = explode(' ', $matches[0][0]);
-                                $content = str_replace($matches[0][0], $ad_code.$explod_elemnet[0].' class="'.$jquery_selector.'">', $content);
-                              }                                                                                             
-                               
-                               break;
-                           case 'append_content':   
-                               
-                              $explod_elemnet ='';                               
-                              if(strchr($jquery_selector, '#')){
-                                $jquery_selector = str_replace('#', '', $jquery_selector); 
-                                
-                                preg_match_all('/<[^>]*id="[^"]*\b'.$jquery_selector.'\b[^"]*"[^>]*>/', $content, $matches);
-                                $explod_elemnet = explode(' ', $matches[0][0]);
-                                $content = str_replace($matches[0][0], $explod_elemnet[0].' id="'.$jquery_selector.'">'.$ad_code, $content);
-                              }
-                              if(strchr($jquery_selector, '.')){
-                                $jquery_selector = str_replace('.', '', $jquery_selector); 
-                                preg_match_all('/<[^>]*class="[^"]*\b'.$jquery_selector.'\b[^"]*"[^>]*>/', $content, $matches);
-                                $explod_elemnet = explode(' ', $matches[0][0]);
-                                $content = str_replace($matches[0][0], $explod_elemnet[0].' class="'.$jquery_selector.'">'.$ad_code, $content);
-                              }                                                                                            
-
-                               break;                                                      
-                           default:
-                               break;
+                       if($ad_status){
+                           $content = $this->adsforwp_get_custom_target_ad_code($content, $ad_id, 'ad');
                        }
-                   }
-                   
-                   if(adsforwp_rmv_warnings($post_meta, 'adsforwp_custom_target_position', 'adsforwp_array') == 'new_element'){
-                       
-                       $new_element_div = html_entity_decode(adsforwp_rmv_warnings($post_meta, 'adsforwp_new_element', 'adsforwp_array'));                                              
-                       $content = str_replace($new_element_div, $ad_code, $content);
-                       
-                   }                                                                                  
-                   }
-                 }                        
+                                                                                                                                                   
+                    }
+                  }                        
                  }
-                                  
-                 //For single ad ends here
-                 
-                 //For group ads starts here
-                 
+                   //For group ads                                                
                  $all_ads_id = adsforwp_get_group_ad_ids();    
                  
                  if(!empty($all_ads_id)){
@@ -181,66 +192,12 @@ class adsforwp_output_functions{
                    
                    if($wheretodisplay == 'custom_target'){
                        
-                   $widget='';
-                   $ad_code =  $this->$this->adsforwp_group_ads($atts=null, $ad_id, $widget);       
+                       $ad_status = $service->adsforwp_is_condition($ad_id);
                        
-                   $post_meta = get_post_meta($ad_id,$key='',true);
-                  
-                   if(adsforwp_rmv_warnings($post_meta, 'adsforwp_custom_target_position', 'adsforwp_array') == 'existing_element'){
-                       
-                       $action = adsforwp_rmv_warnings($post_meta, 'adsforwp_existing_element_action', 'adsforwp_array');
-                       $jquery_selector = adsforwp_rmv_warnings($post_meta, 'adsforwp_jquery_selector', 'adsforwp_array');
-                                                                                           
-                       switch ($action) {
-                           case 'prepend_content':
-                               
-                              $explod_elemnet ='';                               
-                              if(strchr($jquery_selector, '#')){
-                                $jquery_selector = str_replace('#', '', $jquery_selector);  
-                                
-                                $jquery_selector = str_replace('.', '', $jquery_selector); 
-                                preg_match_all('/<[^>]*id="[^"]*\b'.$jquery_selector.'\b[^"]*"[^>]*>/', $content, $matches);
-                                $explod_elemnet = explode(' ', $matches[0][0]);
-                                $content = str_replace($matches[0][0], $ad_code.$explod_elemnet[0].' id="'.$jquery_selector.'">', $content);
-                                
-                              }
-                              if(strchr($jquery_selector, '.')){
-                                $jquery_selector = str_replace('.', '', $jquery_selector); 
-                                preg_match_all('/<[^>]*class="[^"]*\b'.$jquery_selector.'\b[^"]*"[^>]*>/', $content, $matches);
-                                $explod_elemnet = explode(' ', $matches[0][0]);
-                                $content = str_replace($matches[0][0], $ad_code.$explod_elemnet[0].' class="'.$jquery_selector.'">', $content);
-                              }                                                                                             
-                               
-                               break;
-                           case 'append_content':   
-                               
-                              $explod_elemnet ='';                               
-                              if(strchr($jquery_selector, '#')){
-                                $jquery_selector = str_replace('#', '', $jquery_selector); 
-                                
-                                preg_match_all('/<[^>]*id="[^"]*\b'.$jquery_selector.'\b[^"]*"[^>]*>/', $content, $matches);
-                                $explod_elemnet = explode(' ', $matches[0][0]);
-                                $content = str_replace($matches[0][0], $explod_elemnet[0].' id="'.$jquery_selector.'">'.$ad_code, $content);
-                              }
-                              if(strchr($jquery_selector, '.')){
-                                $jquery_selector = str_replace('.', '', $jquery_selector); 
-                                preg_match_all('/<[^>]*class="[^"]*\b'.$jquery_selector.'\b[^"]*"[^>]*>/', $content, $matches);
-                                $explod_elemnet = explode(' ', $matches[0][0]);
-                                $content = str_replace($matches[0][0], $explod_elemnet[0].' class="'.$jquery_selector.'">'.$ad_code, $content);
-                              }                                                                                            
-
-                               break;                                                      
-                           default:
-                               break;
+                       if($ad_status){
+                           $content = $this->adsforwp_get_custom_target_ad_code($content, $ad_id, 'group');                                                                              
                        }
-                   }
-                   
-                   if(adsforwp_rmv_warnings($post_meta, 'adsforwp_custom_target_position', 'adsforwp_array') == 'new_element'){
                        
-                       $new_element_div = html_entity_decode(adsforwp_rmv_warnings($post_meta, 'adsforwp_new_element', 'adsforwp_array'));                                              
-                       $content = str_replace($new_element_div, $ad_code, $content);
-                       
-                   }                                                                                  
                    }
                  }                        
                  }                 
@@ -266,8 +223,7 @@ class adsforwp_output_functions{
     public function adsforwp_add_amp_stick_ad_css(){
                 
         $all_ads_id = adsforwp_get_ad_ids();
-        
-        
+                
         if(!empty($all_ads_id)){
             
         foreach($all_ads_id as $ad_id){     
@@ -858,9 +814,7 @@ class adsforwp_output_functions{
                     $post_type = get_post_meta( $ad_id, 'select_adtype', true );  
                     $ad_div_gpt = $ad_slot_id = $height = $width ='';
                     if($post_type == 'doubleclick'){
-                        
-                        
-                        
+                                                                        
                         $post_meta_dataset          = array();                      
                         $post_meta_dataset          = get_post_meta($ad_id,$key='',true);
                         
