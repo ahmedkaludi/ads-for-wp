@@ -120,13 +120,13 @@ class adsforwp_output_functions{
                                  
                                 if(strchr($jquery_selector, '#')){
                                   $jquery_selector = str_replace('#', '', $jquery_selector);                                                                                                                                  
-                                  preg_match_all('/<[^>]*id="[^"]*\b'.$jquery_selector.'\b[^"]*"[^>]*>(.*)<[^>]*>/', $content, $matches);
-                                  $split = preg_split('/<[^>]*id="[^"]*\b'.$jquery_selector.'\b[^"]*"[^>]*>(.*)<[^>]*>/', $content);
+                                  preg_match_all('/<[^>]*id="[^"]*\b'.$jquery_selector.'\b[^"]*"[^>]*>/', $content, $matches);
+                                  $split = preg_split('/<[^>]*id="[^"]*\b'.$jquery_selector.'\b[^"]*"[^>]*>/', $content);
                                 }
                                 if(strchr($jquery_selector, '.')){
                                   $jquery_selector = str_replace('.', '', $jquery_selector); 
-                                  preg_match_all('/<[^>]*class="[^"]*\b'.$jquery_selector.'\b[^"]*"[^>]*>(.*)<[^>]*>/', $content, $matches);
-                                  $split = preg_split('/<[^>]*class="[^"]*\b'.$jquery_selector.'\b[^"]*"[^>]*>(.*)<[^>]*>/', $content);
+                                  preg_match_all('/<[^>]*class="[^"]*\b'.$jquery_selector.'\b[^"]*"[^>]*>/', $content, $matches);
+                                  $split = preg_split('/<[^>]*class="[^"]*\b'.$jquery_selector.'\b[^"]*"[^>]*>/', $content);
                                 }   
                                                              
                                 if(is_array($split) && !empty($split)){

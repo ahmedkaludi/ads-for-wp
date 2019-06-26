@@ -1,6 +1,6 @@
 === Ads for WP - Advanced Ads & Adsense Solution for WP & AMP ===
 Contributors: magazine3
-Tags: Ads, Advanced Ads, Ad Inserter, AMP, Adsense, SEO, Advertisement
+Tags: Ads, Google Adsense, Media Net,DFP, Custom Code, Infolinks, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
 Tested up to: 5.1
 Stable tag: 1.7
@@ -20,6 +20,8 @@ ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy t
 * NEW: Ad Revenue Sharing that supports all the ad networks and AMP.
 * NEW: Infolinks Support Added
 * NEW: Content.ad support added
+* NEW: Media.net support added
+* NEW: DoubleClick support added
 * NEW: Ad Now Support Added
 * AdSense Auto Ads Support
 * Ad Groups with AMP Support
