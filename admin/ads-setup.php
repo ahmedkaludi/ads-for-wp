@@ -131,11 +131,10 @@ function adsforwp_get_ad_stats($condition, $ad_id, $date=null) {
         case 'sumofstats':
 
             $result = $wpdb->get_results($wpdb->prepare("SELECT SUM(`ad_clicks`) as `clicks`, SUM(`ad_impressions`) as `impressions` FROM `{$wpdb->prefix}adsforwp_stats` WHERE `ad_id` = %d;", $ad_id), ARRAY_A);
-            
+           
             $ad_stats['impressions'] = $result[0]['impressions'];
             $ad_stats['clicks']      = $result[0]['clicks'];
-                        
-            
+                                    
             break;
         
         case 'fetchAllBy':

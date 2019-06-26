@@ -1,9 +1,9 @@
 === Ads for WP - Advanced Ads & Adsense Solution for WP & AMP ===
-Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
-Tags: Ads, Advanced Ads, Ad Inserter, AMP, Adsense, SEO, Advertisement
+Contributors: magazine3
+Tags: Ads, Google Adsense, Media Net, DFP, Custom Code, Infolinks, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
-Tested up to: 5.1
-Stable tag: 1.7
+Tested up to: 5.2
+Stable tag: 1.8
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -20,6 +20,8 @@ ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy t
 * NEW: Ad Revenue Sharing that supports all the ad networks and AMP.
 * NEW: Infolinks Support Added
 * NEW: Content.ad support added
+* NEW: Media.net support added
+* NEW: DoubleClick support added
 * NEW: Ad Now Support Added
 * AdSense Auto Ads Support
 * Ad Groups with AMP Support
@@ -53,6 +55,18 @@ Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp).
 
 
 == Changelog ==
+
+= 1.8 (26 June 2019) =
+
+* Bug Fixed: error ".afw_ad_amp_12345" not found" #178
+* Bug Fixed: Custom target option removing the classes #168
+* Bug Fixed: Sticky ads with adsense are having 11 instances #175
+* Bug Fixed: After importing the ads from AMPforWP then Non-AMP Visibility should be hidden #157
+* Bug Fixed: Duplicate Queries #194
+* Bug Fixed: Review wave issues (  form submision requires escaping, nonce in "analytics-settings" file ) #160
+* Bug Fixed: If image banner is empty still amp img tag loads which throw amp validation error. #195
+* Improvement: If the "Ad Performance Tracking" is not enabled, then it should not show the Performance count section #197
+* Improvement: AdBlocker notice should have learn more link #177
 
 = 1.7 (31 May 2019) =
 

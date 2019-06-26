@@ -54,7 +54,7 @@ jQuery( document ).ready(function($) {
                     break;
                 case "ad_image":
                     content +='<div class="">Advertisement</div>';
-                    content +='<div class="afw afw_ad_image afw_'+adbyindex.ad_id+'">';                    
+                    content +='<div data-ad-id="'+adbyindex.ad_id+'" class="afw afw_ad afw_ad_image afw_'+adbyindex.ad_id+'">';                    
                     content +='<a target="_blank" href="'+adbyindex.ad_redirect_url+'"><img src="'+adbyindex.ad_image+'"></a>';
                     content +='</div>';                    
                     if(j==1){
@@ -70,7 +70,8 @@ jQuery( document ).ready(function($) {
                     
                     break;
                     
-            }                             
+            }   
+            adsforwp_ad_tracker();
             }
     /**
      * we are here iterating on each group div to display all ads 
@@ -140,7 +141,8 @@ jQuery( document ).ready(function($) {
                 return device;
         }
         
-      if(adsforwp_obj.ad_performance_tracker == 1){
+      function adsforwp_ad_tracker(){
+          if(adsforwp_obj.ad_performance_tracker == 1){
         
         setTimeout(function(){   
             
@@ -199,6 +201,8 @@ jQuery( document ).ready(function($) {
 	  });
         
       }
+      }  
+      adsforwp_ad_tracker();
                                   
     //Analytics js ends here
             

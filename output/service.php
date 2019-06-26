@@ -39,13 +39,12 @@ class adsforwp_output_service{
     
    public function adsforwp_check_ad_expiry_date($ad_id){
            
-        $post_meta_dataset          = get_post_meta($ad_id,$key='',true); 
-               
+        $post_meta_dataset           = get_post_meta($ad_id,$key='',true);                
+        $ad_expire_days              = get_post_meta($ad_id,$key='adsforwp_ad_expire_days',true);
         $ad_expire_enable            = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_expire_enable', 'adsforwp_array');                              
         $ad_expire_from              = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_expire_from', 'adsforwp_array');                              
         $ad_expire_to                = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_expire_to', 'adsforwp_array');                              
-        $ad_days_enable              = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_expire_day_enable', 'adsforwp_array');                              
-        $ad_expire_days              = get_post_meta($ad_id,$key='adsforwp_ad_expire_days',true);
+        $ad_days_enable              = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_expire_day_enable', 'adsforwp_array');                                      
         
         $current_date = date("Y-m-d");
                                             

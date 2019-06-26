@@ -263,7 +263,7 @@ class adsforwp_view_placement {
           
             $homepage ='false';  
           
-            if(is_home() || is_front_page() || ampforwp_is_home()){
+            if(is_home() || is_front_page() || ( function_exists('ampforwp_is_home') && ampforwp_is_home()) ){
                $homepage = 'true';  
             }
                       

@@ -124,8 +124,8 @@ class adsforwp_view_display {
 			'id' => 'adsforwp_existing_element_action',
 			'type' => 'select',
                         'options' => array(
-                                'prepend_content' => 'Prepend Content',
-				'append_content'  => 'Append Content',                                                               
+                                'prepend_content' => 'Before Element',
+				'append_content'  => 'Inside Element',                                                               
                         )
 		),                                
                 array(		

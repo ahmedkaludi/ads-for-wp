@@ -68,7 +68,7 @@ function adsforwp_reset_all_settings(){
            return;  
         } 
         
-        $result ='';
+        $result = '';
         
         //Deleting Settings
         update_option( 'adsforwp_settings', array());                   
@@ -213,13 +213,13 @@ function adsforwp_filter_by_ad_type() {
     if ( $typenow == 'adsforwp' ) { // Your custom post type slug
         
       $plugins = array(
-                                'adsense' =>'AdSense',
-                                'media_net' =>'Media.net',
-                                'ad_now' =>'AdNow',				                                
-                                'contentad' =>'Content.ad',
-                                'infolinks' =>'Infolinks',
-                                'ad_image' =>'Image Banner Ad',
-                                'custom' =>'Custom Code',
+                                'adsense'   => 'AdSense',
+                                'media_net' => 'Media.net',
+                                'ad_now'    => 'AdNow',				                                
+                                'contentad' => 'Content.ad',
+                                'infolinks' => 'Infolinks',
+                                'ad_image'  => 'Image Banner Ad',
+                                'custom'    => 'Custom Code',
 			); // Options for the filter select field
       
       $current_plugin = '';
@@ -249,8 +249,8 @@ function adsforwp_sort_ads_by_type( $query ) {
   // Get the post type
   $post_type = isset( $_GET['post_type'] ) ? $_GET['post_type'] : '';
   if ( is_admin() && $pagenow=='edit.php' && $post_type == 'adsforwp' && isset( $_GET['ad-type-slug'] ) && $_GET['ad-type-slug'] !='all' ) {
-    $query->query_vars['meta_key'] = 'select_adtype';
-    $query->query_vars['meta_value'] = $_GET['ad-type-slug'];
+    $query->query_vars['meta_key']     = 'select_adtype';
+    $query->query_vars['meta_value']   = $_GET['ad-type-slug'];
     $query->query_vars['meta_compare'] = '=';
   }
 }
@@ -259,12 +259,10 @@ add_filter( 'parse_query', 'adsforwp_sort_ads_by_type' );
 
 function adsforwp_review_notice_remindme(){   
         
-        if ( ! isset( $_POST['adsforwp_security_nonce'] ) ){
-            
+        if ( ! isset( $_POST['adsforwp_security_nonce'] ) ){            
            return; 
         }
-        if ( !wp_verify_nonce( $_POST['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
-            
+        if ( !wp_verify_nonce( $_POST['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){            
            return;  
         }                    
         $result =  update_option( "review_notice_bar_close_date", date("Y-m-d"));   
@@ -415,7 +413,7 @@ function adsforwp_send_query_message(){
         $user_email = $user_data->user_email;       
         //php mailer variables
         $to         = 'team@magazine3.com';
-        $subject    = "Customer Query";
+        $subject    = "Ads For WP Customer Query";
         $headers    = 'From: '. esc_attr($user_email) . "\r\n" .
                       'Reply-To: ' . esc_attr($user_email) . "\r\n";
         
@@ -724,6 +722,7 @@ function adsforwp_setup_post_type() {
       	'public' 		=> true,
       	'has_archive' 		=> false,
       	'exclude_from_search'	=> true,
+        'show_in_admin_bar'     => false,
     	'publicly_queryable'	=> false,
         'menu_position'         => 100  
     );
@@ -740,6 +739,7 @@ function adsforwp_setup_post_type() {
       	'has_archive' 		=> false,
       	'exclude_from_search'	=> true,
     	'publicly_queryable'	=> false,
+        'show_in_admin_bar'     => false,    
         'show_in_menu'  =>	'edit.php?post_type=adsforwp',                
         'show_ui'           => true,
 	'show_in_nav_menus' => false,			
@@ -827,6 +827,8 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
                
             }
              $adsforwp_google_token = get_option( 'adsforwp_google_token' );
+             
+             $wpnonce_ = wp_create_nonce('wpnonce_data');
             
             switch ( $column ) {        
                 case 'adsforwp_group_column' :
@@ -851,7 +853,7 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
                     
                         if($adsforwp_google_token){
                          
-                            echo '<div><span><a href="'.esc_url(admin_url( 'edit.php?post_type=adsforwp&page=analytics&ad_id='.$post_id )).'">'.esc_attr($impression).'</a><span></div>';                               
+                            echo '<div><span><a href="'.esc_url(admin_url( 'edit.php?post_type=adsforwp&page=analytics&ad_id='.$post_id.'&wpnonce_='.$wpnonce_ )).'">'.esc_attr($impression).'</a><span></div>';                               
                             
                         }else{
                            
@@ -864,7 +866,7 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
                     
                         if($adsforwp_google_token){
                          
-                            echo '<div><span><a href="'.esc_url(admin_url( 'edit.php?post_type=adsforwp&page=analytics&ad_id='.$post_id )).'">'.esc_attr($clicks).'</a><span></div>';                               
+                            echo '<div><span><a href="'.esc_url(admin_url( 'edit.php?post_type=adsforwp&page=analytics&ad_id='.$post_id.'&wpnonce_='.$wpnonce_  )).'">'.esc_attr($clicks).'</a><span></div>';                               
                             
                         }else{
                             
@@ -910,16 +912,22 @@ add_action( 'manage_adsforwp_posts_custom_column' , 'adsforwp_group_custom_colum
  * @return string
  */
 
-function adsforwp_custom_columns($columns) {   
+function adsforwp_custom_columns($columns) {
+    
+    $settings = adsforwp_defaultSettings();
     
     unset($columns['date']);
     $columns['adsforwp_ad_image_preview']       = '<a>'.esc_html__( 'Preview', 'ads-for-wp' ).'<a>';
     $columns['adsforwp_expire_column']          = '<a>'.esc_html__( 'Expire On', 'ads-for-wp' ).'<a>';
     $columns['adsforwp_group_column']           = '<a>'.esc_html__( 'Groups', 'ads-for-wp' ).'<a>';
-    $columns['adsforwp_ad_impression_column']   = '<a>'.esc_html__( 'Ad Impression', 'ads-for-wp' ).'<a>';
-    $columns['adsforwp_ad_clicks_column']       = '<a>'.esc_html__( 'Ad Clicks', 'ads-for-wp' ).'<a>';
-    
-    
+        
+    if(isset($settings['ad_performance_tracker'])){
+
+       $columns['adsforwp_ad_impression_column']   = '<a>'.esc_html__( 'Ad Impression', 'ads-for-wp' ).'<a>';
+       $columns['adsforwp_ad_clicks_column']       = '<a>'.esc_html__( 'Ad Clicks', 'ads-for-wp' ).'<a>';
+
+    }
+                
     return $columns;
     
 }
@@ -1019,9 +1027,9 @@ function adsforwp_admin_enqueue() {
         
         //Analytics js
         $analytics_data = array(
-            'ajax_url'  => admin_url( 'admin-ajax.php' ),
-            'id'		=> get_the_ID(),            
-            'post_type'		=> get_post_type()
+            'ajax_url'      => admin_url( 'admin-ajax.php' ),
+            'id'	    => get_the_ID(),            
+            'post_type'	    => get_post_type()
         );
         
         wp_localize_script( 'ads-for-wp-admin-analytics-js', 'adsforwp_localize_analytics_data', $analytics_data );
@@ -1030,12 +1038,21 @@ function adsforwp_admin_enqueue() {
 }
 add_action('admin_enqueue_scripts','adsforwp_admin_enqueue');
 
+function adsforwp_get_ad_ids(){
+        
+    $all_ads_id = json_decode(get_transient('adsforwp_transient_ads_ids'), true);
+                          
+     return $all_ads_id;
+}
+
 /*
  *      Storing and updating all ads post ids in transient on different actions 
  *      which we will fetch all ids from here to display our post
  */    
 function adsforwp_published(){    
     
+        $ads_post_ids = array();
+        
         $all_ads_post = get_posts(
             array(
                     'post_type' 	 => 'adsforwp',
@@ -1044,15 +1061,19 @@ function adsforwp_published(){
             )
         ); 
         
-     $ads_post_ids = array();
+        if($all_ads_post){
+
+            foreach($all_ads_post as $ads){
+                $ads_post_ids[] = $ads->ID;         
+           }
+
+        }
      
-     foreach($all_ads_post as $ads){
-         $ads_post_ids[] = $ads->ID;         
+     if($ads_post_ids){
+         $ads_post_ids_json = json_encode($ads_post_ids);
+         set_transient('adsforwp_transient_ads_ids', $ads_post_ids_json); 
      }
-     
-     $ads_post_ids_json = json_encode($ads_post_ids);
-     set_transient('adsforwp_transient_ads_ids', $ads_post_ids_json); 
-     
+               
 }
 
 function adsforwp_update_ids_on_trash(){
@@ -1069,6 +1090,14 @@ function adsforwp_update_ids_on_untrash(){
     add_action( 'publish_adsforwp', 'adsforwp_published');
     add_action( 'trash_adsforwp', 'adsforwp_update_ids_on_trash');    
     add_action( 'untrash_adsforwp', 'adsforwp_update_ids_on_untrash');
+ 
+    
+function adsforwp_get_group_ad_ids(){
+        
+    $all_ads_id = json_decode(get_transient('adsforwp_groups_transient_ids'), true);
+                   
+     return $all_ads_id;
+}    
     
 /*
  *      Storing and updating all groups post ids in transient on different actions 
@@ -1076,21 +1105,31 @@ function adsforwp_update_ids_on_untrash(){
  */    
 function adsforwp_groups_published(){   
     
-        $all_group_post = get_posts(
-            array(
-                    'post_type' 	 => 'adsforwp-groups',
-                    'posts_per_page' => -1,
-                    'post_status' => 'publish',
-            )
-        );  
+    $all_group_post = get_posts(
+        array(
+                'post_type' 	     => 'adsforwp-groups',
+                'posts_per_page'     => -1,
+                'post_status'        => 'publish',
+        )
+    );  
         
      $group_post_ids = array();
-     foreach($all_group_post as $group){
-         $group_post_ids[] = $group->ID;         
+     
+     if($all_group_post){
+     
+         foreach($all_group_post as $group){
+             $group_post_ids[] = $group->ID;         
+        }
+         
+     }
+          
+     if($group_post_ids){
+         
+         $group_post_ids_json = json_encode($group_post_ids);
+         set_transient('adsforwp_groups_transient_ids', $group_post_ids_json); 
+         
      }
      
-     $group_post_ids_json = json_encode($group_post_ids);
-     set_transient('adsforwp_groups_transient_ids', $group_post_ids_json); 
      
 }
 
@@ -1115,21 +1154,23 @@ function adsforwp_groups_update_ids_on_untrash(){
 function adsforwp_general_admin_notice(){
     
      echo '<div class="message error update-message notice notice-alt notice-error afw-blocker-notice afw_hide">'
-                 . '<p>'.esc_html__('Please disable your', 'ads-for-wp').' <strong>'.esc_html__('AdBlocker', 'ads-for-wp').'</strong> '.esc_html__('to use adsforwp plugin smoothly', 'ads-for-wp').'</p>'
-                 . '</div>'; 
-     $post_type = get_post_type();     
+        . '<p>'.esc_html__('Please disable your', 'ads-for-wp').' <strong>'.esc_html__('AdBlocker', 'ads-for-wp').'</strong> '.esc_html__('to use adsforwp plugin smoothly.', 'ads-for-wp').' <a target="_blank" href="http://adsforwp.com/docs/article/what-is-ad-blocker-and-how-to-disable-it/">'.esc_html__('Learn More', 'ads-for-wp').'</a></p>'
+        . '</div>'; 
+     $post_type = get_post_type();
+     
      if($post_type == 'adsforwp'){
             ?>
-  <script type="text/javascript">  
-       jQuery(document).ready( function($) {
-           if ($('#adsforwp-hidden-block').length == 0 ) {
-                 $(".afw-blocker-notice").show();
-           }else{
-                 $(".afw-blocker-notice").hide(); 
-           }
-       });
-  </script>                
+        <script type="text/javascript">  
+             jQuery(document).ready( function($) {
+                 if ($('#adsforwp-hidden-block').length == 0 ) {
+                       $(".afw-blocker-notice").show();
+                 }else{
+                       $(".afw-blocker-notice").hide(); 
+                 }
+             });
+            </script>                
     <?php
+    
      }
      
 }
