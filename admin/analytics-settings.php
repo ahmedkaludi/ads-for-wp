@@ -1,13 +1,14 @@
 <?php
 class adsforwp_admin_analytics_settings{
             
-public function __construct() {
+    public function __construct() {
     
         add_action( 'admin_enqueue_scripts', array($this, 'adsforwp_chart_register_scripts') );
         add_action( 'admin_menu', array($this, 'adsforwp_add_analytics_menu_links'),20);
                 
     }
-public function adsforwp_add_analytics_menu_links() {	
+    
+    public function adsforwp_add_analytics_menu_links() {	
 	// Settings page - Same as main menu page
                
         $settingsLink = null;
@@ -33,88 +34,85 @@ public function adsforwp_add_analytics_menu_links() {
                     'adsforwp-analytics',
                     array($this , 'adsforwp_admin_analytics_render')
                 );
-}
+    }
 
 
 public function adsforwp_admin_analytics_interface_render(){
     
 	// Authentication
-            if ( ! current_user_can( 'manage_options' ) ) {
-                    return;
-            }   
+    if ( ! current_user_can( 'manage_options' ) ) {
+        return;
+    }   
                         			            
-            $all_ads_post         = adsforwp_get_ad_ids();  
-            $total_ads_impression = 0;
-            $total_ads_clicks     = 0;
-            if($all_ads_post){
-                
-            foreach($all_ads_post as $ad_id){     
-                
-                $ad_impression_count  = get_post_meta($ad_id, $key='ad_impression_count', true );
-                $ad_clicks_count      = get_post_meta($ad_id, $key='ad_clicks', true );                 
-                $total_ads_impression = ((int)$total_ads_impression+ (int)$ad_impression_count);
-                $total_ads_clicks     = ((int)$total_ads_clicks+(int)$ad_clicks_count);
-                
-            }
+    $all_ads_post         = adsforwp_get_ad_ids();  
+    $total_ads_impression = 0;
+    $total_ads_clicks     = 0;
+    if($all_ads_post){
             
-            }                
+        foreach($all_ads_post as $ad_id){     
+            
+            $ad_impression_count  = get_post_meta($ad_id, $key='ad_impression_count', true );
+            $ad_clicks_count      = get_post_meta($ad_id, $key='ad_clicks', true );                 
+            $total_ads_impression = ((int)$total_ads_impression+ (int)$ad_impression_count);
+            $total_ads_clicks     = ((int)$total_ads_clicks+(int)$ad_clicks_count);   
+        }    
+    }                
+    
+    $tab = adsforwp_get_tab('all', array('mobile','desktop', 'amp', 'tablets'));
         
-	    $tab = adsforwp_get_tab('all', array('mobile','desktop', 'amp', 'tablets'));
+        $start_date_val = strtotime( 'now' );//strtotime( '-1 month' );
+        $end_date_val   = strtotime( 'now' );
+        $start_date     = date( 'Y-m-d', $start_date_val );
+        $end_date       = date( 'Y-m-d', $end_date_val );
+
+
+        $_differ =  'today';
+        if(isset($_REQUEST['view_data'])){
             
-            $start_date_val = strtotime( 'now' );//strtotime( '-1 month' );
-            $end_date_val   = strtotime( 'now' );
-            $start_date     = date( 'Y-m-d', $start_date_val );
-            $end_date       = date( 'Y-m-d', $end_date_val );
-
-
-            //$_differ = get_option( 'adsforwp_date_differ' );
-            $_differ =  'today';
-            if(isset($_REQUEST['view_data'])){
-                
-                if ( ! isset( $_GET['adsforwp_analytics_report_nonce'] ) ){
-                    return;		
-                }
-
-                if ( !wp_verify_nonce( $_GET['adsforwp_analytics_report_nonce'], 'adsforwp_analytics_report_data' ) ){
-                    return;
-                }
-                                
-                $_differ = $_REQUEST['view_data'];
-                
+            if ( ! isset( $_GET['adsforwp_analytics_report_nonce'] ) ){
+                return;		
             }
+
+            if ( !wp_verify_nonce( $_GET['adsforwp_analytics_report_nonce'], 'adsforwp_analytics_report_data' ) ){
+                return;
+            }
+                            
+            $_differ = $_REQUEST['view_data'];
             
-            $ad_id_param = null;
-                        
-            if(isset($_REQUEST['ad_id'])){
-                
-                $ad_id_param = $_REQUEST['ad_id'];
-                
+        }
+        
+        $ad_id_param = null;
+                    
+        if(isset($_REQUEST['ad_id'])){
+            
+            $ad_id_param = $_REQUEST['ad_id'];
+            
+        }
+                    
+        if ( $_differ ) {
+            if ( $_differ == 'last_7_days' ) {
+                $start_date = date( 'Y-m-d', strtotime( '-7 days' ) );
+            }elseif ( $_differ == 'last_14_days' ) {
+                $start_date = date( 'Y-m-d', strtotime( '-14 days' ) );
+            }elseif ( $_differ == 'last_30_days' ) {
+                $start_date = date( 'Y-m-d', strtotime( '-1 month' ) );
+            }elseif (  $_differ == 'this_month' ) {
+                $start_date =  date('Y-m-01') ;
+            }elseif ( $_differ == 'last_month' ) {
+                $start_date =  date('Y-m-01', strtotime('-1 month') );
+                $end_date =  date('Y-m-t', strtotime('-1 month') );
+            }elseif ( $_differ == 'last_3_months' ) {
+                $start_date =  date('Y-m-01', strtotime('-3 month') );
+                $end_date =  date('Y-m-t', strtotime('-1 month') );
+            }elseif ( $_differ == 'last_6_months' ) {
+                $start_date =  date('Y-m-01', strtotime('-6 month') );
+                $end_date =  date('Y-m-t', strtotime('-1 month') );
+            }elseif ( $_differ == 'last_year' ) {
+                $start_date =  date('Y-m-01', strtotime('-1 year') );
+                $end_date =  date('Y-m-t', strtotime('-1 month') );
             }
-                        
-            if ( $_differ ) {
-                if ( $_differ == 'last_7_days' ) {
-                    $start_date = date( 'Y-m-d', strtotime( '-7 days' ) );
-                }elseif ( $_differ == 'last_14_days' ) {
-                    $start_date = date( 'Y-m-d', strtotime( '-14 days' ) );
-                }elseif ( $_differ == 'last_30_days' ) {
-                    $start_date = date( 'Y-m-d', strtotime( '-1 month' ) );
-                }elseif (  $_differ == 'this_month' ) {
-                    $start_date =  date('Y-m-01') ;
-                }elseif ( $_differ == 'last_month' ) {
-                    $start_date =  date('Y-m-01', strtotime('-1 month') );
-                    $end_date =  date('Y-m-t', strtotime('-1 month') );
-                }elseif ( $_differ == 'last_3_months' ) {
-                    $start_date =  date('Y-m-01', strtotime('-3 month') );
-                    $end_date =  date('Y-m-t', strtotime('-1 month') );
-                }elseif ( $_differ == 'last_6_months' ) {
-                    $start_date =  date('Y-m-01', strtotime('-6 month') );
-                    $end_date =  date('Y-m-t', strtotime('-1 month') );
-                }elseif ( $_differ == 'last_year' ) {
-                    $start_date =  date('Y-m-01', strtotime('-1 year') );
-                    $end_date =  date('Y-m-t', strtotime('-1 month') );
-                }
 
-            }
+        }
             
         $date1 = date_create( $start_date );
         $date2 = date_create( $end_date );
@@ -437,31 +435,24 @@ public function adsforwp_admin_analytics_interface_render(){
     function adsforwp_chart_register_scripts($hook){
         if("adsforwp_page_analytics"==$hook){
             wp_register_script(
-                    'highCharts',
-                    ADSFORWP_PLUGIN_DIR_URI . 'public/Chart.bundle.js',
-                    array( 'jquery' ),
-                    '3.0',
-                    true
-                );
-                wp_register_script(
-                    'adminCharts',
-                    ADSFORWP_PLUGIN_DIR_URI . 'public/admin_charts.js',
-                    array( 'highCharts' ),
-                    '1.0',
-                    true
-                );
-               /*wp_register_style(
-                    'adminChartsStyles',
-                    ADSFORWP_PLUGIN_DIR_URI . 'css/admin_chart.css'
-                );*/
-                wp_enqueue_script( 'highCharts' );
-                wp_enqueue_script( 'adminCharts' );
+                'highCharts',
+                ADSFORWP_PLUGIN_DIR_URI . 'public/Chart.bundle.js',
+                array( 'jquery' ),
+                '3.0',
+                true
+            );
+            wp_register_script(
+                'adminCharts',
+                ADSFORWP_PLUGIN_DIR_URI . 'public/admin_charts.js',
+                array( 'highCharts' ),
+                '1.0',
+                true
+            );
+            wp_enqueue_script( 'highCharts' );
+            wp_enqueue_script( 'adminCharts' );
        }
     }
 }
 if (class_exists('adsforwp_admin_analytics_settings')) {
 	new adsforwp_admin_analytics_settings;
 };
-/**
- * Enqueue CSS and JS
- */
