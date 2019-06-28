@@ -4,18 +4,15 @@ add_action('admin_init', 'adsforwp_create_database_for_existing_users');
 
 function adsforwp_create_database_for_existing_users(){
     
-                if ( ! current_user_can( 'manage_options' ) ) {
-                    return;
-                }
- 
-		$status = get_option('adsforwp-database-on-first-load');
- 
-		if($status !='enable'){
-                    
-			adsforwp_database_install();                        
-			update_option('adsforwp-database-on-first-load', 'enable');  // Security: Permission verified			
-                        
-		}
+    if ( ! current_user_can( 'manage_options' ) ) {
+        return;
+    }
+
+	$status = get_option('adsforwp-database-on-first-load');
+	if($status !='enable'){
+		adsforwp_database_install();                        
+		update_option('adsforwp-database-on-first-load', 'enable');  // Security: Permission verified
+	}
  		   
 }
 /**
@@ -24,7 +21,7 @@ function adsforwp_create_database_for_existing_users(){
 function adsforwp_on_activation() {
     
     if ( ! current_user_can( 'manage_options' ) ) {
-                    return;
+        return;
     }
     
     add_option('adsforwp_do_activation_redirect', true);       
@@ -41,9 +38,9 @@ function adsforwp_on_activation() {
  */
 function adsforwp_database_install() {
     
-        if ( ! current_user_can( 'manage_options' ) ) {
-                    return;
-        }
+    if ( ! current_user_can( 'manage_options' ) ) {
+        return;
+    }
     
 	global $wpdb;                
 
@@ -51,7 +48,6 @@ function adsforwp_database_install() {
 	
 	$charset_collate = $engine = '';	
 	
-
 	if(!empty($wpdb->charset)) {
 		$charset_collate .= " DEFAULT CHARACTER SET {$wpdb->charset}";
 	} 
@@ -85,12 +81,6 @@ function adsforwp_database_install() {
 
 }
 
-/**
- *  Actions on plugin deactivation
- */
-function adsforwp_on_deactivation() {    
-    
-}
 
 function adsforwp_now() {
     

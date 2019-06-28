@@ -53,7 +53,6 @@ require_once  ADSFORWP_PLUGIN_DIR.'/output/amp-condition-display.php';
 
 
 register_activation_hook( __FILE__, 'adsforwp_on_activation' );
-register_deactivation_hook(__FILE__, 'adsforwp_on_deactivation');
 
 
 /* Function to check other plugin is install or not*/
