@@ -170,7 +170,7 @@ function adsforwp_filter_tracked_plugins() {
         $current_plugin = $_GET['slug']; // Check if option has been selected
       } ?>
       <select name="slug" id="slug">
-        <option value="all" <?php selected( 'all', $current_plugin ); ?>><?php _e( 'All', 'ads-for-wp' ); ?></option>
+        <option value="all" <?php selected( 'all', $current_plugin ); ?>><?php esc_html_e( 'All', 'ads-for-wp' ); ?></option>
         <?php foreach( $plugins as $key=>$value ) { ?>
           <option value="<?php echo esc_attr( $key ); ?>" <?php selected( $key, $current_plugin ); ?>><?php echo esc_attr( $value ); ?></option>
         <?php } ?>
@@ -232,7 +232,7 @@ function adsforwp_filter_by_ad_type() {
         $current_plugin = $_GET['ad-type-slug']; // Check if option has been selected
       } ?>
       <select name="ad-type-slug" id="ad-type-slug">
-        <option value="all" <?php selected( 'all', $current_plugin ); ?>><?php _e( 'All', 'ads-for-wp' ); ?></option>
+        <option value="all" <?php selected( 'all', $current_plugin ); ?>><?php esc_html_e( 'All', 'ads-for-wp' ); ?></option>
         <?php foreach( $plugins as $key=>$value ) { ?>
           <option value="<?php echo esc_attr( $key ); ?>" <?php selected( $key, $current_plugin ); ?>><?php echo esc_attr( $value ); ?></option>
         <?php } ?>
