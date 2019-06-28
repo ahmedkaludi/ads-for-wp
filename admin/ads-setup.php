@@ -13,7 +13,7 @@ function adsforwp_create_database_for_existing_users(){
 		if($status !='enable'){
                     
 			adsforwp_database_install();                        
-			update_option('adsforwp-database-on-first-load', 'enable');			
+			update_option('adsforwp-database-on-first-load', 'enable');  // Security: Permission verified			
                         
 		}
  		   
@@ -29,7 +29,7 @@ function adsforwp_on_activation() {
     
     add_option('adsforwp_do_activation_redirect', true);       
     set_transient( 'adsforwp_admin_notice_transient', true, 5 );
-    update_option( "adsforwp_activation_date", date("Y-m-d"));
+    update_option( "adsforwp_activation_date", date("Y-m-d"));  // Security: Permission verified			
             
     adsforwp_database_install();
                     
@@ -167,22 +167,49 @@ function adsforwp_get_ad_stats($condition, $ad_id, $date=null) {
                 foreach($result as $row){
                      
                     if($row['ad_device_name'] =='desktop'){
-                       
-                        $ad_stats['desktop']['click']      +=  $row['ad_clicks'];
-                        $ad_stats['desktop']['impression'] +=  $row['ad_impressions'];
-
+                        
+                        if(isset($ad_stats['desktop']['click'])){
+                            $ad_stats['desktop']['click']      +=  $row['ad_clicks'];
+                        }else{
+                            $ad_stats['desktop']['click']       =  $row['ad_clicks'];
+                        }
+                        
+                        if(isset($ad_stats['desktop']['impression'])){
+                            $ad_stats['desktop']['impression'] +=  $row['ad_impressions'];
+                        }else{
+                            $ad_stats['desktop']['impression'] =  $row['ad_impressions'];
+                        }
+                                                
                     }
                     if($row['ad_device_name'] =='mobile'){
                        
-                        $ad_stats['mobile']['click']      +=  $row['ad_clicks'];
-                        $ad_stats['mobile']['impression'] +=  $row['ad_impressions'];   
+                        if(isset($ad_stats['mobile']['click'])){
+                            $ad_stats['mobile']['click']      +=  $row['ad_clicks'];
+                        }else{
+                            $ad_stats['mobile']['click']       =  $row['ad_clicks'];
+                        }
                         
+                        if(isset($ad_stats['mobile']['impression'])){
+                            $ad_stats['mobile']['impression'] +=  $row['ad_impressions'];   
+                        }else{
+                            $ad_stats['mobile']['impression']  =  $row['ad_impressions'];   
+                        }
+                                                
                     }
                     if($row['ad_device_name'] =='amp'){
                         
-                        $ad_stats['amp']['click']      +=  $row['ad_clicks'];
-                        $ad_stats['amp']['impression'] +=  $row['ad_impressions'];
-                     
+                        if(isset($ad_stats['amp']['click'])){
+                            $ad_stats['amp']['click']         +=  $row['ad_clicks'];
+                        }else{
+                            $ad_stats['amp']['click']          =  $row['ad_clicks'];
+                        }
+                        
+                        if(isset($ad_stats['amp']['impression'])){
+                            $ad_stats['amp']['impression']    +=  $row['ad_impressions'];
+                        }else{
+                           $ad_stats['amp']['impression']      =  $row['ad_impressions']; 
+                        }
+                                                                     
                     }
                                         
                 }

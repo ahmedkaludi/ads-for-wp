@@ -60,6 +60,10 @@ function adsforwp_store_user_info_client_side(){
  */
 function adsforwp_reset_all_settings(){   
     
+        if ( ! current_user_can( 'manage_options' ) ) {
+                    return;
+        }
+            
         if ( ! isset( $_POST['adsforwp_security_nonce'] ) ){
            return; 
         }
@@ -71,7 +75,7 @@ function adsforwp_reset_all_settings(){
         $result = '';
         
         //Deleting Settings
-        update_option( 'adsforwp_settings', array());                   
+        update_option( 'adsforwp_settings', array()); // Security: Permission and nonce verified                   
         
         //Deleting Ads
         $allposts= get_posts( array('post_type'=>'adsforwp','numberposts'=>-1) );
@@ -80,7 +84,7 @@ function adsforwp_reset_all_settings(){
             
             foreach ($allposts as $eachpost) {
                 
-                $result = wp_delete_post( $eachpost->ID, true );
+                $result = wp_delete_post( $eachpost->ID, true ); 
                 
             }
         }
@@ -259,13 +263,17 @@ add_filter( 'parse_query', 'adsforwp_sort_ads_by_type' );
 
 function adsforwp_review_notice_remindme(){   
         
+        if ( ! current_user_can( 'manage_options' ) ) {
+                    return;
+        }
+        
         if ( ! isset( $_POST['adsforwp_security_nonce'] ) ){            
            return; 
         }
         if ( !wp_verify_nonce( $_POST['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){            
            return;  
         }                    
-        $result =  update_option( "review_notice_bar_close_date", date("Y-m-d"));   
+        $result =  update_option( "review_notice_bar_close_date", date("Y-m-d"));   // Security: Permission and nonce verified
         
         if($result){  
             
@@ -291,7 +299,7 @@ function adsforwp_review_notice_close(){
            return;  
         } 
         
-        $result =  update_option( "adsforwp_review_never", 'never');  
+        $result =  update_option( "adsforwp_review_never", 'never');   // Security: Permission and nonce verified
         
         if($result){           
             
@@ -322,7 +330,8 @@ function adsforwp_import_plugin_data(){
         }
         if ( !wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
              return;  
-        }        
+        }
+        
         $plugin_name   = sanitize_text_field($_GET['plugin_name']);           
         $common_function_obj = new adsforwp_admin_common_functions();
         $result =  array();

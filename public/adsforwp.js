@@ -413,7 +413,7 @@ jQuery( document ).ready(function($) {
     $("#adsforwp_ad_img_height").parent().parent("tr").hide();    
     $(".adsforwp-ad-img-upload").click(function(e) {	// Application Icon upload
                     e.preventDefault();
-                    var pwaforwpMediaUploader = wp.media({
+                    var adsforwpMediaUploader = wp.media({
                             title: adsforwp_localize_data.uploader_title,
                             button: {
                                     text: adsforwp_localize_data.uploader_button
@@ -422,7 +422,7 @@ jQuery( document ).ready(function($) {
                             library:{type : 'image'}
                     })
                     .on("select", function() {
-                            var attachment = pwaforwpMediaUploader.state().get("selection").first().toJSON();                        
+                            var attachment = adsforwpMediaUploader.state().get("selection").first().toJSON();                        
                             $(".adsforwp-icon").val(attachment.url);
                             $(".afw_ad_img_div").html('<div class="afw_ad_thumbnail"><img class="afw_ad_image_prev" src="'+attachment.url+'"/><a href="#" class="afw_ad_prev_close">X</a></div>');
                             $("#adsforwp_ad_img_height").val(attachment.height);

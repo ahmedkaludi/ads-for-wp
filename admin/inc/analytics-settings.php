@@ -69,14 +69,14 @@ class Adsforwp_analyticsSettings{
 				$savedOpt                 = get_option('adsforwp_analytics');
 				$adsforwp_google_token    = esc_html($_POST['adsforwp_google_token']);
 				$savedOpt['google_token'] = $adsforwp_google_token;
-				update_option( 'adsforwp_analytics', $savedOpt );
+				update_option( 'adsforwp_analytics', $savedOpt ); // Security: Nonce verified
 			}
 			if(isset($_POST['adsforwp_profile_entry'])){
 				$savedOpt                          = get_option('adsforwp_analytics');
 				$profile_for_dashboard             = esc_html($_POST['profile_for_dashboard']);
 				$savedOpt['profile_for_post']      = $profile_for_dashboard;
 				$savedOpt['profile_for_dashboard'] = $profile_for_dashboard;
-				update_option( 'adsforwp_analytics', $savedOpt );
+				update_option( 'adsforwp_analytics', $savedOpt ); // Security: Nonce verified
 				wp_redirect(admin_url('edit.php?post_type=adsforwp&page=analytics'));
 			}
 			if(isset($_POST['wp_adsforwp_analytics_log_out'])){
@@ -155,11 +155,11 @@ class Adsforwp_analyticsSettings{
                     <?php wp_nonce_field( 'adsforwp_analytics_data', 'adsforwp_analytics_nonce' ); ?>    
 			<table class="form-table">
 				<tr>
-					<td><label>Profile for Dashboard</label></td>
+					<td><label><?php esc_html__('Profile for Dashboard', 'ads-for-wp' ); ?></label></td>
 					<td>
 						<select name="profile_for_dashboard">
 							
-							<option value="">Select profile for Dashboard</option>
+							<option value=""><?php esc_html__('Select profile for Dashboard', 'ads-for-wp' ); ?></option>
 							<?php
 							echo $profileDashboardOpts;
 							?>
@@ -223,10 +223,15 @@ class Adsforwp_analyticsSettings{
 	}
 	
 	public function adsforwp_google_authentication(){
+            
+                if ( ! current_user_can( 'manage_options' ) ) {
+                    return;
+                }
+                
 		if ( isset( $_GET['code'] ) && 'adsforwp-analytics' === $_GET['page'] ) {
 				$key_google_token = sanitize_text_field( wp_unslash( $_GET['code'] ) );
 				try {
-					update_option( 'adsforwp_post_analytics_token', $key_google_token );
+					update_option( 'adsforwp_post_analytics_token', $key_google_token ); // Security: Permission verified
 					if ( $this->pa_connect() ) { wp_redirect(  admin_url( 'edit.php?post_type=adsforwp&page=adsforwp-analytics' )); }
 				} catch (Exception $e) {
 					echo $e->getMessage();

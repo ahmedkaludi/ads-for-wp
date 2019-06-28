@@ -81,6 +81,7 @@ function adsforwp_show_default_overall_dashboard($dashboard_profile_ID,$start_da
 			$compare_device_stats = $compare_device_category_stats->rows;                        
 			if(isset($device_category_stats->rows)){
 				foreach( $device_category_stats->rows as $key=>$row ){
+                                    
 					$session = $row[1];
 					$compare_session = $compare_device_stats[$key][1];
 					$vistors = $row[2];
@@ -93,19 +94,26 @@ function adsforwp_show_default_overall_dashboard($dashboard_profile_ID,$start_da
                                                    $session += $device_category_stats->rows[2][1];
                                                 }
 						
-						    $compare_session += $compare_device_stats[2][1];
-
+                                                if(isset( $compare_device_stats[2])){
+                                                   $compare_session += $compare_device_stats[2][1];  
+                                                }    
+                                                						    
                                                 if(isset($device_category_stats->rows[2])){
                                                     $vistors += $device_category_stats->rows[2][2];    
                                                 }    
 						
+                                                if(isset($compare_device_stats[2])){
                                                     $compare_vistors += $compare_device_stats[2][2];
-                                                
+                                                }
+                                                                                                    
                                                 if(isset($device_category_stats->rows[2])){
                                                     $pageviews += $device_category_stats->rows[2][3];
                                                 }     
 						
-						$compare_pageviews += $compare_device_stats[2][3];
+                                                if(isset($compare_device_stats[2])){
+                                                    $compare_pageviews += $compare_device_stats[2][3];
+                                                }
+						
 
 					}
 
