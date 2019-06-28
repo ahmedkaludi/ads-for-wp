@@ -827,9 +827,7 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
                
             }
              $adsforwp_google_token = get_option( 'adsforwp_google_token' );
-             
-             $wpnonce_ = wp_create_nonce('wpnonce_data');
-            
+                                      
             switch ( $column ) {        
                 case 'adsforwp_group_column' :
                     
@@ -853,7 +851,7 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
                     
                         if($adsforwp_google_token){
                          
-                            echo '<div><span><a href="'.esc_url(admin_url( 'edit.php?post_type=adsforwp&page=analytics&ad_id='.$post_id.'&wpnonce_='.$wpnonce_ )).'">'.esc_attr($impression).'</a><span></div>';                               
+                            echo '<div><span><a href="'.esc_url(admin_url( 'edit.php?post_type=adsforwp&page=analytics&ad_id='.$post_id)).'">'.esc_attr($impression).'</a><span></div>';                               
                             
                         }else{
                            
@@ -866,7 +864,7 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
                     
                         if($adsforwp_google_token){
                          
-                            echo '<div><span><a href="'.esc_url(admin_url( 'edit.php?post_type=adsforwp&page=analytics&ad_id='.$post_id.'&wpnonce_='.$wpnonce_  )).'">'.esc_attr($clicks).'</a><span></div>';                               
+                            echo '<div><span><a href="'.esc_url(admin_url( 'edit.php?post_type=adsforwp&page=analytics&ad_id='.$post_id)).'">'.esc_attr($clicks).'</a><span></div>';                               
                             
                         }else{
                             

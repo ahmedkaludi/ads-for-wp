@@ -42,26 +42,18 @@ public function adsforwp_admin_analytics_interface_render(){
             if ( ! current_user_can( 'manage_options' ) ) {
                     return;
             }   
-            
-            if ( ! isset( $_GET['wpnonce_'] ) ){
-                return;		
-            }
-			
-            if ( !wp_verify_nonce( $_GET['wpnonce_'], 'wpnonce_data' ) ){
-                return;
-            }
-			            
-            $all_ads_post = adsforwp_get_ad_ids();  
+                        			            
+            $all_ads_post         = adsforwp_get_ad_ids();  
             $total_ads_impression = 0;
-            $total_ads_clicks = 0;
+            $total_ads_clicks     = 0;
             if($all_ads_post){
                 
             foreach($all_ads_post as $ad_id){     
                 
-                $ad_impression_count = get_post_meta($ad_id, $key='ad_impression_count', true );
-                $ad_clicks_count = get_post_meta($ad_id, $key='ad_clicks', true );                 
+                $ad_impression_count  = get_post_meta($ad_id, $key='ad_impression_count', true );
+                $ad_clicks_count      = get_post_meta($ad_id, $key='ad_clicks', true );                 
                 $total_ads_impression = ((int)$total_ads_impression+ (int)$ad_impression_count);
-                $total_ads_clicks = ((int)$total_ads_clicks+(int)$ad_clicks_count);
+                $total_ads_clicks     = ((int)$total_ads_clicks+(int)$ad_clicks_count);
                 
             }
             
@@ -79,6 +71,14 @@ public function adsforwp_admin_analytics_interface_render(){
             $_differ =  'today';
             if(isset($_REQUEST['view_data'])){
                 
+                if ( ! isset( $_GET['adsforwp_analytics_report_nonce'] ) ){
+                    return;		
+                }
+
+                if ( !wp_verify_nonce( $_GET['adsforwp_analytics_report_nonce'], 'adsforwp_analytics_report_data' ) ){
+                    return;
+                }
+                                
                 $_differ = $_REQUEST['view_data'];
                 
             }
@@ -90,8 +90,7 @@ public function adsforwp_admin_analytics_interface_render(){
                 $ad_id_param = $_REQUEST['ad_id'];
                 
             }
-            
-            
+                        
             if ( $_differ ) {
                 if ( $_differ == 'last_7_days' ) {
                     $start_date = date( 'Y-m-d', strtotime( '-7 days' ) );
@@ -116,19 +115,7 @@ public function adsforwp_admin_analytics_interface_render(){
                 }
 
             }
-            /*if ( isset( $_POST['view_data'] ) ) {
-
-            $s_date   = sanitize_text_field( wp_unslash( $_POST['st_date'] ) );
-            $ed_date  = sanitize_text_field( wp_unslash( $_POST['ed_date'] ) );
-        }
-
-        if ( isset( $s_date ) ) {
-            $start_date = $s_date ;
-        }
-
-        if ( isset( $ed_date ) ) {
-            $end_date = $ed_date;
-        }*/
+            
         $date1 = date_create( $start_date );
         $date2 = date_create( $end_date );
         $diff  = date_diff( $date2, $date1 );
@@ -237,8 +224,8 @@ public function adsforwp_admin_analytics_interface_render(){
                         <option value="last_3_months" <?php if($_differ=='last_3_months'){echo "selected"; } ?>> <?php echo esc_html__('Last 3 month','ads-for-wp'); ?></option>                       
                         <option value="last_6_months" <?php if($_differ=='last_6_months'){echo "selected"; } ?>> <?php echo esc_html__('Last 6 month','ads-for-wp'); ?></option>                       
                         <option value="last_year" <?php if($_differ=='last_year'){echo "selected"; } ?>> <?php echo esc_html__('Last year','ads-for-wp'); ?></option>                       
-                    </select>    
-                    <input type="hidden" name="wpnonce_" value="<?php echo wp_create_nonce('wpnonce_data');     ?>">
+                    </select>                                              
+                    <input type="hidden" name="adsforwp_analytics_report_nonce" value="<?php echo wp_create_nonce('adsforwp_analytics_report_data');     ?>">
                     <button type="submit" class="btn btn-success button-primary" style="display: inline-block;
                         background: #444444;
                         border-radius: 5px;
