@@ -78,7 +78,7 @@ function adsforwp_show_default_overall_dashboard($dashboard_profile_ID,$start_da
 			$results = $stats->totalsForAllResults;
 
 			$device_data = array();
-			$compare_device_stats = $compare_device_category_stats->rows;
+			$compare_device_stats = $compare_device_category_stats->rows;                        
 			if(isset($device_category_stats->rows)){
 				foreach( $device_category_stats->rows as $key=>$row ){
 					$session = $row[1];
@@ -88,13 +88,23 @@ function adsforwp_show_default_overall_dashboard($dashboard_profile_ID,$start_da
 					$pageviews = $row[3];
 					$compare_pageviews = $compare_device_stats[$key][3];
 					if($row[0]=='mobile'){
-						$session += $device_category_stats->rows[2][1];
-						$compare_session += $compare_device_stats[2][1];
+                                            
+                                                if(isset($device_category_stats->rows[2])){
+                                                   $session += $device_category_stats->rows[2][1];
+                                                }
+						
+						    $compare_session += $compare_device_stats[2][1];
 
-						$vistors += $device_category_stats->rows[2][2];
-						$compare_vistors += $compare_device_stats[2][2];
-
-						$pageviews += $device_category_stats->rows[2][3];
+                                                if(isset($device_category_stats->rows[2])){
+                                                    $vistors += $device_category_stats->rows[2][2];    
+                                                }    
+						
+                                                    $compare_vistors += $compare_device_stats[2][2];
+                                                
+                                                if(isset($device_category_stats->rows[2])){
+                                                    $pageviews += $device_category_stats->rows[2][3];
+                                                }     
+						
 						$compare_pageviews += $compare_device_stats[2][3];
 
 					}

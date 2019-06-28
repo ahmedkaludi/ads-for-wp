@@ -311,7 +311,11 @@ add_action('wp_ajax_adsforwp_review_notice_close', 'adsforwp_review_notice_close
      * This is a ajax handler function for importing plugins data. 
      * @return type json string
      */
-function adsforwp_import_plugin_data(){   
+function adsforwp_import_plugin_data(){ 
+    
+        if ( ! current_user_can( 'manage_options' ) ) {
+                    return;
+        }
         
         if ( ! isset( $_GET['adsforwp_security_nonce'] ) ){
              return; 

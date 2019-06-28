@@ -3,6 +3,10 @@
 add_action('admin_init', 'adsforwp_create_database_for_existing_users');
 
 function adsforwp_create_database_for_existing_users(){
+    
+                if ( ! current_user_can( 'manage_options' ) ) {
+                    return;
+                }
  
 		$status = get_option('adsforwp-database-on-first-load');
  
@@ -17,7 +21,11 @@ function adsforwp_create_database_for_existing_users(){
 /**
  * Initial setup on plugin activation
  */
-function adsforwp_on_activation() { 
+function adsforwp_on_activation() {
+    
+    if ( ! current_user_can( 'manage_options' ) ) {
+                    return;
+    }
     
     add_option('adsforwp_do_activation_redirect', true);       
     set_transient( 'adsforwp_admin_notice_transient', true, 5 );
@@ -32,6 +40,10 @@ function adsforwp_on_activation() {
  * @global type $wpdb
  */
 function adsforwp_database_install() {
+    
+        if ( ! current_user_can( 'manage_options' ) ) {
+                    return;
+        }
     
 	global $wpdb;                
 
