@@ -158,12 +158,12 @@ function adsforwp_filter_tracked_plugins() {
   global $wp_query;
     if ( $typenow == 'adsforwp' ) { // Your custom post type slug
       $plugins = array(
-                                'ad_shortcode'        => 'Shortcode (Manual)',
-				'between_the_content' => 'Between the Content (Automatic)',
-				'after_the_content'   => 'After the Content (Automatic)',
-				'before_the_content'  => 'Before the Content (Automatic)',
-                                'custom_target'       => 'Custom Target',
-                                'sticky'              => 'Sticky',
+        'ad_shortcode'        => esc_html__('Shortcode (Manual)','ads-for-wp'),
+				'between_the_content' => esc_html__('Between the Content (Automatic)','ads-for-wp'),
+				'after_the_content'   => esc_html__('After the Content (Automatic)','ads-for-wp'),
+				'before_the_content'  => esc_html__('Before the Content (Automatic)','ads-for-wp'),
+        'custom_target'       => esc_html__('Custom Target','ads-for-wp'),
+        'sticky'              => esc_html__('Sticky','ads-for-wp'),
 			); // Options for the filter select field
       $current_plugin = '';
       if( isset( $_GET['slug'] ) ) {
