@@ -217,13 +217,13 @@ function adsforwp_filter_by_ad_type() {
     if ( $typenow == 'adsforwp' ) { // Your custom post type slug
         
       $plugins = array(
-                                'adsense'   => 'AdSense',
-                                'media_net' => 'Media.net',
-                                'ad_now'    => 'AdNow',				                                
-                                'contentad' => 'Content.ad',
-                                'infolinks' => 'Infolinks',
-                                'ad_image'  => 'Image Banner Ad',
-                                'custom'    => 'Custom Code',
+          'adsense'   => esc_html__('AdSense','ads-for-wp'),
+          'media_net' => esc_html__('Media.net','ads-for-wp'),
+          'ad_now'    => esc_html__('AdNow','ads-for-wp'),
+          'contentad' => esc_html__('Content.ad','ads-for-wp'),
+          'infolinks' => esc_html__('Infolinks','ads-for-wp'),
+          'ad_image'  => esc_html__('Image Banner Ad','ads-for-wp'),
+          'custom'    => esc_html__('Custom Code','ads-for-wp'),
 			); // Options for the filter select field
       
       $current_plugin = '';
@@ -264,10 +264,10 @@ add_filter( 'parse_query', 'adsforwp_sort_ads_by_type' );
 function adsforwp_review_notice_remindme(){   
         
         if ( ! current_user_can( 'manage_options' ) ) {
-                    return;
+            return;
         }
         
-        if ( ! isset( $_POST['adsforwp_security_nonce'] ) ){            
+        if ( ! isset( $_POST['adsforwp_security_nonce'] ) ){     
            return; 
         }
         if ( !wp_verify_nonce( $_POST['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){            
@@ -322,7 +322,7 @@ add_action('wp_ajax_adsforwp_review_notice_close', 'adsforwp_review_notice_close
 function adsforwp_import_plugin_data(){ 
     
         if ( ! current_user_can( 'manage_options' ) ) {
-                    return;
+            return;
         }
         
         if ( ! isset( $_GET['adsforwp_security_nonce'] ) ){
@@ -475,22 +475,22 @@ function adsforwp_the_group($group_id){
 function adsforwp_extra_user_profile_fields( $user ) {
     
     ?>
-    <h3><?php _e("Extra profile information", "ads-for-wp"); ?></h3>
+    <h3><?php esc_html_e("Extra profile information", "ads-for-wp"); ?></h3>
 
     <table class="form-table">
     <tr>
-        <th><label for="afw-data-client-id"><?php _e("AdSense Publisher ID"); ?></label></th>
+        <th><label for="afw-data-client-id"><?php esc_html_e("AdSense Publisher ID","ads-for-wp"); ?></label></th>
         <td>
             <input placeholder="ca-pub-13XXXXXXXXXXXX64" type="text" name="adsense_pub_id" id="adsense_pub_id" value="<?php echo esc_attr( get_the_author_meta( 'adsense_pub_id', $user->ID ) ); ?>" class="regular-text" /><br />
-            <span class="description"><?php _e("Please enter your pub ID.", "ads-for-wp"); ?></span>
+            <span class="description"><?php esc_html_e("Please enter your pub ID.", "ads-for-wp"); ?></span>
         </td>
     </tr>
     
     <tr>
-        <th><label for="afw-data-ad-slot"><?php _e("Data Ad Slot"); ?></label></th>
+        <th><label for="afw-data-ad-slot"><?php esc_html_e("Data Ad Slot","ads-for-wp"); ?></label></th>
         <td>
             <input placeholder="70XXXXXX12" type="text" name="adsense_ad_slot_id" id="adsense_ad_slot_id" value="<?php echo esc_attr( get_the_author_meta( 'adsense_ad_slot_id', $user->ID ) ); ?>" class="regular-text" /><br />
-            <span class="description"><?php _e("Please enter your ad slot ID.", "ads-for-wp"); ?></span>
+            <span class="description"><?php esc_html_e("Please enter your ad slot ID.", "ads-for-wp"); ?></span>
         </td>
     </tr>
     
@@ -724,40 +724,40 @@ function adsforwp_setup_post_type() {
     
     $not_found_button = '<div><p style="float:left;margin-right:5px;">'.esc_html__('Welcome to Ads for WP. It looks like you don\'t have any ads.', 'ads-for-wp').'</p> <a href="'.esc_url( admin_url( 'post-new.php?post_type=adsforwp' ) ).'" class="button button-primary">'.esc_html__('Let\'s create a new Ad', 'ads-for-wp').'</a></div>';
     $args = array(
-	    'labels' => array(
-	        'name' 			=> esc_html__( 'Ads', 'ads-for-wp' ),
-	        'singular_name' 	=> esc_html__( 'Ad', 'ads-for-wp' ),
-	        'add_new' 		=> esc_html__( 'Add New Ad', 'ads-for-wp' ),
-	        'add_new_item'  	=> esc_html__( 'Add New Ad', 'ads-for-wp' ),
-                'edit_item'             => esc_html__( 'Edit AD','ads-for-wp'),   
-                'not_found'             => $not_found_button,
-	    ),
-      	'public' 		=> true,
-      	'has_archive' 		=> false,
-      	'exclude_from_search'	=> true,
-        'show_in_admin_bar'     => false,
-    	'publicly_queryable'	=> false,
-        'menu_position'         => 100  
+      'labels'                => array(
+          'name' 			    => esc_html__( 'Ads', 'ads-for-wp' ),
+          'singular_name' => esc_html__( 'Ad', 'ads-for-wp' ),
+          'add_new' 		  => esc_html__( 'Add New Ad', 'ads-for-wp' ),
+          'add_new_item'  => esc_html__( 'Add New Ad', 'ads-for-wp' ),
+          'edit_item'     => esc_html__( 'Edit AD','ads-for-wp'),   
+          'not_found'     => $not_found_button,
+        ),
+      'public' 		            => true,
+      'has_archive' 		      => false,
+      'exclude_from_search'	  => true,
+      'show_in_admin_bar'     => false,
+      'publicly_queryable'	  => false,
+      'menu_position'         => 100  
     );
     register_post_type( 'adsforwp', $args );
     
     $group_post_type = array(
-	    'labels' => array(
-	        'name' 			=> esc_html__( 'Groups', 'ads-for-wp' ),	        
-	        'add_new' 		=> esc_html__( 'Add New Groups', 'ads-for-wp' ),
-	        'add_new_item'  	=> esc_html__( 'Edit Groups', 'ads-for-wp' ),
-                'edit_item'             => esc_html__('Edit AD','ads-for-wp'),                
-	    ),
-      	'public' 		=> true,
-      	'has_archive' 		=> false,
-      	'exclude_from_search'	=> true,
-    	'publicly_queryable'	=> false,
-        'show_in_admin_bar'     => false,    
-        'show_in_menu'  =>	'edit.php?post_type=adsforwp',                
-        'show_ui'           => true,
-	'show_in_nav_menus' => false,			
-        'show_admin_column' => true,        
-	'rewrite'           => false,        
+        'labels' => array(
+          'name'    => esc_html__( 'Groups', 'ads-for-wp' ),	        
+          'add_new' => esc_html__( 'Add New Groups', 'ads-for-wp' ),
+          'add_new_item'  => esc_html__( 'Edit Groups', 'ads-for-wp' ),
+          'edit_item'     => esc_html__('Edit AD','ads-for-wp'),
+        ),
+        'public' 		          => true,
+        'has_archive' 		    => false,
+        'exclude_from_search'	=> true,
+        'publicly_queryable'	=> false,
+        'show_in_admin_bar'   => false,    
+        'show_in_menu'        =>	'edit.php?post_type=adsforwp',
+        'show_ui'             => true,
+        'show_in_nav_menus'   => false,			
+        'show_admin_column'   => true,        
+        'rewrite'             => false,        
     );
     register_post_type( 'adsforwp-groups', $group_post_type );        
 }
@@ -823,10 +823,8 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
         $post_title = '';        
         
             foreach($result as $group){
-                
                $group_post = get_post($group);  
                $post_title .= '<a href="'. esc_url(get_admin_url()).'post.php?post='.esc_attr($group).'&action=edit">'.esc_html__($group_post->post_title, 'ads-for-wp').'</a>, ';
-               
             }
             
             $ad_stats   = adsforwp_get_ad_stats('sumofstats', $post_id);            
@@ -853,11 +851,9 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
                     
                     if(isset($post_meta['select_adtype'])){
                         
-                        if($post_meta['select_adtype'][0] == 'ad_image'){
-                            
-                             echo '<div><a href="'. esc_url(get_admin_url()).'post.php?post='.esc_attr($post_id).'&action=edit"><img width="150" src="'.$post_meta['adsforwp_ad_image'][0].'"></a></div>';    
-                        
-                        }   
+                      if($post_meta['select_adtype'][0] == 'ad_image'){
+                          echo '<div><a href="'. esc_url(get_admin_url()).'post.php?post='.esc_attr($post_id).'&action=edit"><img width="150" src="'.$post_meta['adsforwp_ad_image'][0].'"></a></div>';
+                      }   
                     }                     
                     break;
                 case 'adsforwp_ad_impression_column' :
