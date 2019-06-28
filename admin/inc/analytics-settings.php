@@ -1,6 +1,7 @@
 <?php
 //namespace Adsforwp\analytics;
 class Adsforwp_analyticsSettings{
+    
 	public $ClientID = '615474230703-50bpfep5sehi7aff3721jfcugogj0c8v.apps.googleusercontent.com';
 	public $ClientSecret = 'KitbAxJMqJ__wwgKUMICNNGh';
 	public $scope = 'https://www.googleapis.com/auth/analytics.readonly' ; // Readonly scope.
@@ -12,6 +13,7 @@ class Adsforwp_analyticsSettings{
 	protected $load_settings;
 	protected $plugin_base;
 	protected $plugin_settings_base;
+        
 	function __construct(){
 		add_action( 'admin_init', array( $this, 'adsforwp_google_authentication' ) );
 		if ( ! class_exists( 'Adsforwp_Google_Client' ) ) {
@@ -52,17 +54,27 @@ class Adsforwp_analyticsSettings{
 		$this->postCalls();
 	}
 	function postCalls(){
+                                                                            
 		if($_SERVER['REQUEST_METHOD']=='POST'){
+                        
+                        if ( ! isset( $_POST['adsforwp_analytics_nonce'] ) ){
+                           return;
+                        }
+			
+                        if ( !wp_verify_nonce( $_POST['adsforwp_analytics_nonce'], 'adsforwp_analytics_data' ) ){
+                            return;
+                        }
+                        
 			if(isset($_POST['saveKey'])){ //Need to remove it
-				$savedOpt = get_option('adsforwp_analytics');
-				$adsforwp_google_token = esc_html($_POST['adsforwp_google_token']);
+				$savedOpt                 = get_option('adsforwp_analytics');
+				$adsforwp_google_token    = esc_html($_POST['adsforwp_google_token']);
 				$savedOpt['google_token'] = $adsforwp_google_token;
 				update_option( 'adsforwp_analytics', $savedOpt );
 			}
 			if(isset($_POST['adsforwp_profile_entry'])){
-				$savedOpt = get_option('adsforwp_analytics');
-				$profile_for_dashboard = esc_html($_POST['profile_for_dashboard']);
-				$savedOpt['profile_for_post'] = $profile_for_dashboard;
+				$savedOpt                          = get_option('adsforwp_analytics');
+				$profile_for_dashboard             = esc_html($_POST['profile_for_dashboard']);
+				$savedOpt['profile_for_post']      = $profile_for_dashboard;
 				$savedOpt['profile_for_dashboard'] = $profile_for_dashboard;
 				update_option( 'adsforwp_analytics', $savedOpt );
 				wp_redirect(admin_url('edit.php?post_type=adsforwp&page=analytics'));
@@ -91,6 +103,7 @@ class Adsforwp_analyticsSettings{
 				</div>
 			<?php } ?>
 				<form action="" method="post">
+                                <?php wp_nonce_field( 'adsforwp_analytics_data', 'adsforwp_analytics_nonce' ); ?>    
 				<table>
 					<tr>
 						<p class="inside"><?php esc_html_e( 'You have allowed your site to access the Analytics data from Google. Logout below to disconnect it.', 'ads-for-wp' ); ?></p>
@@ -139,6 +152,7 @@ class Adsforwp_analyticsSettings{
 			}
 		?>
 		<form method="post">
+                    <?php wp_nonce_field( 'adsforwp_analytics_data', 'adsforwp_analytics_nonce' ); ?>    
 			<table class="form-table">
 				<tr>
 					<td><label>Profile for Dashboard</label></td>

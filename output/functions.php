@@ -86,7 +86,7 @@ class adsforwp_output_functions{
     
     public function init(){
         
-            set_transient('adsforwp_transient_amp_ids', array());
+            set_transient('adsforwp_transient_amp_ids', '');
                                                                               
             ob_start(array($this, "adsforwp_display_custom_target_ad"));
             
