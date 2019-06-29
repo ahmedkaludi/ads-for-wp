@@ -2006,6 +2006,8 @@ class adsforwp_output_functions{
 }
     /**
      * Function to detect adblocker 
+     * Adblocker blocks all the js from adsforwp thats why we have not used wp_enqueue_script here.
+     * Instead we directly added the javascript to work the ads when ad blocker support is enable in adsforwp settings
      */
     public function adsforwp_adblocker_detector(){
         ?>

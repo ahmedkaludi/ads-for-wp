@@ -997,6 +997,7 @@ function adsforwp_frontend_enqueue(){
         wp_enqueue_script('adsforwp-ads-front-js');
         
         wp_enqueue_style( 'ads-for-wp-front-css', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/css/adsforwp-front.min.css', false , ADSFORWP_VERSION );
+        
                 
 }
 add_action( 'wp_enqueue_scripts', 'adsforwp_frontend_enqueue' );

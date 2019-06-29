@@ -312,8 +312,7 @@ class adsforwp_view_ads_type {
 						);
 					break;
                                 case 'media':
-                                        
-                                    
+                                                                            
                                             if($meta_field['id'] == 'adsforwp_ad_image'){
                                                 
                                                 $imageprev ='';
