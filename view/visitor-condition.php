@@ -234,8 +234,7 @@ class adsforwp_view_visitor_condition {
           $data               = array_key_exists('key_3', $input) ? $input['key_3'] : '';
           
         }
-            
-                               
+                                           
         // Get all the users registered
         $user               = wp_get_current_user();
 

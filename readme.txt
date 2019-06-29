@@ -56,9 +56,9 @@ Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp).
 
 == Changelog ==
 
-= 1.8 (29 June 2019) =
+= 1.9 (29 June 2019) =
 
-* Bug Fixed: Security improvement and bugs #206.
+* Bug Fixed: Security improvement and other bugs #206.
 
 = 1.8 (26 June 2019) =
 
