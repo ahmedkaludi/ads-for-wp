@@ -12,8 +12,10 @@ function adsforwpGetParamByTabName(name, url) {
 jQuery( document ).ready(function($) {
 
 $(".adsforwp-analytics-tabs a").click(function(e){
+    
 		var href = $(this).attr("href");
 		var currentTab = adsforwpGetParamByTabName("tab",href);
+                
 		if(!currentTab){
 			currentTab = "all";
 		}                   

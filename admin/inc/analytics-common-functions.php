@@ -171,10 +171,9 @@ function adsforwp_get_compare_stats( $results, $compare_results, $date_different
 	} else {
 		$class   = $compare > 0 ? 'adsforwp_green' : 'adsforwp_red';
 	}
-	$compare = $compare>0 ? '+'.$compare : $compare;
-	//' . $date_different . __( ' ago', 'ads-for-wp' ) . '
+	$compare = $compare>0 ? '+'.$compare : $compare;	
 	return '<div class="adsforwp_general_status_footer_info">
-			<span class="' . $class . '  adsforwp_info_value"> ' . $compare . ' %</span> 
+			<span class="' . esc_attr($class) . '  adsforwp_info_value"> ' . esc_attr($compare) . ' %</span> 
 	</div>';
         
 }

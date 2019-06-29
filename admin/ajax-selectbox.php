@@ -24,7 +24,7 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
     $adsforwp_settings = adsforwp_defaultSettings();
     
     $response = $data;
-    $is_ajax = false;
+    $is_ajax  = false;
     if( $_SERVER['REQUEST_METHOD']=='POST'){
         
         $is_ajax = true;
@@ -74,7 +74,7 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
                 'https://www.google.com/' => 'Google',
                 'https://www.bing.com/'   => 'Bing',
                 'https://www.yahoo.com/'  => 'Yahoo',
-                'url_custom' => 'Custom',   
+                'url_custom'              => 'Custom',   
             );
             break;
       

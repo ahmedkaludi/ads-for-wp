@@ -105,8 +105,8 @@ class adsforwp_view_visitor_condition {
           $selected_val_key_1 = $visitor_conditions[$i]['key_1']; 
           $selected_val_key_2 = $visitor_conditions[$i]['key_2'];                     
           $selected_val_key_3 = $visitor_conditions[$i]['key_3'];
-          $selected_val_key_4 ='';
-          $selected_val_key_5 ='';
+          $selected_val_key_4 = '';
+          $selected_val_key_5 = '';
           if(isset($visitor_conditions[$i]['key_4'])){
           $selected_val_key_4 = $visitor_conditions[$i]['key_4'];    
           }

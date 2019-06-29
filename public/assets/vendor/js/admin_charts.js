@@ -6,8 +6,8 @@ var config_m_d = {
             data: {
                 datasets: [{
                     data: [
-                        piechart.mobile,
-                        piechart.desktop,
+                        adsforwp_localize_data.mobile,
+                        adsforwp_localize_data.desktop,
                     ],
                     backgroundColor: [
                         'blue',
@@ -30,8 +30,8 @@ var config_m_a = {
             data: {
                 datasets: [{
                     data: [
-                        piechart.mobile,
-                        piechart.amp,
+                        adsforwp_localize_data.mobile,
+                        adsforwp_localize_data.amp,
                     ],
                     backgroundColor: [
                         'blue',
@@ -51,45 +51,10 @@ var config_m_a = {
 
 window.onload = function() { 
 
-
     var ctx = document.getElementById('chart-stats').getContext('2d');
     window.myPie = new Chart(ctx, config_m_d);
 
     var ctx = document.getElementById('chart-amp-mobile').getContext('2d');
     window.myPie = new Chart(ctx, config_m_a);
-
-/*
-     $("#chart-stats").CanvasJSChart({ 
-        title: { 
-            text: "Mobile vs Desktop",
-            fontSize: 24
-        }, 
-        axisY: { 
-            title: "Products in %" 
-        }, 
-        legend :{ 
-            verticalAlign: "center", 
-            horizontalAlign: "right" 
-        }, 
-        chartArea: {
-          left: 18,
-          top: 0,
-          width: 250,
-          height: 250 
-        },
-        width: 280,
-        height: 280,
-        data: [ 
-        { 
-            type: "pie", 
-            showInLegend: true, 
-            toolTipContent: "{label} <br/> {y} %", 
-            indexLabel: "{y} %", 
-            dataPoints: [ 
-                { label: "Mobile",  y: piechart.mobile, legendText: "mobile"}, 
-                { label: "Desktop",    y: piechart.desktop, legendText: "Desktop"  },
-            ] 
-        } 
-        ] 
-    }); */
+    
 } 

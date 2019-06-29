@@ -19,15 +19,25 @@ class adsforwp_admin_common_functions {
      */
     public function adsforwp_export_all_settings(){    
         
+            if ( ! current_user_can( 'manage_options' ) ) {
+                 return;
+            }
+            if ( ! isset( $_GET['_wpnonce'] ) ){
+                 return; 
+            }
+            if ( !wp_verify_nonce( $_GET['_wpnonce'], '_wpnonce' ) ){
+                 return;  
+            }
+            
             $export_ad       = array();
             $export_group    = array();
             $export_data_all = array();                     
             //ads
             $all_ads_post = get_posts(
                     array(
-                            'post_type' 	 => 'adsforwp',                                                                                   
-                            'posts_per_page' => -1,   
-                            'post_status' => 'any',
+                            'post_type'        => 'adsforwp',                                                                                   
+                            'posts_per_page'   => -1,   
+                            'post_status'      => 'any',
                     )
                  );    
             
