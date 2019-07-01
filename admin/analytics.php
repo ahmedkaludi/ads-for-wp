@@ -218,7 +218,8 @@ class adsforwp_admin_analytics{
                return;  
             }  
             
-            $ad_ids = $_POST['ad_ids'];
+            $ad_ids = array_map('sanitize_text_field', $_POST['ad_ids']);
+                        
             $device_name = sanitize_text_field($_POST['device_name']);            
             
             if($ad_ids){

@@ -374,7 +374,7 @@ class adsforwp_view_display {
                                              
                                             foreach ( $meta_field['attributes'] as $key => $value ) {
 
-                                              $attributes .=  $key."=".'"'.$value.'"'.' ';                                        
+                                              $attributes .= esc_attr($key)."=".'"'.esc_attr($value).'"'.' ';                                        
                                               
                                               }
                                               
@@ -392,7 +392,7 @@ class adsforwp_view_display {
                                                     $paragraphs_checked = 'checked';                                                    
                                                 }
                                                 $input = sprintf(
-						'<input class="afw_input" %s id="%s" name="%s" type="%s" value="%s" %s> <input type="checkbox" id="ads_on_every_paragraphs_number" name="ads_on_every_paragraphs_number" value="1" '.$paragraphs_checked.'> <span class="adsforwp-every-paragraphs-text"></span>',
+						'<input class="afw_input" %s id="%s" name="%s" type="%s" value="%s" %s> <input type="checkbox" id="ads_on_every_paragraphs_number" name="ads_on_every_paragraphs_number" value="1" '.esc_attr($paragraphs_checked).'> <span class="adsforwp-every-paragraphs-text"></span>',
 						$meta_field['type'] !== 'color' ? '' : '',
 						esc_attr($meta_field['id']),
 						esc_attr($meta_field['id']),

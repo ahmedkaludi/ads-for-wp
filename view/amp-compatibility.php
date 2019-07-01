@@ -93,10 +93,10 @@ class adsforwp_amp_compatibility {
                 if ( ! current_user_can( 'edit_post', $post_id ) ) return;
                                
                 if ( isset( $_POST['ads-for-wp_amp_compatibilty'] ) )
-                        update_post_meta( $post_id, 'ads-for-wp_amp_compatibilty', esc_attr( $_POST['ads-for-wp_amp_compatibilty'] ) );
+                        update_post_meta( $post_id, 'ads-for-wp_amp_compatibilty', sanitize_text_field( $_POST['ads-for-wp_amp_compatibilty'] ) );
                
                 if ( isset( $_POST['ads_for_wp_non_amp_visibility'] ) )
-                        update_post_meta( $post_id, 'ads_for_wp_non_amp_visibility', esc_attr( $_POST['ads_for_wp_non_amp_visibility'] ) );
+                        update_post_meta( $post_id, 'ads_for_wp_non_amp_visibility', sanitize_text_field( $_POST['ads_for_wp_non_amp_visibility'] ) );
                                               
         }    
 }

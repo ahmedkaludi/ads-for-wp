@@ -39,13 +39,13 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
             
             if ( isset( $_POST["number"] ) ) {
                 
-                    $current_number   = intval($_POST["number"]);
+                    $current_number   = intval(sanitize_text_field($_POST["number"]));
               
             }
             
             if ( isset( $_POST["group_number"] ) ) {
                 
-                    $current_group_number   = intval($_POST["group_number"]);
+                    $current_group_number   = intval(sanitize_text_field($_POST["group_number"]));
               
             }
         }else{            
@@ -551,13 +551,13 @@ public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $curre
             
             if ( isset( $_POST["number"] ) ) {
                 
-                    $current_number   = intval($_POST["number"]);
+                    $current_number   = intval(sanitize_text_field($_POST["number"]));
               
             }
             
             if ( isset( $_POST["group_number"] ) ) {
                 
-                    $current_group_number   = intval($_POST["group_number"]);
+                    $current_group_number   = intval(sanitize_text_field($_POST["group_number"]));
               
             }
             
@@ -867,13 +867,13 @@ public function adsforwp_create_ajax_select_taxonomy($selectedParentValue = '',$
               
               if(isset($_POST['number'])){
                   
-                    $current_number = intval($_POST['number']);
+                    $current_number = intval(sanitize_text_field($_POST['number']));
                 
               }
               
               if ( isset( $_POST["group_number"] ) ) {
                   
-                    $current_group_number   = intval($_POST["group_number"]);
+                    $current_group_number   = intval(sanitize_text_field($_POST["group_number"]));
               
               }
         }else{

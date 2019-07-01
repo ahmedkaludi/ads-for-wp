@@ -59,8 +59,8 @@ class adsforwp_view_ads_visibility {
 						$input .= sprintf(
 							'<label style="padding-right:10px;"><input %s id="% s" name="% s" type="radio" value="% s"> %s</label>%s',
 							$meta_value === $meta_field_value ? 'checked' : '',
-							$meta_field['id'],
-							$meta_field['id'],
+							esc_attr($meta_field['id']),
+							esc_attr($meta_field['id']),
 							$meta_field_value,
 							esc_html__($value, 'ads-for-wp'),
 							$i < count( $meta_field['options'] ) - 1 ? '' : ''
@@ -73,8 +73,8 @@ class adsforwp_view_ads_visibility {
 					$input = sprintf(
 						'<input %s id="%s" name="%s" type="%s" value="%s">',
 						$meta_field['type'] !== 'color' ? 'style="width: 100%"' : '',
-						$meta_field['id'],
-						$meta_field['id'],
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['id']),
 						$meta_field['type'],
 						$meta_value
 					);

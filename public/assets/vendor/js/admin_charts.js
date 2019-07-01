@@ -51,10 +51,18 @@ var config_m_a = {
 
 window.onload = function() { 
 
-    var ctx = document.getElementById('chart-stats').getContext('2d');
-    window.myPie = new Chart(ctx, config_m_d);
-
-    var ctx = document.getElementById('chart-amp-mobile').getContext('2d');
-    window.myPie = new Chart(ctx, config_m_a);
+    var ctxid = document.getElementById('chart-stats');
     
+    if(ctxid){
+        ctx = ctxid.getContext('2d');
+        window.myPie = new Chart(ctx, config_m_d);
+    }
+    
+    
+    if(ctxid){        
+        var ctxid = document.getElementById('chart-amp-mobile');
+        ctx = ctxid.getContext('2d');
+        window.myPie = new Chart(ctx, config_m_a);
+    }
+        
 } 

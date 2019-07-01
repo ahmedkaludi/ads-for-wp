@@ -468,7 +468,7 @@ class adsforwp_admin_analytics_settings{
         if("adsforwp_page_analytics"==$hook){
             wp_register_script(
                 'highCharts',
-                ADSFORWP_PLUGIN_DIR_URI . 'public/assets/vendor/js/Chart.bundle.js',
+                ADSFORWP_PLUGIN_DIR_URI . 'public/assets/vendor/js/Chart.bundle.min.js',
                 array( 'jquery' ),
                 '3.0',
                 true

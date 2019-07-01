@@ -195,7 +195,7 @@ class adsforwp_view_ad_groups {
                                                     
                                                 if(!array_key_exists($value['ad_id'], $this->added_ad_list)) { 
                                                     
-                                                $meta_field_value = '['.$value['ad_id'].']';
+                                                $meta_field_value = '['.esc_attr($value['ad_id']).']';
 						$input .= sprintf(
 							'<option %s value="adsforwp_ads%s">%s</option>',
 							$meta_value === $meta_field_value ? 'selected' : '',
@@ -206,7 +206,7 @@ class adsforwp_view_ad_groups {
                                                 }
                                                 
                                                 }else{
-                                                $meta_field_value = '['.$value['ad_id'].']';
+                                                $meta_field_value = '['.esc_attr($value['ad_id']).']';
 						$input .= sprintf(
 							'<option %s value="adsforwp_ads%s">%s</option>',
 							$meta_value === $meta_field_value ? 'selected' : '',
@@ -257,7 +257,7 @@ class adsforwp_view_ad_groups {
                                         default:
                                             if(isset($meta_field['attributes'])){
                                             foreach ( $meta_field['attributes'] as $key => $value ) {                                    
-                                            $attributes .=  $key."=".'"'.$value.'"'.' ';                                        
+                                            $attributes .= esc_attr($key)."=".'"'.esc_attr($value).'"'.' ';                                        
                                             }
                                             }
                                             $input = sprintf(
