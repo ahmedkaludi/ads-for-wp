@@ -201,7 +201,7 @@ class adsforwp_view_placement {
             
             if(isset($_POST['data_group_array'])){
                 
-            $post_data_group_array = $_POST['data_group_array'];   
+            $post_data_group_array = (array) $_POST['data_group_array'];   
             
                 foreach($post_data_group_array as $groups){ 
                     

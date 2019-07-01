@@ -193,7 +193,7 @@ class adsforwp_view_visitor_condition {
             
             if(isset($_POST['visitor_conditions_array'])){        
                 
-            $post_visitor_conditions_array = $_POST['visitor_conditions_array'];    
+            $post_visitor_conditions_array = (array) $_POST['visitor_conditions_array'];    
                                     
                 foreach($post_visitor_conditions_array as $groups){ 
                     
@@ -212,14 +212,12 @@ class adsforwp_view_visitor_condition {
                 if($show_globally){
                     
                     unset($post_visitor_conditions_array);
-                    $post_visitor_conditions_array['group-0']['visitor_conditions'] = $temp_condition_array;       
-                
-                }      
+                    $post_visitor_conditions_array['group-0']['visitor_conditions'] = $temp_condition_array;
+                }
             }
             if(!empty($post_visitor_conditions_array)){
                 
                 $post_visitor_conditions_array = adsforwp_sanitize_multi_array($post_visitor_conditions_array, 'visitor_conditions');
-                
                 update_post_meta(
                   $post_id, 
                   'visitor_conditions_array', 
