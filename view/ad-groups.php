@@ -290,7 +290,7 @@ class adsforwp_view_ad_groups {
                     
                 $post_meta = array();    
                 
-                $post_meta = $_POST; // Sanitized below 
+                $post_meta = $_POST; // Sanitized below before saving
                 
                 $adsforwp_ads_array = array();    
                 

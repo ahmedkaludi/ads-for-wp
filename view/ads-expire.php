@@ -180,7 +180,7 @@ class adsforwp_view_expiredate {
                 
             $post_meta = array();    
             
-            $post_meta = $_POST;     
+            $post_meta = $_POST; // Sanitized below before saving
                 
             $adsforwp_days_array = array();     
             

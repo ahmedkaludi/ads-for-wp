@@ -429,7 +429,7 @@ class adsforwp_view_ads_type {
                                                         
 		return '<tr class="'.esc_attr($provider_type).'"><th>'.$label.'</th><td>'.$input.'</td></tr>';
 	}                
-	public function adsforwp_save_fields( $post_id ) {  
+	public function adsforwp_save_fields( $post_id ) { 
             
 		if ( ! isset( $_POST['adsforwp_adtype_nonce'] ) )
 			return $post_id;		
@@ -438,52 +438,45 @@ class adsforwp_view_ads_type {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 			return $post_id;
                     
-                if ( current_user_can( 'manage_options' ) ) {
+        if ( current_user_can( 'manage_options' ) ) {
                 
-                  $post_meta = array();                    
-                  $post_meta = $_POST;   
-                    
-		foreach ( $this->meta_fields as $meta_field ) {
-                    
-			if ( isset( $post_meta[ $meta_field['id'] ] ) ) {
-				switch ( $meta_field['type'] ) {
-                                                                                                                                                 
-					case 'email':
-						$post_meta[ $meta_field['id'] ] = sanitize_email( $post_meta[ $meta_field['id'] ] );
-						break;
-					case 'text':
-						$post_meta[ $meta_field['id'] ] = sanitize_text_field( $post_meta[ $meta_field['id'] ] );
-						break;
-                                        default:     
-                                                $post_meta[ $meta_field['id'] ] = sanitize_text_field( $post_meta[ $meta_field['id'] ] );    
+			$post_meta = array();                    
+			$post_meta = $_POST; // Sanitized below before saving
+                
+			foreach ( $this->meta_fields as $meta_field ) {
+
+				if ( isset( $post_meta[ $meta_field['id'] ] ) ) {
+					switch ( $meta_field['type'] ) {
+						case 'email':
+							$post_meta[ $meta_field['id'] ] = sanitize_email( $post_meta[ $meta_field['id'] ] );
+							break;
+						case 'text':
+							$post_meta[ $meta_field['id'] ] = sanitize_text_field( $post_meta[ $meta_field['id'] ] );
+							break;
+						default:     
+							$post_meta[ $meta_field['id'] ] = sanitize_text_field( $post_meta[ $meta_field['id'] ] );
+					}
+					if($meta_field['id'] == 'ad_background_image'){
+
+						$media_key       = $meta_field['id'].'_detail';          
+						$media_height    = sanitize_text_field( $post_meta[ $meta_field['id'].'_height' ] );
+						$media_width     = sanitize_text_field( $post_meta[ $meta_field['id'].'_width' ] );
+						$media_thumbnail = sanitize_text_field( $post_meta[ $meta_field['id'].'_thumbnail' ] );
+
+						$media_detail = array(                                                    
+						'height'    => $media_height,
+						'width'     => $media_width,
+						'thumbnail' => $media_thumbnail,
+						);                                                    
+						update_post_meta( $post_id, $media_key, $media_detail);
+					} else {
+						update_post_meta( $post_id, $meta_field['id'], $post_meta[ $meta_field['id'] ] );
+					}
+				} else if ( $meta_field['type'] === 'checkbox' ) {
+					update_post_meta( $post_id, $meta_field['id'], '0' );
 				}
-                                if($meta_field['id'] == 'ad_background_image'){
-                                    
-                                                $media_key       = $meta_field['id'].'_detail';                                                     
-                                                $media_height    = sanitize_text_field( $post_meta[ $meta_field['id'].'_height' ] );
-                                                $media_width     = sanitize_text_field( $post_meta[ $meta_field['id'].'_width' ] );
-                                                $media_thumbnail = sanitize_text_field( $post_meta[ $meta_field['id'].'_thumbnail' ] );
-                                                
-                                                $media_detail = array(                                                    
-                                                    'height'    => $media_height,
-                                                    'width'     => $media_width,
-                                                    'thumbnail' => $media_thumbnail,
-                                                );                                                    
-                                                update_post_meta( $post_id, $media_key, $media_detail);                                                                                                                    
-                                    
-                                }else{ 
-                                    
-                                    update_post_meta( $post_id, $meta_field['id'], $post_meta[ $meta_field['id'] ] );
-                                    
-                                }
-                                
-				
-			} else if ( $meta_field['type'] === 'checkbox' ) {
-				update_post_meta( $post_id, $meta_field['id'], '0' );
 			}
-                   
-		}
-                }
+       	}
 	}
 }
 if (class_exists('adsforwp_view_ads_type')) {

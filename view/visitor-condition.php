@@ -191,10 +191,14 @@ class adsforwp_view_visitor_condition {
             $temp_condition_array          = array();
             $show_globally                 = false;     
             
-            if(isset($_POST['visitor_conditions_array'])){        
-                
-            $post_visitor_conditions_array = (array) $_POST['visitor_conditions_array'];    
-                                    
+            if(isset($_POST['visitor_conditions_array'])){
+              
+              $post_visitor_conditions_array = (array) $_POST['visitor_conditions_array'];    
+              /* Type casted the $_POST['visitor_conditions_array'] to (array) to make sure 
+                 * what ever data is sent is should be in array format.
+                 * and then we are sanitizing $post_visitor_conditions_array with adsforwp_sanitize_multi_array() 
+                 * function to make sure we have sanitized keys and its values.
+              */                      
                 foreach($post_visitor_conditions_array as $groups){ 
                     
                       foreach($groups['visitor_conditions'] as $group ){ 
