@@ -122,7 +122,7 @@ class Adsforwp_analyticsSettings{
                                 $auth_url = 'https://accounts.google.com/o/oauth2/auth?'.$this->generate_login_url();                                
 				?>
 				<p class="inside"><?php esc_html_e( 'For Analytics You need to allow your site to access the Analytics data from Google. Logout below to disconnect it.', 'ads-for-wp' ); ?></p>                                
-                                <a title="Log in with your Google Analytics Account" class="button-primary authentication_btn" href="<?php echo esc_attr($auth_url); ?>"><?php esc_html_e( 'Log in with Google Analytics Account', 'ads-for-wp' ); ?></a>
+                                <a title="Log in with your Google Analytics Account" class="button-primary authentication_btn" href="<?php echo esc_url_raw($auth_url); ?>"><?php esc_html_e( 'Log in with Google Analytics Account', 'ads-for-wp' ); ?></a>
 				<?php
 			}
 
