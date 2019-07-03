@@ -77,7 +77,7 @@ class Adsforwp_analyticsSettings{
 				$savedOpt['profile_for_post']      = $profile_for_dashboard;
 				$savedOpt['profile_for_dashboard'] = $profile_for_dashboard;
 				update_option( 'adsforwp_analytics', $savedOpt ); // Security: Nonce verified
-				wp_redirect(admin_url('edit.php?post_type=adsforwp&page=analytics'));
+				wp_redirect(esc_url(admin_url('edit.php?post_type=adsforwp&page=analytics')));
 			}
 			if(isset($_POST['wp_adsforwp_analytics_log_out'])){
 				
@@ -225,19 +225,19 @@ class Adsforwp_analyticsSettings{
 	
 	public function adsforwp_google_authentication(){
             
-                if ( ! current_user_can( 'manage_options' ) ) {
-                    return;
-                }
+                        if ( ! current_user_can( 'manage_options' ) ) {
+                            return;
+                        }
                 
-		if ( isset( $_GET['code'] ) && 'adsforwp-analytics' === $_GET['page'] ) {
+                        if ( isset( $_GET['code'] ) && 'adsforwp-analytics' === $_GET['page'] ) {
 				$key_google_token = sanitize_text_field( wp_unslash( $_GET['code'] ) );
 				try {
 					update_option( 'adsforwp_post_analytics_token', $key_google_token ); // Security: Permission verified
-					if ( $this->pa_connect() ) { wp_redirect(  admin_url( 'edit.php?post_type=adsforwp&page=adsforwp-analytics' )); }
+					if ( $this->pa_connect() ) { wp_redirect(  esc_url(admin_url( 'edit.php?post_type=adsforwp&page=adsforwp-analytics' ))); }
 				} catch (Exception $e) {
 					echo $e->getMessage();
 				}
-				wp_redirect(  admin_url( 'edit.php?post_type=adsforwp&page=adsforwp-analytics' ));
+				wp_redirect(  esc_url(admin_url( 'edit.php?post_type=adsforwp&page=adsforwp-analytics' )));
 				exit;
 			}
 	}
