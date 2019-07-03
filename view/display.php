@@ -479,6 +479,8 @@ class adsforwp_view_display {
 					case 'text':
 						$post_meta[ $meta_field['id'] ] = sanitize_text_field( esc_html($post_meta[ $meta_field['id'] ]));
 						break;
+                                        default:     
+                                                $post_meta[ $meta_field['id'] ] = sanitize_text_field( $post_meta[ $meta_field['id'] ] );    
 				}
 				update_post_meta( $post_id, $meta_field['id'], $post_meta[ $meta_field['id'] ] );
 			} else if ( $meta_field['type'] === 'checkbox' ) {
