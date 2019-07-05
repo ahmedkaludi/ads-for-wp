@@ -19,15 +19,25 @@ class adsforwp_admin_common_functions {
      */
     public function adsforwp_export_all_settings(){    
         
+            if ( ! current_user_can( 'manage_options' ) ) {
+                 return;
+            }
+            if ( ! isset( $_GET['_wpnonce'] ) ){
+                 return; 
+            }
+            if ( !wp_verify_nonce( $_GET['_wpnonce'], '_wpnonce' ) ){
+                 return;  
+            }
+            
             $export_ad       = array();
             $export_group    = array();
             $export_data_all = array();                     
             //ads
             $all_ads_post = get_posts(
                     array(
-                            'post_type' 	 => 'adsforwp',                                                                                   
-                            'posts_per_page' => -1,   
-                            'post_status' => 'any',
+                            'post_type'        => 'adsforwp',                                                                                   
+                            'posts_per_page'   => -1,   
+                            'post_status'      => 'any',
                     )
                  );    
             
@@ -84,6 +94,10 @@ class adsforwp_admin_common_functions {
      * Here, We are importing all the settings and post which is saved in json file
      */
     public function adsforwp_import_all_settings(){
+                
+        if ( ! current_user_can( 'manage_options' ) ) {
+                    return;
+        }
         
         $url = get_option('adsforwp-file-upload_url');
         
@@ -193,8 +207,8 @@ class adsforwp_admin_common_functions {
                                 
                 }     
                 
-             update_option('adsforwp_settings', $adsforwp_settings); 
-             update_option('adsforwp-file-upload_url','');
+             update_option('adsforwp_settings', $adsforwp_settings);  // Security: Permission verified			
+             update_option('adsforwp-file-upload_url','');  // Security: Permission verified			
              
              if (is_wp_error($result) ){
                 
@@ -255,6 +269,17 @@ class adsforwp_admin_common_functions {
      * @return boolean
      */
     public function adsforwp_import_all_advanced_ads(){  
+        
+        if ( ! current_user_can( 'manage_options' ) ) {
+                    return;
+        }
+        
+        if ( ! isset( $_GET['adsforwp_security_nonce'] ) ){
+             return; 
+        }
+        if ( !wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
+             return;  
+        }
         
         $advads_groups = array();
         $advads_groups = $this->adsforwp_get_advads_groups();        
@@ -480,6 +505,17 @@ class adsforwp_admin_common_functions {
     
     public function adsforwp_migrate_ampforwp_ads(){
         
+        if ( ! current_user_can( 'manage_options' ) ) {
+                    return;
+        }
+        
+        if ( ! isset( $_GET['adsforwp_security_nonce'] ) ){
+             return; 
+        }
+        if ( !wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
+             return;  
+        }
+        
         $result            = array();
         $adforwp_meta_key  = array();
         $amp_options       = get_option('redux_builder_amp');    
@@ -641,13 +677,24 @@ class adsforwp_admin_common_functions {
            
             $options  = array_merge($settings,$options);  
             
-            update_option('adsforwp_settings', $options);
+            update_option('adsforwp_settings', $options); // Security: Permission and nonce verified
                         
         }
         return $result;
     }
     
     public function adsforwp_migrate_advanced_auto_ads(){
+        
+        if ( ! current_user_can( 'manage_options' ) ) {
+                    return;
+        }
+        
+        if ( ! isset( $_GET['adsforwp_security_nonce'] ) ){
+             return; 
+        }
+        if ( !wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
+             return;  
+        }
         
         $result           = array();
         $adforwp_meta_key = array();
@@ -666,6 +713,7 @@ class adsforwp_admin_common_functions {
                     
                 );
               $post_id = wp_insert_post($ads_post);
+              
               $data_group_array['group-0'] =array(
                                     'data_array' => array(
                                                         array(
@@ -692,6 +740,17 @@ class adsforwp_admin_common_functions {
     }
     
     public function adsforwp_migrate_advanced_amp_ads_incontent(){
+        
+        if ( ! current_user_can( 'manage_options' ) ) {
+                    return;
+        }
+        
+        if ( ! isset( $_GET['adsforwp_security_nonce'] ) ){
+             return; 
+        }
+        if ( !wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
+             return;  
+        }
         
         $result           = array();
         $adforwp_meta_key = array();
@@ -795,6 +854,17 @@ class adsforwp_admin_common_functions {
 
     public function adsforwp_migrate_advanced_amp_ads_after_feature(){
         
+        if ( ! current_user_can( 'manage_options' ) ) {
+                    return;
+        }
+        
+        if ( ! isset( $_GET['adsforwp_security_nonce'] ) ){
+             return; 
+        }
+        if ( !wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
+             return;  
+        }
+        
         $result           = array();
         $adforwp_meta_key = array();
         $amp_options      = get_option('redux_builder_amp');        
@@ -865,6 +935,17 @@ class adsforwp_admin_common_functions {
     }
     public function adsforwp_migrate_advanced_amp_ads_inloop(){
         
+        if ( ! current_user_can( 'manage_options' ) ) {
+                    return;
+        }
+        
+        if ( ! isset( $_GET['adsforwp_security_nonce'] ) ){
+             return; 
+        }
+        if ( !wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
+             return;  
+        }
+        
         $result             = array();
         $adforwp_meta_key   = array();
         $amp_options        = get_option('redux_builder_amp');        
@@ -934,6 +1015,17 @@ class adsforwp_admin_common_functions {
         return $result;
     }
     public function adsforwp_migrate_advanced_amp_ads_standard(){
+        
+        if ( ! current_user_can( 'manage_options' ) ) {
+                    return;
+        }
+        
+        if ( ! isset( $_GET['adsforwp_security_nonce'] ) ){
+             return; 
+        }
+        if ( !wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
+             return;  
+        }
         
         $result           = array();
         $adforwp_meta_key = array();
@@ -1027,6 +1119,16 @@ class adsforwp_admin_common_functions {
     }
     public function adsforwp_import_all_amp_ads(){    
                         
+            if ( ! current_user_can( 'manage_options' ) ) {
+                        return;
+            }
+
+            if ( ! isset( $_GET['adsforwp_security_nonce'] ) ){
+                 return; 
+            }
+            if ( !wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
+                 return;  
+            }
             global $wpdb;
               $wpdb->query('START TRANSACTION');
               $result = array();  
@@ -1039,7 +1141,18 @@ class adsforwp_admin_common_functions {
              return $result;     
             }                         
     }
-    public function adsforwp_import_all_advanced_amp_ads(){    
+    public function adsforwp_import_all_advanced_amp_ads(){  
+        
+            if ( ! current_user_can( 'manage_options' ) ) {
+                        return;
+            }
+
+            if ( ! isset( $_GET['adsforwp_security_nonce'] ) ){
+                 return; 
+            }
+            if ( !wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
+                 return;  
+            }
                         
             global $wpdb;
             $wpdb->query('START TRANSACTION');
@@ -1063,7 +1176,18 @@ class adsforwp_admin_common_functions {
             }                         
     }
     
-    public function adsforwp_import_all_ad_inserter_ads(){    
+    public function adsforwp_import_all_ad_inserter_ads(){ 
+        
+            if ( ! current_user_can( 'manage_options' ) ) {
+                        return;
+            }
+
+            if ( ! isset( $_GET['adsforwp_security_nonce'] ) ){
+                 return; 
+            }
+            if ( !wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
+                 return;  
+            }
                         
             global $wpdb;
             $wpdb->query('START TRANSACTION');
@@ -1162,10 +1286,21 @@ class adsforwp_admin_common_functions {
      */
     public function adsforwp_import_all_advanced_groups($advads_groups) {
         
+            if ( ! current_user_can( 'manage_options' ) ) {
+                        return;
+            }
+
+            if ( ! isset( $_GET['adsforwp_security_nonce'] ) ){
+                 return; 
+            }
+            if ( !wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
+                 return;  
+            }
+        
             $user_id     = get_current_user_id();
             $terms       = get_terms( 'advanced_ads_groups', array(
-            'hide_empty' => false,
-            ));
+                            'hide_empty' => false,
+                           ));
             
             $groups_extra_attr = get_option( 'advads-ad-groups', array());            
             

@@ -59,8 +59,8 @@ class adsforwp_view_ads_visibility {
 						$input .= sprintf(
 							'<label style="padding-right:10px;"><input %s id="% s" name="% s" type="radio" value="% s"> %s</label>%s',
 							$meta_value === $meta_field_value ? 'checked' : '',
-							$meta_field['id'],
-							$meta_field['id'],
+							esc_attr($meta_field['id']),
+							esc_attr($meta_field['id']),
 							$meta_field_value,
 							esc_html__($value, 'ads-for-wp'),
 							$i < count( $meta_field['options'] ) - 1 ? '' : ''
@@ -73,8 +73,8 @@ class adsforwp_view_ads_visibility {
 					$input = sprintf(
 						'<input %s id="%s" name="%s" type="%s" value="%s">',
 						$meta_field['type'] !== 'color' ? 'style="width: 100%"' : '',
-						$meta_field['id'],
-						$meta_field['id'],
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['id']),
 						$meta_field['type'],
 						$meta_value
 					);
@@ -96,29 +96,29 @@ class adsforwp_view_ads_visibility {
 			return $post_id;
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 			return $post_id;
-                if ( current_user_can( 'manage_options' ) ) {
+        if ( current_user_can( 'manage_options' ) ) {
+            
+            $post_meta = array();                    
+            $post_meta = $_POST;  // Sanitized below before saving
                 
-                $post_meta = array();                    
-                $post_meta = $_POST;   
-                    
-		foreach ( $this->meta_fields as $meta_field ) {
-			if ( isset( $post_meta[ $meta_field['id'] ] ) ) {
-				switch ( $meta_field['type'] ) {
-					case 'email':
-						$post_meta[ $meta_field['id'] ] = sanitize_email( $post_meta[ $meta_field['id'] ] );
-						break;
-					case 'text':
-						$post_meta[ $meta_field['id'] ] = sanitize_text_field( $post_meta[ $meta_field['id'] ] );
-						break;
+			foreach ( $this->meta_fields as $meta_field ) {
+				if ( isset( $post_meta[ $meta_field['id'] ] ) ) {
+					switch ( $meta_field['type'] ) {
+						case 'email':
+							$post_meta[ $meta_field['id'] ] = sanitize_email( $post_meta[ $meta_field['id'] ] );
+							break;
+						case 'text':
+							$post_meta[ $meta_field['id'] ] = sanitize_text_field( $post_meta[ $meta_field['id']]);
+							break;
+                        default:     
+                        	$post_meta[ $meta_field['id'] ] = sanitize_text_field( $post_meta[ $meta_field['id']]);
+					}
+					update_post_meta( $post_id, $meta_field['id'], $post_meta[ $meta_field['id'] ] );
+				} else if ( $meta_field['type'] === 'checkbox' ) {
+					update_post_meta( $post_id, $meta_field['id'], '0' );
 				}
-				update_post_meta( $post_id, $meta_field['id'], $post_meta[ $meta_field['id'] ] );
-			} else if ( $meta_field['type'] === 'checkbox' ) {
-				update_post_meta( $post_id, $meta_field['id'], '0' );
 			}
-		}
-                
-            }
-        
+        }
 	}
 }
 if (class_exists('adsforwp_view_ads_visibility')) {

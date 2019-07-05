@@ -179,7 +179,7 @@ class adsforwp_view_placement {
     </div>
     <?php } ?>
     
-    <a style="margin-left: 8px; margin-bottom: 8px;" class="button afw-placement-or-group afw-placement-button" href="#">Or</a>
+    <a style="margin-left: 8px; margin-bottom: 8px;" class="button afw-placement-or-group afw-placement-button" href="#"><?php echo esc_html__("Or",'ads-for-wp') ?></a>
 </div>    
     <?php                                                      
                                 
@@ -200,33 +200,30 @@ class adsforwp_view_placement {
             $show_globally         = false;  
             
             if(isset($_POST['data_group_array'])){
+                $post_data_group_array = (array) $_POST['data_group_array']; 
+                 /* Type casted the $_POST['data_group_array'] to (array) to make sure 
+                 * what ever data is sent is should be in array format.
+                 * and then we are sanitizing $post_data_group_array with adsforwp_sanitize_multi_array() 
+                 * function to make sure we have sanitized keys and its values.
+                */
                 
-            $post_data_group_array = $_POST['data_group_array'];   
-            
-                foreach($post_data_group_array as $groups){ 
-                    
-                      foreach($groups['data_array'] as $group ){  
-                          
-                        if(array_search('show_globally', $group))
-                        {
-                            
-                          $temp_condition_array[0] =  $group;  
-                          $show_globally = true;  
-                          
-                        }
-                        
-                      }
-                      
-                   }    
+                foreach($post_data_group_array as $groups){
+                  foreach($groups['data_array'] as $group ){  
+                    if(array_search('show_globally', $group)){
+                      $temp_condition_array[0] =  $group;  
+                      $show_globally = true;  
+                    }
+                  }
+                }  
                 if($show_globally){
-                    
                     unset($post_data_group_array);
                     $post_data_group_array['group-0']['data_array'] = $temp_condition_array;
-                
-                }  
-                
+                }
             }
-            if(isset($_POST['data_group_array'])){
+
+            if(!empty($post_data_group_array)){
+                
+                $post_data_group_array = adsforwp_sanitize_multi_array($post_data_group_array, 'data_array');
                 
                 update_post_meta(
                   $post_id, 
@@ -236,9 +233,7 @@ class adsforwp_view_placement {
                 
               }
          }  
-    
-    
-    
+            
  public function adsforwp_comparison_logic_checker($input){
      
         global $post;  

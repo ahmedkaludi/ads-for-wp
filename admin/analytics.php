@@ -77,8 +77,8 @@ class adsforwp_admin_analytics{
         $ad_clicks_script     = '';
         
         $nonce                = wp_create_nonce('adsforwp_ajax_check_front_nonce');        
-        $ad_impression_url    = admin_url('admin-ajax.php?action=adsforwp_insert_ad_impression_amp&adsforwp_front_nonce='.$nonce.'&event=${eventId}');                              
-        $ad_clicks_url        = admin_url('admin-ajax.php?action=adsforwp_insert_ad_clicks_amp&adsforwp_front_nonce='.$nonce.'&event=${eventId}');                              
+        $ad_impression_url    = admin_url('admin-ajax.php?action=adsforwp_insert_ad_impression_amp&adsforwp_front_nonce='.$nonce);                              
+        $ad_clicks_url        = admin_url('admin-ajax.php?action=adsforwp_insert_ad_clicks_amp&adsforwp_front_nonce='.$nonce);                              
                 
         if($amp_ads_id){
             
@@ -87,7 +87,7 @@ class adsforwp_admin_analytics{
             $ad_impression_script .= '<amp-analytics><script type="application/json">
                   {
                     "requests": {
-                      "event": "'.$ad_impression_url.'"
+                      "event": "'.esc_url($ad_impression_url).'&event=${eventId}"
                     },
                     "triggers": {
                       "trackPageview": {
@@ -111,7 +111,7 @@ class adsforwp_admin_analytics{
                                 <script type="application/json">
                                   {
                                     "requests": {
-                                      "event": "'.$ad_clicks_url.'"
+                                      "event": "'.esc_url($ad_clicks_url).'&event=${eventId}"
                                     },
                                     "triggers": {
                                       "trackAnchorClicks": {
@@ -218,7 +218,8 @@ class adsforwp_admin_analytics{
                return;  
             }  
             
-            $ad_ids = $_POST['ad_ids'];
+            $ad_ids = array_map('sanitize_text_field', $_POST['ad_ids']);
+                        
             $device_name = sanitize_text_field($_POST['device_name']);            
             
             if($ad_ids){
@@ -243,7 +244,7 @@ class adsforwp_admin_analytics{
             
             if ( ! isset( $_POST['adsforwp_front_nonce'] ) ){
                 return; 
-             }
+            }
             if ( !wp_verify_nonce( $_POST['adsforwp_front_nonce'], 'adsforwp_ajax_check_front_nonce' ) ){
                return;  
             }      

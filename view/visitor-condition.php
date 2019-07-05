@@ -105,8 +105,8 @@ class adsforwp_view_visitor_condition {
           $selected_val_key_1 = $visitor_conditions[$i]['key_1']; 
           $selected_val_key_2 = $visitor_conditions[$i]['key_2'];                     
           $selected_val_key_3 = $visitor_conditions[$i]['key_3'];
-          $selected_val_key_4 ='';
-          $selected_val_key_5 ='';
+          $selected_val_key_4 = '';
+          $selected_val_key_5 = '';
           if(isset($visitor_conditions[$i]['key_4'])){
           $selected_val_key_4 = $visitor_conditions[$i]['key_4'];    
           }
@@ -186,40 +186,60 @@ class adsforwp_view_visitor_condition {
       
       // if our current user can't edit this post, bail
       if( !current_user_can( 'edit_post' ) ) return;  
+      
             $post_visitor_conditions_array = array();  
-            $temp_condition_array  = array();
-            $show_globally =false;             
-            if(isset($_POST['visitor_conditions_array'])){        
-            $post_visitor_conditions_array = $_POST['visitor_conditions_array'];    
-                foreach($post_visitor_conditions_array as $groups){        
-                      foreach($groups['visitor_conditions'] as $group ){              
+            $temp_condition_array          = array();
+            $show_globally                 = false;     
+            
+            if(isset($_POST['visitor_conditions_array'])){
+              
+              $post_visitor_conditions_array = (array) $_POST['visitor_conditions_array'];    
+              /* Type casted the $_POST['visitor_conditions_array'] to (array) to make sure 
+                 * what ever data is sent is should be in array format.
+                 * and then we are sanitizing $post_visitor_conditions_array with adsforwp_sanitize_multi_array() 
+                 * function to make sure we have sanitized keys and its values.
+              */                      
+                foreach($post_visitor_conditions_array as $groups){ 
+                    
+                      foreach($groups['visitor_conditions'] as $group ){ 
+                          
                         if(array_search('show_globally', $group))
                         {
                           $temp_condition_array[0] =  $group;  
                           $show_globally = true;              
                         }
+                        
                       }
-                   }    
+                      
+                   }   
+                   
                 if($show_globally){
-                unset($post_visitor_conditions_array);
-                $post_visitor_conditions_array['group-0']['visitor_conditions'] = $temp_condition_array;       
-                }      
+                    
+                    unset($post_visitor_conditions_array);
+                    $post_visitor_conditions_array['group-0']['visitor_conditions'] = $temp_condition_array;
+                }
             }
-            if(isset($_POST['visitor_conditions_array'])){
+            if(!empty($post_visitor_conditions_array)){
+                
+                $post_visitor_conditions_array = adsforwp_sanitize_multi_array($post_visitor_conditions_array, 'visitor_conditions');
                 update_post_meta(
                   $post_id, 
                   'visitor_conditions_array', 
                   $post_visitor_conditions_array 
-                );     
+                );
+                
               }
               
               if(isset($_POST['adsforwp_v_condition_enable'])){
-                $status = $_POST['adsforwp_v_condition_enable'];                  
+                  
+                $status = sanitize_text_field($_POST['adsforwp_v_condition_enable']);  
+                
                 update_post_meta(
                   $post_id, 
                   'adsforwp_v_condition_enable', 
                   $status 
-                );     
+                );  
+                
               }
          }              
  public function adsforwp_visitor_condition_logic_checker($input){
@@ -234,8 +254,7 @@ class adsforwp_view_visitor_condition {
           $data               = array_key_exists('key_3', $input) ? $input['key_3'] : '';
           
         }
-            
-                               
+                                           
         // Get all the users registered
         $user               = wp_get_current_user();
 

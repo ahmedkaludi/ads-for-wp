@@ -374,7 +374,7 @@ class adsforwp_view_display {
                                              
                                             foreach ( $meta_field['attributes'] as $key => $value ) {
 
-                                              $attributes .=  $key."=".'"'.$value.'"'.' ';                                        
+                                              $attributes .= esc_attr($key)."=".'"'.esc_attr($value).'"'.' ';                                        
                                               
                                               }
                                               
@@ -392,7 +392,7 @@ class adsforwp_view_display {
                                                     $paragraphs_checked = 'checked';                                                    
                                                 }
                                                 $input = sprintf(
-						'<input class="afw_input" %s id="%s" name="%s" type="%s" value="%s" %s> <input type="checkbox" id="ads_on_every_paragraphs_number" name="ads_on_every_paragraphs_number" value="1" '.$paragraphs_checked.'> <span class="adsforwp-every-paragraphs-text"></span>',
+						'<input class="afw_input" %s id="%s" name="%s" type="%s" value="%s" %s> <input type="checkbox" id="ads_on_every_paragraphs_number" name="ads_on_every_paragraphs_number" value="1" '.esc_attr($paragraphs_checked).'> <span class="adsforwp-every-paragraphs-text"></span>',
 						$meta_field['type'] !== 'color' ? '' : '',
 						esc_attr($meta_field['id']),
 						esc_attr($meta_field['id']),
@@ -449,44 +449,46 @@ class adsforwp_view_display {
 			return $post_id;
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 			return $post_id;                
-                if ( current_user_can( 'manage_options' ) ) {
+        
+        if ( current_user_can( 'manage_options' ) ) {
                     
-                $post_meta = array();                    
-                $post_meta = $_POST; 
+            $post_meta = array();                    
+            $post_meta = $_POST; // Sanitized below before saving
+            
+            $ad_margin = array();    
+            
+            if(is_array($post_meta['adsforwp_ad_margin'])){
+                $ad_margin = array_map('sanitize_text_field', $post_meta['adsforwp_ad_margin']);  
+            }
+                            
+            update_post_meta($post_id, 'adsforwp_ad_margin', $ad_margin);
+            
+            if(isset($post_meta['ads_on_every_paragraphs_number'])){
+                update_post_meta($post_id, 'ads_on_every_paragraphs_number', sanitize_text_field($post_meta['ads_on_every_paragraphs_number']));
+            }else{
+                update_post_meta($post_id, 'ads_on_every_paragraphs_number', '0');
+            }
                 
-                $ad_margin = array();    
-                
-                if(is_array($post_meta['adsforwp_ad_margin'])){
-                    $ad_margin = array_map('sanitize_text_field', $post_meta['adsforwp_ad_margin']);  
-                }
-                                
-                update_post_meta($post_id, 'adsforwp_ad_margin', $ad_margin);
-                
-                if(isset($post_meta['ads_on_every_paragraphs_number'])){
-                    
-                     update_post_meta($post_id, 'ads_on_every_paragraphs_number', sanitize_text_field($post_meta['ads_on_every_paragraphs_number']));
-                }else{
-                     update_post_meta($post_id, 'ads_on_every_paragraphs_number', '0');
-                }
-                
-		foreach ( $this->meta_fields as $meta_field ) {
-                    if($meta_field['id'] != 'adsforwp_ad_margin'){ 
-			if ( isset( $post_meta[ $meta_field['id'] ] ) ) {
-				switch ( $meta_field['type'] ) {
-					case 'email':
-						$post_meta[ $meta_field['id'] ] = sanitize_email( $post_meta[ $meta_field['id'] ] );
-						break;
-					case 'text':
-						$post_meta[ $meta_field['id'] ] = sanitize_text_field( esc_html($post_meta[ $meta_field['id'] ]));
-						break;
-				}
-				update_post_meta( $post_id, $meta_field['id'], $post_meta[ $meta_field['id'] ] );
-			} else if ( $meta_field['type'] === 'checkbox' ) {
-				update_post_meta( $post_id, $meta_field['id'], '0' );
-			}
+            foreach ( $this->meta_fields as $meta_field ) {
+                if($meta_field['id'] != 'adsforwp_ad_margin'){
+                    if ( isset( $post_meta[ $meta_field['id'] ] ) ) {
+                        switch ( $meta_field['type'] ) {
+                            case 'email':
+                                $post_meta[ $meta_field['id'] ] = sanitize_email( $post_meta[ $meta_field['id'] ] );
+                                break;
+                            case 'text':
+                                $post_meta[ $meta_field['id'] ] = sanitize_text_field( esc_html($post_meta[ $meta_field['id'] ]));
+                                break;
+                            default:     
+                                $post_meta[ $meta_field['id'] ] = sanitize_text_field( $post_meta[ $meta_field['id'] ] );    
+                        }
+                        update_post_meta( $post_id, $meta_field['id'], $post_meta[ $meta_field['id'] ] );
+                    } else if ( $meta_field['type'] === 'checkbox' ) {
+                        update_post_meta( $post_id, $meta_field['id'], '0' );
                     }
-		}  
-         }
+                }
+            }  
+        }
 	}
 }
 if (class_exists('adsforwp_view_display')) {

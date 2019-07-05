@@ -121,9 +121,153 @@ function adsforwpGetParamByName(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
+
+function adsforwp_pointer(id,content, status){
+       $("#"+id).pointer({
+        content: content,
+         position: {
+            edge: 'top',
+        },
+        show: function(event, t){
+            t.pointer.css({'right':'95px','left':'auto'});
+        },
+        close: function() {
+            // This function is fired when you click the close button
+        }
+      }).pointer(status); 
+   }
+   function adsforwp_pointer_hover(id, status){      
+       var content ='default';                        
+        switch(id){
+            case 'afw_adsense_pointer':
+                 content = '<h3>'+adsforwp_localize_data.pointer_help+'</h3><p>'+adsforwp_localize_data.adsense_pointer+'</p>';
+                break;
+            case 'afw_media_net_pointer':
+                content = '<h3>'+adsforwp_localize_data.pointer_help+'</h3><p>'+adsforwp_localize_data.media_net_pointer+'</p>';
+                break;           
+            case 'afw_ad_now_pointer':
+                content = '<h3>'+adsforwp_localize_data.pointer_help+'</h3><p>'+adsforwp_localize_data.ad_now_pointer+'</p>';
+                break; 
+            case 'afw_contentad_pointer':
+               content = '<h3>'+adsforwp_localize_data.pointer_help+'</h3><p>'+adsforwp_localize_data.contentad_pointer+'</p>';
+                break;
+            case 'afw_infolinks_pointer':
+                content = '<h3>'+adsforwp_localize_data.pointer_help+'</h3><p>'+adsforwp_localize_data.infolinks_pointer+'</p>';
+                break; 
+            case 'afw_ad_image_pointer':
+                content = '<h3>'+adsforwp_localize_data.pointer_help+'</h3><p>'+adsforwp_localize_data.ad_image_pointer+'</p>';
+                break; 
+            case 'afw_custom_pointer':
+                content = '<h3>'+adsforwp_localize_data.pointer_help+'</h3><p>'+adsforwp_localize_data.custom_pointer+'</p>';
+                break;     
+            case 'afw_doubleclick_pointer':
+                content = '<h3>'+adsforwp_localize_data.pointer_help+'</h3><p>'+adsforwp_localize_data.doubleclick_pointer+'</p>';
+                break;
+            case 'afw_ad_background_pointer':
+                content = '<h3>'+adsforwp_localize_data.pointer_help+'</h3><p>'+adsforwp_localize_data.ad_background_pointer+'</p>';
+                break;    
+            default:
+                break;
+        }         
+        adsforwp_pointer(id,content, status);        
+   }  
+
 jQuery( document ).ready(function($) {
     
+    /* Newletters js starts here */      
+        
+            if(adsforwp_localize_data.do_tour){
+                
+                var content = '<h3>You are awesome for using Ads for WP</h3>';
+			content += '<p>Do you want the latest on <b>Ads update</b> before others and some best resources on monetization in a single email? - Free just for users of ADS!</p>';
+                        content += '<style type="text/css">';
+                        content += '.wp-pointer-buttons{ padding:0; overflow: hidden; }';
+                        content += '.wp-pointer-content .button-secondary{  left: -25px;background: transparent;top: 5px; border: 0;position: relative; padding: 0; box-shadow: none;margin: 0;color: #0085ba;} .wp-pointer-content .button-primary{ display:none}	#afw_mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; }';
+                        content += '</style>';                        
+                        content += '<div id="afw_mc_embed_signup">';
+                        content += '<form action="//app.mailerlite.com/webforms/submit/o1s7u3" data-id="258182" data-code="o1s7u3" method="POST" target="_blank">';
+                        content += '<div id="afw_mc_embed_signup_scroll">';
+                        content += '<div class="afw-mc-field-group" style="    margin-left: 15px;    width: 195px;    float: left;">';
+                        content += '<input type="text" name="fields[name]" class="form-control" placeholder="Name" hidden value="'+adsforwp_localize_data.current_user_name+'" style="display:none">';
+                        content += '<input type="text" value="'+adsforwp_localize_data.current_user_email+'" name="fields[email]" class="form-control" placeholder="Email*"  style="      width: 180px;    padding: 6px 5px;">';
+                        content += '<input type="text" name="fields[company]" class="form-control" placeholder="Website" hidden style=" display:none; width: 168px; padding: 6px 5px;" value="'+adsforwp_localize_data.get_home_url+'">';
+                        content += '<input type="hidden" name="ml-submit" value="1" />';
+                        content += '</div>';
+                        content += '<div id="mce-responses">';
+                        content += '<div class="response" id="mce-error-response" style="display:none"></div>';
+                        content += '<div class="response" id="mce-success-response" style="display:none"></div>';
+                        content += '</div>';
+                        content += '<div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_a631df13442f19caede5a5baf_c9a71edce6" tabindex="-1" value=""></div>';
+                        content += '<input type="submit" value="Subscribe" name="subscribe" id="pointer-close" class="button mc-newsletter-sent" style=" background: #0085ba; border-color: #006799; padding: 0px 16px; text-shadow: 0 -1px 1px #006799,1px 0 1px #006799,0 1px 1px #006799,-1px 0 1px #006799; height: 30px; margin-top: 1px; color: #fff; box-shadow: 0 1px 0 #006799;">';
+                        content += '</div>';
+                        content += '</form>';
+                        content += '</div>';
+                
+                var setup;                
+                var wp_pointers_tour_opts = {
+                    content:content,
+                    position:{
+                        edge:"top",
+                        align:"left"
+                    }
+                };
+                                
+                wp_pointers_tour_opts = $.extend (wp_pointers_tour_opts, {
+                        buttons: function (event, t) {
+                                button= jQuery ('<a id="pointer-close" class="button-secondary">' + adsforwp_localize_data.button1 + '</a>');
+                                button_2= jQuery ('#pointer-close.button');
+                                button.bind ('click.pointer', function () {
+                                        t.element.pointer ('close');
+                                });
+                                button_2.on('click', function() {
+                                        t.element.pointer ('close');
+                                } );
+                                return button;
+                        },
+                        close: function () {
+                                $.post (adsforwp_localize_data.ajax_url, {
+                                        pointer: 'adsforwp_subscribe_pointer',
+                                        action: 'dismiss-wp-pointer'
+                                });
+                        },
+                        show: function(event, t){
+                         t.pointer.css({'left':'170px', 'top':'160px'});
+                      }                                               
+                });
+                setup = function () {
+                        $(adsforwp_localize_data.displayID).pointer(wp_pointers_tour_opts).pointer('open');
+                         if (adsforwp_localize_data.button2) {
+                                jQuery ('#pointer-close').after ('<a id="pointer-primary" class="button-primary">' + adsforwp_localize_data.button2+ '</a>');
+                                jQuery ('#pointer-primary').click (function () {
+                                        adsforwp_localize_data.function_name;
+                                });
+                                jQuery ('#pointer-close').click (function () {
+                                        $.post (adsforwp_localize_data.ajax_url, {
+                                                pointer: 'adsforwp_subscribe_pointer',
+                                                action: 'dismiss-wp-pointer'
+                                        });
+                                });
+                         }
+                };
+                if (wp_pointers_tour_opts.position && wp_pointers_tour_opts.position.defer_loading) {
+                        $(window).bind('load.wp-pointers', setup);
+                }
+                else {
+                        setup ();
+                }
+                
+            }
+                
+    /* Newletters js ends here */ 
+           
+    /* WP Pointer for ad type information */      
     
+    $(".afw_pointer").mouseover(function(){
+        var status = 'open';
+        var id = $(this).attr('id');         
+        adsforwp_pointer_hover(id, status);
+    }); 
+        
    /* Visitor condition jquery starts here */   
    
    $(document).on("change",".adsforwp-visitor-condition-ajax-output",function(){
@@ -413,7 +557,7 @@ jQuery( document ).ready(function($) {
     $("#adsforwp_ad_img_height").parent().parent("tr").hide();    
     $(".adsforwp-ad-img-upload").click(function(e) {	// Application Icon upload
                     e.preventDefault();
-                    var pwaforwpMediaUploader = wp.media({
+                    var adsforwpMediaUploader = wp.media({
                             title: adsforwp_localize_data.uploader_title,
                             button: {
                                     text: adsforwp_localize_data.uploader_button
@@ -422,7 +566,7 @@ jQuery( document ).ready(function($) {
                             library:{type : 'image'}
                     })
                     .on("select", function() {
-                            var attachment = pwaforwpMediaUploader.state().get("selection").first().toJSON();                        
+                            var attachment = adsforwpMediaUploader.state().get("selection").first().toJSON();                        
                             $(".adsforwp-icon").val(attachment.url);
                             $(".afw_ad_img_div").html('<div class="afw_ad_thumbnail"><img class="afw_ad_image_prev" src="'+attachment.url+'"/><a href="#" class="afw_ad_prev_close">X</a></div>');
                             $("#adsforwp_ad_img_height").val(attachment.height);
@@ -639,7 +783,7 @@ jQuery( document ).ready(function($) {
                     url:adsforwp_localize_data.ajax_url,
                     async: false, 
                     dataType: "json",
-                    data:{action:"adsforwp_check_meta"},
+                    data:{action:"adsforwp_check_meta", adsforwp_security_nonce:adsforwp_localize_data.adsforwp_security_nonce},
                     success:function(response){
                      if(response['status'] == 't' ){                         
                          $(".afw_adsense_auto_note").removeClass('afw_hide'); 
@@ -1135,4 +1279,13 @@ $(".adsforwp-feedback-notice-remindme").on("click", function(e){
         if(document.getElementById('adsforwp_group_shortcode')){            
 	document.getElementById('adsforwp_group_shortcode').value = '[adsforwp-group id="'+currentAdID+'"]';
         }
+        
+        if(adsforwp_localize_data.current_page === "adsforwp_page_adsforwp"){
+                 if ($('#adsforwp-hidden-block').length == 0 ) {
+                       $(".afw-blocker-notice").show();
+                 }else{
+                       $(".afw-blocker-notice").hide(); 
+                 }
+        }
+        
 });

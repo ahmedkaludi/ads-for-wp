@@ -28,7 +28,7 @@ class adsforwp_file_creation{
         if(!file_exists($this->ad_support)){ 
             
             $url = site_url();            		
-	    $swHtmlContent  = file_get_contents(ADSFORWP_PLUGIN_DIR."public/ads-front.js");	    
+	    $swHtmlContent  = file_get_contents(ADSFORWP_PLUGIN_DIR."public/assets/js/ads-front.js");	    
             $handle         = fopen($this->ad_support, 'w');
             $writestatus    = fwrite($handle, $swHtmlContent);
             fclose($handle);

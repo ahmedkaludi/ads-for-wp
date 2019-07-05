@@ -261,15 +261,15 @@ class adsforwp_view_ads_type {
                                         if(isset($meta_field['attributes'])){
                                             
                                                 foreach ( $meta_field['attributes'] as $key => $value ) {
-                                                        $attributes .=  $key."=".'"'.$value.'"'.' ';
+                                                        $attributes .= esc_attr($key)."=".'"'.esc_attr($value).'"'.' ';
                                                 }
                                                 
                                         }
                                     
 					$input = sprintf(
 						'<select class="afw_select" id="%s" name="%s" %s>',
-						$meta_field['id'],
-						$meta_field['id'],
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['id']),
                                                 $attributes    
 					);
 					foreach ( $meta_field['options'] as $key => $value ) {
@@ -298,8 +298,8 @@ class adsforwp_view_ads_type {
 				case 'textarea':
 					$input = sprintf(
 						'<textarea class="afw_textarea" id="%s" name="%s" rows="5">%s</textarea>',
-						$meta_field['id'],
-						$meta_field['id'],
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['id']),
 						$meta_value
 					); 
                                     break;
@@ -307,13 +307,12 @@ class adsforwp_view_ads_type {
 					$input = sprintf(
 						'<input %s id="%s" name="%s" type="checkbox" value="1">',
 						$meta_value === '1' ? 'checked' : '',
-						$meta_field['id'],
-						$meta_field['id']
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['id'])
 						);
 					break;
                                 case 'media':
-                                        
-                                    
+                                                                            
                                             if($meta_field['id'] == 'adsforwp_ad_image'){
                                                 
                                                 $imageprev ='';
@@ -327,12 +326,12 @@ class adsforwp_view_ads_type {
                                                 $input = sprintf(
 						'<input class="afw_input adsforwp-icon" type="text" name="%s" id="%s" value="%s"/>'
                                                 . '<button type="button" class="button adsforwp-ad-img-upload" data-editor="content">'
-                                                . '<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> Upload Image'
+                                                . '<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> '.esc_html__('Upload Image' ,'ads-for-wp').''
                                                 . '</button>'
                                                 . '<div class="afw_ad_img_div">%s'
                                                 . '</div>',
-						$meta_field['id'],
-						$meta_field['id'],
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['id']),
 						$meta_value,
                                                 $imageprev        
                                              );
@@ -343,7 +342,7 @@ class adsforwp_view_ads_type {
                                                 $media_thumbnail  ='';
                                                 $media_height     ='';
                                                 $media_width      = '';
-                                                $media_key        = $meta_field['id'].'_detail';                                                 
+                                                $media_key        = esc_attr($meta_field['id']).'_detail';                                                 
                                                 $media_value_meta = get_post_meta( $post->ID, $media_key, true );   
                                                 
                                                 if(!empty($media_value_meta)){
@@ -376,11 +375,11 @@ class adsforwp_view_ads_type {
                                                 .'</fieldset>'
                                                 . '<div class="afw_ad_img_div">%s'
                                                 . '</div>',
-						$meta_field['id'],
-						$meta_field['id'],
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['id']),
 						$media_thumbnail,
-						$meta_field['id'],
-						$meta_field['id'],
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['id']),
                                                 $imageprev        
                                             );
                                                 
@@ -390,8 +389,8 @@ class adsforwp_view_ads_type {
                                 case 'hidden':                                                    
                                                 $input = sprintf(
 						'<input id="%s" name="%s" type="hidden" value="%s">',                                                
-						$meta_field['id'],	
-                                                $meta_field['id'],	        
+						esc_attr($meta_field['id']),	
+                                                esc_attr($meta_field['id']),    
 						$meta_value                                                     
                                                 );
                                                 break;            
@@ -401,7 +400,7 @@ class adsforwp_view_ads_type {
                                         
                                       foreach ( $meta_field['attributes'] as $key => $value ) {
                                     
-					$attributes .=  $key."=".'"'.$value.'"'.' ';                                        
+					$attributes .= esc_attr($key)."=".'"'.esc_attr($value).'"'.' ';                                        
                                         
 					}
                                         
@@ -410,10 +409,10 @@ class adsforwp_view_ads_type {
                                      $input = sprintf(
 						'<input class="afw_input" %s id="%s" name="%s" type="%s" value="%s" %s>',
 						$meta_field['type'] !== 'color' ? '' : '',
-						$meta_field['id'],
-						$meta_field['id'],
-						$meta_field['type'],
-						$meta_value,
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['type']),
+						esc_attr($meta_value),
                                                 $attributes
                                              );
                                         
@@ -428,9 +427,9 @@ class adsforwp_view_ads_type {
 	}
 	public function adsforwp_format_rows( $label, $input, $provider_type ) {
                                                         
-		return '<tr class="'.$provider_type.'"><th>'.$label.'</th><td>'.$input.'</td></tr>';
+		return '<tr class="'.esc_attr($provider_type).'"><th>'.$label.'</th><td>'.$input.'</td></tr>';
 	}                
-	public function adsforwp_save_fields( $post_id ) {  
+	public function adsforwp_save_fields( $post_id ) { 
             
 		if ( ! isset( $_POST['adsforwp_adtype_nonce'] ) )
 			return $post_id;		
@@ -439,50 +438,45 @@ class adsforwp_view_ads_type {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 			return $post_id;
                     
-                if ( current_user_can( 'manage_options' ) ) {
+        if ( current_user_can( 'manage_options' ) ) {
                 
-                  $post_meta = array();                    
-                  $post_meta = $_POST;   
-                    
-		foreach ( $this->meta_fields as $meta_field ) {
-                    
-			if ( isset( $post_meta[ $meta_field['id'] ] ) ) {
-				switch ( $meta_field['type'] ) {
-                                                                                                                                                 
-					case 'email':
-						$post_meta[ $meta_field['id'] ] = sanitize_email( $post_meta[ $meta_field['id'] ] );
-						break;
-					case 'text':
-						$post_meta[ $meta_field['id'] ] = sanitize_text_field( $post_meta[ $meta_field['id'] ] );
-						break;
+			$post_meta = array();                    
+			$post_meta = $_POST; // Sanitized below before saving
+                
+			foreach ( $this->meta_fields as $meta_field ) {
+
+				if ( isset( $post_meta[ $meta_field['id'] ] ) ) {
+					switch ( $meta_field['type'] ) {
+						case 'email':
+							$post_meta[ $meta_field['id'] ] = sanitize_email( $post_meta[ $meta_field['id'] ] );
+							break;
+						case 'text':
+							$post_meta[ $meta_field['id'] ] = sanitize_text_field( $post_meta[ $meta_field['id'] ] );
+							break;
+						default:     
+							$post_meta[ $meta_field['id'] ] = sanitize_text_field( $post_meta[ $meta_field['id'] ] );
+					}
+					if($meta_field['id'] == 'ad_background_image'){
+
+						$media_key       = $meta_field['id'].'_detail';          
+						$media_height    = sanitize_text_field( $post_meta[ $meta_field['id'].'_height' ] );
+						$media_width     = sanitize_text_field( $post_meta[ $meta_field['id'].'_width' ] );
+						$media_thumbnail = sanitize_text_field( $post_meta[ $meta_field['id'].'_thumbnail' ] );
+
+						$media_detail = array(                                                    
+						'height'    => $media_height,
+						'width'     => $media_width,
+						'thumbnail' => $media_thumbnail,
+						);                                                    
+						update_post_meta( $post_id, $media_key, $media_detail);
+					} else {
+						update_post_meta( $post_id, $meta_field['id'], $post_meta[ $meta_field['id'] ] );
+					}
+				} else if ( $meta_field['type'] === 'checkbox' ) {
+					update_post_meta( $post_id, $meta_field['id'], '0' );
 				}
-                                if($meta_field['id'] == 'ad_background_image'){
-                                    
-                                                $media_key       = $meta_field['id'].'_detail';                                                     
-                                                $media_height    = sanitize_text_field( $post_meta[ $meta_field['id'].'_height' ] );
-                                                $media_width     = sanitize_text_field( $post_meta[ $meta_field['id'].'_width' ] );
-                                                $media_thumbnail = sanitize_text_field( $post_meta[ $meta_field['id'].'_thumbnail' ] );
-                                                
-                                                $media_detail = array(                                                    
-                                                    'height'    => $media_height,
-                                                    'width'     => $media_width,
-                                                    'thumbnail' => $media_thumbnail,
-                                                );                                                    
-                                                update_post_meta( $post_id, $media_key, $media_detail);                                                                                                                    
-                                    
-                                }else{ 
-                                    
-                                    update_post_meta( $post_id, $meta_field['id'], $post_meta[ $meta_field['id'] ] );
-                                    
-                                }
-                                
-				
-			} else if ( $meta_field['type'] === 'checkbox' ) {
-				update_post_meta( $post_id, $meta_field['id'], '0' );
 			}
-                   
-		}
-                }
+       	}
 	}
 }
 if (class_exists('adsforwp_view_ads_type')) {

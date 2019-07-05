@@ -314,3 +314,24 @@ Advance settings css ends here
 .adsforwp-user-targeting-note{
     color:red;
 }
+ /*
+Ads css on plugins list page in WordPress starts here
+ */
+.adsforwp-wdi-rate-stars{display:inline-block;color:#ffb900;position:relative;top:3px;}
+.adsforwp-wdi-rate-stars svg{fill:#ffb900;}
+.adsforwp-wdi-rate-stars svg:hover{fill:#ffb900}
+.adsforwp-wdi-rate-stars svg:hover ~ svg{fill:none;}
+/*
+Ads css on plugins list page in WordPress starts here
+ */        
+ .adsforwp_view_report_btn{
+    display: inline-block;
+    background: #444444;
+    border-radius: 5px;
+    border: 0;
+    color: #fff;
+    font-size: 14px;
+    padding: 0 13px;
+    height: 30px;
+    cursor: pointer;
+ }

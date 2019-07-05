@@ -86,7 +86,7 @@ class adsforwp_output_functions{
     
     public function init(){
         
-            set_transient('adsforwp_transient_amp_ids', array());
+            set_transient('adsforwp_transient_amp_ids', '');
                                                                               
             ob_start(array($this, "adsforwp_display_custom_target_ad"));
             
@@ -405,11 +405,13 @@ class adsforwp_output_functions{
         if(!empty($all_ads_id)){
             
         foreach($all_ads_id as $ad_id){
-                                     
+              
+             $wheretodisplay = get_post_meta($ad_id,$key='wheretodisplay',true); 
+            
              if($wheretodisplay == 'sticky' && !in_array($ad_id, $explod_ad_id)){  
                  
               $in_group       = $common_function_obj->adsforwp_check_ads_in_group($ad_id); 
-              $wheretodisplay = get_post_meta($ad_id,$key='wheretodisplay',true);    
+                 
               
               if(empty($in_group)){
                   $ad_code .=  $this->adsforwp_get_ad_code($ad_id, $type="AD");   
@@ -2006,6 +2008,8 @@ class adsforwp_output_functions{
 }
     /**
      * Function to detect adblocker 
+     * Adblocker blocks all the js from adsforwp thats why we have not used wp_enqueue_script here.
+     * Instead we directly added the javascript to work the ads when ad blocker support is enable in adsforwp settings
      */
     public function adsforwp_adblocker_detector(){
         ?>

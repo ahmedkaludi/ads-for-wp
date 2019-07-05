@@ -175,6 +175,10 @@ public function adsforwp_custom_upload_mimes($mimes = array()) {
 }
 public function adsforwp_handle_file_upload($option){
 
+        if ( ! current_user_can( 'manage_options' ) ) {
+                    return;
+        }
+            
         if(!empty($_FILES["adsforwp_import_backup"]["tmp_name"]))
         {
           $urls = wp_handle_upload($_FILES["adsforwp_import_backup"], array('test_form' => FALSE));      
@@ -277,7 +281,7 @@ public function adsforwp_import_callback(){
             </ul>                   
 	<?php  
         echo '<h2>'.esc_html__('Import / Export','ads-for-wp').'</h2>'; 
-        $url =  admin_url('admin-ajax.php?action=adsforwp_export_all_settings');
+        $url = wp_nonce_url(admin_url('admin-ajax.php?action=adsforwp_export_all_settings'), '_wpnonce');         
         ?>
         <ul>
                 <li>

@@ -3,7 +3,7 @@ Contributors: magazine3
 Tags: Ads, Google Adsense, Media Net, DFP, Custom Code, Infolinks, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
 Tested up to: 5.2
-Stable tag: 1.8
+Stable tag: 1.9
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -53,8 +53,15 @@ We are actively developing this plugin and our aim is to make this plugin into t
 = Technical Support =
 Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp). You can also [Contact us](http://www.adsforwp.com/contact/), our turn around time on email is around 12 hours. 
 
+== Credits ==
+Chart.js library used https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js - License URI: https://github.com/chartjs/Chart.js/blob/master/LICENSE.md,
+Google Api Php Client library used https://github.com/googleapis/google-api-php-client - License URI: https://github.com/googleapis/google-api-php-client/blob/master/LICENSE
 
 == Changelog ==
+
+= 1.9 (29 June 2019) =
+
+* Bug Fixed: Security improvement and other bugs #206.
 
 = 1.8 (26 June 2019) =
 
