@@ -266,7 +266,7 @@ class adsforwp_view_ad_groups {
 			$output .= $this->adsforwp_format_rows( $label, $input );
 		}
         
-        $common_function_obj = new adsforwp_admin_common_functions();
+                $common_function_obj = new adsforwp_admin_common_functions();
 		$allowed_html = $common_function_obj->adsforwp_expanded_allowed_tags();
 		echo '<table class="form-table afw-ads-groups-box-table"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table>';
 	}
@@ -290,7 +290,7 @@ class adsforwp_view_ad_groups {
                     
                 $post_meta = array();    
                 
-                $post_meta = $_POST; // Sanitized below before saving
+                $post_meta = (array) $_POST; // Sanitized below before saving
                 
                 $adsforwp_ads_array = array();    
                 
@@ -311,8 +311,8 @@ class adsforwp_view_ad_groups {
 									$post_meta[ $meta_field['id'] ] = sanitize_text_field( $post_meta[ $meta_field['id'] ] );
 									break;
 					               	
-					               	default:     
-					                $post_meta[ $meta_field['id'] ] = sanitize_text_field( $post_meta[ $meta_field['id'] ] );
+                                                                default:     
+                                                                $post_meta[ $meta_field['id'] ] = sanitize_text_field( $post_meta[ $meta_field['id'] ] );
 							}
 							update_post_meta( $post_id, $meta_field['id'], $post_meta[ $meta_field['id'] ] );
 						} else if ( $meta_field['type'] === 'checkbox' ) {

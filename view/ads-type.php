@@ -453,6 +453,9 @@ class adsforwp_view_ads_type {
 						case 'text':
 							$post_meta[ $meta_field['id'] ] = sanitize_text_field( $post_meta[ $meta_field['id'] ] );
 							break;
+                                                case 'textarea':
+							$post_meta[ $meta_field['id'] ] = esc_html( $post_meta[ $meta_field['id'] ] );
+							break;    
 						default:     
 							$post_meta[ $meta_field['id'] ] = sanitize_text_field( $post_meta[ $meta_field['id'] ] );
 					}

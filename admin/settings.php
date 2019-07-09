@@ -175,17 +175,24 @@ public function adsforwp_custom_upload_mimes($mimes = array()) {
 }
 public function adsforwp_handle_file_upload($option){
 
-        if ( ! current_user_can( 'manage_options' ) ) {
-                    return;
+        if ( ! current_user_can( 'upload_files' ) ) {
+                    return $option;
         }
+        
+        $fileInfo = wp_check_filetype(basename($_FILES['adsforwp_import_backup']['name']));
+        
+        if (!empty($fileInfo['ext']) && $fileInfo['ext'] == 'json') {
             
-        if(!empty($_FILES["adsforwp_import_backup"]["tmp_name"]))
-        {
-          $urls = wp_handle_upload($_FILES["adsforwp_import_backup"], array('test_form' => FALSE));      
-          $url = $urls["url"];
-          update_option('adsforwp-file-upload_url',esc_url($url));
+            if(!empty($_FILES["adsforwp_import_backup"]["tmp_name"])){
+            
+              $urls = wp_handle_upload($_FILES["adsforwp_import_backup"], array('test_form' => FALSE));      
+              $url = $urls["url"];
+              update_option('adsforwp-file-upload_url',esc_url($url));
+              
+            }
+        
         }
-
+                    
         return $option;
 }
 
