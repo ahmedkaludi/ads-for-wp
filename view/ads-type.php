@@ -438,7 +438,10 @@ class adsforwp_view_ads_type {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 			return $post_id;
                     
-        if ( current_user_can( 'manage_options' ) ) {
+                if ( current_user_can( 'manage_options' ) ) {
+                    
+                    $common_function_obj = new adsforwp_admin_common_functions();
+                    $allowed_html = $common_function_obj->adsforwp_expanded_allowed_tags(); 
                 
 			$post_meta = array();                    
 			$post_meta = $_POST; // Sanitized below before saving
@@ -454,7 +457,7 @@ class adsforwp_view_ads_type {
 							$post_meta[ $meta_field['id'] ] = sanitize_text_field( $post_meta[ $meta_field['id'] ] );
 							break;
                                                 case 'textarea':
-							$post_meta[ $meta_field['id'] ] = esc_html( $post_meta[ $meta_field['id'] ] );
+							$post_meta[ $meta_field['id'] ] = wp_kses($post_meta[ $meta_field['id'] ], $allowed_html) ;
 							break;    
 						default:     
 							$post_meta[ $meta_field['id'] ] = sanitize_text_field( $post_meta[ $meta_field['id'] ] );
