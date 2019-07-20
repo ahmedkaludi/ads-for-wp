@@ -7,6 +7,8 @@ class adsforwp_view_ads_type {
 	private $screen = array(		
             'adsforwp'                                                      
 	);
+        private $common_function = null;
+        
 	private $meta_fields = array(
 		array(
 			'label'   => 'Ad Type',
@@ -208,6 +210,11 @@ class adsforwp_view_ads_type {
 		),
 	);
 	public function __construct() {
+                
+                if($this->common_function == null){
+                    $this->common_function = new adsforwp_admin_common_functions();
+                }
+            
 		add_action( 'add_meta_boxes', array( $this, 'adsforwp_add_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'adsforwp_save_fields' ) );
 	}
@@ -421,8 +428,8 @@ class adsforwp_view_ads_type {
 			$output .= $this->adsforwp_format_rows( $label, $input, $provider_type );
 		}
                 
-                $common_function_obj = new adsforwp_admin_common_functions();
-                $allowed_html = $common_function_obj->adsforwp_expanded_allowed_tags();                                                		                                
+                
+                $allowed_html = $this->common_function->adsforwp_expanded_allowed_tags();                                                		                                
 		echo '<table class="form-table adsforwp-ad-type-table"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table>';
 	}
 	public function adsforwp_format_rows( $label, $input, $provider_type ) {
@@ -439,9 +446,8 @@ class adsforwp_view_ads_type {
 			return $post_id;
                     
                 if ( current_user_can( 'manage_options' ) ) {
-                    
-                    $common_function_obj = new adsforwp_admin_common_functions();
-                    $allowed_html = $common_function_obj->adsforwp_expanded_allowed_tags(); 
+                                        
+                    $allowed_html = $this->common_function->adsforwp_expanded_allowed_tags(); 
                 
 			$post_meta = array();                    
 			$post_meta = $_POST; // Sanitized below before saving

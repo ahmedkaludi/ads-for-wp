@@ -9,10 +9,17 @@
  */
 class Adsforwp_Ads_Widget extends WP_Widget {
 
+             
+        private $common_function = null;
 	/**
 	 * Register widget with WordPress.
 	 */
 	function __construct() {
+            
+                if($this->common_function == null){
+                    $this->common_function = new adsforwp_admin_common_functions();
+                }
+                
 		parent::__construct(
 			'adsforwp_ads_widget', // Base ID
 			esc_html__( 'Ads For WP Ads', 'ads-for-wp' ), // Name
@@ -32,9 +39,9 @@ class Adsforwp_Ads_Widget extends WP_Widget {
                           
 		echo html_entity_decode(esc_attr($args['before_widget']));
                                 
-        $common_function_obj = new adsforwp_admin_common_functions();
-        $all_ads = $common_function_obj->adsforwp_fetch_all_ads();
-        $all_groups = $common_function_obj->adsforwp_fetch_all_groups();   
+        
+        $all_ads = $this->common_function->adsforwp_fetch_all_ads();
+        $all_groups = $this->common_function->adsforwp_fetch_all_groups();   
         
         foreach($all_ads as $ad){
             
@@ -76,11 +83,10 @@ class Adsforwp_Ads_Widget extends WP_Widget {
 
         <p><label for="<?php echo esc_attr( $this->get_field_id( 'ads' ) ); ?>"><?php esc_attr_e( 'Ads:', 'ads-for-wp' ); ?></label><?php 
 		
-		$ads_select_html ='';
-		$group_select_html ='';
-		$common_function_obj = new adsforwp_admin_common_functions();
-		$all_ads = $common_function_obj->adsforwp_fetch_all_ads();
-		$all_groups = $common_function_obj->adsforwp_fetch_all_groups();
+		$ads_select_html = $group_select_html = '';
+				
+		$all_ads = $this->common_function->adsforwp_fetch_all_ads();
+		$all_groups = $this->common_function->adsforwp_fetch_all_groups();
 
 		foreach($all_ads as $ad){
 		 
@@ -91,7 +97,7 @@ class Adsforwp_Ads_Widget extends WP_Widget {
 		 
 			$group_select_html .='<option '. esc_attr(selected( $ads, $group->ID, false)).' value="'.esc_attr($group->ID).'">'.esc_html__($group->post_title, 'ads-for-wp').'</option>';
 		}
-		$allow_html = $common_function_obj->adsforwp_expanded_allowed_tags();
+		$allow_html = $this->common_function->adsforwp_expanded_allowed_tags();
 
 		echo '<select id="'.esc_attr( $this->get_field_id( 'ads' )).'" name="'.esc_attr( $this->get_field_name( 'ads' )).'">'
 		     . '<optgroup label="Groups">'

@@ -3,9 +3,10 @@ class adsforwp_view_ad_groups {
 	private $screen = array(
 		'adsforwp-groups',
 	);
-        private $ads_list = array();
-        private $added_ad_list = array();
-        private $meta_fields = array(	
+        private $ads_list        = array();
+        private $common_function = null;
+        private $added_ad_list   = array();
+        private $meta_fields     = array(	
         
         array(
 			'label' 		=> 'Usage',
@@ -53,7 +54,10 @@ class adsforwp_view_ad_groups {
 		),
 	);
 	public function __construct() {
-                                                
+                          
+                if($this->common_function == null){
+                    $this->common_function = new adsforwp_admin_common_functions();
+                }
 		add_action( 'add_meta_boxes', array( $this, 'adsforwp_add_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'adsforwp_save_fields' ) );                                
                 
@@ -77,12 +81,11 @@ class adsforwp_view_ad_groups {
 	}
 
 	public function adsforwp_field_generator( $post ) {
-            
-        $common_function_obj = new adsforwp_admin_common_functions();
-        $all_ads = $common_function_obj->adsforwp_fetch_all_ads();
-		$output = '';    
-                
-		foreach ( $this->meta_fields as $meta_field ) {
+                    
+           $all_ads = $this->common_function->adsforwp_fetch_all_ads();
+           $output  = '';    
+
+           foreach ( $this->meta_fields as $meta_field ) {
                     
 			$id             = ''; 
             $attributes     = '';
@@ -266,8 +269,8 @@ class adsforwp_view_ad_groups {
 			$output .= $this->adsforwp_format_rows( $label, $input );
 		}
         
-                $common_function_obj = new adsforwp_admin_common_functions();
-		$allowed_html = $common_function_obj->adsforwp_expanded_allowed_tags();
+                
+		$allowed_html = $this->common_function->adsforwp_expanded_allowed_tags();
 		echo '<table class="form-table afw-ads-groups-box-table"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table>';
 	}
 

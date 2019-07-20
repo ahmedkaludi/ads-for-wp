@@ -3,6 +3,16 @@
  * This class handles displaying ads according to amp display conditions
  */
 class adsforwp_output_amp_condition_display{            
+    
+    private $output_function = null;
+    
+    function __construct() {
+            
+            if($this->output_function == null){
+                $this->output_function = new adsforwp_output_functions();
+            }
+                	
+	}
     /**
      * List of all hooks which are used in this class
      */
@@ -112,9 +122,8 @@ class adsforwp_output_amp_condition_display{
         $in_between             = get_post_meta($ad_id,$key='adsforwp_after_how_many_post',true);
         
         if(intval($in_between) == $count){
-            
-         $output_function = new adsforwp_output_functions();
-         $ad_code = $output_function->adsforwp_get_ad_code($ad_id, $type="AD");    
+                     
+         $ad_code = $this->output_function->adsforwp_get_ad_code($ad_id, $type="AD");    
          
         }   
         
@@ -135,9 +144,8 @@ class adsforwp_output_amp_condition_display{
         $in_between      = get_post_meta($group_id,$key='adsforwp_after_how_many_post',true);  
         
         if(intval($in_between) == $count){
-            
-         $output_function = new adsforwp_output_functions();
-         $ad_code         = $output_function->adsforwp_group_ads($atts=null, $group_id, $widget);  
+                     
+         $ad_code         = $this->output_function->adsforwp_group_ads($atts=null, $group_id, $widget);  
          
         }   
         
@@ -150,8 +158,7 @@ class adsforwp_output_amp_condition_display{
         $post_ad_id_list = adsforwp_get_ad_ids();    
         
         if($post_ad_id_list){
-            
-            $output_function     = new adsforwp_output_functions();
+                        
             $common_function_obj = new adsforwp_admin_common_functions();
             
             
@@ -179,7 +186,7 @@ class adsforwp_output_amp_condition_display{
                       
                       }else{
                           
-                        $amp_ad_code = $output_function->adsforwp_get_ad_code($ad_id, $type="AD"); 
+                        $amp_ad_code = $this->output_function->adsforwp_get_ad_code($ad_id, $type="AD"); 
                         
                         if($amp_ad_code){
                             
@@ -196,9 +203,7 @@ class adsforwp_output_amp_condition_display{
         //For Group Ads
         $post_group_id_list = adsforwp_get_group_ad_ids();      
         
-        if($post_group_id_list){
-            
-            $output_function = new adsforwp_output_functions();                          
+        if($post_group_id_list){                                                 
             
             foreach($post_group_id_list as $group_id){   
                 
@@ -220,7 +225,7 @@ class adsforwp_output_amp_condition_display{
                       
                       }else{
                           
-                          $amp_group_code = $output_function->adsforwp_group_ads($atts=null, $group_id, $widget); 
+                          $amp_group_code = $this->output_function->adsforwp_group_ads($atts=null, $group_id, $widget); 
                           
                           if($amp_group_code){
                               
