@@ -5,10 +5,17 @@
  * @return void
  */
 function adsforwp_display_ads_txt() {
-                    
-	$request = esc_url_raw( $_SERVER['REQUEST_URI'] );
-        
-	if ( '/ads.txt' === $request ) {
+                    	
+        if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'){
+            $link = "https"; 
+        } else{
+            $link = "http"; 
+        }            
+        $link .= "://";        
+        $link .= $_SERVER['HTTP_HOST'];        
+        $link .= esc_url_raw($_SERVER['REQUEST_URI']); 
+
+	if ( trailingslashit(get_site_url()).'ads.txt' === esc_url_raw($link) ) {
 		            
                 $ad_txt = '';
                 $settings = adsforwp_defaultSettings();
