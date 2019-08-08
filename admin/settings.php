@@ -217,7 +217,11 @@ public function adsforwp_check_data_imported_from($plugin_post_type_name){
         
 }
 
-
+/**
+ * * This function is copied from Ads.txt Manger (https://wordpress.org/plugins/ads-txt/)
+ * @param string $error
+ * @return type
+ */
 public function adsforwp_format_error( $error ) {
     
 	$messages = $this->adsforwp_get_error_messages();
@@ -243,6 +247,7 @@ public function adsforwp_format_error( $error ) {
 }
 
 /**
+ * * This function is copied from Ads.txt Manger (https://wordpress.org/plugins/ads-txt/)
  * Get all non-generic error messages, translated and with placeholders intact.
  *
  * @return array Associative array of error messages.
@@ -263,8 +268,20 @@ public function adsforwp_get_error_messages() {
 	return $messages;
 }
 
-
+/**
+ * This function is copied from Ads.txt Manger (https://wordpress.org/plugins/ads-txt/)
+ * Validate a single line.
+ *
+ * @param string $line        The line to validate.
+ * @param string $line_number The line number being evaluated.
+ *
+ * @return array {
+ *     @type string $sanitized Sanitized version of the original line.
+ *     @type array  $errors    Array of errors associated with the line.
+ * }
+ */
 public function adsforwp_validate_line( $line, $line_number ) {
+    
 	$domain_regex = '/^((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}$/i';
 	$errors       = array();
 
@@ -367,8 +384,7 @@ public function adsforwp_validate_line( $line, $line_number ) {
 public function adsforwp_pre_update_settings($value, $old_value, $option){
     
    if($option == 'adsforwp_settings'){
-       
-       
+              
         $lines     = preg_split( '/\r\n|\r|\n/', $value['adsforwp_adstxt'] );
 	$sanitized = array();
 	$errors    = array();
