@@ -7,8 +7,7 @@ class adsforwp_view_ads_visibility {
 		'post',
 	);
 	private $meta_fields = array(
-		array(
-			
+		array(			
 			'id' => 'ads-for-wp-visibility',
 			'type' => 'radio',
 			'options' => array(

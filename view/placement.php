@@ -313,35 +313,19 @@ class adsforwp_view_placement {
 
       // Logged in User Type
          case 'user_type':            
+             
             if ( $comparison == 'equal') {
                 if ( in_array( $data, (array) $user->roles ) ) {
                     $result = true;
                 }
-            }            
+            }
+
             if ( $comparison == 'not_equal') {
-                require_once ABSPATH . 'wp-admin/includes/user.php';
-                // Get all the registered user roles
-                $roles = get_editable_roles();                
-                $all_user_types = array();
-                
-                foreach ($roles as $key => $value) {
-                    
-                  $all_user_types[] = $key;
-                  
-                }
-                // Flip the array so we can remove the user that is selected from the dropdown
-                $all_user_types = array_flip( $all_user_types );
-
-                // User Removed
-                unset( $all_user_types[$data] );
-
-                // Check and make the result true that user is not found 
-                if ( in_array( $data, (array) $all_user_types ) ) {
-                    
+                if ( !in_array( $data, (array) $user->roles ) ) {
                     $result = true;
                 }
             }
-            
+                        
            break; 
 
     // Post Controls  ------------ 
