@@ -1,4 +1,35 @@
 <?php
+ /**
+ * Display the contents of /ads.txt when requested.
+ *
+ * @return void
+ */
+function adsforwp_display_ads_txt() {
+                    
+	$request = esc_url_raw( $_SERVER['REQUEST_URI'] );
+        
+	if ( '/ads.txt' === $request ) {
+		            
+                $ad_txt = '';
+                $settings = adsforwp_defaultSettings();
+
+                if(isset($settings['adsforwp_adstxt']) && $settings['adsforwp_adstxt'] != ''){
+
+                    $ad_txt = $settings['adsforwp_adstxt'];
+
+                }            
+		// Will fall through if no option found, likely to a 404.
+		if ($ad_txt) {
+			
+			header( 'Content-Type: text/plain' );
+			echo esc_html( $ad_txt );
+			die();
+		}
+	}
+}
+add_action( 'init', 'adsforwp_display_ads_txt' );
+
+
 add_action( 'init', 'adsforwp_store_user_info_client_side' );
 
 function adsforwp_store_user_info_client_side(){

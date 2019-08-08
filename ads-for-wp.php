@@ -172,3 +172,4 @@ function adsforwp_add_plugin_meta_links($meta_fields, $file) {
   }
  
  add_filter('plugin_row_meta' , 'adsforwp_add_plugin_meta_links', 10, 2);
+ 
