@@ -613,6 +613,14 @@ jQuery( document ).ready(function($) {
                   $("#adsforwp-location").show();    
                   switch (optionValue) {
 
+                    case "mgid":
+                        
+                       $("#display-metabox").show();  
+                       $("#adsforwp_visitor_condition_metabox, #adsforwp_placement_metabox").show();
+                       $("#adsforwp_mgid_data_publisher, #adsforwp_mgid_data_widget, #adsforwp_mgid_data_container, #banner_size, #adsforwp_mgid_data_js_src").parent().parent("tr").show();                                                             
+                                                                  
+                        break;
+
                     case "custom":
                        $("#display-metabox").show();  
                        $("#adsforwp_visitor_condition_metabox, #adsforwp_placement_metabox").show();
