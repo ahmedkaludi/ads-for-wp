@@ -341,5 +341,8 @@ Ads css on plugins list page in WordPress starts here
  .adsforwp_adstxt_div{
      padding: 15px;
  }
-
+ .adsforwp-ads-txt-section{
+     display: content;
+     padding-top: 10px;
+ }
  

@@ -218,7 +218,7 @@ public function adsforwp_check_data_imported_from($plugin_post_type_name){
 }
 
 /**
- * * This function is copied from Ads.txt Manger (https://wordpress.org/plugins/ads-txt/)
+ * since v1.9.3
  * @param string $error
  * @return type
  */
@@ -227,7 +227,7 @@ public function adsforwp_format_error( $error ) {
 	$messages = $this->adsforwp_get_error_messages();
 
 	if ( ! isset( $messages[ $error['type'] ] ) ) {
-		return __( 'Unknown error', 'adstxt' );
+		return __( 'Unknown error', 'ads-for-wp' );
 	}
 
 	if ( ! isset( $error['value'] ) ) {
@@ -247,7 +247,7 @@ public function adsforwp_format_error( $error ) {
 }
 
 /**
- * * This function is copied from Ads.txt Manger (https://wordpress.org/plugins/ads-txt/)
+ * since v1.9.3
  * Get all non-generic error messages, translated and with placeholders intact.
  *
  * @return array Associative array of error messages.
@@ -269,7 +269,7 @@ public function adsforwp_get_error_messages() {
 }
 
 /**
- * This function is copied from Ads.txt Manger (https://wordpress.org/plugins/ads-txt/)
+ * since v1.9.3
  * Validate a single line.
  *
  * @param string $line        The line to validate.
@@ -418,11 +418,17 @@ public function adsforwp_adstxt_manager_callback(){
                 <li>
                     <div class="adsforwp-tools-field-title">
                         
-                   <div class="adsforwp-tooltip"><strong><?php echo esc_html__('Ads Txt Manager','ads-for-wp'); ?></strong>
+                        <div class="adsforwp-tooltip"><strong><?php echo esc_html__('Ads Txt Manager','ads-for-wp'); ?></strong>
                         </div>     
                         
+                        <fieldset style="display: inline-block;">
+                            <input type="checkbox" id="adsforwp_ads_txt" name="adsforwp_settings[adsforwp_ads_txt]" <?php echo isset($settings['adsforwp_ads_txt'])? 'checked':'' ?> > 
+                        </fieldset>
+                        </div>
+                        <div class="adsforwp-ads-txt-section <?php echo isset($settings['adsforwp_ads_txt'])? 'checked':'afw_hide' ?>">                                             
+                        
                         <?php if ( ! empty( $errors ) ) : ?>
-	<div class="notice notice-error adsforw-padstxt-notice">
+                    <div class="notice notice-error adsforw-padstxt-notice">
 		<p><strong><?php echo esc_html__( 'Your Ads.txt contains the following issues:', 'ads-for-wp' ); ?></strong></p>
 		<ul>
 			<?php
@@ -441,15 +447,8 @@ public function adsforwp_adstxt_manager_callback(){
 
 					echo esc_html( $message );
 				} else {
-					/*
-					 * Important: This is escaped piece-wise inside `format_error()`,
-					 * as we cannot do absolute-end late escaping as normally recommended.
-					 * This is because the placeholders in the translations can contain HTML,
-					 * namely escaped data values wrapped in code tags.
-					 * We don't have good JS translation tools yet and it's better to avoid duplication,
-					 * so we use a single PHP function for both the JS template and in PHP.
-					 */
-					echo $this->adsforwp_format_error( $error ); // WPCS: XSS ok.
+					
+					echo $this->adsforwp_format_error( $error );
 				}
 
 				echo  '</li>';
@@ -462,9 +461,9 @@ public function adsforwp_adstxt_manager_callback(){
                         <div class="adsforwp_adstxt_div">                                               
                         <textarea class="widefat code" rows="15" name="adsforwp_settings[adsforwp_adstxt]" id="adsforwp_adstxt"><?php echo (isset($settings['adsforwp_adstxt'])? $settings['adsforwp_adstxt']: ''); ?></textarea>
                         </div>
+                                                        
+                        </div>   
                         
-                                                                       
-                    </div>
                 </li> 
                 
             </ul>
