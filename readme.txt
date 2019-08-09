@@ -13,16 +13,13 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy to Use, Unlimited Incontent Ads, Adsense, Premium Features and more
 
 = Features: =
+* NEW: ads.txt Support
+* NEW: MGID Support
 * NEW: Ads Performance Analytics with reports & insights (supports AMP as well)
 * NEW: View Deep Insights of your traffic and Revenue with reports and data. It gives an overview of Mobile VS Desktop, AMP vs Non-AMP of your Traffic & Ad revenue including the comparision of previous time. 
 * NEW: Conditional Display to help you target ads.
 * NEW: AD blocker Support
 * NEW: Ad Revenue Sharing that supports all the ad networks and AMP.
-* NEW: Infolinks Support Added
-* NEW: Content.ad support added
-* NEW: Media.net support added
-* NEW: DoubleClick support added
-* NEW: Ad Now Support Added
 * AdSense Auto Ads Support
 * Ad Groups with AMP Support
 * Ad Widget added

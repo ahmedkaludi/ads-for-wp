@@ -412,7 +412,12 @@ public function adsforwp_pre_update_settings($value, $old_value, $option){
 public function adsforwp_adstxt_manager_callback(){
     
     $settings = adsforwp_defaultSettings();
-    $errors  = $settings['adsforwp_adstxt_errors'];
+    $errors   = array();
+    
+    if(isset($settings['adsforwp_adstxt_errors']) && is_array($settings['adsforwp_adstxt_errors'])){
+        $errors   = $settings['adsforwp_adstxt_errors'];
+    }
+        
     ?>
             <ul>
                 <li>
