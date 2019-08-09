@@ -65,7 +65,6 @@ Google Api Php Client library used https://github.com/googleapis/google-api-php-
 * Added: ads.txt support #198
 * Bug Fixed: Advanced display condition is not working when selected Not Equal to #221
 
-
 = 1.9.2 (15 July 2019) =
 
 * Bug Fixed: Taboola Ads not appearing #218
