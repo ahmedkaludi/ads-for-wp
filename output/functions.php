@@ -1316,6 +1316,100 @@ class adsforwp_output_functions{
                                                                                  
             switch ($ad_type) {
                 
+            case 'mgid':
+                
+                    $data_publisher   = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_mgid_data_publisher', 'adsforwp_array');
+                    $data_widget      = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_mgid_data_widget', 'adsforwp_array');
+                    $data_container   = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_mgid_data_container', 'adsforwp_array');                     
+                    $data_js_src      = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_mgid_data_js_src', 'adsforwp_array');                     
+                    $mgid_size = '';
+                    
+                    
+                    $banner_size = adsforwp_rmv_warnings($post_meta_dataset, 'banner_size', 'adsforwp_array'); 
+                    
+                    if($banner_size !=''){
+                        
+                        $explode_size = explode('x', $banner_size);              
+                        $width  = $explode_size[0];            
+                        $height = $explode_size[1];                               
+                    
+                        if($width && $height){
+                            $mgid_size = 'width="'.esc_attr($width).'" height="'.esc_attr($height).'"';
+                        }
+                    
+                    }
+                    
+                                        
+                    if($this->is_amp){
+                     
+                        if($data_publisher && $data_widget && $data_container){
+
+                            $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                                            '.$sponsership_label.'
+                                                            <amp-embed '.$mgid_size.'
+                                                             type="mgid"
+                                                             data-publisher="'. esc_attr($data_publisher).'"
+                                                             data-widget="'. esc_attr($data_widget).'"
+                                                             data-container="'. esc_attr($data_container).'">
+                                                             </amp-embed>
+
+                                                            </div>';    
+
+                        }    
+                                                                  
+                    }else{
+                        
+                        if($data_publisher && $data_widget && $data_container && $data_js_src){
+                                                                                    
+                            $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                                            '.$sponsership_label.'                                                                   
+                                                            <div id="'. esc_attr($data_container).'"> 
+                                                            <script> 
+                                                             (function() {
+                                                                var D = new Date(),
+                                                                    d = document,
+                                                                    b = "body",
+                                                                    ce = "createElement",
+                                                                    ac = "appendChild",
+                                                                    st = "style",
+                                                                    ds = "display",
+                                                                    n = "none",
+                                                                    gi = "getElementById",
+                                                                    lp = d.location.protocol,
+                                                                    wp = lp.indexOf("http") == 0 ? lp : "https:";
+                                                                var i = d[ce]("iframe");
+                                                                i[st][ds] = n;
+                                                                d[gi]("'. esc_attr($data_container).'")[ac](i);
+                                                                try {
+                                                                    var iw = i.contentWindow.document;
+                                                                    iw.open();
+                                                                    iw.writeln("<ht" + "ml><bo" + "dy></bo" + "dy></ht" + "ml>");
+                                                                    iw.close();
+                                                                    var c = iw;
+                                                                } catch (e) {
+                                                                    var iw = d;
+                                                                    var c = d[gi]("'. esc_attr($data_container).'");
+                                                                }
+                                                                var dv = iw[ce]("div");
+                                                                dv.id = "MG_ID";
+                                                                dv[st][ds] = n;
+                                                                dv.innerHTML = '. esc_attr($data_widget).';
+                                                                c[ac](dv);
+                                                                var s = iw[ce]("script");
+                                                                s.async = "async";
+                                                                s.defer = "defer";
+                                                                s.charset = "utf-8";
+                                                                s.src = wp + "'.esc_url($data_js_src).'?t=" + D.getYear() + D.getMonth() + D.getUTCDate() + D.getUTCHours();
+                                                                c[ac](s);
+                                                            })();
+                                                           </script> </div>
+                                                            </div>';                                                        
+                            
+                        }
+                                                                                          
+                    }                                                                                
+            break;
+            
             case 'custom':
                   $common_function_obj = new adsforwp_admin_common_functions();
                   $allowed_html = $common_function_obj->adsforwp_expanded_allowed_tags(); 

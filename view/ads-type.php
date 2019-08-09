@@ -19,7 +19,8 @@ class adsforwp_view_ads_type {
 				'adsense'       => 'AdSense',
                                 'doubleclick'   => 'DoubleClick',
                                 'media_net'     => 'Media.net',
-                                'ad_now'        => 'AdNow',				                                
+                                'ad_now'        => 'AdNow',
+                                'mgid'          => 'MGID',
                                 'contentad'     => 'Content.ad',
                                 'infolinks'     => 'Infolinks',
                                 'ad_image'      => 'Image Banner Ad',
@@ -114,6 +115,41 @@ class adsforwp_view_ads_type {
 				
 			),
 		),
+                array(
+			'label'     => 'Data Publisher',
+			'id'        => 'adsforwp_mgid_data_publisher',                        
+			'type'      => 'text',
+                        'attributes' => array(
+				'placeholder'   => 'site.com',                                                                
+				
+			),
+		),
+                array(
+			'label'     => 'Data Widget',
+			'id'        => 'adsforwp_mgid_data_widget',                        
+			'type'      => 'text',
+                        'attributes' => array(
+				'placeholder'   => '123645',                                                                				
+			),
+		),
+                array(
+			'label'     => 'Data Container',
+			'id'        => 'adsforwp_mgid_data_container',                        
+			'type'      => 'text',
+                        'attributes' => array(
+				'placeholder'   => 'M87ScriptRootC123645',                                                                				
+			),
+		),
+            
+                array(
+			'label'     => 'Data Js Src',
+			'id'        => 'adsforwp_mgid_data_js_src',                        
+			'type'      => 'text',
+                        'note'      => 'Js is require to work in non AMP',
+                        'attributes' => array(
+				'placeholder'   => '//jsc.mgid.com/a/m/adsforwp.com.123645.js',                                                                				
+			),
+		),
             //DoubleClick fields ends here  
 		array(
 			'label'     => 'Size',
@@ -143,13 +179,14 @@ class adsforwp_view_ads_type {
                                 '728x20'    =>  'Wide Horizontal (728x20)',
                                 '600x120'   =>  'Horizontal (600x120)',
 			),
-		),             
-              array(
+		),
+            
+                 array(
 			'label'     => 'Upload Ad Image',
 			'id'        => 'adsforwp_ad_image',                        
 			'type'      => 'media',
 		),
-              array(
+                array(
 			'label'     => 'Ad Anchor link',
 			'id'        => 'adsforwp_ad_redirect_url',                        
 			'type'      => 'text',
@@ -425,6 +462,12 @@ class adsforwp_view_ads_type {
                                         
 					
 			}
+                        $note = '';
+                        if(isset($meta_field['note'])){
+                            $note = '<p>'.$meta_field['note'].'</p>';
+                        }
+                        $input = $input.$note;
+                        
 			$output .= $this->adsforwp_format_rows( $label, $input, $provider_type );
 		}
                 

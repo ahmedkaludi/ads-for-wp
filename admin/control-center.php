@@ -1,4 +1,48 @@
 <?php
+ /**
+ * Display the contents of /ads.txt when requested.
+ * since v1.9.3
+ * @return void
+ */
+function adsforwp_display_ads_txt() {
+                    	
+        $settings = adsforwp_defaultSettings();
+        
+        if(isset($settings['adsforwp_ads_txt'])){
+         
+        if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'){
+            $link = "https"; 
+        } else{
+            $link = "http"; 
+        }            
+        
+        $link .= "://";        
+        $link .= $_SERVER['HTTP_HOST'];        
+        $link .= esc_url_raw($_SERVER['REQUEST_URI']); 
+
+	if ( trailingslashit(get_site_url()).'ads.txt' === esc_url_raw($link) ) {
+		            
+                $ad_txt = '';
+                
+                if(isset($settings['adsforwp_adstxt']) && $settings['adsforwp_adstxt'] != ''){
+
+                    $ad_txt = $settings['adsforwp_adstxt'];
+
+                }            
+		// Will fall through if no option found, likely to a 404.
+		if ($ad_txt) {
+			
+			header( 'Content-Type: text/plain' );
+			echo esc_html( $ad_txt );
+			die();
+		}
+	}
+                        
+        }            
+}
+
+add_action( 'init', 'adsforwp_display_ads_txt' );
+
 add_action( 'init', 'adsforwp_store_user_info_client_side' );
 
 function adsforwp_store_user_info_client_side(){

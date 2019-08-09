@@ -6,6 +6,7 @@ public function __construct() {
       add_action( 'admin_menu', array($this, 'adsforwp_add_menu_links'));        
       add_action('admin_init', array($this, 'adsforwp_settings_init'));
       add_action('upload_mimes', array($this, 'adsforwp_custom_upload_mimes'));
+      add_filter('pre_update_option_adsforwp_settings', array($this, 'adsforwp_pre_update_settings'),10,3);
       
     }
 public function adsforwp_add_menu_links() {	
@@ -90,8 +91,7 @@ public function adsforwp_admin_interface_render(){
 			submit_button( esc_html__('Save', 'ads-for-wp') );
 				?>
 			</div>
-		</form>
-	</div>
+		</form>	
         
 	<?php
            
@@ -120,7 +120,15 @@ public function adsforwp_settings_init(){
                              array($this, 'adsforwp_advance_callback'),					// Callback
                             'adsforwp_advance_section',							// Page slug
                             'adsforwp_advance_section'							// Settings Section ID
-                    );    
+                    );
+                    
+                    add_settings_field(
+                            'adsforwp_adstxt_manager',								// ID
+                            '',			// Title
+                             array($this, 'adsforwp_adstxt_manager_callback'),					// Callback
+                            'adsforwp_advance_section',							// Page slug
+                            'adsforwp_advance_section'							// Settings Section ID
+                    );
                                                                     
                 add_settings_section('adsforwp_general_section', 'Settings', '__return_false', 'adsforwp_general_section');		              
                     add_settings_field(
@@ -209,6 +217,260 @@ public function adsforwp_check_data_imported_from($plugin_post_type_name){
         
 }
 
+/**
+ * since v1.9.3
+ * @param string $error
+ * @return type
+ */
+public function adsforwp_format_error( $error ) {
+    
+	$messages = $this->adsforwp_get_error_messages();
+
+	if ( ! isset( $messages[ $error['type'] ] ) ) {
+		return __( 'Unknown error', 'ads-for-wp' );
+	}
+
+	if ( ! isset( $error['value'] ) ) {
+		$error['value'] = '';
+	}
+
+	$message = sprintf( esc_html( $messages[ $error['type'] ] ), '<code>' . esc_html( $error['value'] ) . '</code>' );
+
+	$message = sprintf(
+		/* translators: Error message output. 1: Line number, 2: Error message */
+		__( 'Line %1$s: %2$s', 'ads-for-wp' ),
+		esc_html( $error['line'] ),
+		$message // This is escaped piece-wise above and may contain HTML (code tags) at this point
+	);
+
+	return $message;
+}
+
+/**
+ * since v1.9.3
+ * Get all non-generic error messages, translated and with placeholders intact.
+ *
+ * @return array Associative array of error messages.
+ */
+public function adsforwp_get_error_messages() {
+	$messages = array(
+		'invalid_variable'     => __( 'Unrecognized variable' ),
+		'invalid_record'       => __( 'Invalid record' ),
+		'invalid_account_type' => __( 'Third field should be RESELLER or DIRECT' ),
+		/* translators: %s: Subdomain */
+		'invalid_subdomain'    => __( '%s does not appear to be a valid subdomain' ),
+		/* translators: %s: Exchange domain */
+		'invalid_exchange'     => __( '%s does not appear to be a valid exchange domain' ),
+		/* translators: %s: Alphanumeric TAG-ID */
+		'invalid_tagid'        => __( '%s does not appear to be a valid TAG-ID' ),
+	);
+
+	return $messages;
+}
+
+/**
+ * since v1.9.3
+ * Validate a single line.
+ *
+ * @param string $line        The line to validate.
+ * @param string $line_number The line number being evaluated.
+ *
+ * @return array {
+ *     @type string $sanitized Sanitized version of the original line.
+ *     @type array  $errors    Array of errors associated with the line.
+ * }
+ */
+public function adsforwp_validate_line( $line, $line_number ) {
+    
+	$domain_regex = '/^((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}$/i';
+	$errors       = array();
+
+	if ( empty( $line ) ) {
+		$sanitized = '';
+	} elseif ( 0 === strpos( $line, '#' ) ) { // This is a full-line comment.
+		$sanitized = wp_strip_all_tags( $line );
+	} elseif ( 1 < strpos( $line, '=' ) ) { // This is a variable declaration.
+		// The spec currently supports CONTACT and SUBDOMAIN.
+		if ( ! preg_match( '/^(CONTACT|SUBDOMAIN)=/i', $line ) ) {
+			$errors[] = array(
+				'line' => $line_number,
+				'type' => 'invalid_variable',
+			);
+		} elseif ( 0 === stripos( $line, 'subdomain=' ) ) { // Subdomains should be, well, subdomains.
+			// Disregard any comments.
+			$subdomain = explode( '#', $line );
+			$subdomain = $subdomain[0];
+
+			$subdomain = explode( '=', $subdomain );
+			array_shift( $subdomain );
+
+			// If there's anything other than one piece left something's not right.
+			if ( 1 !== count( $subdomain ) || ! preg_match( $domain_regex, $subdomain[0] ) ) {
+				$subdomain = implode( '', $subdomain );
+				$errors[]  = array(
+					'line'  => $line_number,
+					'type'  => 'invalid_subdomain',
+					'value' => $subdomain,
+				);
+			}
+		}
+
+		$sanitized = wp_strip_all_tags( $line );
+
+		unset( $subdomain );
+	} else { // Data records: the most common.
+		// Disregard any comments.
+		$record = explode( '#', $line );
+		$record = $record[0];
+
+		// Record format: example.exchange.com,pub-id123456789,RESELLER|DIRECT,tagidhash123(optional).
+		$fields = explode( ',', $record );
+
+		if ( 3 <= count( $fields ) ) {
+			$exchange     = trim( $fields[0] );
+			$pub_id       = trim( $fields[1] );
+			$account_type = trim( $fields[2] );
+
+			if ( ! preg_match( $domain_regex, $exchange ) ) {
+				$errors[] = array(
+					'line'  => $line_number,
+					'type'  => 'invalid_exchange',
+					'value' => $exchange,
+				);
+			}
+
+			if ( ! preg_match( '/^(RESELLER|DIRECT)$/i', $account_type ) ) {
+				$errors[] = array(
+					'line' => $line_number,
+					'type' => 'invalid_account_type',
+				);
+			}
+
+			if ( isset( $fields[3] ) ) {
+				$tag_id = trim( $fields[3] );
+
+				// TAG-IDs appear to be 16 character hashes.
+				// TAG-IDs are meant to be checked against their DB - perhaps good for a service or the future.
+				if ( ! empty( $tag_id ) && ! preg_match( '/^[a-f0-9]{16}$/', $tag_id ) ) {
+					$errors[] = array(
+						'line'  => $line_number,
+						'type'  => 'invalid_tagid',
+						'value' => $fields[3],
+					);
+				}
+			}
+
+			$sanitized = wp_strip_all_tags( $line );
+		} else {
+			// Not a comment, variable declaration, or data record; therefore, invalid.
+			// Early on we commented the line out for safety but it's kind of a weird thing to do with a JS AYS.
+			$sanitized = wp_strip_all_tags( $line );
+
+			$errors[] = array(
+				'line' => $line_number,
+				'type' => 'invalid_record',
+			);
+		}
+
+		unset( $record, $fields );
+	}
+
+	return array(
+		'sanitized' => $sanitized,
+		'errors'    => $errors,
+	);
+}
+
+public function adsforwp_pre_update_settings($value, $old_value, $option){
+    
+   if($option == 'adsforwp_settings'){
+              
+        $lines     = preg_split( '/\r\n|\r|\n/', $value['adsforwp_adstxt'] );
+	$sanitized = array();
+	$errors    = array();
+	$response  = array();
+        
+        foreach ( $lines as $i => $line ) {
+		$line_number = $i + 1;
+		$result      = $this->adsforwp_validate_line( $line, $line_number );
+
+		$sanitized[] = $result['sanitized'];
+		if ( ! empty( $result['errors'] ) ) {
+			$errors = array_merge( $errors, $result['errors'] );
+		}
+	}
+       
+       $sanitized = implode( PHP_EOL, $sanitized );
+      
+       $value['adsforwp_adstxt'] = $sanitized;
+       $value['adsforwp_adstxt_errors'] = $errors;
+       
+   }
+    return $value;
+}
+
+public function adsforwp_adstxt_manager_callback(){
+    
+    $settings = adsforwp_defaultSettings();
+    $errors  = $settings['adsforwp_adstxt_errors'];
+    ?>
+            <ul>
+                <li>
+                    <div class="adsforwp-tools-field-title">
+                        
+                        <div class="adsforwp-tooltip"><strong><?php echo esc_html__('Ads Txt Manager','ads-for-wp'); ?></strong>
+                        </div>     
+                        
+                        <fieldset style="display: inline-block;">
+                            <input type="checkbox" id="adsforwp_ads_txt" name="adsforwp_settings[adsforwp_ads_txt]" <?php echo isset($settings['adsforwp_ads_txt'])? 'checked':'' ?> > 
+                        </fieldset>
+                        </div>
+                        <div class="adsforwp-ads-txt-section <?php echo isset($settings['adsforwp_ads_txt'])? 'checked':'afw_hide' ?>">                                             
+                        
+                        <?php if ( ! empty( $errors ) ) : ?>
+                    <div class="notice notice-error adsforw-padstxt-notice">
+		<p><strong><?php echo esc_html__( 'Your Ads.txt contains the following issues:', 'ads-for-wp' ); ?></strong></p>
+		<ul>
+			<?php
+			foreach ( $errors as $error ) {
+				echo '<li>';
+
+				// Errors were originally stored as an array
+				// This old style only needs to be accounted for here at runtime display
+				if ( isset( $error['message'] ) ) {
+					$message = sprintf(
+						/* translators: Error message output. 1: Line number, 2: Error message */
+						__( 'Line %1$s: %2$s', 'ads-for-wp' ),
+						$error['line'],
+						$error['message']
+					);
+
+					echo esc_html( $message );
+				} else {
+					
+					echo $this->adsforwp_format_error( $error );
+				}
+
+				echo  '</li>';
+			}
+			?>
+		</ul>
+	</div>
+<?php endif; ?>
+                        
+                        <div class="adsforwp_adstxt_div">                                               
+                        <textarea class="widefat code" rows="15" name="adsforwp_settings[adsforwp_adstxt]" id="adsforwp_adstxt"><?php echo (isset($settings['adsforwp_adstxt'])? $settings['adsforwp_adstxt']: ''); ?></textarea>
+                        </div>
+                                                        
+                        </div>   
+                        
+                </li> 
+                
+            </ul>
+        
+    <?php    
+    
+}
 public function adsforwp_advance_callback(){
     
     $settings = adsforwp_defaultSettings();
@@ -218,9 +480,9 @@ public function adsforwp_advance_callback(){
                 <li><div class="adsforwp-tools-field-title">
                         <div class="adsforwp-tooltip"><strong><?php echo esc_html__('IP Geolocation API','ads-for-wp'); ?></strong>
                         </div>
-                        <input type="text" value="<?php if(isset($settings['adsforwp_geolocation_api'])){ echo $settings['adsforwp_geolocation_api']; } ?>" id="adsforwp-geolocation-api" name="adsforwp_settings[adsforwp_geolocation_api]">
+                        <input type="text" value="<?php if(isset($settings['adsforwp_geolocation_api'])){ echo $settings['adsforwp_geolocation_api']; } ?>" id="adsforwp-geolocation-api" name="adsforwp_settings[adsforwp_geolocation_api]">                        
+                        <span style="font-weight: 500;">Today, Request Made  -:  <?php echo get_option("adsforwp_ip_request_".date('Y-m-d')); ?></span>
                         <p><?php echo esc_html__('Note : They have free plan which gives you 50K requests per month. For all that you need to singup','ads-for-wp'); ?> <a href="https://ipgeolocation.io" target="_blank"><?php echo esc_html__('Links','ads-for-wp'); ?></a></p>
-                        <h3>Today, Request Made  -:  <?php echo get_option("adsforwp_ip_request_".date('Y-m-d')); ?></h3>
                     </div>
                 </li> 
                 
