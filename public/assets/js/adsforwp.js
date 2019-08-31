@@ -97,7 +97,18 @@
                             if(class_count==1){
                                 if(jQuery(this).parents("tbody").find("tr").length>1){
                                          jQuery(this).parents("tr").remove();
-                                 }   
+                                 }else{
+                                  if(jQuery(this).parents(".adsforwp_visitor_condition_group").find(".adsforwp-visitor-condition-div").length < 1 ){
+                                      $(button).insertBefore($('.adsforwp-visitor-condition-groups'));
+                                      $("#adsforwp_v_condition_enable").val('');
+                                      $(".adsforwp-visitor-condition-div").show();
+                                      $(".adsforwp-visitor-condition-groups").addClass('afw_hide');
+                                  }else{
+                                      $(".adsforwp-visitor-condition-div").show();
+                                      $(".adsforwp-visitor-condition-groups").addClass('afw_hide');
+                                      $("#adsforwp_v_condition_enable").val('');
+                                  }
+                                }      
                                }else{
                                   if(jQuery(this).parents("tbody").find("tr").length == 1){
                                          jQuery(this).parents(".adsforwp-visitor-condition-group").remove();

@@ -77,7 +77,7 @@ class adsforwp_view_visitor_condition {
       );
       $total_group_fields = count( $visitor_conditions_array );       
       ?>
-<div>   
+<div class="adsforwp_visitor_condition_group" >   
     <input type="hidden" value="<?php echo (isset( $visitor_condition_enable )?  $visitor_condition_enable : 'disable'); ?>" id="adsforwp_v_condition_enable" name="adsforwp_v_condition_enable">    
     <?php 
         if(isset($visitor_condition_enable) && $visitor_condition_enable =='enable'){
