@@ -69,7 +69,8 @@ class adsforwp_output_functions{
         add_action('wp_ajax_adsforwp_get_groups_ad', array($this, 'adsforwp_get_groups_ad'));
         
         //Hooks for sticky ads
-        add_action('wp_footer', array($this, 'adsforwp_display_sticky_ads'));         
+        add_action('wp_footer', array($this, 'adsforwp_display_sticky_ads'));
+        add_filter('amp_post_template_data',array($this, 'adsforwp_enque_ads_specific_amp_script'));         
         add_action('amp_post_template_css',array($this, 'adsforwp_add_amp_stick_ad_css'));        
         add_action('amp_post_template_css',array($this, 'adsforwp_global_css_for_amp'));
         add_action('amp_post_template_footer',array($this, 'adsforwp_display_sticky_ads_amp'));
@@ -742,7 +743,29 @@ class adsforwp_output_functions{
             }
            
     }   
-    
+    public function adsforwp_enque_ads_specific_amp_script($data){
+        $all_ads_id    = adsforwp_get_ad_ids();
+        if($all_ads_id){
+            foreach($all_ads_id as $ad_id){
+                $post_type = get_post_meta( $ad_id, 'select_adtype', true ); 
+                if($post_type == 'adsense'){
+                    $post_meta_dataset = array();                      
+                    $post_meta_dataset = get_post_meta($ad_id,$key='',true);
+                    $adsense_type = adsforwp_rmv_warnings($post_meta_dataset, 'adsense_type', 'adsforwp_array');
+                    if($adsense_type == 'adsense_sticky_ads'){
+                        $service = new adsforwp_output_service();
+                        $ad_status = $service->adsforwp_is_condition($ad_id);
+                        if($ad_status){
+                            if ( empty( $data['amp_component_scripts']['amp-sticky-ad'] ) ) {
+                                $data['amp_component_scripts']['amp-sticky-ad'] = 'https://cdn.ampproject.org/v0/amp-sticky-ad-latest.js';
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $data;         
+    }
     public function adsforwp_insert_sticky_ads_code(){                                   
                    
             $all_ads_id    = adsforwp_get_ad_ids(); 
