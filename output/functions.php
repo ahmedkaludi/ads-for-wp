@@ -614,6 +614,9 @@ class adsforwp_output_functions{
                             if(isset($media_value_meta)){
 
                                 ?>
+                                amp-ad.afw_ad_banner{
+                                  max-width:100%;
+                                }
                                .adsforwp-bg-ad{                             
                                   position: fixed;
                                   top: 0;
@@ -1752,7 +1755,7 @@ class adsforwp_output_functions{
                                                                 </script>
                                                                 <ins 
                                                                 class="adsbygoogle" 
-                                                                style="background:none;display:inline-block;width:'.esc_attr($width).'px;height:'.esc_attr($height).'px"                                                                                                                           
+                                                                style="background:none;display:inline-block;width:'.esc_attr($width).'px;height:'.esc_attr($height).'px;max-width:100%;"                                                                                                                           
                                                                 data-ad-client="'.esc_attr($ad_client).'"
                                                                 data-ad-slot="'.esc_attr($ad_slot).'"
                                                                 data-ad-format="auto">
