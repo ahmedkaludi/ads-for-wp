@@ -1752,7 +1752,7 @@ class adsforwp_output_functions{
                                                                 </script>
                                                                 <ins 
                                                                 class="adsbygoogle" 
-                                                                style="display:inline-block;width:'.esc_attr($width).'px;height:'.esc_attr($height).'px"                                                                                                                           
+                                                                style="background:none;display:inline-block;width:'.esc_attr($width).'px;height:'.esc_attr($height).'px"                                                                                                                           
                                                                 data-ad-client="'.esc_attr($ad_client).'"
                                                                 data-ad-slot="'.esc_attr($ad_slot).'"
                                                                 data-ad-format="auto">
@@ -1772,7 +1772,7 @@ class adsforwp_output_functions{
                                                                 '.$sponsership_label.'
                                                                 <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
                                                                 </script>
-                                                                <ins class="adsbygoogle" style="display:inline-block;width:'.esc_attr($width).'px;height:'.esc_attr($height).'px" data-ad-client="'.esc_attr($ad_client).'" data-ad-slot="'.esc_attr($ad_slot).'">
+                                                                <ins class="adsbygoogle" style="background:none;display:inline-block;width:'.esc_attr($width).'px;height:'.esc_attr($height).'px" data-ad-client="'.esc_attr($ad_client).'" data-ad-slot="'.esc_attr($ad_slot).'">
                                                                 </ins>
                                                                 <script>
                                                                         (adsbygoogle = window.adsbygoogle || []).push({});
