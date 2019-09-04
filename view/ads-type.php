@@ -344,7 +344,7 @@ class adsforwp_view_ads_type {
 						'<textarea class="afw_textarea" id="%s" name="%s" rows="5">%s</textarea>',
 						esc_attr($meta_field['id']),
 						esc_attr($meta_field['id']),
-						$meta_value
+						esc_textarea($meta_value)
 					); 
                                     break;
                                 case 'checkbox':
@@ -463,17 +463,17 @@ class adsforwp_view_ads_type {
 					
 			}
                         $note = '';
+                        
                         if(isset($meta_field['note'])){
                             $note = '<p>'.$meta_field['note'].'</p>';
                         }
+                        
                         $input = $input.$note;
                         
 			$output .= $this->adsforwp_format_rows( $label, $input, $provider_type );
 		}
-                
-                
-                $allowed_html = $this->common_function->adsforwp_expanded_allowed_tags();                                                		                                
-		echo '<table class="form-table adsforwp-ad-type-table"><tbody>' . wp_kses($output, $allowed_html) . '</tbody></table>';
+                //$output variable's html is already sanitized in above loop.                                                                                		                                
+		echo '<table class="form-table adsforwp-ad-type-table"><tbody>' . $output. '</tbody></table>';
 	}
 	public function adsforwp_format_rows( $label, $input, $provider_type ) {
                                                         
@@ -505,8 +505,8 @@ class adsforwp_view_ads_type {
 						case 'text':
 							$post_meta[ $meta_field['id'] ] = sanitize_text_field( $post_meta[ $meta_field['id'] ] );
 							break;
-                                                case 'textarea':
-							$post_meta[ $meta_field['id'] ] = wp_kses($post_meta[ $meta_field['id'] ], $allowed_html) ;
+                                                case 'textarea':                                                    
+							$post_meta[ $meta_field['id'] ] = wp_unslash($post_meta[ $meta_field['id'] ]) ;
 							break;    
 						default:     
 							$post_meta[ $meta_field['id'] ] = sanitize_text_field( $post_meta[ $meta_field['id'] ] );
