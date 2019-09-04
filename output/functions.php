@@ -1996,7 +1996,11 @@ class adsforwp_output_functions{
             
            foreach ($post_group_data as $group_id=>$value){
             if(get_post_status($group_id) == 'publish'){
-              $filter_group_ids[$group_id] = $value; 
+              $output_service = new adsforwp_output_service();                    
+                $expiry_status = $output_service->adsforwp_check_ad_expiry_date($group_id);
+                if( $expiry_status){
+                  $filter_group_ids[$group_id] = $value; 
+                }
             }
             
          } 
@@ -2027,8 +2031,10 @@ class adsforwp_output_functions{
         $data_crid          = adsforwp_rmv_warnings($ad_detail, 'data_crid', 'adsforwp_array');                   
         
         if(!empty($ad_detail) && $select_ad_type !='' && get_post_status($post_ad_id) == 'publish'){
-            
-        $adsresultset[] = array(
+          $output_service = new adsforwp_output_service();               
+          $expiry_status = $output_service->adsforwp_check_ad_expiry_date($post_ad_id);
+          if($expiry_status){
+            $adsresultset[] = array(
                 'ad_id'                     => $post_ad_id,
                 'ad_type'                   => adsforwp_rmv_warnings($ad_detail, 'select_adtype', 'adsforwp_array'),
                 'ad_adsense_type'           => adsforwp_rmv_warnings($ad_detail, 'adsense_type', 'adsforwp_array'),
@@ -2043,6 +2049,8 @@ class adsforwp_output_functions{
                 'ad_img_height'             => adsforwp_rmv_warnings($ad_detail, 'adsforwp_ad_img_height', 'adsforwp_array'),
                 'ad_img_width'              => adsforwp_rmv_warnings($ad_detail, 'adsforwp_ad_img_width', 'adsforwp_array'),                
         ) ; 
+          }
+        
         
         }
         
@@ -2068,8 +2076,11 @@ class adsforwp_output_functions{
         foreach ($post_group_data as $group_id=>$value){
             
             if(get_post_status($group_id) == 'publish'){
-                
-              $filter_group_ids[$group_id] = $value; 
+              $output_service = new adsforwp_output_service();
+              $expiry_status = $output_service->adsforwp_check_ad_expiry_date($group_id);   
+              if($expiry_status){
+                $filter_group_ids[$group_id] = $value; 
+              }
               
             }
             
