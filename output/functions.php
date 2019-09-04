@@ -224,9 +224,6 @@ class adsforwp_output_functions{
             .afw a {
                display:block;
             }
-            .afw .afw-adsense-resp amp-ad{
-              max-width:100%;
-            }
          <?php 
     }       
     /**
@@ -1710,7 +1707,7 @@ class adsforwp_output_functions{
                               
                                  $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                     '.$sponsership_label.'
-                                     <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).' afw-adsense-resp">
+                                     <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'">
                                        <amp-ad width="100vw" height=320                                        
                                         type="adsense"                                        
                                         data-ad-client="'. esc_attr($ad_client) .'"
