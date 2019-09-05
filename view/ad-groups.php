@@ -120,11 +120,20 @@ class adsforwp_view_ad_groups {
                     $input .= '<tbody>';  
                     
                     if($meta_value){
+                    	
                     	foreach($meta_value as $key => $val){
+                    		$output_service = new adsforwp_output_service();                    
+                			$expiry_status = $output_service->adsforwp_check_ad_expiry_date($key);
+                			$expiry_msg = '';
+                			if(!$expiry_status){
+                				$post_meta_dataset           = get_post_meta($key,$key='',true);
+                				$ad_expire_to                = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_expire_to', 'adsforwp_array');
+                				$expiry_msg = esc_html__('This ad has been expired on this date '.$ad_expire_to.'.', 'ads-for-wp');
+                			}
 							if(get_post_status($key) == 'publish'){
 							  $input .= '<tr class="afw-group-add-ad-list" name="adsforwp_ads['.esc_attr($key).']">'
-							    . '<td>'.esc_html($val).'<input type="hidden" name="adsforwp_ads['.esc_attr($key).']" value="'.esc_attr($val).'"></td>' 
-							    . '<td><button type="button" class="afw-remove-ad-from-group button">x</button></td>'                                                        
+							    . '<td>'.esc_html($val).'<input type="hidden" name="adsforwp_ads['.esc_attr($key).']" value="'.esc_attr($val).'"><p class="afw-error">'.esc_html($expiry_msg).'</p></td>' 
+							    . '<td><button type="button" class="afw-remove-ad-from-group button">x</button></td>'                                                  
 							    . '</tr>';  
 							}else{
 							  $input .= '<tr class="afw-group-add-ad-list" name="adsforwp_ads['.esc_attr($key).']">'

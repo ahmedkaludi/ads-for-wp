@@ -77,14 +77,14 @@ class adsforwp_view_visitor_condition {
       );
       $total_group_fields = count( $visitor_conditions_array );       
       ?>
-<div>   
+<div class="adsforwp_visitor_condition_group" >   
     <input type="hidden" value="<?php echo (isset( $visitor_condition_enable )?  $visitor_condition_enable : 'disable'); ?>" id="adsforwp_v_condition_enable" name="adsforwp_v_condition_enable">    
     <?php 
         if(isset($visitor_condition_enable) && $visitor_condition_enable =='enable'){
          echo '<div class="adsforwp-visitor-condition-groups">';
         }else{         
-         echo '<div class="adsforwp-visitor-condition-div"><a class="adsforwp-enable-click afw-placement-button">'.esc_html__( 'Enable Visitor Condition', 'ads-for-wp').'</a>'; 
-         echo '<p>'.esc_html__( 'Visitor conditions limit the number of users who can see your ad.', 'ads-for-wp').'</p></div>';            
+         echo '<div class="adsforwp-visitor-condition-div"><a class="adsforwp-enable-click afw-placement-button">'.esc_html__( 'User Targeting', 'ads-for-wp').'</a>'; 
+         echo '<p>'.esc_html__( 'User Targeting conditions to limit the number of users who can see your ad.', 'ads-for-wp').'</p></div>';            
          echo '<div class="adsforwp-visitor-condition-groups afw_hide">';    
         }
     ?>    

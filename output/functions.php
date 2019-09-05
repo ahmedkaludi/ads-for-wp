@@ -69,7 +69,8 @@ class adsforwp_output_functions{
         add_action('wp_ajax_adsforwp_get_groups_ad', array($this, 'adsforwp_get_groups_ad'));
         
         //Hooks for sticky ads
-        add_action('wp_footer', array($this, 'adsforwp_display_sticky_ads'));         
+        add_action('wp_footer', array($this, 'adsforwp_display_sticky_ads'));
+        add_filter('amp_post_template_data',array($this, 'adsforwp_enque_ads_specific_amp_script'));         
         add_action('amp_post_template_css',array($this, 'adsforwp_add_amp_stick_ad_css'));        
         add_action('amp_post_template_css',array($this, 'adsforwp_global_css_for_amp'));
         add_action('amp_post_template_footer',array($this, 'adsforwp_display_sticky_ads_amp'));
@@ -222,6 +223,9 @@ class adsforwp_output_functions{
             }
             .afw a {
                display:block;
+            }
+            .afw .afw-adsense-resp amp-ad{
+              max-width:100%;
             }
          <?php 
     }       
@@ -611,7 +615,6 @@ class adsforwp_output_functions{
                             $media_value_meta = get_post_meta( $ad_id, 'ad_background_image_detail', true );                             
                        
                             if(isset($media_value_meta)){
-
                                 ?>
                                .adsforwp-bg-ad{                             
                                   position: fixed;
@@ -742,7 +745,29 @@ class adsforwp_output_functions{
             }
            
     }   
-    
+    public function adsforwp_enque_ads_specific_amp_script($data){
+        $all_ads_id    = adsforwp_get_ad_ids();
+        if($all_ads_id){
+            foreach($all_ads_id as $ad_id){
+                $post_type = get_post_meta( $ad_id, 'select_adtype', true ); 
+                if($post_type == 'adsense'){
+                    $post_meta_dataset = array();                      
+                    $post_meta_dataset = get_post_meta($ad_id,$key='',true);
+                    $adsense_type = adsforwp_rmv_warnings($post_meta_dataset, 'adsense_type', 'adsforwp_array');
+                    if($adsense_type == 'adsense_sticky_ads'){
+                        $service = new adsforwp_output_service();
+                        $ad_status = $service->adsforwp_is_condition($ad_id);
+                        if($ad_status){
+                            if ( empty( $data['amp_component_scripts']['amp-sticky-ad'] ) ) {
+                                $data['amp_component_scripts']['amp-sticky-ad'] = 'https://cdn.ampproject.org/v0/amp-sticky-ad-latest.js';
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $data;         
+    }
     public function adsforwp_insert_sticky_ads_code(){                                   
                    
             $all_ads_id    = adsforwp_get_ad_ids(); 
@@ -1681,7 +1706,7 @@ class adsforwp_output_functions{
                               
                                  $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                     '.$sponsership_label.'
-                                     <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'">
+                                     <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).' afw-adsense-resp">
                                        <amp-ad width="100vw" height=320                                        
                                         type="adsense"                                        
                                         data-ad-client="'. esc_attr($ad_client) .'"
@@ -1729,10 +1754,11 @@ class adsforwp_output_functions{
                                                                 </script>
                                                                 <ins 
                                                                 class="adsbygoogle" 
-                                                                style="display:inline-block;width:'.esc_attr($width).'px;height:'.esc_attr($height).'px"                                                                                                                           
+                                                                style="background:none;display:inline-block;width:'.esc_attr($width).'px;height:'.esc_attr($height).'px;max-width:100%;"                                                                                                                           
                                                                 data-ad-client="'.esc_attr($ad_client).'"
                                                                 data-ad-slot="'.esc_attr($ad_slot).'"
-                                                                data-ad-format="auto">
+                                                                data-ad-format="auto"
+                                                                data-full-width-responsive="true">
                                                                 </ins>
                                                                 <script>
                                                                         (adsbygoogle = window.adsbygoogle || []).push({});
@@ -1749,7 +1775,7 @@ class adsforwp_output_functions{
                                                                 '.$sponsership_label.'
                                                                 <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
                                                                 </script>
-                                                                <ins class="adsbygoogle" style="display:inline-block;width:'.esc_attr($width).'px;height:'.esc_attr($height).'px" data-ad-client="'.esc_attr($ad_client).'" data-ad-slot="'.esc_attr($ad_slot).'">
+                                                                <ins class="adsbygoogle" style="background:none;display:inline-block;width:'.esc_attr($width).'px;height:'.esc_attr($height).'px" data-ad-client="'.esc_attr($ad_client).'" data-ad-slot="'.esc_attr($ad_slot).'">
                                                                 </ins>
                                                                 <script>
                                                                         (adsbygoogle = window.adsbygoogle || []).push({});
@@ -1970,7 +1996,11 @@ class adsforwp_output_functions{
             
            foreach ($post_group_data as $group_id=>$value){
             if(get_post_status($group_id) == 'publish'){
-              $filter_group_ids[$group_id] = $value; 
+              $output_service = new adsforwp_output_service();                    
+                $expiry_status = $output_service->adsforwp_check_ad_expiry_date($group_id);
+                if( $expiry_status){
+                  $filter_group_ids[$group_id] = $value; 
+                }
             }
             
          } 
@@ -2001,8 +2031,10 @@ class adsforwp_output_functions{
         $data_crid          = adsforwp_rmv_warnings($ad_detail, 'data_crid', 'adsforwp_array');                   
         
         if(!empty($ad_detail) && $select_ad_type !='' && get_post_status($post_ad_id) == 'publish'){
-            
-        $adsresultset[] = array(
+          $output_service = new adsforwp_output_service();               
+          $expiry_status = $output_service->adsforwp_check_ad_expiry_date($post_ad_id);
+          if($expiry_status){
+            $adsresultset[] = array(
                 'ad_id'                     => $post_ad_id,
                 'ad_type'                   => adsforwp_rmv_warnings($ad_detail, 'select_adtype', 'adsforwp_array'),
                 'ad_adsense_type'           => adsforwp_rmv_warnings($ad_detail, 'adsense_type', 'adsforwp_array'),
@@ -2017,6 +2049,8 @@ class adsforwp_output_functions{
                 'ad_img_height'             => adsforwp_rmv_warnings($ad_detail, 'adsforwp_ad_img_height', 'adsforwp_array'),
                 'ad_img_width'              => adsforwp_rmv_warnings($ad_detail, 'adsforwp_ad_img_width', 'adsforwp_array'),                
         ) ; 
+          }
+        
         
         }
         
@@ -2042,8 +2076,11 @@ class adsforwp_output_functions{
         foreach ($post_group_data as $group_id=>$value){
             
             if(get_post_status($group_id) == 'publish'){
-                
-              $filter_group_ids[$group_id] = $value; 
+              $output_service = new adsforwp_output_service();
+              $expiry_status = $output_service->adsforwp_check_ad_expiry_date($group_id);   
+              if($expiry_status){
+                $filter_group_ids[$group_id] = $value; 
+              }
               
             }
             

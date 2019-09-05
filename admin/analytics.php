@@ -48,10 +48,7 @@ class adsforwp_admin_analytics{
         if ( empty( $data['amp_component_scripts']['amp-iframe'] ) ) {
                 $data['amp_component_scripts']['amp-iframe'] = 'https://cdn.ampproject.org/v0/amp-iframe-latest.js';
         }
-        if ( empty( $data['amp_component_scripts']['amp-sticky-ad'] ) ) {
-                $data['amp_component_scripts']['amp-sticky-ad'] = 'https://cdn.ampproject.org/v0/amp-sticky-ad-latest.js';
-        }
-                return $data;         
+        return $data;         
     }
     
     /**
