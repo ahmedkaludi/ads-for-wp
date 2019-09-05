@@ -615,11 +615,7 @@ class adsforwp_output_functions{
                             $media_value_meta = get_post_meta( $ad_id, 'ad_background_image_detail', true );                             
                        
                             if(isset($media_value_meta)){
-
                                 ?>
-                                amp-ad.afw_ad_banner{
-                                  max-width:100%;
-                                }
                                .adsforwp-bg-ad{                             
                                   position: fixed;
                                   top: 0;
