@@ -1757,7 +1757,8 @@ class adsforwp_output_functions{
                                                                 style="background:none;display:inline-block;width:'.esc_attr($width).'px;height:'.esc_attr($height).'px;max-width:100%;"                                                                                                                           
                                                                 data-ad-client="'.esc_attr($ad_client).'"
                                                                 data-ad-slot="'.esc_attr($ad_slot).'"
-                                                                data-ad-format="auto">
+                                                                data-ad-format="auto"
+                                                                data-full-width-responsive="true">
                                                                 </ins>
                                                                 <script>
                                                                         (adsbygoogle = window.adsbygoogle || []).push({});
