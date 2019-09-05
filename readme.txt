@@ -2,8 +2,8 @@
 Contributors: magazine3
 Tags: Ads, Google Adsense, Media Net, DFP, Custom Code, Infolinks, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
-Tested up to: 5.2
-Stable tag: 1.9.3
+Tested up to: 5.2.3
+Stable tag: 1.9.4
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -55,6 +55,17 @@ Chart.js library used https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Char
 Google Api Php Client library used https://github.com/googleapis/google-api-php-client - License URI: https://github.com/googleapis/google-api-php-client/blob/master/LICENSE
 
 == Changelog ==
+
+= 1.9.4 (05 September 2019) =
+
+* Bug Fixed: Issue with responsive feature in Ads for WP plugin #191
+* Bug Fixed: ins should not have any color in background #213
+* Bug Fixed: Code Stripped of from Custom ad section #227
+* Bug Fixed: amp scripts should load when any ads related to that script are there. #235
+* Bug Fixed: Expire Date doesn’t work if an ad is in a group #231
+* Bug Fixed: Last User Targeting and Advance Display option is not deleting #222
+* Bug Fixed: Text-align & responsive banner #229
+* Bug Fixed: Responsive Ads option not working in NON-AMP version #214
 
 = 1.9.3 (9 August 2019) =
 
