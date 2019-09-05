@@ -61,9 +61,9 @@ Google Api Php Client library used https://github.com/googleapis/google-api-php-
 * Bug Fixed: Issue with responsive feature in Ads for WP plugin #191
 * Bug Fixed: ins should not have any color in background #213
 * Bug Fixed: Code Stripped of from Custom ad section #227
-* Bug Fixed: amp scripts should load when any ads related to that script are there. #235
+* Bug Fixed: AMP scripts should load when any ads related to that script are there. #235
 * Bug Fixed: Expire Date doesn’t work if an ad is in a group #231
-* Bug Fixed: Last User Targeting and Advance Display option is not deleting #222
+* Bug Fixed: User Targeting last row is not being deleted #222
 * Bug Fixed: Text-align & responsive banner #229
 * Bug Fixed: Responsive Ads option not working in NON-AMP version #214
 
