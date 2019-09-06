@@ -818,7 +818,8 @@ class adsforwp_output_functions{
                                                      width='. esc_attr($width) .'
                                                      height='. esc_attr($height) . '
                                                      data-ad-client="'. esc_attr($ad_client) .'"
-                                                     data-ad-slot="'.  esc_attr($ad_slot) .'">';
+                                                     data-ad-slot="'.  esc_attr($ad_slot) .'"
+                                                     data-enable-refresh="10">';
                                     $output	.=	'</amp-ad>';
                                     $output	.= '</amp-sticky-ad>';
                                     echo $output;
@@ -1583,7 +1584,8 @@ class adsforwp_output_functions{
                                                                 type="contentad"
                                                                 data-id="'.esc_attr($contentad_id).'"
                                                                 data-d="'.esc_attr($contentad_id_d).'"
-                                                                data-wid="'.esc_attr($contentad_widget_id).'">
+                                                                data-wid="'.esc_attr($contentad_widget_id).'"
+                                                                data-enable-refresh="10">
                                                               </amp-ad>
                                                         </a>
 							</div>';
@@ -1721,7 +1723,8 @@ class adsforwp_output_functions{
                                         type="adsense"                                        
                                         data-ad-client="'. esc_attr($ad_client) .'"
                                         data-ad-slot="'.esc_attr($ad_slot).'"
-                                        data-auto-format="rspv" 
+                                        data-auto-format="rspv"
+                                        data-enable-refresh="10" 
                                         data-full-width>
                                         <div overflow></div>
                                     </amp-ad>
@@ -1743,7 +1746,8 @@ class adsforwp_output_functions{
                                         width="'. esc_attr($width) .'"
                                         height="'. esc_attr($height) .'"
                                         data-ad-client="'. esc_attr($ad_client) .'"
-                                        data-ad-slot="'.esc_attr($ad_slot).'">
+                                        data-ad-slot="'.esc_attr($ad_slot).'"
+                                        data-enable-refresh="10">
                                     </amp-ad>
                                     </div>
                                     </div>';
@@ -1837,7 +1841,8 @@ class adsforwp_output_functions{
 				height="'. esc_attr($height) .'"
                                 data-tagtype="cm"    
 				data-cid="'. esc_attr($ad_data_cid).'"
-				data-crid="'.esc_attr($ad_data_crid).'">
+				data-crid="'.esc_attr($ad_data_crid).'"
+        data-enable-refresh="10">
 			    </amp-ad>  
                             </a>
                             </div>';   
@@ -1893,7 +1898,8 @@ class adsforwp_output_functions{
 				type="doubleclick"
 				width="'. esc_attr($width) .'"
 				height="'. esc_attr($height) .'"                                				
-				data-slot="'.esc_attr($ad_slot_id).'">
+				data-slot="'.esc_attr($ad_slot_id).'"
+        data-enable-refresh="10">
                                      <div fallback>
                                      <p>Thank you for trying AMP!</p>
                                      <p>We have no ad to show to you!</p>
