@@ -224,10 +224,8 @@ class adsforwp_output_functions{
             .afw a {
                display:block;
             }
-            @media(max-width:991px){
-              .afw .afw-adsense-resp amp-ad{
-                max-width:100%;
-              }
+            .afw .afw-adsense-resp amp-ad{
+              max-width:100%;
             }
          <?php 
     }       
