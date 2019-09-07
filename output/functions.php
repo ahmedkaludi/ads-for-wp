@@ -73,7 +73,7 @@ class adsforwp_output_functions{
         add_filter('amp_post_template_data',array($this, 'adsforwp_enque_ads_specific_amp_script'));         
         add_action('amp_post_template_css',array($this, 'adsforwp_add_amp_stick_ad_css'));        
         add_action('amp_post_template_css',array($this, 'adsforwp_global_css_for_amp'));
-        add_action('amp_post_template_footer',array($this, 'adsforwp_display_sticky_ads_amp'));
+        add_action('amp_post_template_footer',array($this, 'adsforwp_display_sticky_ads_amp'),9);
         
         add_action('wp_ajax_nopriv_adsforwp_update_amp_sticky_ad_status', array($this, 'adsforwp_update_amp_sticky_ad_status'));
         add_action('wp_ajax_nopriv_adsforwp_check_amp_sticky_ad_status', array($this, 'adsforwp_check_amp_sticky_ad_status'));
@@ -345,7 +345,7 @@ class adsforwp_output_functions{
                                                                  
                 echo '<amp-user-notification
                         layout="nodisplay"
-                        id="amp-user-notification_'.esc_attr($ad_id).'">                          
+                        id="amp-user-notification_'.esc_attr($ad_id).'" class="afw_ad_amp_'.$ad_id.'">                          
                         <div class="adsforwp-stick-ad">'.$ad_code.'</div>  
                         <button on="tap:amp-user-notification_'.esc_attr($ad_id).'.dismiss" class="adsforwp-sticky-ad-close"></button>
                      </amp-user-notification>';
@@ -375,7 +375,7 @@ class adsforwp_output_functions{
                                                    
                 echo '<amp-user-notification
                         layout="nodisplay"
-                        id="amp-user-notification_'.esc_attr($ad_id).'">                       
+                        id="amp-user-notification_'.esc_attr($ad_id).'" class="afw_ad_amp_'.$ad_id.'">                       
                         <div class="adsforwp-stick-ad">'.$ad_code.'</div>                      
                         <button on="tap:amp-user-notification_'.esc_attr($ad_id).'.dismiss" class="adsforwp-sticky-ad-close"></button>
                      </amp-user-notification>';
