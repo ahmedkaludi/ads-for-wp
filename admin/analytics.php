@@ -93,15 +93,23 @@ class adsforwp_admin_analytics{
             if( $where_to_display == 'ad_shortcode'){
                 if(!has_shortcode( $content, 'adsforwp' )){
                     continue;
+                }else{
+                    if(!preg_match('/\[adsforwp(.*?)id=\"'.$ad_id.'\"\]/', $content, $matches)){
+                        continue;
+                    }
                 }
             }elseif($where_to_display == 'custom_target'){
                 if( $custom_target_position == 'existing_element' && !empty($jquery_selector)){
                     $idselector = ltrim($jquery_selector,'#');
                     $classselector = ltrim($jquery_selector,'.');
-                    if(!preg_match('/id=\"'.$idselector.'\"/', $content, $matches)){
-                        continue;
-                    }elseif(!preg_match('/class=\"'.$classselector.'\"/', $content, $matches) ){
-                        continue;
+                    if( strpos($jquery_selector, '#') !== false){
+                        if(!preg_match('/id=\"'.$idselector.'\"/', $content, $matches)){
+                            continue;
+                        }
+                    }elseif( strpos($jquery_selector, '.') !== false ){
+                        if(!preg_match('/class=\"'.$classselector.'\"/', $content, $matches) ){
+                            continue;
+                        }
                     }
                 }elseif( $custom_target_position == 'new_element' && !empty($new_element)){
                     $new_element = html_entity_decode($new_element);
