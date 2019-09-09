@@ -79,8 +79,51 @@ class adsforwp_admin_analytics{
                 
         if($amp_ads_id){
             
+        $content_post = get_post(get_the_ID());
+        $content = $content_post->post_content;
          foreach($amp_ads_id as $ad_id){
+            $post_meta_dataset          = array();                      
+            $post_meta_dataset          = get_post_meta($ad_id,$key='',true);
+            $where_to_display           = adsforwp_rmv_warnings($post_meta_dataset, 'wheretodisplay', 'adsforwp_array');
+            $jquery_selector           = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_jquery_selector', 'adsforwp_array');
+            $custom_target_position    = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_custom_target_position', 'adsforwp_array');
+            $new_element    = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_new_element', 'adsforwp_array');
+            
              
+            if( $where_to_display == 'ad_shortcode'){
+                if(!has_shortcode( $content, 'adsforwp' )){
+                    continue;
+                }else{
+                    if(!preg_match('/\[adsforwp(.*?)id=\"'.$ad_id.'\"\]/', $content, $matches)){
+                        continue;
+                    }
+                }
+            }elseif($where_to_display == 'custom_target'){
+                if( $custom_target_position == 'existing_element' && !empty($jquery_selector)){
+                    $idselector = ltrim($jquery_selector,'#');
+                    $classselector = ltrim($jquery_selector,'.');
+                    if( strpos($jquery_selector, '#') !== false){
+                        if(!preg_match('/id=\"'.$idselector.'\"/', $content, $matches)){
+                            continue;
+                        }
+                    }elseif( strpos($jquery_selector, '.') !== false ){
+                        if(!preg_match('/class=\"'.$classselector.'\"/', $content, $matches) ){
+                            continue;
+                        }
+                    }
+                }elseif( $custom_target_position == 'new_element' && !empty($new_element)){
+                    $new_element = html_entity_decode($new_element);
+                    preg_match('/<div\sid=\"(.*?)\"(.*?)>/', $new_element, $matches);
+                    if($matches){
+                        if(!preg_match('/'.$matches[1].'/', $content, $match)){
+                            continue;
+                        }
+                    }else{
+                        continue;
+                    }
+                }
+            }
+           
             $ad_impression_script .= '<amp-analytics><script type="application/json">
                   {
                     "requests": {
@@ -108,7 +151,7 @@ class adsforwp_admin_analytics{
                                 <script type="application/json">
                                   {
                                     "requests": {
-                                      "event": "'.esc_url($ad_clicks_url).'&event=${eventId}"
+                                      "event": "'.esc_url_raw($ad_clicks_url).'&event=${eventId}"
                                     },
                                     "triggers": {
                                       "trackAnchorClicks": {
@@ -122,8 +165,7 @@ class adsforwp_admin_analytics{
                                     }
                                   }
                                 </script>
-                              </amp-analytics>';                        
-            
+                              </amp-analytics>';
            }   
          }                   
           echo $ad_impression_script; 

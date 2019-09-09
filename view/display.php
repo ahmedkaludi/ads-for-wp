@@ -71,6 +71,7 @@ class adsforwp_view_display {
 			'id' => 'paragraph_number',
 			'type' => 'number',
 		),
+        
                array(
 			'label' => 'Manual Ad',
 			'id' => 'manual_ads_type',
@@ -86,7 +87,7 @@ class adsforwp_view_display {
 			'id' => 'adsforwp_after_how_many_post',
 			'type' => 'number',                        
 		),
-                array(
+        array(
 			'label' => 'Alignment',
 			'id' => 'adsforwp_ad_align',
 			'type' => 'radio',
@@ -96,6 +97,11 @@ class adsforwp_view_display {
                                 'right' => 'Right'
 			),
 		),
+        array(
+            'label' => 'Text Wrap Around',
+            'id' => 'ads_text_wrap',
+            'type' => 'checkbox',
+        ),
                 array(
 			'label' => 'Position',
 			'id' => 'adsforwp_custom_target_position',
@@ -306,6 +312,14 @@ class adsforwp_view_display {
                                              );                                        
                                         }
 					$input .='</div>';
+                                    break;
+                                    case 'checkbox':
+                                        $input = sprintf(
+                                            '<input %s id="%s" name="%s" type="checkbox" value="1">',
+                                            $meta_value === '1' ? 'checked' : '',
+                                            esc_attr($meta_field['id']),
+                                            esc_attr($meta_field['id'])
+                                            );
                                     break;
                                     case 'radio':
                                         
