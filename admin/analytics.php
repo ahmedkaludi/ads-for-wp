@@ -96,22 +96,24 @@ class adsforwp_admin_analytics{
                 }
             }elseif($where_to_display == 'custom_target'){
                 if( $custom_target_position == 'existing_element' && !empty($jquery_selector)){
-                    $selector = ltrim($jquery_selector,'#');
-                    if(!preg_match('/id=\"'.$selector.'\"/', $content)){
+                    $idselector = ltrim($jquery_selector,'#');
+                    $classselector = ltrim($jquery_selector,'.');
+                    if(!preg_match('/id=\"'.$idselector.'\"/', $content, $matches)){
                         continue;
-                    } 
+                    }elseif(!preg_match('/class=\"'.$classselector.'\"/', $content, $matches) ){
+                        continue;
+                    }
                 }elseif( $custom_target_position == 'new_element' && !empty($new_element)){
                     $new_element = html_entity_decode($new_element);
-                    preg_match('/<div\sid=\"(.*?)\"(.*?)>/', $new_element,$matches);
+                    preg_match('/<div\sid=\"(.*?)\"(.*?)>/', $new_element, $matches);
                     if($matches){
-                        if(!preg_match('/'.$matches[1].'/', $content)){
+                        if(!preg_match('/'.$matches[1].'/', $content, $match)){
                             continue;
                         }
                     }else{
                         continue;
                     }
                 }
-
             }
            
             $ad_impression_script .= '<amp-analytics><script type="application/json">
