@@ -59,7 +59,7 @@ Google Api Php Client library used https://github.com/googleapis/google-api-php-
 = 1.9.5 (09 September 2019) =
 
 * New Feature: Added new feature 'data-enable-refresh' for amp-ads.
-* Bug Fixed: User wants to get the text to wrap around the ads #234
+* Added: Text wrapper option to wrap text around the ads #234
 * Bug Fixed: Java Script Error: Uncaught (in promise) Error: Element not found #225
 
 = 1.9.4 (05 September 2019) =
