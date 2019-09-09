@@ -23,6 +23,7 @@ class adsforwp_view_ads_type {
                                 'mgid'          => 'MGID',
                                 'contentad'     => 'Content.ad',
                                 'infolinks'     => 'Infolinks',
+                                'mantis'     => 'MANTIS',
                                 'ad_image'      => 'Image Banner Ad',
                                 'ad_background' => 'Background Ad',                                
                                 'custom'        => 'Custom Code',
@@ -33,7 +34,17 @@ class adsforwp_view_ads_type {
 				
 			),
 		),
-                  array(
+		array(
+			'label'     => 'MANTIS Type',
+			'id'        => 'mantis_type',
+			'type'      => 'select',
+			'options'   => array(				
+                'display'   => 'Display',
+                'recommend' => 'Recommend'
+			)
+		),
+
+        array(
 			'label'     => 'AdSense Type',
 			'id'        => 'adsense_type',
 			'type'      => 'select',                        

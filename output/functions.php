@@ -1349,7 +1349,31 @@ class adsforwp_output_functions{
             if($ad_type !=""){  
                                                                                  
             switch ($ad_type) {
-                
+            case 'mantis':
+               $mantis_type   = adsforwp_rmv_warnings($post_meta_dataset, 'mantis_type', 'adsforwp_array');
+               if($mantis_type == 'display'){
+                  $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                                            '.$sponsership_label.'
+                                                          <amp-ad width="300" height="250"
+                                                              type = "mantis-display"
+                                                              data-property = "demo"
+                                                              data-zone="medium-rectangle">
+                                                          </amp-ad>
+
+                                                            </div>'; 
+               }else{
+                  $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                                            '.$sponsership_label.'
+                                                    <amp-embed width="100" height="283"
+                                                        type="mantis-recommend"
+                                                        layout=responsive
+                                                        heights="(min-width:1907px) 56%, (min-width:1100px) 64%, (min-width:780px) 75%, (min-width:480px) 105%, 200%"
+                                                        data-property="demo">
+                                                    </amp-embed>
+
+                                                            </div>';
+               }
+            break;
             case 'mgid':
                 
                     $data_publisher   = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_mgid_data_publisher', 'adsforwp_array');
