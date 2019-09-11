@@ -25,6 +25,7 @@ class adsforwp_view_ads_type {
                                 'infolinks'     => 'Infolinks',
                                 'mantis'     => 'MANTIS',
                                 'outbrain'     => 'Outbrain',
+                                'taboola'     => 'Taboola',
                                 'ad_image'      => 'Image Banner Ad',
                                 'ad_background' => 'Background Ad',                                
                                 'custom'        => 'Custom Code',
@@ -35,6 +36,15 @@ class adsforwp_view_ads_type {
 				
 			),
 		),
+		array(
+			'label'     => 'Data Publisher Id',
+			'id'        => 'taboola_publisher_id',
+			'type'      => 'text',                        
+			'attributes'=> array(
+				'placeholder'   => '123456',
+                'maxlength'     => '30',
+			),
+        ),
 		array(
 			'label'     => 'Outbrain Type',
 			'id'        => 'outbrain_type',

@@ -1384,6 +1384,29 @@ class adsforwp_output_functions{
             if($ad_type !=""){  
                                                                                  
             switch ($ad_type) {
+              case 'taboola':
+                   $publisher_id   = adsforwp_rmv_warnings($post_meta_dataset, 'taboola_publisher_id', 'adsforwp_array');
+                    if($this->is_amp){
+                        $this->amp_ads_id[] = $post_ad_id;
+                        if(!empty($publisher_id) ){
+                          $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                  '.$sponsership_label.'
+                                   <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).' afw-adsense-resp">
+                                     <amp-embed width="100" height="283"
+                                         type=taboola
+                                         layout=responsive
+                                         heights="(min-width:1907px) 39%, (min-width:1200px) 46%, (min-width:780px) 64%, (min-width:480px) 98%, (min-width:460px) 167%, 196%"
+                                         data-publisher="'.$publisher_id.'"
+                                         data-mode="thumbnails-a"
+                                         data-placement="Ads Example"
+                                         data-article="auto">
+                                    </amp-embed>
+                                  </div>
+                                  </div>';
+                        }
+                
+                   }
+              break;
               case 'outbrain':
                 $outbrain_type   = adsforwp_rmv_warnings($post_meta_dataset, 'outbrain_type', 'adsforwp_array');
                 $outbrain_widget_ids   = adsforwp_rmv_warnings($post_meta_dataset, 'outbrain_widget_ids', 'adsforwp_array');
