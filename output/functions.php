@@ -1438,29 +1438,43 @@ class adsforwp_output_functions{
                 }
               break;
             case 'mantis':
-               $mantis_type   = adsforwp_rmv_warnings($post_meta_dataset, 'mantis_type', 'adsforwp_array');
-               if($mantis_type == 'display'){
-                  $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).'">
-                                                            '.$sponsership_label.'
-                                                          <amp-ad width="300" height="250"
-                                                              type = "mantis-display"
-                                                              data-property = "demo"
-                                                              data-zone="medium-rectangle">
-                                                          </amp-ad>
-
-                                                            </div>'; 
-               }else{
-                  $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                    $width='300';
+                    $height='250';
+                    $banner_size = adsforwp_rmv_warnings($post_meta_dataset, 'banner_size', 'adsforwp_array');
+                    if($banner_size !=''){
+                      $explode_size = explode('x', $banner_size);              
+                      $width = $explode_size[0];            
+                      $height = $explode_size[1];
+                    }
+                    $mantis_ad_id   = adsforwp_rmv_warnings($post_meta_dataset, 'mantis_property_id', 'adsforwp_array');
+                    if($this->is_amp){
+                        $this->amp_ads_id[] = $post_ad_id;
+                         if($ad_responsive == 1){
+                          if( !empty($mantis_ad_id) ){
+                              $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                             '.$sponsership_label.'
                                                     <amp-embed width="100" height="283"
                                                         type="mantis-recommend"
                                                         layout=responsive
                                                         heights="(min-width:1907px) 56%, (min-width:1100px) 64%, (min-width:780px) 75%, (min-width:480px) 105%, 200%"
-                                                        data-property="demo">
-                                                    </amp-embed>
-
-                                                            </div>';
-               }
+                                                        data-property="'.$mantis_ad_id.'">
+                                                    </amp-embed></div>';
+                          }
+                        }else{
+                            if( !empty($mantis_ad_id) ){
+                              $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                                              '.$sponsership_label.'
+                                                    <amp-ad width="'. esc_attr($width) .'"
+                                                            height="'. esc_attr($height) .'"
+                                                            type = "mantis-display"
+                                                            data-property = "'.$mantis_ad_id.'"
+                                                            data-zone="medium-rectangle">
+                                                        </amp-ad>
+                                                      </div>';
+                              }
+                         }
+                  }
+               
             break;
             case 'mgid':
                 

@@ -54,12 +54,12 @@ class adsforwp_view_ads_type {
 			),
 		),
 		array(
-			'label'     => 'MANTIS Type',
-			'id'        => 'mantis_type',
-			'type'      => 'select',
-			'options'   => array(				
-                'display'   => 'Display',
-                'recommend' => 'Recommend'
+			'label'     => 'Data Property Id',
+			'id'        => 'mantis_property_id',
+			'type'      => 'text',
+			'attributes'   => array(				
+                'placeholder'   => '5a5840d00000000000000000',
+                'maxlength'     => '30',
 			)
 		),
 
