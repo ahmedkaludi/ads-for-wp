@@ -25,6 +25,7 @@ class adsforwp_view_ads_type {
                                 'ezoic' 		=> 'Ezoic',
                                 'infolinks'     => 'Infolinks',
                                 'mantis'     => 'MANTIS',
+                                'mediavine'     => 'Mediavine',
                                 'outbrain'     => 'Outbrain',
                                 'taboola'     => 'Taboola',
                                 'ad_image'      => 'Image Banner Ad',
@@ -37,6 +38,15 @@ class adsforwp_view_ads_type {
 				
 			),
 		),
+		array(
+			'label'     => 'Data Site Id',
+			'id'        => 'mediavine_site_id',
+			'type'      => 'text',                        
+			'attributes'=> array(
+				'placeholder'   => '123456',
+                'maxlength'     => '30',
+			),
+        ),
 		array(
 			'label'     => 'Data Slot Id',
 			'id'        => 'ezoic_slot_id',

@@ -1384,6 +1384,33 @@ class adsforwp_output_functions{
             if($ad_type !=""){  
                                                                                  
             switch ($ad_type) {
+              case 'mediavine':
+                $width='300';
+                $height='250';
+                $banner_size = adsforwp_rmv_warnings($post_meta_dataset, 'banner_size', 'adsforwp_array');
+                if($banner_size !=''){
+                  $explode_size = explode('x', $banner_size);              
+                  $width = $explode_size[0];            
+                  $height = $explode_size[1];
+                }
+                $mediavine_site_id   = adsforwp_rmv_warnings($post_meta_dataset, 'mediavine_site_id', 'adsforwp_array');
+                  if($this->is_amp){
+                    $this->amp_ads_id[] = $post_ad_id;
+                      if(!empty($mediavine_site_id) ){
+                          $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                  '.$sponsership_label.'
+                                   <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).' afw-adsense-resp">
+                                     <amp-ad width="'. esc_attr($width) .'"
+                                          height="'. esc_attr($height) .'"
+                                          type="mediavine"
+                                          data-site="'.$mediavine_site_id.'">
+                                    </amp-ad>
+                                  </div>
+                                  </div>';
+                      }
+                  }
+                  
+              break;
               case 'ezoic':
               $width='300';
               $height='250';
