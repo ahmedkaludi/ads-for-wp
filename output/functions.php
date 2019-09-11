@@ -1683,8 +1683,7 @@ class adsforwp_output_functions{
 							<a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><img height="'. esc_attr($ad_img_height).'" width="'.esc_attr($ad_img_width).'" src="'.esc_url($ad_image).'"></a>                                                          
 							</div>';  
                              
-                         }                                                              
-                                       
+                         }             
                    }                                                                               
             break;
             
@@ -2014,28 +2013,47 @@ class adsforwp_output_functions{
             if($this->is_amp){                                
                     
                  $this->amp_ads_id[] = $post_ad_id;
-                 
-                 if($ad_slot_id){
+                  if($where_to_display == 'sticky'){
+                    if($ad_slot_id){
+                        $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                                        '.$sponsership_label.'
+                        <a class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'">
+                                  <amp-ad 
+                                      class="afw_ad_amp_'.esc_attr($post_ad_id).'"
+                                        type="doubleclick"
+                                        width="'. esc_attr($width) .'"
+                                        height="'. esc_attr($height) .'"                                        
+                                        data-slot="'.esc_attr($ad_slot_id).'"
+                                        data-enable-refresh="10">
+                                           <div fallback>
+                                           <p>Thank you for trying AMP!</p>
+                                           <p>We have no ad to show to you!</p>
+                                           </div>
+                                  </amp-ad> 
+                          </a>
+                        </div>';
+                    }
+                  }else{
+                    if($ad_slot_id){
                                        
-                  $ad_code ='<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-md afw_ad afwadid-'.esc_attr($post_ad_id).'">
-                            <a class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'">
-                            <amp-ad 
-                                class="afw_ad_amp_'.esc_attr($post_ad_id).'"
-				type="doubleclick"
-				width="'. esc_attr($width) .'"
-				height="'. esc_attr($height) .'"                                				
-				data-slot="'.esc_attr($ad_slot_id).'"
-        data-enable-refresh="10">
-                                     <div fallback>
-                                     <p>Thank you for trying AMP!</p>
-                                     <p>We have no ad to show to you!</p>
-                                     </div>
-			    </amp-ad> 
-                            </a>
-                            </div>';
-                                          
-                 }
-                                                              				                
+                        $ad_code ='<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-md afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                  <a class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'">
+                                  <amp-ad 
+                                      class="afw_ad_amp_'.esc_attr($post_ad_id).'"
+                                        type="doubleclick"
+                                        width="'. esc_attr($width) .'"
+                                        height="'. esc_attr($height) .'"                                        
+                                        data-slot="'.esc_attr($ad_slot_id).'"
+                                        data-enable-refresh="10">
+                                           <div fallback>
+                                           <p>Thank you for trying AMP!</p>
+                                           <p>We have no ad to show to you!</p>
+                                           </div>
+                </amp-ad> 
+                                  </a>
+                                  </div>';     
+                       }
+                 }                                           				                
             }else{      
                               
                 if($ad_div_gpt){
