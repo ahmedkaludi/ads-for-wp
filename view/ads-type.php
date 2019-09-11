@@ -24,6 +24,7 @@ class adsforwp_view_ads_type {
                                 'contentad'     => 'Content.ad',
                                 'infolinks'     => 'Infolinks',
                                 'mantis'     => 'MANTIS',
+                                'outbrain'     => 'Outbrain',
                                 'ad_image'      => 'Image Banner Ad',
                                 'ad_background' => 'Background Ad',                                
                                 'custom'        => 'Custom Code',
@@ -32,6 +33,24 @@ class adsforwp_view_ads_type {
                                 'attributes' => array(				
                                 'required' => 'required',                                
 				
+			),
+		),
+		array(
+			'label'     => 'Outbrain Type',
+			'id'        => 'outbrain_type',
+			'type'      => 'select',                        
+			'options'   => array(				
+				'normal'             => 'Normal',
+                'outbrain_sticky_ads' => 'Sticky (Only AMP)'
+			)
+        ),
+		array(
+			'label'     => 'Widget Id\'s',
+			'id'        => 'outbrain_widget_ids',
+			'type'      => 'text',
+			'attributes'=> array(
+				'placeholder'   => 'widget_1,widget_2',
+                'maxlength'     => '30',
 			),
 		),
 		array(

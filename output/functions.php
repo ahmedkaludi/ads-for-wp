@@ -754,7 +754,8 @@ class adsforwp_output_functions{
                     $post_meta_dataset = array();                      
                     $post_meta_dataset = get_post_meta($ad_id,$key='',true);
                     $adsense_type = adsforwp_rmv_warnings($post_meta_dataset, 'adsense_type', 'adsforwp_array');
-                    if($adsense_type == 'adsense_sticky_ads'){
+                    $outbrain_type   = adsforwp_rmv_warnings($post_meta_dataset, 'outbrain_type', 'adsforwp_array');
+                    if($adsense_type == 'adsense_sticky_ads' || $outbrain_type == 'outbrain_sticky_ads' ){
                         $service = new adsforwp_output_service();
                         $ad_status = $service->adsforwp_is_condition($ad_id);
                         if($ad_status){
@@ -779,7 +780,6 @@ class adsforwp_output_functions{
                     $post_type = get_post_meta( $ad_id, 'select_adtype', true );                    
                            
                     if($post_type == 'adsense'){
-                        
                         
                         $post_meta_dataset          = array();                      
                         $post_meta_dataset          = get_post_meta($ad_id,$key='',true);
@@ -831,9 +831,44 @@ class adsforwp_output_functions{
                                                                                                                                                                                                                                                                                                                                                 
                         }                                                
                         
-                       }
+                      }
+                          
+                    if($post_type == 'outbrain'){
+                        $outbrain_type   = adsforwp_rmv_warnings($post_meta_dataset, 'outbrain_type', 'adsforwp_array');
+                        if($outbrain_type == 'outbrain_sticky_ads'){
+                          $width  = '200';
+                          $height = '200';
+                          $banner_size = adsforwp_rmv_warnings($post_meta_dataset, 'banner_size', 'adsforwp_array'); 
+                          if($banner_size !=''){
+                
+                            $explode_size = explode('x', $banner_size);            
+                            $width        = adsforwp_rmv_warnings($explode_size, 0, 'adsforwp_string');            
+                            $height       = adsforwp_rmv_warnings($explode_size, 1, 'adsforwp_string');                               
+
+                          }
+                          $service = new adsforwp_output_service();
+                          $ad_status = $service->adsforwp_is_condition($ad_id);
+                          $outbrain_widget_ids     = adsforwp_rmv_warnings($post_meta_dataset, 'outbrain_widget_ids', 'adsforwp_array');
+                          if($ad_status){
+                            if(!empty($outbrain_widget_ids)){
+                                $output  = '<amp-sticky-ad layout="nodisplay">';
+                                    $output .= '<amp-ad class="amp-sticky-ads afw_'.esc_attr($ad_id).'"
+                                                  type="outbrain"
+                                                  width='. esc_attr($width) .'
+                                                  height='. esc_attr($height) . '
+                                                  data-widgetids='.esc_attr($outbrain_widget_ids).'
+                                                  data-enable-refresh="10">';
+                                $output .=  '</amp-ad>';
+                                $output .= '</amp-sticky-ad>';
+                                echo $output;
+                                break;
+                            }
+                          }
+                        }
+                    }
+                      
                                
-                    }                                                       
+                }                                                       
             }                                                    
         
     }     
@@ -1349,6 +1384,59 @@ class adsforwp_output_functions{
             if($ad_type !=""){  
                                                                                  
             switch ($ad_type) {
+              case 'outbrain':
+                $outbrain_type   = adsforwp_rmv_warnings($post_meta_dataset, 'outbrain_type', 'adsforwp_array');
+                $outbrain_widget_ids   = adsforwp_rmv_warnings($post_meta_dataset, 'outbrain_widget_ids', 'adsforwp_array');
+                switch ($outbrain_type) {
+                  case 'normal':
+                    $width='200';
+                    $height='200';
+                    $banner_size = adsforwp_rmv_warnings($post_meta_dataset, 'banner_size', 'adsforwp_array');
+                    if($banner_size !=''){
+                      $explode_size = explode('x', $banner_size);              
+                      $width = $explode_size[0];            
+                      $height = $explode_size[1];
+                    }            
+                    if($this->is_amp){
+                        $this->amp_ads_id[] = $post_ad_id;
+                         if($ad_responsive == 1){
+                            if(!empty($outbrain_widget_ids) ){
+                              $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                      '.$sponsership_label.'
+                                       <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).' afw-adsense-resp">
+                                         <amp-embed class="afw_ad_amp_'.esc_attr($post_ad_id).'" width="100" height="100"                                        
+                                          type="outbrain"
+                                          layout="responsive"
+                                          data-widgetIds="'.$outbrain_widget_ids.'"
+                                          data-enable-refresh="10">
+                                      </amp-embed>
+                                      </div>
+                                      </div>';
+                            }
+                        }else{
+                            if(!empty($outbrain_widget_ids)){
+                                 $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                    '.$sponsership_label.'
+                                     <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'">
+                                       <amp-embed class="afw_ad_amp_'.esc_attr($post_ad_id).'" width="'. esc_attr($width) .'"
+                                          height="'. esc_attr($height) .'" 
+                                          type="outbrain"
+                                          data-widgetIds="'.$outbrain_widget_ids.'"
+                                          data-enable-refresh="10">
+                                      </amp-embed>
+                                    </div>
+                                    </div>';
+                                 
+                             }
+                        }
+                    }
+                    break;
+                  
+                  default:
+                    
+                    break;
+                }
+              break;
             case 'mantis':
                $mantis_type   = adsforwp_rmv_warnings($post_meta_dataset, 'mantis_type', 'adsforwp_array');
                if($mantis_type == 'display'){
