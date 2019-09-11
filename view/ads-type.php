@@ -22,6 +22,7 @@ class adsforwp_view_ads_type {
                                 'ad_now'        => 'AdNow',
                                 'mgid'          => 'MGID',
                                 'contentad'     => 'Content.ad',
+                                'ezoic' 		=> 'Ezoic',
                                 'infolinks'     => 'Infolinks',
                                 'mantis'     => 'MANTIS',
                                 'outbrain'     => 'Outbrain',
@@ -36,6 +37,15 @@ class adsforwp_view_ads_type {
 				
 			),
 		),
+		array(
+			'label'     => 'Data Slot Id',
+			'id'        => 'ezoic_slot_id',
+			'type'      => 'text',                        
+			'attributes'=> array(
+				'placeholder'   => '123456',
+                'maxlength'     => '30',
+			),
+        ),
 		array(
 			'label'     => 'Data Publisher Id',
 			'id'        => 'taboola_publisher_id',

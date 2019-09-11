@@ -1384,6 +1384,38 @@ class adsforwp_output_functions{
             if($ad_type !=""){  
                                                                                  
             switch ($ad_type) {
+              case 'ezoic':
+              
+              $width='200';
+              $height='200';
+              $banner_size = adsforwp_rmv_warnings($post_meta_dataset, 'banner_size', 'adsforwp_array');
+              if($banner_size !=''){
+                $explode_size = explode('x', $banner_size);              
+                $width = $explode_size[0];            
+                $height = $explode_size[1];
+              }    
+               $ezoic_slot_id   = adsforwp_rmv_warnings($post_meta_dataset, 'ezoic_slot_id', 'adsforwp_array');
+               $arraydata = array();
+               $arraydata['targeting'] = array('compid' => 0);
+               $arraydata['extras'] = array('adsense_text_color' => '000000');
+               $json_data = json_encode($arraydata);
+
+                    if($this->is_amp){
+                        $this->amp_ads_id[] = $post_ad_id;
+                        if(!empty($ezoic_slot_id) ){
+                             $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                  '.$sponsership_label.'
+                                   <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).' afw-adsense-resp">
+                                     <amp-embed width="300" height="250"
+                                         type="ezoic"
+                                         data-slot="'.$ezoic_slot_id.'"
+                                         data-json="'.$json_data.'">
+                                    </amp-embed>
+                                  </div>
+                                  </div>';
+                        }
+                    }
+              break;
               case 'taboola':
                    $publisher_id   = adsforwp_rmv_warnings($post_meta_dataset, 'taboola_publisher_id', 'adsforwp_array');
                     if($this->is_amp){
@@ -1406,6 +1438,22 @@ class adsforwp_output_functions{
                         }
                 
                    }
+              break;
+              case 'ezoic':
+                $ezoic_id   = adsforwp_rmv_warnings($post_meta_dataset,'ezoic_slot_id', 'adsforwp_array');
+                if(!empty($ezoic_id)){
+                    $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                      '.$sponsership_label.'
+                                       <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).' afw-adsense-resp">
+                                         <amp-embed class="afw_ad_amp_'.esc_attr($post_ad_id).'" width="300" height="250"                                        
+                                          type="ezoic"
+                                          layout="responsive"
+                                          data-widgetIds="'.$outbrain_widget_ids.'">
+                                      </amp-embed>
+                                      </div>
+                                      </div>';
+                }
+                
               break;
               case 'outbrain':
                 $outbrain_type   = adsforwp_rmv_warnings($post_meta_dataset, 'outbrain_type', 'adsforwp_array');
