@@ -48,6 +48,7 @@ class adsforwp_output_functions{
         //Adsense Auto Ads hooks for amp and non amp starts here       
         add_filter('widget_text', 'do_shortcode');    
         
+        add_action('wp_head', array($this, 'adsforwp_outbrain_script'),10);
         add_action('wp_head', array($this, 'adsforwp_adblocker_detector'));
         add_action('wp_head', array($this, 'adsforwp_adsense_auto_ads'));
         add_action('wp_head', array($this, 'adsforwp_doubleclick_head_code'));
@@ -1512,6 +1513,8 @@ class adsforwp_output_functions{
                                  
                              }
                         }
+                    }else{
+                        $ad_code = '<div class="OUTBRAIN" data-widget-id="'.$outbrain_widget_ids.'"></div>';
                     }
                     break;
                   
@@ -2387,6 +2390,19 @@ class adsforwp_output_functions{
      * Adblocker blocks all the js from adsforwp thats why we have not used wp_enqueue_script here.
      * Instead we directly added the javascript to work the ads when ad blocker support is enable in adsforwp settings
      */
+    public function adsforwp_outbrain_script(){
+      $all_ads_id    = adsforwp_get_ad_ids();
+        if($all_ads_id){
+            foreach($all_ads_id as $ad_id){
+                $post_type = get_post_meta( $ad_id, 'select_adtype', true ); 
+                if($post_type == 'outbrain'){
+      ?>
+      <script type="text/javascript" async="async" src="http://widgets.outbrain.com/outbrain.js "></script>
+      <?php
+                }
+            }
+        }
+    }
     public function adsforwp_adblocker_detector(){
         ?>
         <script type="text/javascript">              
