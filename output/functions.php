@@ -1453,7 +1453,7 @@ class adsforwp_output_functions{
                              $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                   '.$sponsership_label.'
                                    <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).' afw-adsense-resp">
-                                     <amp-embed width="'. esc_attr($width) .'"
+                                     <amp-embed class="afw_ad_amp_'.esc_attr($post_ad_id).'" width="'. esc_attr($width) .'"
                                           height="'. esc_attr($height) .'"
                                          type="ezoic"
                                          data-slot="'.$ezoic_slot_id.'"
@@ -1473,7 +1473,7 @@ class adsforwp_output_functions{
                           $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                   '.$sponsership_label.'
                                    <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).' afw-adsense-resp">
-                                     <amp-embed class="afw_ad_amp_'.esc_attr($post_ad_id).'"width="100" height="283"
+                                     <amp-embed class="afw_ad_amp_'.esc_attr($post_ad_id).'" width="100" height="283"
                                          type=taboola
                                          layout=responsive
                                          heights="(min-width:1907px) 39%, (min-width:1200px) 46%, (min-width:780px) 64%, (min-width:480px) 98%, (min-width:460px) 167%, 196%"
@@ -1554,7 +1554,7 @@ class adsforwp_output_functions{
                              }
                         }
                     }else{
-                        $ad_code = '<div class="OUTBRAIN" data-widget-id="'.$outbrain_widget_ids.'"></div>';
+                        $ad_code = '<div class="afw_ad_amp_outbrain" data-widget-id="'.$outbrain_widget_ids.'"></div>';
                     }
                     break;
                   
