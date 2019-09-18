@@ -2449,12 +2449,19 @@ class adsforwp_output_functions{
     public function adsforwp_outbrain_script(){
       $all_ads_id    = adsforwp_get_ad_ids();
         if($all_ads_id){
+          $service = new adsforwp_output_service();
             foreach($all_ads_id as $ad_id){
                 $post_type = get_post_meta( $ad_id, 'select_adtype', true ); 
                 if($post_type == 'outbrain'){
-      ?>
-      <script type="text/javascript" async="async" src="http://widgets.outbrain.com/outbrain.js "></script>
-      <?php
+                  $post_meta_dataset = array();                      
+                  $post_meta_dataset = get_post_meta($ad_id,$key='',true);
+                  $outbrain_widget_ids   = adsforwp_rmv_warnings($post_meta_dataset, 'outbrain_widget_ids', 'adsforwp_array');
+                  $ad_status = $service->adsforwp_is_condition($ad_id);
+                  if($ad_status && !empty($outbrain_widget_ids)){
+                  ?>
+                  <script type="text/javascript" async="async" src="http://widgets.outbrain.com/outbrain.js "></script>
+                  <?php
+                }
                 }
             }
         }
