@@ -48,7 +48,9 @@ class adsforwp_output_functions{
         //Adsense Auto Ads hooks for amp and non amp starts here       
         add_filter('widget_text', 'do_shortcode');    
         
+        add_action('wp_head', array($this, 'adsforwp_taboola_ads_script'),10);
         add_action('wp_head', array($this, 'adsforwp_outbrain_script'),10);
+
         add_action('wp_head', array($this, 'adsforwp_adblocker_detector'));
         add_action('wp_head', array($this, 'adsforwp_adsense_auto_ads'));
         add_action('wp_head', array($this, 'adsforwp_doubleclick_head_code'));
@@ -71,6 +73,7 @@ class adsforwp_output_functions{
         
         //Hooks for sticky ads
         add_action('wp_footer', array($this, 'adsforwp_display_sticky_ads'));
+        add_action('wp_footer', array($this, 'adsforwp_taboola_footer_loader_js'));
         add_filter('amp_post_template_data',array($this, 'adsforwp_enque_ads_specific_amp_script'));         
         add_action('amp_post_template_css',array($this, 'adsforwp_add_amp_stick_ad_css'));        
         add_action('amp_post_template_css',array($this, 'adsforwp_global_css_for_amp'));
@@ -389,7 +392,24 @@ class adsforwp_output_functions{
         //Group stick ends here
         
     }    
-            
+    public function adsforwp_taboola_footer_loader_js(){
+      $all_ads_id    = adsforwp_get_ad_ids();
+        if($all_ads_id){
+          foreach($all_ads_id as $ad_id){
+                $post_meta_dataset = array();                      
+                $post_meta_dataset = get_post_meta($ad_id,$key='',true);
+                $post_type = get_post_meta( $ad_id, 'select_adtype', true );
+                $publisher_id   = adsforwp_rmv_warnings($post_meta_dataset, 'taboola_publisher_id', 'adsforwp_array'); 
+              if($post_type == 'taboola' && !empty($publisher_id)){ ?>
+            <script type='text/javascript'>
+              window._taboola = window._taboola || [];
+              _taboola.push({flush: true});
+            </script>
+      <?php  }
+          }
+        }
+    }
+
     public function adsforwp_display_sticky_ads(){                
         
         $explod_ad_id = array();
@@ -1446,25 +1466,45 @@ class adsforwp_output_functions{
               break;
               case 'taboola':
                    $publisher_id   = adsforwp_rmv_warnings($post_meta_dataset, 'taboola_publisher_id', 'adsforwp_array');
+                   $post_slug = get_post_field( 'post_name', $post_ad_id );
                     if($this->is_amp){
                         $this->amp_ads_id[] = $post_ad_id;
                         if(!empty($publisher_id) ){
                           $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                   '.$sponsership_label.'
                                    <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).' afw-adsense-resp">
-                                     <amp-embed width="100" height="283"
+                                     <amp-embed class="afw_ad_amp_'.esc_attr($post_ad_id).'"width="100" height="283"
                                          type=taboola
                                          layout=responsive
                                          heights="(min-width:1907px) 39%, (min-width:1200px) 46%, (min-width:780px) 64%, (min-width:480px) 98%, (min-width:460px) 167%, 196%"
                                          data-publisher="'.$publisher_id.'"
                                          data-mode="thumbnails-a"
-                                         data-placement="Ads Example"
+                                         data-placement="'.$post_slug.'-'.$post_ad_id.'"
                                          data-article="auto">
                                     </amp-embed>
                                   </div>
                                   </div>';
                         }
                 
+                   }else{
+                      if( !empty($publisher_id) ){
+                        
+                        $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                  '.$sponsership_label.'
+                                   <div id="'.$post_slug.'-'.$post_ad_id.'" class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).' afw-adsense-resp"></div>
+                                      <script type="text/javascript">
+                                        window._taboola = window._taboola || [];
+                                        _taboola.push({
+                                        mode:"thumbnails-a", 
+                                        container:"'.$post_slug.'-'.$post_ad_id.'", 
+                                        placement:"'.$post_slug.'-'.$post_ad_id.'", 
+                                        target_type: "mix"
+                                        });
+                                      </script>
+                                   
+                              </div>';
+                      }
+
                    }
               break;
              
@@ -2390,6 +2430,30 @@ class adsforwp_output_functions{
      * Adblocker blocks all the js from adsforwp thats why we have not used wp_enqueue_script here.
      * Instead we directly added the javascript to work the ads when ad blocker support is enable in adsforwp settings
      */
+    public function adsforwp_taboola_ads_script(){
+        $all_ads_id    = adsforwp_get_ad_ids();
+        if($all_ads_id){
+          foreach($all_ads_id as $ad_id){
+                $post_meta_dataset = array();                      
+                $post_meta_dataset = get_post_meta($ad_id,$key='',true);
+                $post_type = get_post_meta( $ad_id, 'select_adtype', true ); 
+                $publisher_id   = adsforwp_rmv_warnings($post_meta_dataset, 'taboola_publisher_id', 'adsforwp_array');
+                if($post_type == 'taboola' && !empty($publisher_id)){
+          ?>
+          <script type='text/javascript'>window._taboola = window._taboola || [];
+          _taboola.push({article:'auto'});
+          !function (e, f, u) {
+            e.async = 1;
+            e.src = u;
+            f.parentNode.insertBefore(e, f);
+          }(document.createElement('script'), document.getElementsByTagName('script')[0], '//cdn.taboola.com/libtrc/<?php echo $publisher_id;?>/loader.js');
+          </script>
+          <?php
+                }
+          }
+        }
+    }
+
     public function adsforwp_outbrain_script(){
       $all_ads_id    = adsforwp_get_ad_ids();
         if($all_ads_id){
