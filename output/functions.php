@@ -48,6 +48,8 @@ class adsforwp_output_functions{
         //Adsense Auto Ads hooks for amp and non amp starts here       
         add_filter('widget_text', 'do_shortcode');    
         
+        add_action('wp_head', array($this, 'adsforwp_ezoic_ads_script'),10);
+
         add_action('wp_head', array($this, 'adsforwp_taboola_ads_script'),10);
         add_action('wp_head', array($this, 'adsforwp_outbrain_script'),10);
 
@@ -1432,38 +1434,6 @@ class adsforwp_output_functions{
                   }
                   
               break;
-              case 'ezoic':
-              $width='300';
-              $height='250';
-              $banner_size = adsforwp_rmv_warnings($post_meta_dataset, 'banner_size', 'adsforwp_array');
-              if($banner_size !=''){
-                $explode_size = explode('x', $banner_size);              
-                $width = $explode_size[0];            
-                $height = $explode_size[1];
-              }    
-               $ezoic_slot_id   = adsforwp_rmv_warnings($post_meta_dataset, 'ezoic_slot_id', 'adsforwp_array');
-               $arraydata = array();
-               $arraydata['targeting'] = array('compid' => 0);
-               $arraydata['extras'] = array('adsense_text_color' => '000000');
-               $json_data = json_encode($arraydata);
-
-                    if($this->is_amp){
-                        $this->amp_ads_id[] = $post_ad_id;
-                        if(!empty($ezoic_slot_id) ){
-                             $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
-                                  '.$sponsership_label.'
-                                   <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).' afw-adsense-resp">
-                                     <amp-embed class="afw_ad_amp_'.esc_attr($post_ad_id).'" width="'. esc_attr($width) .'"
-                                          height="'. esc_attr($height) .'"
-                                         type="ezoic"
-                                         data-slot="'.$ezoic_slot_id.'"
-                                         data-json="'.$json_data.'">
-                                    </amp-embed>
-                                  </div>
-                                  </div>';
-                        }
-                    }
-              break;
               case 'taboola':
                    $publisher_id   = adsforwp_rmv_warnings($post_meta_dataset, 'taboola_publisher_id', 'adsforwp_array');
                    $post_slug = get_post_field( 'post_name', $post_ad_id );
@@ -2430,6 +2400,28 @@ class adsforwp_output_functions{
      * Adblocker blocks all the js from adsforwp thats why we have not used wp_enqueue_script here.
      * Instead we directly added the javascript to work the ads when ad blocker support is enable in adsforwp settings
      */
+    public function adsforwp_ezoic_ads_script(){
+        $all_ads_id    = adsforwp_get_ad_ids();
+        $service = new adsforwp_output_service();
+        
+        if($all_ads_id){
+          foreach($all_ads_id as $ad_id){
+                $ad_status = $service->adsforwp_is_condition($ad_id);
+                $post_meta_dataset = array();                      
+                $post_meta_dataset = get_post_meta($ad_id,$key='',true);
+                $post_type = get_post_meta( $ad_id, 'select_adtype', true ); 
+                $ezoic_slot_id   = adsforwp_rmv_warnings($post_meta_dataset, 'ezoic_slot_id', 'adsforwp_array');
+                if( $ad_status && $post_type == 'ezoic' && !empty($ezoic_slot_id)){
+        ?>
+        <!-- AMPforWP Ezoic Code -->
+        <script>var ezoicId = <?php echo $ezoic_slot_id;?>;</script>
+        <script type="text/javascript" src="//go.ezoic.net/ezoic/ezoic.js"></script>
+        <!-- AMPforWP Ezoic Code -->
+        <?php
+                }
+          }
+        }
+    }
     public function adsforwp_taboola_ads_script(){
         $all_ads_id    = adsforwp_get_ad_ids();
         if($all_ads_id){
