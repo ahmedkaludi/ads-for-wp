@@ -231,9 +231,6 @@ class adsforwp_output_functions{
             .afw a {
                display:block;
             }
-            .afw .afw-adsense-resp amp-ad{
-              max-width:100%;
-            }
          <?php 
     }       
     /**
@@ -1423,7 +1420,7 @@ class adsforwp_output_functions{
                       if(!empty($mediavine_site_id) ){
                           $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                   '.$sponsership_label.'
-                                   <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).' afw-adsense-resp">
+                                   <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'">
                                      <amp-ad class="afw_ad_amp_'.esc_attr($post_ad_id).'" width="'. esc_attr($width) .'"
                                           height="'. esc_attr($height) .'"
                                           type="mediavine"
@@ -1443,7 +1440,7 @@ class adsforwp_output_functions{
                         if(!empty($publisher_id) ){
                           $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                   '.$sponsership_label.'
-                                   <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).' afw-adsense-resp">
+                                   <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'">
                                      <amp-embed class="afw_ad_amp_'.esc_attr($post_ad_id).'" width="100" height="283"
                                          type=taboola
                                          layout=responsive
@@ -1462,7 +1459,7 @@ class adsforwp_output_functions{
                         
                         $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                   '.$sponsership_label.'
-                                   <div id="'.$post_slug.'-'.$post_ad_id.'" class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).' afw-adsense-resp"></div>
+                                   <div id="'.$post_slug.'-'.$post_ad_id.'" class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"></div>
                                       <script type="text/javascript">
                                         window._taboola = window._taboola || [];
                                         _taboola.push({
@@ -1498,7 +1495,7 @@ class adsforwp_output_functions{
                             if(!empty($outbrain_widget_ids) ){
                               $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                       '.$sponsership_label.'
-                                       <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).' afw-adsense-resp">
+                                       <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'">
                                          <amp-embed class="afw_ad_amp_'.esc_attr($post_ad_id).'" width="100" height="100"                                        
                                           type="outbrain"
                                           layout="responsive"
@@ -1967,7 +1964,7 @@ class adsforwp_output_functions{
                               
                                  $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                     '.$sponsership_label.'
-                                     <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).' afw-adsense-resp">
+                                     <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'">
                                        <amp-ad class="afw_ad_amp_'.esc_attr($post_ad_id).'" width="100vw" height=320                                        
                                         type="adsense"                                        
                                         data-ad-client="'. esc_attr($ad_client) .'"
