@@ -1552,7 +1552,7 @@ class adsforwp_output_functions{
                           if( !empty($mantis_ad_id) && $mantis_display_type == 'recommend'){
                               $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                             '.$sponsership_label.'
-                                                    <amp-embed width="100" height="283"
+                                                    <amp-embed class="afw_ad_amp_'.esc_attr($post_ad_id).'" width="100" height="283"
                                                         type="mantis-'.$mantis_display_type.'"
                                                         layout=responsive
                                                         heights="(min-width:1907px) 56%, (min-width:1100px) 64%, (min-width:780px) 75%, (min-width:480px) 105%, 200%"
@@ -1561,7 +1561,7 @@ class adsforwp_output_functions{
                           }elseif( !empty($mantis_ad_id) && $mantis_display_type == 'display'){
                               $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                               '.$sponsership_label.'
-                                                    <amp-ad width="'. esc_attr($width) .'"
+                                                    <amp-ad class="afw_ad_amp_'.esc_attr($post_ad_id).'" width="'. esc_attr($width) .'"
                                                             height="'. esc_attr($height) .'"
                                                             type = "mantis-'.$mantis_display_type.'"
                                                             data-property = "'.$mantis_ad_id.'"
