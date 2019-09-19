@@ -49,6 +49,7 @@ class adsforwp_output_functions{
         add_filter('widget_text', 'do_shortcode');    
         
         add_action('wp_head', array($this, 'adsforwp_ezoic_ads_script'),10);
+        add_action('wp_head', array($this, 'adsforwp_mediavines_ads_script'));
 
         add_action('wp_head', array($this, 'adsforwp_taboola_ads_script'),10);
         add_action('wp_head', array($this, 'adsforwp_outbrain_script'),10);
@@ -1423,7 +1424,7 @@ class adsforwp_output_functions{
                           $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                   '.$sponsership_label.'
                                    <div class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).' afw-adsense-resp">
-                                     <amp-ad width="'. esc_attr($width) .'"
+                                     <amp-ad class="afw_ad_amp_'.esc_attr($post_ad_id).'" width="'. esc_attr($width) .'"
                                           height="'. esc_attr($height) .'"
                                           type="mediavine"
                                           data-site="'.$mediavine_site_id.'">
@@ -2427,6 +2428,27 @@ class adsforwp_output_functions{
      * Adblocker blocks all the js from adsforwp thats why we have not used wp_enqueue_script here.
      * Instead we directly added the javascript to work the ads when ad blocker support is enable in adsforwp settings
      */
+
+    public function adsforwp_mediavines_ads_script(){
+        $all_ads_id    = adsforwp_get_ad_ids();
+        $service = new adsforwp_output_service();
+        $post_meta_dataset = array();
+        if($all_ads_id){
+            foreach($all_ads_id as $ad_id){
+                $ad_status = $service->adsforwp_is_condition($ad_id);
+                $post_meta_dataset = array();                      
+                $post_meta_dataset = get_post_meta($ad_id,$key='',true);
+                $post_type = get_post_meta( $ad_id, 'select_adtype', true );
+                $mediavine_site_id   = adsforwp_rmv_warnings($post_meta_dataset, 'mediavine_site_id', 'adsforwp_array');
+                if( $ad_status && $post_type == 'mediavine' && !empty($mediavine_site_id)){
+                  ?>
+                  <link rel='dns-prefetch' href='//scripts.mediavine.com' />
+                  <script type='text/javascript' async="async" data-noptimize="1" data-cfasync="false" src='//scripts.mediavine.com/tags/<?php echo $mediavine_site_id;?>.js?ver=5.2.3'></script>
+                  <?php
+                }
+            }
+        }
+    }
     public function adsforwp_ezoic_ads_script(){
         $all_ads_id    = adsforwp_get_ad_ids();
         $service = new adsforwp_output_service();
