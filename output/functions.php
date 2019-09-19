@@ -411,7 +411,7 @@ class adsforwp_output_functions{
           }
         }
     }
-
+    
     public function adsforwp_display_sticky_ads(){                
         
         $explod_ad_id = array();
@@ -1542,35 +1542,62 @@ class adsforwp_output_functions{
                       $width = $explode_size[0];            
                       $height = $explode_size[1];
                     }
-                    $mantis_ad_id   = adsforwp_rmv_warnings($post_meta_dataset, 'mantis_property_id', 'adsforwp_array');
+                    $mantis_ad_id = adsforwp_rmv_warnings($post_meta_dataset, 'mantis_property_id', 'adsforwp_array');
+                    $mantis_zone_name = adsforwp_rmv_warnings($post_meta_dataset, 'mantis_zone_name', 'adsforwp_array');
+                    $mantis_display_type = adsforwp_rmv_warnings($post_meta_dataset, 'mantis_display_type', 'adsforwp_array');
                     if($this->is_amp){
                         $this->amp_ads_id[] = $post_ad_id;
-                         if($ad_responsive == 1){
-                          if( !empty($mantis_ad_id) ){
+                         
+                          if( !empty($mantis_ad_id) && $mantis_display_type == 'recommend'){
                               $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                             '.$sponsership_label.'
                                                     <amp-embed width="100" height="283"
-                                                        type="mantis-recommend"
+                                                        type="mantis-'.$mantis_display_type.'"
                                                         layout=responsive
                                                         heights="(min-width:1907px) 56%, (min-width:1100px) 64%, (min-width:780px) 75%, (min-width:480px) 105%, 200%"
                                                         data-property="'.$mantis_ad_id.'">
                                                     </amp-embed></div>';
-                          }
-                        }else{
-                            if( !empty($mantis_ad_id) ){
+                          }elseif( !empty($mantis_ad_id) && $mantis_display_type == 'display'){
                               $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                               '.$sponsership_label.'
                                                     <amp-ad width="'. esc_attr($width) .'"
                                                             height="'. esc_attr($height) .'"
-                                                            type = "mantis-display"
+                                                            type = "mantis-'.$mantis_display_type.'"
                                                             data-property = "'.$mantis_ad_id.'"
                                                             data-zone="medium-rectangle">
                                                         </amp-ad>
                                                       </div>';
-                              }
-                         }
+                          }
+                         
+                  }else{
+                     
+                      if( !empty($mantis_ad_id) && $mantis_display_type == 'recommend'){
+                            $ad_code = '<div id="afwp_mantis__recommended"></div>
+                                    <script type="text/javascript" data-cfasync="false">
+                                        MANTIS_RECOMMEND = {
+                                            property: "'.$mantis_ad_id.'",
+                                            render: "afwp_mantis__recommended"
+                                        };
+                                    </script>
+                                    <script type="text/javascript" data-cfasync="false">
+                                      var z = document.createElement("script");
+                                      z.type = "text/javascript";
+                                      z.async = true;
+                                      z.src = "//assets.mantisadnetwork.com/recommend.min.js";
+                                      var s = document.getElementsByTagName(\'head\')[0];
+                                      s.parentNode.insertBefore(z, s);
+                                    </script>
+                                    <link href="//assets.mantisadnetwork.com/recommend.3columns.css" rel="stylesheet" type="text/css" />';
+                      }elseif( !empty($mantis_ad_id) && $mantis_display_type == 'display' ){
+                            $ad_code = '<div data-mantis-zone="'.$mantis_zone_name.'"></div>
+                                      <script type="text/javascript">
+                                          var mantis = mantis || [];
+                                          mantis.push(["display","load",{
+                                              property: "'.$mantis_ad_id.'"
+                                          }]);
+                                      </script>';
+                      }
                   }
-               
             break;
             case 'mgid':
                 

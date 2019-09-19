@@ -84,6 +84,15 @@ class adsforwp_view_ads_type {
 			),
 		),
 		array(
+			'label'     => 'Display Type',
+			'id'        => 'mantis_display_type',
+			'type'      => 'select',                        
+			'options'   => array(				
+				'display'             => 'Display',
+                'recommend' => 'Recommend'
+			)
+        ),
+		array(
 			'label'     => 'Data Property Id',
 			'id'        => 'mantis_property_id',
 			'type'      => 'text',
@@ -92,7 +101,15 @@ class adsforwp_view_ads_type {
                 'maxlength'     => '30',
 			)
 		),
-
+		array(
+			'label'     => 'Data Zone Name',
+			'id'        => 'mantis_zone_name',
+			'type'      => 'text',
+			'attributes'   => array(				
+                'placeholder'   => 'top',
+                'maxlength'     => '30',
+			)
+		),
         array(
 			'label'     => 'AdSense Type',
 			'id'        => 'adsense_type',
