@@ -1965,7 +1965,8 @@ class adsforwp_output_functions{
                                         data-matched-content-ui-type="'.$matched_content_type.'"
                                         data-matched-content-rows-num="'.$rows.'"
                                         data-matched-content-columns-num="'.$columns.'"
-                                        data-auto-format="rspv">
+                                        data-auto-format="rspv"
+                                        data-full-width>
                                         <div overflow></div>
                                     </amp-ad>';
                           }
