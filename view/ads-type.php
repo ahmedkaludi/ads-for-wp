@@ -215,6 +215,7 @@ class adsforwp_view_ads_type {
 				
 			),
 		),
+        
                 array(
 			'label'      => 'Div Gpt Ad',
 			'id'         => 'dfp_div_gpt_ad',
@@ -290,6 +291,19 @@ class adsforwp_view_ads_type {
                                 '728x20'    =>  'Wide Horizontal (728x20)',
                                 '600x120'   =>  'Horizontal (600x120)',
 			),
+		),
+		array(
+			'label'     => 'Multi Size Ads',
+			'id'        => 'dfp_multisize_ads',                        
+			'type'      => 'checkbox',
+		),
+		array(
+			'label'     => 'Add Sizes',
+			'id'        => 'dfp_multisize_ads_sizes',                        
+			'type'      => 'text',
+			'attributes' => array(
+				'placeholder'   => '700x90,700x60,500x60',
+			)
 		),
             
                  array(
