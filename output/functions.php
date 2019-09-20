@@ -2155,7 +2155,7 @@ class adsforwp_output_functions{
             break;
             
             case 'doubleclick':
-                                        
+            $validation = "false";                        
             $ad_slot_id  = adsforwp_rmv_warnings($post_meta_dataset, 'dfp_slot_id', 'adsforwp_array');                           
             $ad_div_gpt  = adsforwp_rmv_warnings($post_meta_dataset, 'dfp_div_gpt_ad', 'adsforwp_array'); 
             $width='200';
@@ -2169,7 +2169,10 @@ class adsforwp_output_functions{
             }
             $dfp_multisize_ads  = adsforwp_rmv_warnings($post_meta_dataset, 'dfp_multisize_ads', 'adsforwp_array');       
             $dfp_sizes  = adsforwp_rmv_warnings($post_meta_dataset, 'dfp_multisize_ads_sizes', 'adsforwp_array');
-           
+            $dfp_multi_validation  = adsforwp_rmv_warnings($post_meta_dataset, 'dfp_multisize_validation', 'adsforwp_array');
+            if($dfp_multi_validation == 1){
+                $validation = "true";
+            }
             if($this->is_amp){                                
                     
                  $this->amp_ads_id[] = $post_ad_id;
@@ -2179,8 +2182,11 @@ class adsforwp_output_functions{
                                       class="afw_ad_amp_'.esc_attr($post_ad_id).'"
                                         type="doubleclick"
                                         layout="fixed"
+                                        width="'. esc_attr($width) .'"
+                                        height="'. esc_attr($height).'" 
                                         data-slot="'.esc_attr($ad_slot_id).'"
                                         data-multi-size="'.esc_attr($dfp_sizes).'"
+                                        data-multi-size-validation="'.$validation.'"
                                         data-enable-refresh="10">
                                            <div fallback>
                                            <p>Thank you for trying AMP!</p>
@@ -2218,8 +2224,11 @@ class adsforwp_output_functions{
                                       class="afw_ad_amp_'.esc_attr($post_ad_id).'"
                                         type="doubleclick"
                                         layout="fixed"
+                                        width="'. esc_attr($width) .'"
+                                        height="'. esc_attr($height).'" 
                                         data-slot="'.esc_attr($ad_slot_id).'"
                                         data-multi-size="'.esc_attr($dfp_sizes).'"
+                                        data-multi-size-validation="'.$validation.'"
                                         data-enable-refresh="10">
                                            <div fallback>
                                            <p>Thank you for trying AMP!</p>

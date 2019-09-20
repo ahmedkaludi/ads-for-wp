@@ -293,7 +293,7 @@ class adsforwp_view_ads_type {
 			),
 		),
 		array(
-			'label'     => 'Multi Size Ads',
+			'label'     => 'Multi-size Ads',
 			'id'        => 'dfp_multisize_ads',                        
 			'type'      => 'checkbox',
 		),
@@ -304,6 +304,11 @@ class adsforwp_view_ads_type {
 			'attributes' => array(
 				'placeholder'   => '700x90,700x60,500x60',
 			)
+		),
+		array(
+			'label'     => 'Multi-size Validation',
+			'id'        => 'dfp_multisize_validation',                        
+			'type'      => 'checkbox',
 		),
             
                  array(
