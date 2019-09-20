@@ -1959,14 +1959,13 @@ class adsforwp_output_functions{
                           if($ad_client && $ad_slot){
                               $ad_code = '<amp-ad class="afw_ad_amp_'.esc_attr($post_ad_id).'"                                        
                                         type="adsense"
-                                        width="'. esc_attr($width) .'"
-                                        height="'. esc_attr($height) .'"  
+                                        width="100vw" height=320  
                                         data-ad-client="'. esc_attr($ad_client) .'"
                                         data-ad-slot="'.esc_attr($ad_slot).'"
                                         data-matched-content-ui-type="'.$matched_content_type.'"
                                         data-matched-content-rows-num="'.$rows.'"
                                         data-matched-content-columns-num="'.$columns.'"
-                                        data-ad-format="autorelaxed">
+                                        data-auto-format="rspv">
                                         <div overflow></div>
                                     </amp-ad>';
                           }
