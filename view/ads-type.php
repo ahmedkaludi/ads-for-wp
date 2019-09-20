@@ -157,7 +157,7 @@ class adsforwp_view_ads_type {
                 'image_stacked' => 'Image Stacked Above Text',
                 'image_card_stacked' => 'Image Stacked Above Text With Card',
                 'text' => 'Text Only',
-                'text_card' => 'Text With Only'
+                'text_card' => 'Text With Card'
 			)
 		),
 		array(
