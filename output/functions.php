@@ -1943,12 +1943,24 @@ class adsforwp_output_functions{
                     if($author_ad_slot_id){
                         $ad_slot = $author_ad_slot_id;
                     }
+                    $width='200';
+                    $height='200';
+                    $banner_size = adsforwp_rmv_warnings($post_meta_dataset, 'banner_size', 'adsforwp_array'); 
+                    
+                    if($banner_size !=''){
+                        
+                    $explode_size = explode('x', $banner_size);              
+                    $width = $explode_size[0];            
+                    $height = $explode_size[1];                               
+                    
+                    }
                     if($this->is_amp){
                       $this->amp_ads_id[] = $post_ad_id;
-                        if($ad_responsive == 1){ 
                           if($ad_client && $ad_slot){
                               $ad_code = '<amp-ad class="afw_ad_amp_'.esc_attr($post_ad_id).'"                                        
-                                        type="adsense"                                        
+                                        type="adsense"
+                                        width="'. esc_attr($width) .'"
+                                        height="'. esc_attr($height) .'"  
                                         data-ad-client="'. esc_attr($ad_client) .'"
                                         data-ad-slot="'.esc_attr($ad_slot).'"
                                         data-matched-content-ui-type="'.$matched_content_type.'"
@@ -1958,7 +1970,6 @@ class adsforwp_output_functions{
                                         <div overflow></div>
                                     </amp-ad>';
                           }
-                        }
                     }else{
                       if($ad_client && $ad_slot){
                           $ad_code =  '<ins class="adsbygoogle"
