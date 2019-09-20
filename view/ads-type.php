@@ -116,8 +116,9 @@ class adsforwp_view_ads_type {
 			'type'      => 'select',                        
 			'options'   => array(				
 				'normal'             => 'Normal',
-                                'adsense_auto_ads'   => 'Auto Ads',
-                                'adsense_sticky_ads' => 'Sticky (Only AMP)'
+                'adsense_auto_ads'   => 'Auto Ads',
+                'adsense_sticky_ads' => 'Sticky (Only AMP)',
+                'matched_content_ads' => 'Matched Content Ads'
 			)
                       ),
 		array(
@@ -143,6 +144,39 @@ class adsforwp_view_ads_type {
                         'attributes'=> array(
 				'placeholder'   => '70XXXXXX12',
                                 'maxlength'     => '20',
+				
+			),
+		),
+		array(
+			'label'     => 'Matched Content Type',
+			'id'        => 'matched_content_type',
+			'type'      => 'select',                        
+			'options'   => array(				
+				'image_sidebyside' => 'Image Text SideBySide',
+                'image_card_sidebyside'   => 'Image Text SideBySide With Card',
+                'image_stacked' => 'Image Stacked Above Text',
+                'image_card_stacked' => 'Image Stacked Above Text With Card',
+                'text' => 'Text Only',
+                'text_card' => 'Text With Only'
+			)
+		),
+		array(
+			'label'     => 'Number of Rows',
+			'id'        => 'matched_content_rows',
+			'type'      => 'text',
+            'attributes'=> array(
+				'placeholder'   => '3',
+               	'maxlength'     => '20',
+				
+			),
+		),
+		array(
+			'label'     => 'Number of Columns',
+			'id'        => 'matched_content_columns',
+			'type'      => 'text',
+            'attributes'=> array(
+				'placeholder'   => '3',
+                'maxlength'     => '20',
 				
 			),
 		),

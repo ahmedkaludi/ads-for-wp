@@ -1935,7 +1935,46 @@ class adsforwp_output_functions{
             }
             }                                    
             switch ($adsense_type) {
-                
+                case 'matched_content_ads':
+                    $ad_slot = adsforwp_rmv_warnings($post_meta_dataset, 'data_ad_slot', 'adsforwp_array');
+                    $matched_content_type = adsforwp_rmv_warnings($post_meta_dataset, 'matched_content_type', 'adsforwp_array');
+                    $rows = adsforwp_rmv_warnings($post_meta_dataset, 'matched_content_rows', 'adsforwp_array');
+                    $columns = adsforwp_rmv_warnings($post_meta_dataset, 'matched_content_columns', 'adsforwp_array');
+                    if($author_ad_slot_id){
+                        $ad_slot = $author_ad_slot_id;
+                    }
+                    if($this->is_amp){
+                      $this->amp_ads_id[] = $post_ad_id;
+                        if($ad_responsive == 1){ 
+                          if($ad_client && $ad_slot){
+                              $ad_code = '<amp-ad class="afw_ad_amp_'.esc_attr($post_ad_id).'"                                        
+                                        type="adsense"                                        
+                                        data-ad-client="'. esc_attr($ad_client) .'"
+                                        data-ad-slot="'.esc_attr($ad_slot).'"
+                                        data-matched-content-ui-type="'.$matched_content_type.'"
+                                        data-matched-content-rows-num="'.$rows.'"
+                                        data-matched-content-columns-num="'.$columns.'"
+                                        data-ad-format="autorelaxed">
+                                        <div overflow></div>
+                                    </amp-ad>';
+                          }
+                        }
+                    }else{
+                      if($ad_client && $ad_slot){
+                          $ad_code =  '<ins class="adsbygoogle"
+                                             style="display:block"
+                                             data-ad-client="'. esc_attr($ad_client) .'"
+                                             data-ad-slot="'.esc_attr($ad_slot).'"
+                                             data-matched-content-ui-type="'.$matched_content_type.'"
+                                             data-matched-content-rows-num="'.$rows.'"
+                                             data-matched-content-columns-num="'.$columns.'"
+                                             data-ad-format="autorelaxed"></ins>
+                                        <script>
+                                        (adsbygoogle = window.adsbygoogle || []).push({});
+                                        </script>';
+                      }
+                    }
+                break;
                 case 'normal':
                     $ad_slot = adsforwp_rmv_warnings($post_meta_dataset, 'data_ad_slot', 'adsforwp_array'); 
                     if($author_ad_slot_id){
