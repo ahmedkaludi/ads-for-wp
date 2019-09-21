@@ -1499,7 +1499,7 @@ class adsforwp_output_functions{
                                          <amp-embed class="afw_ad_amp_'.esc_attr($post_ad_id).'" width="100" height="100"                                        
                                           type="outbrain"
                                           layout="responsive"
-                                          data-widgetIds="'.$outbrain_widget_ids.'"
+                                          data-widgetIds="'.esc_attr($outbrain_widget_ids).'"
                                           data-enable-refresh="10">
                                       </amp-embed>
                                       </div>
@@ -1513,7 +1513,7 @@ class adsforwp_output_functions{
                                        <amp-embed class="afw_ad_amp_'.esc_attr($post_ad_id).'" width="'. esc_attr($width) .'"
                                           height="'. esc_attr($height) .'" 
                                           type="outbrain"
-                                          data-widgetIds="'.$outbrain_widget_ids.'"
+                                          data-widgetIds="'.esc_attr($outbrain_widget_ids).'"
                                           data-enable-refresh="10">
                                       </amp-embed>
                                     </div>
@@ -1522,7 +1522,7 @@ class adsforwp_output_functions{
                              }
                         }
                     }else{
-                        $ad_code = '<div class="afw_ad_amp_outbrain" data-widget-id="'.$outbrain_widget_ids.'"></div>';
+                        $ad_code = '<div class="afw_ad_amp_outbrain" data-widget-id="'.esc_attr($outbrain_widget_ids).'"></div>';
                     }
                     break;
                   
