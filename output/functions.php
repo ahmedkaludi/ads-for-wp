@@ -1551,18 +1551,18 @@ class adsforwp_output_functions{
                               $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                             '.$sponsership_label.'
                                                     <amp-embed class="afw_ad_amp_'.esc_attr($post_ad_id).'" width="100" height="283"
-                                                        type="mantis-'.$mantis_display_type.'"
+                                                        type="mantis-'.esc_attr($mantis_display_type).'"
                                                         layout=responsive
                                                         heights="(min-width:1907px) 56%, (min-width:1100px) 64%, (min-width:780px) 75%, (min-width:480px) 105%, 200%"
-                                                        data-property="'.$mantis_ad_id.'">
+                                                        data-property="'.esc_attr($mantis_ad_id).'">
                                                     </amp-embed></div>';
                           }elseif( !empty($mantis_ad_id) && $mantis_display_type == 'display'){
                               $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                               '.$sponsership_label.'
                                                     <amp-ad class="afw_ad_amp_'.esc_attr($post_ad_id).'" width="'. esc_attr($width) .'"
                                                             height="'. esc_attr($height) .'"
-                                                            type = "mantis-'.$mantis_display_type.'"
-                                                            data-property = "'.$mantis_ad_id.'"
+                                                            type = "mantis-'.esc_attr($mantis_display_type).'"
+                                                            data-property = "'.esc_attr($mantis_ad_id).'"
                                                             data-zone="medium-rectangle">
                                                         </amp-ad>
                                                       </div>';
@@ -1574,7 +1574,7 @@ class adsforwp_output_functions{
                             $ad_code = '<div id="afwp_mantis__recommended"></div>
                                     <script type="text/javascript" data-cfasync="false">
                                         MANTIS_RECOMMEND = {
-                                            property: "'.$mantis_ad_id.'",
+                                            property: "'.esc_attr($mantis_ad_id).'",
                                             render: "afwp_mantis__recommended"
                                         };
                                     </script>
@@ -1588,11 +1588,11 @@ class adsforwp_output_functions{
                                     </script>
                                     <link href="//assets.mantisadnetwork.com/recommend.3columns.css" rel="stylesheet" type="text/css" />';
                       }elseif( !empty($mantis_ad_id) && $mantis_display_type == 'display' ){
-                            $ad_code = '<div data-mantis-zone="'.$mantis_zone_name.'"></div>
+                            $ad_code = '<div data-mantis-zone="'.esc_attr($mantis_zone_name).'"></div>
                                       <script type="text/javascript">
                                           var mantis = mantis || [];
                                           mantis.push(["display","load",{
-                                              property: "'.$mantis_ad_id.'"
+                                              property: "'.esc_attr($mantis_ad_id).'"
                                           }]);
                                       </script>';
                       }
