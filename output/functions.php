@@ -2198,7 +2198,7 @@ class adsforwp_output_functions{
                                         height="'. esc_attr($height).'" 
                                         data-slot="'.esc_attr($ad_slot_id).'"
                                         data-multi-size="'.esc_attr($dfp_sizes).'"
-                                        data-multi-size-validation="'.$validation.'"
+                                        data-multi-size-validation="'.esc_attr($validation).'"
                                         data-enable-refresh="10">
                                            <div fallback>
                                            <p>Thank you for trying AMP!</p>
@@ -2240,7 +2240,7 @@ class adsforwp_output_functions{
                                         height="'. esc_attr($height).'" 
                                         data-slot="'.esc_attr($ad_slot_id).'"
                                         data-multi-size="'.esc_attr($dfp_sizes).'"
-                                        data-multi-size-validation="'.$validation.'"
+                                        data-multi-size-validation="'.esc_attr($validation).'"
                                         data-enable-refresh="10">
                                            <div fallback>
                                            <p>Thank you for trying AMP!</p>

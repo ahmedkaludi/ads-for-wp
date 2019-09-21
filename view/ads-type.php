@@ -302,7 +302,7 @@ class adsforwp_view_ads_type {
 			'id'        => 'dfp_multisize_ads_sizes',                        
 			'type'      => 'text',
 			'attributes' => array(
-				'placeholder'   => '700x90,700x60,500x60',
+				'placeholder'   => '700x90,700x60,500x60....',
 			)
 		),
 		array(
