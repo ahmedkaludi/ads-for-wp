@@ -1424,7 +1424,7 @@ class adsforwp_output_functions{
                                      <amp-ad class="afw_ad_amp_'.esc_attr($post_ad_id).'" width="'. esc_attr($width) .'"
                                           height="'. esc_attr($height) .'"
                                           type="mediavine"
-                                          data-site="'.$mediavine_site_id.'">
+                                          data-site="'.esc_attr($mediavine_site_id).'">
                                     </amp-ad>
                                   </div>
                                   </div>';
@@ -2534,7 +2534,7 @@ class adsforwp_output_functions{
                 if( $ad_status && $post_type == 'mediavine' && !empty($mediavine_site_id)){
                   ?>
                   <link rel='dns-prefetch' href='//scripts.mediavine.com' />
-                  <script type='text/javascript' async="async" data-noptimize="1" data-cfasync="false" src='//scripts.mediavine.com/tags/<?php echo $mediavine_site_id;?>.js?ver=5.2.3'></script>
+                  <script type='text/javascript' async="async" data-noptimize="1" data-cfasync="false" src='//scripts.mediavine.com/tags/<?php echo esc_attr($mediavine_site_id);?>.js?ver=5.2.3'></script>
                   <?php
                 }
             }
