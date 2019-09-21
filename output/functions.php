@@ -2554,7 +2554,7 @@ class adsforwp_output_functions{
                 if( $ad_status && $post_type == 'ezoic' && !empty($ezoic_slot_id)){
         ?>
         <!-- AMPforWP Ezoic Code -->
-        <script>var ezoicId = <?php echo $ezoic_slot_id;?>;</script>
+        <script>var ezoicId = <?php echo esc_attr($ezoic_slot_id);?>;</script>
         <script type="text/javascript" src="//go.ezoic.net/ezoic/ezoic.js"></script>
         <!-- AMPforWP Ezoic Code -->
         <?php
@@ -2578,7 +2578,7 @@ class adsforwp_output_functions{
             e.async = 1;
             e.src = u;
             f.parentNode.insertBefore(e, f);
-          }(document.createElement('script'), document.getElementsByTagName('script')[0], '//cdn.taboola.com/libtrc/<?php echo $publisher_id;?>/loader.js');
+          }(document.createElement('script'), document.getElementsByTagName('script')[0], '//cdn.taboola.com/libtrc/<?php echo esc_attr($publisher_id);?>/loader.js');
           </script>
           <?php
                 }
