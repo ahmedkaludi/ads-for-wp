@@ -22,7 +22,12 @@ class adsforwp_view_ads_type {
                                 'ad_now'        => 'AdNow',
                                 'mgid'          => 'MGID',
                                 'contentad'     => 'Content.ad',
+                                'ezoic' 		=> 'Ezoic',
                                 'infolinks'     => 'Infolinks',
+                                'mantis'     => 'MANTIS',
+                                'mediavine'     => 'Mediavine',
+                                'outbrain'     => 'Outbrain',
+                                'taboola'     => 'Taboola',
                                 'ad_image'      => 'Image Banner Ad',
                                 'ad_background' => 'Background Ad',                                
                                 'custom'        => 'Custom Code',
@@ -33,14 +38,87 @@ class adsforwp_view_ads_type {
 				
 			),
 		),
-                  array(
+		array(
+			'label'     => 'Data Site Id',
+			'id'        => 'mediavine_site_id',
+			'type'      => 'text',                        
+			'attributes'=> array(
+				'placeholder'   => '123456',
+                'maxlength'     => '30',
+			),
+        ),
+		array(
+			'label'     => 'Data Slot Id',
+			'id'        => 'ezoic_slot_id',
+			'type'      => 'text',                        
+			'attributes'=> array(
+				'placeholder'   => '123456',
+                'maxlength'     => '30',
+			),
+        ),
+		array(
+			'label'     => 'Data Publisher Id',
+			'id'        => 'taboola_publisher_id',
+			'type'      => 'text',                        
+			'attributes'=> array(
+				'placeholder'   => '123456',
+                'maxlength'     => '30',
+			),
+        ),
+		array(
+			'label'     => 'Outbrain Type',
+			'id'        => 'outbrain_type',
+			'type'      => 'select',                        
+			'options'   => array(				
+				'normal'             => 'Normal',
+                'outbrain_sticky_ads' => 'Sticky (Only AMP)'
+			)
+        ),
+		array(
+			'label'     => 'Widget Id\'s',
+			'id'        => 'outbrain_widget_ids',
+			'type'      => 'text',
+			'attributes'=> array(
+				'placeholder'   => 'widget_1,widget_2',
+                'maxlength'     => '30',
+			),
+		),
+		array(
+			'label'     => 'Display Type',
+			'id'        => 'mantis_display_type',
+			'type'      => 'select',                        
+			'options'   => array(				
+				'display'             => 'Display',
+                'recommend' => 'Recommend'
+			)
+        ),
+		array(
+			'label'     => 'Data Property Id',
+			'id'        => 'mantis_property_id',
+			'type'      => 'text',
+			'attributes'   => array(				
+                'placeholder'   => '5a5840d00000000000000000',
+                'maxlength'     => '30',
+			)
+		),
+		array(
+			'label'     => 'Data Zone Name',
+			'id'        => 'mantis_zone_name',
+			'type'      => 'text',
+			'attributes'   => array(				
+                'placeholder'   => 'top',
+                'maxlength'     => '30',
+			)
+		),
+        array(
 			'label'     => 'AdSense Type',
 			'id'        => 'adsense_type',
 			'type'      => 'select',                        
 			'options'   => array(				
 				'normal'             => 'Normal',
-                                'adsense_auto_ads'   => 'Auto Ads',
-                                'adsense_sticky_ads' => 'Sticky (Only AMP)'
+                'adsense_auto_ads'   => 'Auto Ads',
+                'adsense_sticky_ads' => 'Sticky (Only AMP)',
+                'matched_content_ads' => 'Matched Content Ads'
 			)
                       ),
 		array(
@@ -66,6 +144,39 @@ class adsforwp_view_ads_type {
                         'attributes'=> array(
 				'placeholder'   => '70XXXXXX12',
                                 'maxlength'     => '20',
+				
+			),
+		),
+		array(
+			'label'     => 'Matched Content Type',
+			'id'        => 'matched_content_type',
+			'type'      => 'select',                        
+			'options'   => array(				
+				'image_sidebyside' => 'Image Text SideBySide',
+                'image_card_sidebyside'   => 'Image Text SideBySide With Card',
+                'image_stacked' => 'Image Stacked Above Text',
+                'image_card_stacked' => 'Image Stacked Above Text With Card',
+                'text' => 'Text Only',
+                'text_card' => 'Text With Card'
+			)
+		),
+		array(
+			'label'     => 'Number of Rows',
+			'id'        => 'matched_content_rows',
+			'type'      => 'text',
+            'attributes'=> array(
+				'placeholder'   => '3',
+               	'maxlength'     => '20',
+				
+			),
+		),
+		array(
+			'label'     => 'Number of Columns',
+			'id'        => 'matched_content_columns',
+			'type'      => 'text',
+            'attributes'=> array(
+				'placeholder'   => '3',
+                'maxlength'     => '20',
 				
 			),
 		),
@@ -104,6 +215,7 @@ class adsforwp_view_ads_type {
 				
 			),
 		),
+        
                 array(
 			'label'      => 'Div Gpt Ad',
 			'id'         => 'dfp_div_gpt_ad',
@@ -179,6 +291,24 @@ class adsforwp_view_ads_type {
                                 '728x20'    =>  'Wide Horizontal (728x20)',
                                 '600x120'   =>  'Horizontal (600x120)',
 			),
+		),
+		array(
+			'label'     => 'Multi-size Ads',
+			'id'        => 'dfp_multisize_ads',                        
+			'type'      => 'checkbox',
+		),
+		array(
+			'label'     => 'Add Sizes',
+			'id'        => 'dfp_multisize_ads_sizes',                        
+			'type'      => 'text',
+			'attributes' => array(
+				'placeholder'   => '700x90,700x60,500x60....',
+			)
+		),
+		array(
+			'label'     => 'Multi-size Validation',
+			'id'        => 'dfp_multisize_validation',                        
+			'type'      => 'checkbox',
 		),
             
                  array(

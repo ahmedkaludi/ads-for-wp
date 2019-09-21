@@ -1221,7 +1221,7 @@ function adsforwp_add_localize_data($object, $object_name){
                         
         if($object_name=='adsforwp_localize_data'){
             
-               $object['pointer_help']          = esc_html__( 'Help', 'ads-for-wp' );                                                   
+               $object['pointer_help']          = esc_html__( 'Help', 'ads-for-wp' );
                $object['adsense_pointer']       = esc_html__( 'You can find Data Client ID and Data Ad Slot from adsense code.', 'ads-for-wp' );
                $object['media_net_pointer']     = esc_html__( 'You can find Data CID id and Data CRID from media.net code.', 'ads-for-wp' );
                $object['ad_now_pointer']        = esc_html__( 'You can find Widget ID from adnow code.', 'ads-for-wp' );
@@ -1231,6 +1231,11 @@ function adsforwp_add_localize_data($object, $object_name){
                $object['custom_pointer']        = esc_html__( 'Insert the ad code or script.', 'ads-for-wp' );
                $object['doubleclick_pointer']   = esc_html__( 'Insert the Slot Id and Div Gpt Ad.', 'ads-for-wp' );
                $object['ad_background_pointer'] = esc_html__( 'Insert the background banner.', 'ads-for-wp' );
+               $object['ezoic_pointer'] = esc_html__( 'You can find Data Ezoic ID from ezoic code.', 'ads-for-wp' );
+               $object['mantis_pointer'] = esc_html__( 'You can find Data Mantis ID from mantis ads code.', 'ads-for-wp' );
+               $object['outbrain_pointer'] = esc_html__( 'You can find Data Outbrain ID from outbrain ads code.', 'ads-for-wp' );
+               $object['mediavine_pointer'] = esc_html__( 'You can find Data Mediavine ID from mediavine ads code.', 'ads-for-wp' );
+               $object['taboola_pointer'] = esc_html__( 'You can find Data Taboola ID from taboola ads code.', 'ads-for-wp' );
                                                       
         }
         
