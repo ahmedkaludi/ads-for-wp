@@ -1435,6 +1435,7 @@ class adsforwp_output_functions{
               case 'taboola':
                    $publisher_id   = adsforwp_rmv_warnings($post_meta_dataset, 'taboola_publisher_id', 'adsforwp_array');
                    $post_slug = get_post_field( 'post_name', $post_ad_id );
+                   $placement_id = $post_slug.'-'.$post_ad_id;
                     if($this->is_amp){
                         $this->amp_ads_id[] = $post_ad_id;
                         if(!empty($publisher_id) ){
@@ -1445,9 +1446,9 @@ class adsforwp_output_functions{
                                          type=taboola
                                          layout=responsive
                                          heights="(min-width:1907px) 39%, (min-width:1200px) 46%, (min-width:780px) 64%, (min-width:480px) 98%, (min-width:460px) 167%, 196%"
-                                         data-publisher="'.$publisher_id.'"
+                                         data-publisher="'.esc_attr($publisher_id).'"
                                          data-mode="thumbnails-a"
-                                         data-placement="'.$post_slug.'-'.$post_ad_id.'"
+                                         data-placement="'.esc_attr($placement_id).'"
                                          data-article="auto">
                                     </amp-embed>
                                   </div>
@@ -1459,13 +1460,13 @@ class adsforwp_output_functions{
                         
                         $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                   '.$sponsership_label.'
-                                   <div id="'.$post_slug.'-'.$post_ad_id.'" class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"></div>
+                                   <div id="'.esc_attr($placement_id).'" class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"></div>
                                       <script type="text/javascript">
                                         window._taboola = window._taboola || [];
                                         _taboola.push({
                                         mode:"thumbnails-a", 
-                                        container:"'.$post_slug.'-'.$post_ad_id.'", 
-                                        placement:"'.$post_slug.'-'.$post_ad_id.'", 
+                                        container:"'.esc_attr($placement_id).'", 
+                                        placement:"'.esc_attr($placement_id).'", 
                                         target_type: "mix"
                                         });
                                       </script>
