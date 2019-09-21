@@ -855,6 +855,8 @@ class adsforwp_output_functions{
                       }
                           
                     if($post_type == 'outbrain'){
+                      $post_meta_dataset          = array();
+                      $post_meta_dataset          = get_post_meta($ad_id,$key='',true);
                         $outbrain_type   = adsforwp_rmv_warnings($post_meta_dataset, 'outbrain_type', 'adsforwp_array');
                         if($outbrain_type == 'outbrain_sticky_ads'){
                           $width  = '200';
