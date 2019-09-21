@@ -770,19 +770,17 @@ class adsforwp_output_functions{
         $all_ads_id    = adsforwp_get_ad_ids();
         if($all_ads_id){
             foreach($all_ads_id as $ad_id){
-                $post_type = get_post_meta( $ad_id, 'select_adtype', true ); 
-                if($post_type == 'adsense'){
-                    $post_meta_dataset = array();                      
-                    $post_meta_dataset = get_post_meta($ad_id,$key='',true);
-                    $adsense_type = adsforwp_rmv_warnings($post_meta_dataset, 'adsense_type', 'adsforwp_array');
-                    $outbrain_type   = adsforwp_rmv_warnings($post_meta_dataset, 'outbrain_type', 'adsforwp_array');
-                    if($adsense_type == 'adsense_sticky_ads' || $outbrain_type == 'outbrain_sticky_ads' ){
-                        $service = new adsforwp_output_service();
-                        $ad_status = $service->adsforwp_is_condition($ad_id);
-                        if($ad_status){
-                            if ( empty( $data['amp_component_scripts']['amp-sticky-ad'] ) ) {
-                                $data['amp_component_scripts']['amp-sticky-ad'] = 'https://cdn.ampproject.org/v0/amp-sticky-ad-latest.js';
-                            }
+                $post_type = get_post_meta( $ad_id, 'select_adtype', true );
+                $post_meta_dataset = array();                      
+                $post_meta_dataset = get_post_meta($ad_id,$key='',true);
+                $adsense_type = adsforwp_rmv_warnings($post_meta_dataset, 'adsense_type', 'adsforwp_array');
+                $outbrain_type   = adsforwp_rmv_warnings($post_meta_dataset, 'outbrain_type', 'adsforwp_array');
+                if(( $post_type == 'adsense' && $adsense_type == 'adsense_sticky_ads') || ($post_type == 'outbrain' && $outbrain_type == 'outbrain_sticky_ads') ){
+                    $service = new adsforwp_output_service();
+                    $ad_status = $service->adsforwp_is_condition($ad_id);
+                    if($ad_status){
+                        if ( empty( $data['amp_component_scripts']['amp-sticky-ad'] ) ) {
+                            $data['amp_component_scripts']['amp-sticky-ad'] = 'https://cdn.ampproject.org/v0/amp-sticky-ad-latest.js';
                         }
                     }
                 }
