@@ -13,13 +13,15 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy to Use, Unlimited Incontent Ads, Adsense, Premium Features and more
 
 = Features: =
+* NEW: Outbrain Support
+* NEW: Taboola Support
+* NEW: MANTIS Support
+* NEW: Ezoic Support
+* NEW: Mediavine Support
 * NEW: ads.txt Support
 * NEW: MGID Support
 * NEW: Ads Performance Analytics with reports & insights (supports AMP as well)
-* NEW: View Deep Insights of your traffic and Revenue with reports and data. It gives an overview of Mobile VS Desktop, AMP vs Non-AMP of your Traffic & Ad revenue including the comparision of previous time. 
-* NEW: Conditional Display to help you target ads.
-* NEW: AD blocker Support
-* NEW: Ad Revenue Sharing that supports all the ad networks and AMP.
+* NEW: View Deep Insights of your traffic and Revenue with reports and data. It gives an overview of Mobile VS Desktop, AMP vs Non-AMP of your Traffic & Ad revenue including the comparision of previous time.
 * AdSense Auto Ads Support
 * Ad Groups with AMP Support
 * Ad Widget added
@@ -58,14 +60,14 @@ Google Api Php Client library used https://github.com/googleapis/google-api-php-
 
 = 1.9.6 (21 September 2019) =
 
-* New Feature: Show Sticky Ads with DoubleClick ad type for AMP #174
-* New Feature: Need to make compatibility with outbrain code #207
-* New Feature: Taboola ad support #185
-* New Feature: Need to add MANTIS Ad Network #145
-* New Feature: Need to add Ezoic ad support #187
-* New Feature: Need to add compatibility of Mediavine in ADS FOR WP #220
-* New Feature: Matched Content support #161
-* New Feature: Request for new feature which Support for multi-size ad requests #176
+* New Feature: Sticky Ads with DoubleClick Ad type for AMP #174
+* New Feature: Added outbrain Ad type compatibility #207
+* New Feature: Added Taboola Ad support #185
+* New Feature: Added MANTIS Ad Network #145
+* New Feature: Added Ezoic Ad support #187
+* New Feature: Added compatibility of Mediavine #220
+* New Feature: Added Matched Content support #161
+* New Feature: Added new feature to support multi-size ad requests #176
 * Bug Fixed: After update ads are decentralized #244
 
 = 1.9.5 (09 September 2019) =
