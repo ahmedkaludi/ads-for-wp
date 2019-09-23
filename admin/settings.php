@@ -205,15 +205,14 @@ public function adsforwp_handle_file_upload($option){
 }
 
 public function adsforwp_check_data_imported_from($plugin_post_type_name){
-    
-       $cc_args = array(
-                        'posts_per_page'   => -1,
-                        'post_type'        => 'adsforwp',
-                        'meta_key'         => 'imported_from',
-                        'meta_value'       => $plugin_post_type_name,
-                    );					
+   $cc_args = array(
+                    'posts_per_page'   => -1,
+                    'post_type'        => 'adsforwp',
+                    'meta_key'         => 'imported_from',
+                    'meta_value'       => $plugin_post_type_name,
+                );					
 	$imported_from = new WP_Query( $cc_args ); 
-        return $imported_from;
+    return $imported_from;
         
 }
 
@@ -504,13 +503,14 @@ public function adsforwp_import_callback(){
         $ampforwp_ads_message          = '';
         $ampforwp_advanced_ads_msg     = '';
         $ad_inserter_message           = '';
-        
+        $quick_adsense_message		= '';
         
         
         $schema_plugin         = $this->adsforwp_check_data_imported_from('advance_ads'); 
         $ampforwp_ads          = $this->adsforwp_check_data_imported_from('ampforwp_ads'); 
         $ampforwp_advanced_ads = $this->adsforwp_check_data_imported_from('ampforwp_advanced_ads'); 
         $ad_inserter           = $this->adsforwp_check_data_imported_from('ad_inserter'); 
+        $quick_adsense           = $this->adsforwp_check_data_imported_from('quick_adsense'); 
         
         
         
@@ -526,6 +526,9 @@ public function adsforwp_import_callback(){
         
         if($ad_inserter->post_count !=0){
          $ad_inserter_message = $message;   
+        } 
+        if($quick_adsense ->post_count !=0){
+         $quick_adsense_message = $message;   
         }
         
         ?>	
@@ -543,6 +546,15 @@ public function adsforwp_import_callback(){
                 <li><div class="adsforwp-tools-field-title"><div class="adsforwp-tooltip"><strong><?php echo esc_html__('AMP for WP Advanced Ads','ads-for-wp'); ?></strong></div><button data-id="ampforwp_advanced_ads" class="button adsforwp-import-plugins"><?php echo esc_html__('Import','ads-for-wp'); ?></button>
                         <p class="adsforwp-imported-message"></p>
                         <?php echo $ampforwp_advanced_ads_msg; ?>    
+                    </div>
+                </li>
+                <li>
+                	<div class="adsforwp-tools-field-title">
+                		<div class="adsforwp-tooltip"><strong><?php echo esc_html__('Quick Adsense Ads','ads-for-wp'); ?></strong>
+                		</div>
+                		<button data-id="quick_adsense" class="button adsforwp-import-plugins"><?php echo esc_html__('Import','ads-for-wp'); ?></button>
+                		<p class="adsforwp-imported-message"></p>    
+                        <?php echo $quick_adsense_message; ?>
                     </div>
                 </li>
                 <li><div class="adsforwp-tools-field-title"><div class="adsforwp-tooltip"><strong><?php echo esc_html__('Ad Inserter','ads-for-wp'); ?></strong></div><button data-id="ad_inserter" class="button adsforwp-import-plugins"><?php echo esc_html__('Import','ads-for-wp'); ?></button>
