@@ -1345,16 +1345,28 @@ class adsforwp_admin_common_functions {
                       $ads_align_margin = array('ad_margin_top' => 0,'ad_margin_bottom' => 0,'ad_margin_left' => 0,'ad_margin_right' => 0);
                     }
                   }                        
-                  $ads_margin = 
-                  $data_group_array['group-0'] = array(                            
+                  if( isset($settings['enable_on_posts']) && $settings['enable_on_posts'] == 1){
+                    $data_group_array['group-0'] = array(                            
                                            'data_array' => array(      
                                                   array(
-                                                      'key_1' => 'show_globally',
+                                                      'key_1' => 'post_type',
                                                       'key_2' => 'equal',
                                                       'key_3' => 'post',
                                                   )
                                                )               
-                                           ); 
+                                           );
+                  }
+                  if( isset($settings['enable_on_pages']) && $settings['enable_on_pages'] == 1){
+                    $data_group_array['group-1'] = array(                            
+                                           'data_array' => array(      
+                                                  array(
+                                                      'key_1' => 'post_type',
+                                                      'key_2' => 'equal',
+                                                      'key_3' => 'page',
+                                                  )
+                                               )               
+                                           );
+                  }
                   
                   //enable_position_before_last_para, ad_before_last_para
                  
@@ -1417,8 +1429,77 @@ class adsforwp_admin_common_functions {
                   foreach ($adforwp_meta_key as $key => $val){
                     $result[] =  update_post_meta($post_id, $key, $val);
                   } 
+                }
               }
-          }
+              for($i = 1; $i <= 10; $i++) { 
+              if(isset($settings['widget_ad_'.$i.'_content']) && !empty($settings['widget_ad_'.$i.'_content'])) {
+                $ads_post = array(
+                            'post_author' => $user_id,                                                            
+                            'post_title'  => 'Custom widget Ad '.$i.' (Migrated from Quick Adsense)',                    
+                            'post_status' => 'publish',                                                            
+                            'post_name'   => 'Custom widget Ad '.$i.' (Migrated from Quick Adsense)',                        
+                            'post_type'   => 'adsforwp',
+                    
+                         );
+                $post_id = wp_insert_post($ads_post);
+                $ads_content = $settings['widget_ad_'.$i.'_content'];
+                $ads_alignment = $settings['onpost_ad_'.$i.'_alignment'];
+                $ads_margin = $settings['onpost_ad_'.$i.'_margin'];
+               
+                  $wheretodisplay = '';
+                  $ad_align       = '';
+                  $pragraph_no    = '';
+                  $adposition     = '';
+                  
+                                         
+                  if($ads_alignment == 1){
+                   $ad_align ='left';
+                    if(!empty($ads_margin)){
+                      $ads_align_margin = array('ad_margin_top' => $ads_margin,'ad_margin_bottom' => $ads_margin,'ad_margin_left' => 0,'ad_margin_right' => $ads_margin);
+                    }
+                  }elseif($ads_alignment == 2){
+                   $ad_align ='center';
+                   if(!empty($ads_margin)){
+                      $ads_align_margin = array('ad_margin_top' => $ads_margin,'ad_margin_bottom' => $ads_margin,'ad_margin_left' => 0,'ad_margin_right' => 0);
+                    }
+                  }elseif($ads_alignment == 3){
+                   $ad_align ='right';
+                   if(!empty($ads_margin)){
+                      $ads_align_margin = array('ad_margin_top' => $ads_margin,'ad_margin_bottom' => $ads_margin,'ad_margin_left' => $ads_margin,'ad_margin_right' => 0);
+                    }
+                  }elseif($ads_alignment == 4){
+                    $ad_align = 'none';
+                    if(!empty($ads_margin)){
+                      $ads_align_margin = array('ad_margin_top' => 0,'ad_margin_bottom' => 0,'ad_margin_left' => 0,'ad_margin_right' => 0);
+                    }
+                  }                        
+                  
+                  $data_group_array['group-0'] = array(                            
+                                           'data_array' => array(      
+                                                  array(
+                                                      'key_1' => 'show_globally',
+                                                      'key_2' => 'equal',
+                                                      'key_3' => 'post',
+                                                  )
+                                               )               
+                                           );
+                  
+                  $adforwp_meta_key = array(
+                    'select_adtype'     => 'custom',  
+                    'custom_code'       => $ad_code,
+                    'adposition'        => $adposition,
+                    'paragraph_number'  => $pragraph_no,  
+                    'adsforwp_ad_align' => $ad_align,
+                    'imported_from'     => 'quick_adsense',                            
+                    'wheretodisplay'    => $wheretodisplay,
+                    'data_group_array'  => $data_group_array
+                  );
+                    
+                  foreach ($adforwp_meta_key as $key => $val){
+                    $result[] =  update_post_meta($post_id, $key, $val);
+                  } 
+              }
+            }
           //die;
           if (is_wp_error($result) ){
               echo $result->get_error_message();              
