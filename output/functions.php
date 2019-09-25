@@ -2082,20 +2082,20 @@ class adsforwp_output_functions{
                           
                               $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                                 '.$sponsership_label.'
-                                                                <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
-                                                                </script>
-                                                                <ins 
-                                                                class="adsbygoogle" 
-                                                                style="background:none;display:inline-block;width:'.esc_attr($width).'px;height:'.esc_attr($height).'px;max-width:100%;"                                                                                                                           
-                                                                data-ad-client="'.esc_attr($ad_client).'"
-                                                                data-ad-slot="'.esc_attr($ad_slot).'"
-                                                                data-ad-format="auto"
-                                                                data-full-width-responsive="true">
-                                                                </ins>
-                                                                <script>
-                                                                        (adsbygoogle = window.adsbygoogle || []).push({});
-                                                                </script>
-                                                        </div>';
+                                              <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
+                                              </script>
+                                      <ins 
+                                      class="adsbygoogle" 
+                                      style="background:none;display:inline-block;width:100%;height:'.esc_attr($height).'px;"                 
+                                      data-ad-client="'.esc_attr($ad_client).'"
+                                      data-ad-slot="'.esc_attr($ad_slot).'"
+                                      data-ad-format="auto"
+                                      data-full-width-responsive="true">
+                                      </ins>
+                                              <script>
+                                                      (adsbygoogle = window.adsbygoogle || []).push({});
+                                              </script>
+                                      </div>';
                               
                           }
                           
