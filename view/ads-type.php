@@ -118,9 +118,10 @@ class adsforwp_view_ads_type {
 				'normal'             => 'Normal',
                 'adsense_auto_ads'   => 'Auto Ads',
                 'adsense_sticky_ads' => 'Sticky (Only AMP)',
-                'matched_content_ads' => 'Matched Content Ads'
-			)
-                      ),
+                'matched_content_ads' => 'Matched Content Ads',
+                'in_article_ads' => 'In-Article Ads'
+				)
+            ),
 		array(
 			'label'     => 'Custom Code',
 			'id'        => 'custom_code',
