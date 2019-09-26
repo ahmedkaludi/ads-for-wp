@@ -744,7 +744,6 @@ public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $curre
             $choices    = array_merge($choices, $taxonomies);                      
             break;
             case "user" :
-                $choices = array('all' => esc_html__('All','ads-for-wp'));
                 $all_users = $this->adsforwp_post_users_generator();
                 $choices = array_merge($choices, $all_users);
             break;
