@@ -743,7 +743,11 @@ public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $curre
             $taxonomies = $this->adsforwp_post_taxonomy_generator();        
             $choices    = array_merge($choices, $taxonomies);                      
             break;
-
+            case "user" :
+                $choices = array('all' => esc_html__('All','ads-for-wp'));
+                $all_users = $this->adsforwp_post_users_generator();
+                $choices = array_merge($choices, $all_users);
+            break;
         }        
     // allow custom location rules
     $choices = $choices; 
@@ -839,6 +843,24 @@ public function adsforwp_post_taxonomy_generator(){
         
       }
       
+    return $choices;
+}
+
+public function adsforwp_post_users_generator(){
+    
+    $all_users = '';  
+    $choices    = array();
+    $all_users = get_users();
+    if($all_users){
+        foreach($all_users as $user) {
+            $choices[ 'user-'.$user->ID ] = $user->display_name;
+        }
+    }    
+    
+    // unset post_format (why is this a public taxonomy?)
+    if( isset($choices['post_format']) ) {
+        unset( $choices['post_format']);
+    }
     return $choices;
 }
 
