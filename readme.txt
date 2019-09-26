@@ -62,7 +62,7 @@ Google Api Php Client library used https://github.com/googleapis/google-api-php-
 
 * New Feature: In-Article Support in Google Adsense #240
 * New Feature: Importer for Quick Adsense #180
-* New Feature: Improvements in responsive ad units #249
+* Improvement: Improvements in responsive ad units #249
 * Bug Fixed: Responsive Ads issue with Newsmag theme #246
 
 = 1.9.6 (21 September 2019) =
