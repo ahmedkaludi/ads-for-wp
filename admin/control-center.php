@@ -406,6 +406,11 @@ function adsforwp_import_plugin_data(){
                     $result = $common_function_obj->adsforwp_import_all_ad_inserter_ads();
                 
                 }                
+                break;
+            case 'quick_adsense':
+                if ( is_plugin_active('quick-adsense/quick-adsense.php')) {           
+                    $result = $common_function_obj->adsforwp_import_all_quick_adsense_ads();
+                }                
                 break;     
                 
 
