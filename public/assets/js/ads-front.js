@@ -4,6 +4,55 @@ e.id = 'adsforwp-hidden-block';
 e.style.display = 'none';
 document.body.appendChild(e);
 
+//Ad Blocker Notice
+function adsforwpreadCookie(name) {
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(";");
+  for(var i=0;i < ca.length;i++) {
+      var c = ca[i];
+      while (c.charAt(0)==" ") c = c.substring(1,c.length);
+      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+  }
+  return null;
+}
+
+var modal = document.getElementById("afw-myModal");
+var span = document.getElementsByClassName("afw-cls-notice")[0];
+
+var closedTime = adsforwpreadCookie("adsforwp_prompt_close");
+if(closedTime){
+  var today = new Date();
+  var closedTime = new Date(closedTime);
+  var diffMs = (today-closedTime);
+  var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
+  if(diffMins>4){
+    modal.style.display = "block";
+  }
+}else{
+  modal.style.display = "block";
+}
+
+if(span){
+  span.onclick = function() {
+    modal.style.display = "none";
+    document.cookie = "adsforwp_prompt_close="+new Date();
+  }
+}
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+    document.cookie = "adsforwp_prompt_close="+new Date();
+  }
+}
+
+if(getCookie('anCookie') !== 'true') {
+  setCookie('anCookie', 'true', anOptions.anOptionCookieLife, '/');       //set cookie to true
+  setLinkBeforeRedirect(window.location.href);
+  window.location.replace(anOptions.anPermalink);                       //redirect to user page
+}
+//Ad Blocker Notice
+
 jQuery( document ).ready(function($) {        
     /**
      * We are here fetching ads by their id from database via ajax call
@@ -12,6 +61,7 @@ jQuery( document ).ready(function($) {
      * @param {type} ad_id
      * @returns {html tags}
      */
+
     function adsforwpShowAdsById(ads_group_id, ads_group_type, adbyindex, j){                   
             var container = $(".afw_ad_container[data-id='"+ads_group_id+"']");  
             var container_pre = $(".afw_ad_container_pre[data-id='"+ads_group_id+"']");  
@@ -173,14 +223,14 @@ jQuery( document ).ready(function($) {
             $.post(adsforwp_obj.ajax_url, 
                   { action:"adsforwp_insert_ad_clicks", ad_id:ad_id, device_name:device_name, adsforwp_front_nonce:adsforwp_obj.adsforwp_front_nonce},
                     function(response){
-                    console.log(response);       		   		
-		   });  
+                    console.log(response);                
+       });  
              }         
         });
                 
         //Detecting click event on iframe based ads
-         window.addEventListener('blur',function(){		
-	    if (document.activeElement instanceof HTMLIFrameElement) {
+         window.addEventListener('blur',function(){   
+      if (document.activeElement instanceof HTMLIFrameElement) {
                 var data = $(this);                   
                 var el = data.context.activeElement;
                  while (el.parentElement) {
@@ -192,13 +242,13 @@ jQuery( document ).ready(function($) {
                           $.post(adsforwp_obj.ajax_url, 
                              { action:"adsforwp_insert_ad_clicks", ad_id:ad_id, device_name:device_name},
                                 function(response){
-                                console.log(response);       		   		
+                                console.log(response);                
                               });  
                           }
                        }
                    }
-	       }
-	  });
+         }
+    });
         
       }
       }  

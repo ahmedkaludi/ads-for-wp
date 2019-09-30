@@ -1063,14 +1063,15 @@ function adsforwp_admin_enqueue($hook) {
          wp_enqueue_script('wp-pointer');
          
          wp_enqueue_script('jquery-ui-datepicker' );        
-         wp_enqueue_style('jquery-ui');         
-    
+         wp_enqueue_style('jquery-ui');
+
          wp_enqueue_style( 'jquery-ui', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/vendor/css/jquery-ui.css', false , ADSFORWP_VERSION );
          
          wp_enqueue_style( 'ads-for-wp-admin', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/css/adsforwp.min.css', false , ADSFORWP_VERSION );
-         wp_register_script( 'ads-for-wp-admin-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/adsforwp.min.js', array('jquery'), ADSFORWP_VERSION , true );
+         wp_register_script( 'ads-for-wp-admin-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/adsforwp.min.js', array('jquery','wp-color-picker'), ADSFORWP_VERSION , true );
          wp_register_script( 'ads-for-wp-admin-analytics-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/analytics.min.js', array('jquery'), ADSFORWP_VERSION , true );
-                              
+         wp_enqueue_style( 'wp-color-picker' );
+
         $data = array(
             'ajax_url'                  => admin_url( 'admin-ajax.php' ),
             'id'                        => get_the_ID(),
