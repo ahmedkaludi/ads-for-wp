@@ -229,23 +229,127 @@ class adsforwp_output_functions{
      * Function to add css globally on AMP
      */
     public function adsforwp_global_css_for_amp(){
-         ?>
+        $settings = adsforwp_defaultSettings();
+        
+        ?>
+
            ins{
                 background: yellow;
             }
             .afw a {
                display:block;
             }
-            amp-user-notification.sample-notification {
-                  padding: var(--space-2);
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                }
-                amp-user-notification.sample-notification > button {
-                  min-width: 80px;
-                }
-         <?php 
+            <?php
+             if( isset($settings['ad_blocker_notice'])){
+          if($settings['notice_type'] == 'bar'){
+        
+            ?>
+            .afw-adblocker-notice-bar-message,
+        .afw-adblocker-notice-bar-button {
+          display: inline-block;
+        }
+        .afw-adblocker-notice-bar {
+          display: none;
+          width: 100%;
+          background: #0073aa;
+          color: <?php echo $settings['notice_txt_color'];?>;
+          padding: 0.5em 1em;
+          font-size: 16px;
+          line-height: 1.8;
+          position: relative;
+          z-index: 99;
+        }
+        .afw-adblocker-notice-bar strong {
+          color: inherit; /* some themes change strong tag to make it darker */
+        }
+        /* Alignments */
+        .afw-adblocker-notice-bar .enb-textcenter {
+          text-align: center;
+        }
+        .afw-close{
+          color: #aaaaaa;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+        }
+
+        .afw-close:hover,
+        .afw-close:focus {
+          color: #000;
+          text-decoration: none;
+          cursor: pointer;
+        }
+            <?php
+          }
+        }
+            ?>
+        <?php 
+        if( isset($settings['ad_blocker_notice'])){
+          if($settings['notice_type'] == 'popup'){
+        
+        ?>    
+          .afw-modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 999; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            right:0;
+            top: 50%; 
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            
+            -webkit-transform:translateY(-50%);
+             -moz-transform:translateY(-50%);
+             -ms-transform:translateY(-50%);
+             -o-transform:translateY(-50%);
+             transform:translateY(-50%);
+          }
+
+        /* Modal Content */
+        .afw-modal-content {
+          background-color: <?php echo $settings['notice_bg_color'];?>;
+          margin: auto;
+          padding: 20px;
+          border: 1px solid #888;
+          width: 30%;
+          border-radius: 10px;
+          text-align: center;
+          
+        }
+
+        /* The Close Button */
+        .afw-close{
+          color: #aaaaaa;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+        }
+
+        .afw-close:hover,
+        .afw-close:focus {
+          color: #000;
+          text-decoration: none;
+          cursor: pointer;
+        }
+        .afw-button {
+          background-color: #4CAF50; /* Green */
+          border: none;
+          color: white;
+          padding: 10px 15px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          margin: 4px 2px;
+          cursor: pointer;
+        }
+        .afw-button3 {background-color: #f44336;} /* Red */
+         <?php
+         }
+        } 
     }       
     /**
      * Function to add css for sticky ads on AMP
@@ -2643,6 +2747,20 @@ class adsforwp_output_functions{
     }
     public function adsforwp_adblocker_notice_frontend(){
       $settings = adsforwp_defaultSettings();
+        $output    .= '<script type="text/javascript">';
+        $output    .= '/* <![CDATA[ */';
+        $output    .= 'var adsforwpOptions =' .
+          json_encode(
+            array(
+              'adsforwpChoice'          => $settings['notice_type'],
+              'page_redirect'          => get_permalink($settings['page_redirect']),
+              'allow_cookies'         => $settings['allow_cookies']
+            )
+          );
+        $output    .= '/* ]]> */';
+        $output    .= '</script>';
+        echo $output;
+
       if( isset($settings['ad_blocker_notice'])){
         if($settings['notice_type'] == 'popup'){
       ?>
@@ -2714,7 +2832,7 @@ class adsforwp_output_functions{
           <div class="afw-modal-content">
         <?php if( isset($settings['notice_close_btn']) && empty($settings['btn_txt']) ){
               ?>
-              <span class="afw-close">&times;</span>  
+              <span class="afw-close afw-cls-notice">&times;</span>  
               <?php
             }
             ?>
@@ -2736,59 +2854,50 @@ class adsforwp_output_functions{
     }
     public function adsforwp_adblocker_amp_notification(){
         $settings = adsforwp_defaultSettings();
+
         if( isset($settings['ad_blocker_notice'])){
         if($settings['notice_type'] == 'bar' ){
       ?>
-        <amp-user-notification id="my-notification" class="sample-notification" layout="nodisplay">
-    This is an amp-user-notification. It uses local storage to store the dismissed state.
-    <button on="tap:my-notification.dismiss">I accept</button>
-  </amp-user-notification>
+      <div id="afw-myModal ampnotice" class="afw-adblocker-notice-bar">
+        <div class="enb-textcenter">
+          <?php if( isset($settings['notice_close_btn']) ){?>
+          <span class="afw-close afw-cls-notice">&times;</span>  
+        <?php } ?>
+          <div class="afw-adblocker-message">
+          <?php echo $settings['notice_description'];?>
+          </div>
+        </div>
+        
+      </div>
       <?php
           }
           if($settings['notice_type'] == 'popup'){
+            $js_path = ADSFORWP_PLUGIN_DIR_URI.'public/assets/js/ads-ampads-front.js';
+            $js_path = str_replace('http:', 'https:', $js_path);
             ?>
-            <amp-script width=200 height=50 script="hello-world-amp">
-                <div id="afw-myModal" class="afw-adblocker-notice-bar">
-                    <div class="enb-textcenter">
-                      <?php if( isset($settings['notice_close_btn']) ){?>
-                      <span class="afw-close afw-cls-notice">&times;</span>  
-                    <?php } ?>
-                      <div class="afw-adblocker-message">
-                      <?php echo $settings['notice_description'];?>
-                      </div>
-                    </div>
-                </div>
+            <amp-script layout="container"  src="<?php echo $js_path;?>" sandbox="allow-forms">
+                <div id="afw-myModal" class="afw-modal" >
+          <!-- Modal content -->
+              <div class="afw-modal-content">
+            <?php if( isset($settings['notice_close_btn']) && empty($settings['btn_txt']) ){
+                  ?>
+                  <span class="afw-close afw-cls-notice">&times;</span>  
+                  <?php
+                }
+                ?>
+                <h2 style="text-align: center;color: <?php echo $settings['notice_txt_color'];?>;"><?php echo $settings['notice_title'];?></h2>
+                <p style="margin:0 0 1.5em;padding: 0;text-align: center;color: <?php echo $settings['notice_txt_color'];?>;"><?php echo $settings['notice_description'];?></p>
+                <?php if( isset($settings['notice_close_btn']) &&  !empty($settings['btn_txt']) ){
+                  ?>
+                  <button class="afw-button afw-button3 afw-closebtn afw-cls-notice"><?php echo $settings['btn_txt'];?></button>
+                <?php
+                }
+                ?>
+                
+              </div>
+        </div>
             </amp-script>
-            <script id="hello-world-amp" type="text/plain" target="amp-script">
-                var modal = document.getElementById("afw-myModal");
-                var span = document.getElementsByClassName("afw-cls-notice")[0];
-                var closedTime = adsforwpreadCookie("adsforwp_prompt_close");
-                if(closedTime){
-                  var today = new Date();
-                  var closedTime = new Date(closedTime);
-                  var diffMs = (today-closedTime);
-                  var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
-                  if(diffMins>4){
-                    modal.style.display = "block";
-                  }
-                }else{
-                  modal.style.display = "block";
-                }
-
-                if(span){
-                  span.onclick = function() {
-                    modal.style.display = "none";
-                    document.cookie = "adsforwp_prompt_close="+new Date();
-                  }
-                }
-
-                window.onclick = function(event) {
-                    if (event.target == modal) {
-                        modal.style.display = "none";
-                        document.cookie = "adsforwp_prompt_close="+new Date();
-                    }
-                }
-            </script>
+            
             <?php
             }
         }

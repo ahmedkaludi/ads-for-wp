@@ -21,7 +21,6 @@ public function adsforwp_add_menu_links() {
 
 
 public function adsforwp_admin_interface_render(){
-    
 	// Authentication
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
@@ -636,6 +635,7 @@ public function adsforwp_ad_blocker_notice_callback(){
 	if(!isset($notice_bg_color)){
 		$notice_bg_color = '#bada55';
 	}
+	
     ?>	
 	<fieldset>
         <?php
@@ -662,22 +662,29 @@ public function adsforwp_ad_blocker_notice_callback(){
 			Page Redirection</label>
 			</div>
 		</div>
+		<div class="label-align allow_cookies">
+			<label for="allow_cookies"> Allow Cookies: </label>
+			<select name="adsforwp_settings[allow_cookies]">
+				<option value="1" <?php selected( $settings['allow_cookies'], 1);?>>Yes</option>
+				<option value="2" <?php selected( $settings['allow_cookies'], 2);?>>No</option>
+			</select>
+		</div>
 		<div class="label-align page_redirect">
 			<label for="page_redirect"> Target Page: </label>
-   			<select name="page_redirect">
-   				<?php 
-   				$pages = get_pages();
-   				echo '<option value="0">--Select Page--</option>';
-   				foreach ($pages as $page ) {
-   					$title = $page->post_title;
-					if ( empty( $title ) ) {
-						$title = sprintf( esc_html__( 'Untitled %s', 'ads-for-wp' ), '(ID #' . $page->ID . ')' );
-					}
-					?>
-					<option value="<?php echo esc_attr($page->ID);?>"><?php echo esc_attr($title);?></option>
-					<?php 
-   				}
-   				?>
+   			<select name="adsforwp_settings[page_redirect]">
+		<?php 
+		$pages = get_pages();
+		echo '<option value="0">--Select Page--</option>';
+		foreach ($pages as $page ) {
+			$title = $page->post_title;
+		if ( empty( $title ) ) {
+			$title = sprintf( esc_html__( 'Untitled %s', 'ads-for-wp' ), '(ID #' . $page->ID . ')' );
+		}
+		?>
+			<option value="<?php echo esc_attr($page->ID);?>" <?php selected( $settings['page_redirect'], $page->ID);?>><?php echo esc_attr($title);?></option>
+		<?php
+		}
+		?>
 			</select>
 		</div>
 		<div class="label-align notice_title">
