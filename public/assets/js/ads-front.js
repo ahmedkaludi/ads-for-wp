@@ -5,17 +5,19 @@ e.style.display = 'none';
 document.body.appendChild(e);
 var curr_url = window.location.href;
 var red_ulr = localStorage.getItem('curr');
-var adsCookie = adsforwpgetCookie('adsforwpCookie');
+
 var modal = document.getElementById("afw-myModal");
-var closedTime = adsforwpreadCookie("adsforwp_prompt_close");
-var diffMs = (today-closedTime);
-var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
+
+var adsforwpAllowedCookie =  adsforwpgetCookie('adsforwpAllowedCookie');
+if(adsforwpAllowedCookie!=adsforwpOptions.allow_cookies){
+  adsforwpsetCookie('adsforwpCookie', '', -1, '/');
+  adsforwpsetCookie('adsforwpAllowedCookie', adsforwpOptions.allow_cookies, 1, '/');
+}
 
 if(adsforwpOptions.allow_cookies == 2){
   if( adsforwpOptions.adsforwpChoice == 'bar' || adsforwpOptions.adsforwpChoice == 'popup'){
-    if(diffMins>4){
       modal.style.display = "block";
-    }
+      adsforwpsetCookie('adsforwpCookie', '', -1, '/');
   }
   
   if(adsforwpOptions.adsforwpChoice == 'page_redirect' && adsforwpOptions.page_redirect !="undefined"){
@@ -25,11 +27,10 @@ if(adsforwpOptions.allow_cookies == 2){
     }
   }
 }else{
+  var adsCookie = adsforwpgetCookie('adsforwpCookie');
   if(adsCookie==false) {
     if( adsforwpOptions.adsforwpChoice == 'bar' || adsforwpOptions.adsforwpChoice == 'popup'){
-      if(diffMins>4){
         modal.style.display = "block";
-      }
     }
     adsforwpsetCookie('adsforwpCookie', 'true', 1, '/');
     if(adsforwpOptions.adsforwpChoice == 'page_redirect' && adsforwpOptions.page_redirect !="undefined"){
@@ -56,6 +57,7 @@ function adsforwpsetCookie(cname, cvalue, exdays, path){
   var expires = "expires="+ d.toUTCString();
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
+
 //Ad Blocker Notice
 function adsforwpreadCookie(name) {
   var nameEQ = name + "=";
@@ -70,18 +72,6 @@ function adsforwpreadCookie(name) {
 
 
 var span = document.getElementsByClassName("afw-cls-notice")[0];
-if(closedTime){
-  var today = new Date();
-  var closedTime = new Date(closedTime);
-  var diffMs = (today-closedTime);
-  var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
-  if(diffMins>4){
-    modal.style.display = "block";
-  }
-}else{
-  modal.style.display = "block";
-}
-
 if(span){
   span.onclick = function() {
     modal.style.display = "none";
