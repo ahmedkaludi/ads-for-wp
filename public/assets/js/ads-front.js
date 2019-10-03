@@ -32,7 +32,6 @@ if(adsforwpOptions.allow_cookies == 2){
     if( adsforwpOptions.adsforwpChoice == 'bar' || adsforwpOptions.adsforwpChoice == 'popup'){
         modal.style.display = "block";
     }
-    adsforwpsetCookie('adsforwpCookie', 'true', 1, '/');
     if(adsforwpOptions.adsforwpChoice == 'page_redirect' && adsforwpOptions.page_redirect !="undefined"){
       window.location = adsforwpOptions.page_redirect;
     }
@@ -58,24 +57,12 @@ function adsforwpsetCookie(cname, cvalue, exdays, path){
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
-//Ad Blocker Notice
-function adsforwpreadCookie(name) {
-  var nameEQ = name + "=";
-  var ca = document.cookie.split(";");
-  for(var i=0;i < ca.length;i++) {
-      var c = ca[i];
-      while (c.charAt(0)==" ") c = c.substring(1,c.length);
-      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-  }
-  return null;
-}
-
-
 var span = document.getElementsByClassName("afw-cls-notice")[0];
 if(span){
   span.onclick = function() {
     modal.style.display = "none";
     document.cookie = "adsforwp_prompt_close="+new Date();
+    adsforwpsetCookie('adsforwpCookie', 'true', 1, '/');
   }
 }
 
