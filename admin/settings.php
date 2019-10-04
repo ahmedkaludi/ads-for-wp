@@ -633,19 +633,19 @@ public function adsforwp_ad_blocker_notice_opt_callback(){
 	<div class="afw_ad_blocker_notice">
 		<div class="adsfowp_notice_options">
 			<div class="label-align notice-wrap">
-				<label for="notice_type">Notice Type</label>
-				<div class="nt-flds">
+				<label for="afw-bar">Notice Type</label>
+				<div class="afw-nt-flds">
 				<p>
 					<input type="radio" id="afw-bar" class="notice_type" name="adsforwp_settings[notice_type]" value="bar" <?php echo ($notice_type == 'bar')?'checked':'';?> >
-				Bar
+				<label for="afw-bar" class="afw-radio-label">Bar</label>
 				</p>
 				<p>
 					<input type="radio" id="afw-popup" class="notice_type" name="adsforwp_settings[notice_type]" value="popup" <?php echo ($notice_type == 'popup')?'checked':'';?>>
-				Popup
+				<label for="afw-popup" class="afw-radio-label">Popup</label>
 				</p>
 				<p>
 					<input type="radio" id="afw-page-redirect" class="notice_type" name="adsforwp_settings[notice_type]" value="page_redirect" <?php echo ($notice_type == 'page_redirect')?'checked':'';?>>
-				Page Redirection
+				<label for="afw-page-redirect" class="afw-radio-label">Page Redirection</label>
 				</p>
 				</div>
 			</div>
@@ -718,6 +718,9 @@ public function adsforwp_ad_blocker_notice_opt_callback(){
    		</div>
 	</div>
 	<style>
+	.afw-nt-flds .afw-radio-label{
+		display: inline;
+	}
 	.afw_ad_blocker_notice{
 		padding:20px;
 		border:2px solid #ccc;
