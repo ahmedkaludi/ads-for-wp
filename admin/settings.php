@@ -614,35 +614,21 @@ public function adsforwp_import_callback(){
 }
 public function adsforwp_ad_blocker_notice_opt_callback(){
 	$settings = adsforwp_defaultSettings();
-	$notice_type = $settings['notice_type'];
-	$notice_title = $settings['notice_title'];
-	$notice_description = $settings['notice_description'];
-	$notice_close_btn = $settings['notice_close_btn'];
-	$btn_txt = $settings['btn_txt'];
-	$notice_bg_color = $settings['notice_bg_color'];
-	$notice_txt_color = $settings['notice_txt_color'];
+	$notice_type = esc_attr($settings['notice_type']);
+	$notice_title = esc_attr($settings['notice_title']);
+	$notice_description = esc_attr($settings['notice_description']);
+	$notice_close_btn = esc_attr($settings['notice_close_btn']);
+	$btn_txt = esc_attr($settings['btn_txt']);
+	$notice_bg_color = sanitize_hex_color($settings['notice_bg_color']);
+	$notice_txt_color = sanitize_hex_color($settings['notice_txt_color']);
+	$notice_btn_bg_color = sanitize_hex_color($settings['notice_btn_bg_color']);
+	$notice_btn_txt_color = sanitize_hex_color($settings['notice_btn_txt_color']);
 	$cls_checked = '';
-	if(!isset($notice_type)){
-		$notice_type = 'bar';
-	} 
-	if(!isset($notice_title)){
-		$notice_title = '';
-	}
-	if(!isset($notice_description)){
-		$notice_description = '';
-	}
-	if(!isset($btn_txt)){
-		$btn_txt = '';
-	}
-	if(isset($notice_close_btn)){
+	
+	if(isset($settings['notice_close_btn'])){
 		$cls_checked = "checked";
 	}
-	if(!isset($notice_txt_color)){
-		$notice_txt_color = '#bada55';
-	}
-	if(!isset($notice_bg_color)){
-		$notice_bg_color = '#bada55';
-	}
+	
 	?>
 	<div class="afw_ad_blocker_notice">
 		<div class="adsfowp_notice_options">
@@ -666,8 +652,9 @@ public function adsforwp_ad_blocker_notice_opt_callback(){
 			<div class="label-align allow_cookies">
 				<label for="allow_cookies"> Notice Behaviour </label>
 				<select name="adsforwp_settings[allow_cookies]">
-					<option value="1" <?php selected( $settings['allow_cookies'], 1);?>>Show Only Once</option>
 					<option value="2" <?php selected( $settings['allow_cookies'], 2);?>>Show on Every Visit</option>
+					<option value="1" <?php selected( $settings['allow_cookies'], 1);?>>Show Only Once</option>
+					
 				</select>
 			</div>
 			<div class="label-align page_redirect">
@@ -713,12 +700,20 @@ public function adsforwp_ad_blocker_notice_opt_callback(){
    		<div class="adsfowp_notice_design">
 	   		<h2 class="title">Notice Design</h2>
 	   		<div class="label-align notice_txt_color">
-	   			<label for="notice_txt_color"> Text Color </label>
-	   			<input type="text" value="<?php echo $notice_txt_color;?>" name="adsforwp_settings[notice_txt_color]" id="notice_txt_color" class="adsforwp_cp" data-default-color="#000000"/> 
+	   			<label for="notice_txt_color"> Content Color </label>
+	   			<input type="text" value="<?php echo $notice_txt_color;?>" name="adsforwp_settings[notice_txt_color]" id="notice_txt_color" class="adsforwp_cp" data-default-color="#ffffff"/> 
 	   		</div>
 	   		<div class="label-align notice_bg_color">
 	   			<label for="notice_bg_color"> Background Color </label>
-	   			<input type="text" value="<?php echo $notice_bg_color;?>" name="adsforwp_settings[notice_bg_color]" id="notice_bg_color" class="adsforwp_cp" data-default-color="#ffffff"/>
+	   			<input type="text" value="<?php echo $notice_bg_color;?>" name="adsforwp_settings[notice_bg_color]" id="notice_bg_color" class="adsforwp_cp" data-default-color="#1e73be"/>
+	   		</div>
+	   		<div class="label-align notice_btn_txt_color">
+	   			<label for="notice_btn_txt_color"> Button Text Color </label>
+	   			<input type="text" value="<?php echo $notice_btn_txt_color;?>" name="adsforwp_settings[notice_btn_txt_color]" id="notice_btn_txt_color" class="adsforwp_cp" data-default-color="#ffffff"/>
+	   		</div>
+	   		<div class="label-align notice_btn_bg_color">
+	   		<label for="notice_btn_bg_color"> Button Background Color </label>
+	   			<input type="text" value="<?php echo $notice_btn_bg_color;?>" name="adsforwp_settings[notice_btn_bg_color]" id="notice_btn_bg_color" class="adsforwp_cp" data-default-color="#f44336"/>
 	   		</div>
    		</div>
 	</div>

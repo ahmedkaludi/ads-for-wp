@@ -34,6 +34,7 @@ if(adsforwpOptions.allow_cookies == 2){
     }
     if(adsforwpOptions.adsforwpChoice == 'page_redirect' && adsforwpOptions.page_redirect !="undefined"){
       window.location = adsforwpOptions.page_redirect;
+      adsforwpsetCookie('adsforwpCookie', true, 1, '/');
     }
   }else{
     modal.style.display = "none";

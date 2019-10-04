@@ -721,7 +721,18 @@ function adsforwp_defaultSettings(){
 	$defaults = array(
 		'app_blog_name'		  => get_bloginfo( 'name' ),
 		'advnc_ads_import_check'  => 1,
-                'ad_blocker_support'	  => 1,
+    'ad_blocker_support'	  => 1,
+
+    'notice_type'    => 'bar',
+    'allow_cookies'    => 2,
+    'notice_title'    => 'Adblock Detected!',
+    'notice_description'    => 'Our website is made possible by displaying online advertisements to our visitors. Please consider supporting us by whitelisting our website.',
+    'notice_close_btn' => 1,
+    'btn_txt' => 'X',
+    'notice_txt_color' => '#ffffff',
+    'notice_bg_color' => '#1e73be',
+    'notice_btn_txt_color' => '#ffffff',
+    'notice_btn_bg_color' => '#f44336'
 	);  
         
 	$settings = get_option( 'adsforwp_settings', $defaults );         

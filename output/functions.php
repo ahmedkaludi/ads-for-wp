@@ -55,7 +55,8 @@ class adsforwp_output_functions{
         add_action('wp_head', array($this, 'adsforwp_outbrain_script'),10);
 
         add_action('wp_head', array($this, 'adsforwp_adblocker_detector'));
-        add_action('wp_footer', array($this, 'adsforwp_adblocker_notice_frontend'));
+        add_action('wp_footer', array($this, 'adsforwp_adblocker_popup_notice'));
+        add_action('wp_footer', array($this, 'adsforwp_adblocker_notice_jsondata'));
         add_action('wp_body_open', array($this, 'adsforwp_adblocker_notice_bar'));
         
         add_action('wp_head', array($this, 'adsforwp_adsense_auto_ads'));
@@ -2633,26 +2634,62 @@ class adsforwp_output_functions{
             }
         }
     }
-    public function adsforwp_adblocker_notice_frontend(){
+    public function adsforwp_adblocker_notice_jsondata(){
+        $settings = adsforwp_defaultSettings();
+        $output = '';
+        if( isset($settings['ad_blocker_notice']) && !empty($settings['notice_type'])){
+          
+          $output    .= '<script type="text/javascript">';
+          $output    .= '/* <![CDATA[ */';
+          $output    .= 'var adsforwpOptions =' .
+            json_encode(
+              array(
+                'adsforwpChoice'          => esc_attr($settings['notice_type']),
+                'page_redirect'          => get_permalink($settings['page_redirect'] ),
+                'allow_cookies'         => esc_attr($settings['allow_cookies'])
+              )
+            );
+          $output    .= '/* ]]> */';
+          $output    .= '</script>';
+          echo $output;
+        }
+    }
+    public function adsforwp_adblocker_popup_notice(){
+      
       $settings = adsforwp_defaultSettings();
-        $output    .= '<script type="text/javascript">';
-        $output    .= '/* <![CDATA[ */';
-        $output    .= 'var adsforwpOptions =' .
-          json_encode(
-            array(
-              'adsforwpChoice'          => $settings['notice_type'],
-              'page_redirect'          => get_permalink($settings['page_redirect']),
-              'allow_cookies'         => $settings['allow_cookies']
-            )
-          );
-        $output    .= '/* ]]> */';
-        $output    .= '</script>';
-        echo $output;
-
       if( isset($settings['ad_blocker_notice'])){
         if($settings['notice_type'] == 'popup'){
+            
+
+          $content_color = sanitize_hex_color($settings['notice_txt_color']);
+          $notice_title = esc_attr($settings['notice_title']);
+          $notice_description = esc_attr($settings['notice_description']);
+          $button_txt = esc_attr($settings['btn_txt']);
+          $background_color = sanitize_hex_color($settings['notice_bg_color']);
+          $btn_txt_color = sanitize_hex_color($settings['notice_btn_txt_color']);
+          $btn_background_color = sanitize_hex_color($settings['notice_btn_bg_color']);
+          
       ?>
-      <style type="text/css">
+        <div id="afw-myModal" class="afw-modal">
+          <!-- Modal content -->
+          <div class="afw-modal-content">
+        <?php if( isset($settings['notice_close_btn']) && empty($button_txt) ){
+              ?>
+              <span class="afw-close afw-cls-notice">&times;</span>  
+              <?php
+            }
+            ?>
+            <h2 style="text-align: center;padding-top:0;color: <?php echo $content_color;?>;"><?php echo $notice_title;?></h2>
+            <p style="margin:0 0 1.5em;padding: 0;text-align: center;color: <?php echo $content_color;?>;"><?php echo $notice_description;?></p>
+            <?php if( isset($settings['notice_close_btn']) &&  !empty($button_txt) ){
+              ?>
+              <button class="afw-button afw-closebtn afw-cls-notice"><?php echo $button_txt;?></button>
+            <?php
+            }
+            ?>
+          </div>
+        </div>
+        <style type="text/css">
         .afw-modal {
           display: none; /* Hidden by default */
           position: fixed; /* Stay in place */
@@ -2675,19 +2712,18 @@ class adsforwp_output_functions{
 
         /* Modal Content */
         .afw-modal-content {
-          background-color: <?php echo $settings['notice_bg_color'];?>;
+          background-color: <?php echo $background_color;?>;
           margin: auto;
           padding: 20px;
           border: 1px solid #888;
-          width: 30%;
+          width: 40%;
           border-radius: 10px;
           text-align: center;
-          
         }
 
         /* The Close Button */
         .afw-close{
-          color: #aaaaaa;
+          color: <?php echo $btn_txt_color;?>;
           float: right;
           font-size: 28px;
           font-weight: bold;
@@ -2700,9 +2736,9 @@ class adsforwp_output_functions{
           cursor: pointer;
         }
         .afw-button {
-          background-color: #4CAF50; /* Green */
+          background-color: <?php echo $btn_background_color;?>; /* Green */
           border: none;
-          color: white;
+          color: <?php echo $btn_txt_color;?>;
           padding: 10px 15px;
           text-align: center;
           text-decoration: none;
@@ -2711,52 +2747,58 @@ class adsforwp_output_functions{
           margin: 4px 2px;
           cursor: pointer;
         }
-        .afw-button3 {background-color: #f44336;} /* Red */ 
+        @media screen and (max-width: 1024px) {
+          .afw-modal-content {
+            width: 80%;
+            font-size: 14px;
+          }
+          .afw-modal {
+            padding-top: 100px;
+          }
+        }
         
-</style>
-        <div id="afw-myModal" class="afw-modal">
-
-          <!-- Modal content -->
-          <div class="afw-modal-content">
-        <?php if( isset($settings['notice_close_btn']) && empty($settings['btn_txt']) ){
-              ?>
-              <span class="afw-close afw-cls-notice">&times;</span>  
-              <?php
-            }
-            ?>
-            <h2 style="text-align: center;padding-top:0;color: <?php echo $settings['notice_txt_color'];?>;"><?php echo $settings['notice_title'];?></h2>
-            <p style="margin:0 0 1.5em;padding: 0;text-align: center;color: <?php echo $settings['notice_txt_color'];?>;"><?php echo $settings['notice_description'];?></p>
-            <?php if( isset($settings['notice_close_btn']) &&  !empty($settings['btn_txt']) ){
-              ?>
-              <button class="afw-button afw-button3 afw-closebtn afw-cls-notice"><?php echo $settings['btn_txt'];?></button>
-            <?php
-            }
-            ?>
-            
-          </div>
-          
-        </div>
+      </style>
       <?php
         }
       }
     }
     
     public function adsforwp_adblocker_notice_bar(){
-      $settings = adsforwp_defaultSettings();
-
+        $settings = adsforwp_defaultSettings();
+        
       if( isset($settings['ad_blocker_notice'])){
         if($settings['notice_type'] == 'bar' ){
+          
+          $notice_description = esc_attr($settings['notice_description']);
+          $button_txt = esc_attr($settings['btn_txt']);
+          $content_color = sanitize_hex_color($settings['notice_txt_color']);
+          $background_color = sanitize_hex_color($settings['notice_bg_color']);
+          $btn_txt_color = sanitize_hex_color($settings['notice_btn_txt_color']);
+          $btn_background_color = sanitize_hex_color($settings['notice_btn_bg_color']);
       ?>
+      
+      <div id="afw-myModal" class="afw-adblocker-notice-bar">
+        <div class="enb-textcenter">
+          <?php if( isset($settings['notice_close_btn']) && empty($button_txt)){?>
+          <span class="afw-close afw-cls-notice">&times;</span>  
+        <?php } ?>
+          <div class="afw-adblocker-message">
+          <?php echo $notice_description;?>
+          </div>
+          <?php if( isset($settings['notice_close_btn']) && !empty($button_txt)){?>
+          <button class="afw-button afw-closebtn afw-cls-notice"><?php echo $button_txt;?></button>  
+        <?php } ?>
+        </div>
+      </div>
       <style type="text/css">
-        .afw-adblocker-notice-bar-message,
-        .afw-adblocker-notice-bar-button {
+        .afw-adblocker-message{
           display: inline-block;
         }
         .afw-adblocker-notice-bar {
           display: none;
           width: 100%;
-          background: #0073aa;
-          color: <?php echo $settings['notice_txt_color'];?>;
+          background: <?php echo $background_color;?>;
+          color: <?php echo $content_color;?>;
           padding: 0.5em 1em;
           font-size: 16px;
           line-height: 1.8;
@@ -2771,33 +2813,41 @@ class adsforwp_output_functions{
           text-align: center;
         }
         .afw-close{
-          color: #aaaaaa;
+          color: <?php echo $btn_txt_color;?>;
           float: right;
           font-size: 20px;
           font-weight: bold;
         }
-
         .afw-close:hover,
         .afw-close:focus {
           color: #000;
           text-decoration: none;
           cursor: pointer;
         }
+        .afw-button {
+          background-color: <?php echo $btn_background_color;?>; /* Green */
+          border: none;
+          color: <?php echo $btn_txt_color;?>;
+          padding: 5px 10px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 14px;
+          margin: 0px 2px;
+          cursor: pointer;
+          float: right;
+        }
+        @media screen and (max-width: 1024px) {
+          .afw-modal-content {
+            font-size: 14px;
+          }
+          .afw-button{
+            padding:5px 10px;
+            font-size: 14px;
+            float:none;
+          }
+        }
       </style>
-      <div id="afw-myModal" class="afw-adblocker-notice-bar">
-        <div class="enb-textcenter">
-          <?php if( isset($settings['notice_close_btn']) && empty($settings['btn_txt'])){?>
-          <span class="afw-close afw-cls-notice">&times;</span>  
-        <?php } ?>
-          <?php if( isset($settings['notice_close_btn']) && !empty($settings['btn_txt'])){?>
-          <span class="afw-close afw-cls-notice"><?php echo $settings['btn_txt'];?></span>  
-        <?php } ?>
-          <div class="afw-adblocker-message">
-          <?php echo $settings['notice_description'];?>
-          </div>
-        </div>
-        
-      </div>
       <?php 
         }
       }
