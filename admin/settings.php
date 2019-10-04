@@ -723,17 +723,19 @@ public function adsforwp_ad_blocker_notice_opt_callback(){
 		border:2px solid #ccc;
 		border-radius: 5px;
 		background: #eaeaea;
+		position: relative;
+    	right: 225px;
 	}
-	.form-table tr.subchild-opt th{
+	.adsforwp-general .form-table tr.subchild-opt th{
 		width:0;
 	}
 	.adsforwp-general table tbody tr{
-		display:block;
+		display:inherit;
 		clear: both;
 	}
 	
-	tr.child-opt th{
-		padding-left: 30px;
+	.adsforwp-general .form-table tr.child-opt th{
+		padding-left: 40px;
 	}
 	.label-align{
 		display: flex;
