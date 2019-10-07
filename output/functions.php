@@ -114,7 +114,7 @@ class adsforwp_output_functions{
     public function adsforwp_get_custom_target_ad_code($content, $ad_id, $ad_type){
                         
                     if($ad_type == 'group'){                     
-                      $ad_code =  $this->$this->adsforwp_group_ads($atts=null, $ad_id, '');   
+                      $ad_code =  $this->adsforwp_group_ads($atts=null, $ad_id, '');   
                     }
 
                     if($ad_type == 'ad'){
@@ -1705,10 +1705,9 @@ class adsforwp_output_functions{
                     if($this->is_amp){
                      
                         if($custom_ad_code){
-
                             $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                             '.$sponsership_label.'
-                                                            '.wp_kses($custom_ad_code, $allowed_html).'
+                                                            '.strip_tags($custom_ad_code,'<amp-ad><amp-embed>').'
                                                             </div>';    
 
                         }    
@@ -2756,7 +2755,6 @@ class adsforwp_output_functions{
             padding-top: 100px;
           }
         }
-        
       </style>
       <?php
         }
