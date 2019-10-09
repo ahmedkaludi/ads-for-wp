@@ -71,6 +71,7 @@ window.onclick = function(event) {
   if (event.target == modal) {
     modal.style.display = "none";
     document.cookie = "adsforwp_prompt_close="+new Date();
+    adsforwpsetCookie('adsforwpCookie', 'true', 1, '/');
   }
 }
 

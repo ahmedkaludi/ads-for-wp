@@ -346,3 +346,38 @@ Ads css on plugins list page in WordPress starts here
      padding-top: 10px;
  }
  
+ /*
+Adsforwp Ads blocker notice option panel css
+*/
+.afw-nt-flds .afw-radio-label{
+    display: inline;
+}
+.afw_ad_blocker_notice{
+    padding:20px;
+    border:2px solid #ccc;
+    border-radius: 5px;
+    background: #eaeaea;
+    position: relative;
+    right: 225px;
+}
+.adsforwp-general .form-table tr.subchild-opt th{
+    width:0;
+}
+.adsforwp-general table tbody tr{
+    display:inherit;
+    clear: both;
+}
+
+.adsforwp-general .form-table tr.child-opt th{
+    padding-left: 40px;
+}
+.label-align{
+    display: flex;
+    align-items: self-start;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.label-align label{
+    margin-right:10px;
+    width: 200px;
+}

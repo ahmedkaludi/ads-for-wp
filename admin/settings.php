@@ -677,80 +677,46 @@ public function adsforwp_ad_blocker_notice_opt_callback(){
 			</div>
 		</div>
 		<div class="adsfowp_notice_content">
-			<h2 class="title">Notice Content</h2>
+			<h2 class="title"><?php echo esc_html__('Notice Content','ads-for-wp');?></h2>
 			<div class="label-align notice_title">
-			<label for="notice_title"> Title </label>
+			<label for="notice_title"> <?php echo esc_html__('Title','ads-for-wp');?> </label>
 				<input id="notice_title" name="adsforwp_settings[notice_title]" type="text" class="regular-text" value="<?php echo esc_attr($notice_title);?>"/>
 			</div>
 			<div class="label-align notice_description">
-				<label for="notice_description" > Description </label>
+				<label for="notice_description" ><?php echo esc_html__('Description','ads-for-wp');?> </label>
 				<fieldset>
 				<textarea name="adsforwp_settings[notice_description]" id="notice_description" type="text" class="large-text code notice_description" rows="5" cols="70"><?php echo esc_attr($notice_description);?></textarea>
 				</fieldset>
 			</div>
 			<div class="label-align notice_close_btn">
-				<label for="notice_close_btn" > Close Button </label>
+				<label for="notice_close_btn" > <?php echo esc_html__('Close Button','ads-for-wp');?> </label>
 				<input name="adsforwp_settings[notice_close_btn]" id="notice_close_btn" type="checkbox" value="1" <?php echo esc_attr($cls_checked);?>/>
 			</div>
 			<div class="label-align adsforwp_close_btn_txt">
-				<label for="btn_txt"> Button Text </label>
+				<label for="btn_txt"><?php echo esc_html__('Button Text','ads-for-wp');?> </label>
 				<input name="adsforwp_settings[btn_txt]" id="btn_txt" type="text" class="btn_txt" value="<?php echo esc_attr($btn_txt);?>" />
 			</div>
    		</div>
    		<div class="adsfowp_notice_design">
-	   		<h2 class="title">Notice Design</h2>
+	   		<h2 class="title"><?php echo esc_html__('Notice Design','ads-for-wp');?></h2>
 	   		<div class="label-align notice_txt_color">
-	   			<label for="notice_txt_color"> Content Color </label>
+	   			<label for="notice_txt_color"> <?php echo esc_html__('Content Color','ads-for-wp');?> </label>
 	   			<input type="text" value="<?php echo $notice_txt_color;?>" name="adsforwp_settings[notice_txt_color]" id="notice_txt_color" class="adsforwp_cp" data-default-color="#ffffff"/> 
 	   		</div>
 	   		<div class="label-align notice_bg_color">
-	   			<label for="notice_bg_color"> Background Color </label>
+	   			<label for="notice_bg_color"> <?php echo esc_html__('Background Color','ads-for-wp');?> </label>
 	   			<input type="text" value="<?php echo $notice_bg_color;?>" name="adsforwp_settings[notice_bg_color]" id="notice_bg_color" class="adsforwp_cp" data-default-color="#1e73be"/>
 	   		</div>
 	   		<div class="label-align notice_btn_txt_color">
-	   			<label for="notice_btn_txt_color"> Button Text Color </label>
+	   			<label for="notice_btn_txt_color"> <?php echo esc_html__('Button Text Color','ads-for-wp');?> </label>
 	   			<input type="text" value="<?php echo $notice_btn_txt_color;?>" name="adsforwp_settings[notice_btn_txt_color]" id="notice_btn_txt_color" class="adsforwp_cp" data-default-color="#ffffff"/>
 	   		</div>
 	   		<div class="label-align notice_btn_bg_color">
-	   		<label for="notice_btn_bg_color"> Button Background Color </label>
+	   		<label for="notice_btn_bg_color"><?php echo esc_html__('Button Background Color','ads-for-wp' );?></label>
 	   			<input type="text" value="<?php echo $notice_btn_bg_color;?>" name="adsforwp_settings[notice_btn_bg_color]" id="notice_btn_bg_color" class="adsforwp_cp" data-default-color="#f44336"/>
 	   		</div>
    		</div>
 	</div>
-	<style>
-	.afw-nt-flds .afw-radio-label{
-		display: inline;
-	}
-	.afw_ad_blocker_notice{
-		padding:20px;
-		border:2px solid #ccc;
-		border-radius: 5px;
-		background: #eaeaea;
-		position: relative;
-    	right: 225px;
-	}
-	.adsforwp-general .form-table tr.subchild-opt th{
-		width:0;
-	}
-	.adsforwp-general table tbody tr{
-		display:inherit;
-		clear: both;
-	}
-	
-	.adsforwp-general .form-table tr.child-opt th{
-		padding-left: 40px;
-	}
-	.label-align{
-		display: flex;
-    	align-items: self-start;
-    	width: 100%;
-    	margin-bottom: 10px;
-	}
-	.label-align label{
-		margin-right:10px;
-		width: 200px;
-	}
-</style>
 	<?php
 }
 public function adsforwp_ad_blocker_notice_callback(){
