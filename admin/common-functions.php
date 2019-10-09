@@ -1785,6 +1785,9 @@ class adsforwp_admin_common_functions {
                     'data-target_type'  => array(),
                     'data-article'      => array(),
                     'data-url'          => array(),                    
+                    'data-widgetids'    => array(),                    
+                    'data-publisherid'  => array(),                    
+                    'data-websiteid'    => array(),                    
             );
              $my_allowed['amp-img'] = array(
                     'class'     => array(),

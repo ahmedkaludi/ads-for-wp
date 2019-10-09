@@ -3,7 +3,7 @@ Contributors: magazine3
 Tags: Ads, Google Adsense, Media Net, DFP, Custom Code, Infolinks, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
 Tested up to: 5.2.3
-Stable tag: 1.9.7
+Stable tag: 1.9.8
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -57,6 +57,14 @@ Chart.js library used https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Char
 Google Api Php Client library used https://github.com/googleapis/google-api-php-client - License URI: https://github.com/googleapis/google-api-php-client/blob/master/LICENSE
 
 == Changelog ==
+
+= 1.9.8 (09 October 2019) =
+
+* Improvement: Added Tutorial Links for Ad types in pop up notification field in "Add new ad" section #258
+* Improvement: Custom code Ad type support for Engageya Ad code has been added #180
+* New Feature: Added Block support for Ads with gutenberg #245
+* Improvement: New condition to set ads by author #254
+* New Feature: Ad Blocker Support with Ad blocker notice popup, bar and page redirection #242
 
 = 1.9.7 (26 September 2019) =
 

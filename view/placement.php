@@ -76,7 +76,7 @@ class adsforwp_view_placement {
         ),
         esc_html__("Other",'ads-for-wp') => array( 
           'ef_taxonomy'     =>  esc_html__("Taxonomy Term",'ads-for-wp'), 
-          'User'            =>  esc_html__("User",'ads-for-wp'),   
+          'user'            =>  esc_html__("User",'ads-for-wp'),   
         )
       ); 
 
@@ -250,6 +250,7 @@ class adsforwp_view_placement {
         
         // Get all the users registered
         $user               = wp_get_current_user();
+        $author_id = $post->post_author;
 
         switch ($type) {
         // Basic Controls ------------ 
@@ -310,7 +311,18 @@ class adsforwp_view_placement {
                   
               }            
           break;
-
+          case 'user':
+            if ( $comparison == 'equal') {
+                if ( $data == 'user-'.$author_id ) {
+                    $result = true;
+                }
+            }
+            if ( $comparison == 'not_equal') {
+                if ( $data != 'user-'.$author_id ) {
+                    $result = true;
+                }
+            }
+          break;
       // Logged in User Type
          case 'user_type':            
              

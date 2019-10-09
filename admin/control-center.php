@@ -721,7 +721,18 @@ function adsforwp_defaultSettings(){
 	$defaults = array(
 		'app_blog_name'		  => get_bloginfo( 'name' ),
 		'advnc_ads_import_check'  => 1,
-                'ad_blocker_support'	  => 1,
+    'ad_blocker_support'	  => 1,
+
+    'notice_type'    => 'bar',
+    'allow_cookies'    => 2,
+    'notice_title'    => 'Adblock Detected!',
+    'notice_description'    => 'Our website is made possible by displaying online advertisements to our visitors. Please consider supporting us by whitelisting our website.',
+    'notice_close_btn' => 1,
+    'btn_txt' => 'X',
+    'notice_txt_color' => '#ffffff',
+    'notice_bg_color' => '#1e73be',
+    'notice_btn_txt_color' => '#ffffff',
+    'notice_btn_bg_color' => '#f44336'
 	);  
         
 	$settings = get_option( 'adsforwp_settings', $defaults );         
@@ -1063,14 +1074,15 @@ function adsforwp_admin_enqueue($hook) {
          wp_enqueue_script('wp-pointer');
          
          wp_enqueue_script('jquery-ui-datepicker' );        
-         wp_enqueue_style('jquery-ui');         
-    
+         wp_enqueue_style('jquery-ui');
+
          wp_enqueue_style( 'jquery-ui', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/vendor/css/jquery-ui.css', false , ADSFORWP_VERSION );
          
          wp_enqueue_style( 'ads-for-wp-admin', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/css/adsforwp.min.css', false , ADSFORWP_VERSION );
-         wp_register_script( 'ads-for-wp-admin-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/adsforwp.min.js', array('jquery'), ADSFORWP_VERSION , true );
+         wp_register_script( 'ads-for-wp-admin-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/adsforwp.min.js', array('jquery','wp-color-picker'), ADSFORWP_VERSION , true );
          wp_register_script( 'ads-for-wp-admin-analytics-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/analytics.min.js', array('jquery'), ADSFORWP_VERSION , true );
-                              
+         wp_enqueue_style( 'wp-color-picker' );
+
         $data = array(
             'ajax_url'                  => admin_url( 'admin-ajax.php' ),
             'id'                        => get_the_ID(),
@@ -1227,20 +1239,21 @@ function adsforwp_add_localize_data($object, $object_name){
         if($object_name=='adsforwp_localize_data'){
             
                $object['pointer_help']          = esc_html__( 'Help', 'ads-for-wp' );
-               $object['adsense_pointer']       = esc_html__( 'You can find Data Client ID and Data Ad Slot from adsense code.', 'ads-for-wp' );
-               $object['media_net_pointer']     = esc_html__( 'You can find Data CID id and Data CRID from media.net code.', 'ads-for-wp' );
+               $object['adsense_pointer']       = esc_html__( 'You can find Data Client ID and Data Ad Slot from adsense code. Please <a href="https://adsforwp.com/docs/article/how-to-add-adsense-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
+               $object['media_net_pointer']     = esc_html__( 'You can find Data CID id and Data CRID from media.net code. Please <a href="https://adsforwp.com/docs/article/how-to-add-amp-ad-for-media-net/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
                $object['ad_now_pointer']        = esc_html__( 'You can find Widget ID from adnow code.', 'ads-for-wp' );
+               $object['mgid_pointer']        = esc_html__( 'You can find Publisher and Widget Data from MGID ad code. Please <a href="https://adsforwp.com/docs/article/how-to-add-mgid-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
                $object['contentad_pointer']     = esc_html__( 'You can find ID id, D and Ad Widget ID from content.ad code.', 'ads-for-wp' );
-               $object['infolinks_pointer']     = esc_html__( 'You can find P ID and W S ID from infolinks code.', 'ads-for-wp' );
-               $object['ad_image_pointer']      = esc_html__( 'Upload a banner which you want to display as an ad and anchor link which will redirect users to that link on click.', 'ads-for-wp' );
-               $object['custom_pointer']        = esc_html__( 'Insert the ad code or script.', 'ads-for-wp' );
-               $object['doubleclick_pointer']   = esc_html__( 'Insert the Slot Id and Div Gpt Ad.', 'ads-for-wp' );
+               $object['infolinks_pointer']     = esc_html__( 'You can find P ID and W S ID from infolinks code. Please <a href="https://adsforwp.com/docs/article/how-to-add-infolinks-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
+               $object['ad_image_pointer']      = esc_html__( 'Upload a banner which you want to display as an ad and anchor link which will redirect users to that link on click. Please <a href="https://adsforwp.com/docs/article/how-to-add-custom-banner-ads-in-amp-wordpress/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
+               $object['custom_pointer']        = esc_html__( 'Insert the ad code or script. Please <a href="https://adsforwp.com/docs/article/how-to-add-ads-in-iframe/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
+               $object['doubleclick_pointer']   = esc_html__( 'Insert the Slot Id and Div Gpt Ad. Please <a href="https://adsforwp.com/docs/article/how-to-add-dfp-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
                $object['ad_background_pointer'] = esc_html__( 'Insert the background banner.', 'ads-for-wp' );
-               $object['ezoic_pointer'] = esc_html__( 'You can find Data Ezoic ID from ezoic code.', 'ads-for-wp' );
-               $object['mantis_pointer'] = esc_html__( 'You can find Data Mantis ID from mantis ads code.', 'ads-for-wp' );
-               $object['outbrain_pointer'] = esc_html__( 'You can find Data Outbrain ID from outbrain ads code.', 'ads-for-wp' );
-               $object['mediavine_pointer'] = esc_html__( 'You can find Data Mediavine ID from mediavine ads code.', 'ads-for-wp' );
-               $object['taboola_pointer'] = esc_html__( 'You can find Data Taboola ID from taboola ads code.', 'ads-for-wp' );
+               $object['ezoic_pointer'] = esc_html__( 'You can find Data Ezoic ID from ezoic code. Please <a href="https://adsforwp.com/docs/article/how-to-add-ezoic-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
+               $object['mantis_pointer'] = esc_html__( 'You can find Data Mantis ID from mantis ads code. Please <a href="https://adsforwp.com/docs/article/how-to-add-mantis-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
+               $object['outbrain_pointer'] = esc_html__( 'You can find Data Outbrain ID from outbrain ads code. Please <a href="https://adsforwp.com/docs/article/how-to-add-outbrain-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
+               $object['mediavine_pointer'] = esc_html__( 'You can find Data Mediavine ID from mediavine ads code. Please <a href="https://adsforwp.com/docs/article/how-to-add-mediavine-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
+               $object['taboola_pointer'] = esc_html__( 'You can find Data Taboola ID from taboola ads code. Please <a href="https://adsforwp.com/docs/article/how-to-add-taboola-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
                                                       
         }
         

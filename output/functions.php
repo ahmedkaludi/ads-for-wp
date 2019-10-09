@@ -55,6 +55,10 @@ class adsforwp_output_functions{
         add_action('wp_head', array($this, 'adsforwp_outbrain_script'),10);
 
         add_action('wp_head', array($this, 'adsforwp_adblocker_detector'));
+        add_action('wp_footer', array($this, 'adsforwp_adblocker_popup_notice'));
+        add_action('wp_footer', array($this, 'adsforwp_adblocker_notice_jsondata'));
+        add_action('wp_body_open', array($this, 'adsforwp_adblocker_notice_bar'));
+        
         add_action('wp_head', array($this, 'adsforwp_adsense_auto_ads'));
         add_action('wp_head', array($this, 'adsforwp_doubleclick_head_code'));
         
@@ -110,7 +114,7 @@ class adsforwp_output_functions{
     public function adsforwp_get_custom_target_ad_code($content, $ad_id, $ad_type){
                         
                     if($ad_type == 'group'){                     
-                      $ad_code =  $this->$this->adsforwp_group_ads($atts=null, $ad_id, '');   
+                      $ad_code =  $this->adsforwp_group_ads($atts=null, $ad_id, '');   
                     }
 
                     if($ad_type == 'ad'){
@@ -224,14 +228,17 @@ class adsforwp_output_functions{
      * Function to add css globally on AMP
      */
     public function adsforwp_global_css_for_amp(){
-         ?>
+        $settings = adsforwp_defaultSettings();
+        
+        ?>
+
            ins{
                 background: yellow;
             }
             .afw a {
                display:block;
             }
-         <?php 
+            <?php
     }       
     /**
      * Function to add css for sticky ads on AMP
@@ -1698,10 +1705,9 @@ class adsforwp_output_functions{
                     if($this->is_amp){
                      
                         if($custom_ad_code){
-
                             $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                             '.$sponsership_label.'
-                                                            '.wp_kses($custom_ad_code, $allowed_html).'
+                                                            '.strip_tags($custom_ad_code,'<amp-ad><amp-embed>').'
                                                             </div>';    
 
                         }    
@@ -2627,6 +2633,224 @@ class adsforwp_output_functions{
             }
         }
     }
+    public function adsforwp_adblocker_notice_jsondata(){
+        $settings = adsforwp_defaultSettings();
+        $output = '';
+        if( isset($settings['ad_blocker_notice']) && !empty($settings['notice_type'])){
+          
+          $output    .= '<script type="text/javascript">';
+          $output    .= '/* <![CDATA[ */';
+          $output    .= 'var adsforwpOptions =' .
+            json_encode(
+              array(
+                'adsforwpChoice'          => esc_attr($settings['notice_type']),
+                'page_redirect'          => get_permalink($settings['page_redirect'] ),
+                'allow_cookies'         => esc_attr($settings['allow_cookies'])
+              )
+            );
+          $output    .= '/* ]]> */';
+          $output    .= '</script>';
+          echo $output;
+        }
+    }
+    public function adsforwp_adblocker_popup_notice(){
+      
+      $settings = adsforwp_defaultSettings();
+      if( isset($settings['ad_blocker_notice'])){
+        if($settings['notice_type'] == 'popup'){
+            
+
+          $content_color = sanitize_hex_color($settings['notice_txt_color']);
+          $notice_title = esc_attr($settings['notice_title']);
+          $notice_description = esc_attr($settings['notice_description']);
+          $button_txt = esc_attr($settings['btn_txt']);
+          $background_color = sanitize_hex_color($settings['notice_bg_color']);
+          $btn_txt_color = sanitize_hex_color($settings['notice_btn_txt_color']);
+          $btn_background_color = sanitize_hex_color($settings['notice_btn_bg_color']);
+          
+      ?>
+        <div id="afw-myModal" class="afw-modal">
+          <!-- Modal content -->
+          <div class="afw-modal-content">
+        <?php if( isset($settings['notice_close_btn']) && empty($button_txt) ){
+              ?>
+              <span class="afw-close afw-cls-notice">&times;</span>  
+              <?php
+            }
+            ?>
+            <h2 style="text-align: center;padding-top:0;color: <?php echo $content_color;?>;"><?php echo $notice_title;?></h2>
+            <p style="margin:0 0 1.5em;padding: 0;text-align: center;color: <?php echo $content_color;?>;"><?php echo $notice_description;?></p>
+            <?php if( isset($settings['notice_close_btn']) &&  !empty($button_txt) ){
+              ?>
+              <button class="afw-button afw-closebtn afw-cls-notice"><?php echo $button_txt;?></button>
+            <?php
+            }
+            ?>
+          </div>
+        </div>
+        <style type="text/css">
+        .afw-modal {
+          display: none; /* Hidden by default */
+          position: fixed; /* Stay in place */
+          z-index: 999; /* Sit on top */
+          padding-top: 200px; /* Location of the box */
+          left: 0;
+          right:0;
+          top: 50%; 
+          width: 100%; /* Full width */
+          height: 100%; /* Full height */
+          overflow: auto; /* Enable scroll if needed */
+          background-color: rgb(0,0,0); /* Fallback color */
+          background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+          -webkit-transform:translateY(-50%);
+           -moz-transform:translateY(-50%);
+           -ms-transform:translateY(-50%);
+           -o-transform:translateY(-50%);
+           transform:translateY(-50%);
+        }
+
+        /* Modal Content */
+        .afw-modal-content {
+          background-color: <?php echo $background_color;?>;
+          margin: auto;
+          padding: 20px;
+          border: 1px solid #888;
+          width: 40%;
+          border-radius: 10px;
+          text-align: center;
+        }
+
+        /* The Close Button */
+        .afw-close{
+          color: <?php echo $btn_txt_color;?>;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+        }
+
+        .afw-close:hover,
+        .afw-close:focus {
+          color: #000;
+          text-decoration: none;
+          cursor: pointer;
+        }
+        .afw-button {
+          background-color: <?php echo $btn_background_color;?>; /* Green */
+          border: none;
+          color: <?php echo $btn_txt_color;?>;
+          padding: 10px 15px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          margin: 4px 2px;
+          cursor: pointer;
+        }
+        @media screen and (max-width: 1024px) {
+          .afw-modal-content {
+            width: 80%;
+            font-size: 14px;
+          }
+          .afw-modal {
+            padding-top: 100px;
+          }
+        }
+      </style>
+      <?php
+        }
+      }
+    }
+    
+    public function adsforwp_adblocker_notice_bar(){
+        $settings = adsforwp_defaultSettings();
+        
+      if( isset($settings['ad_blocker_notice'])){
+        if($settings['notice_type'] == 'bar' ){
+          
+          $notice_description = esc_attr($settings['notice_description']);
+          $button_txt = esc_attr($settings['btn_txt']);
+          $content_color = sanitize_hex_color($settings['notice_txt_color']);
+          $background_color = sanitize_hex_color($settings['notice_bg_color']);
+          $btn_txt_color = sanitize_hex_color($settings['notice_btn_txt_color']);
+          $btn_background_color = sanitize_hex_color($settings['notice_btn_bg_color']);
+      ?>
+      
+      <div id="afw-myModal" class="afw-adblocker-notice-bar">
+        <div class="enb-textcenter">
+          <?php if( isset($settings['notice_close_btn']) && empty($button_txt)){?>
+          <span class="afw-close afw-cls-notice">&times;</span>  
+        <?php } ?>
+          <div class="afw-adblocker-message">
+          <?php echo $notice_description;?>
+          </div>
+          <?php if( isset($settings['notice_close_btn']) && !empty($button_txt)){?>
+          <button class="afw-button afw-closebtn afw-cls-notice"><?php echo $button_txt;?></button>  
+        <?php } ?>
+        </div>
+      </div>
+      <style type="text/css">
+        .afw-adblocker-message{
+          display: inline-block;
+        }
+        .afw-adblocker-notice-bar {
+          display: none;
+          width: 100%;
+          background: <?php echo $background_color;?>;
+          color: <?php echo $content_color;?>;
+          padding: 0.5em 1em;
+          font-size: 16px;
+          line-height: 1.8;
+          position: relative;
+          z-index: 99;
+        }
+        .afw-adblocker-notice-bar strong {
+          color: inherit; /* some themes change strong tag to make it darker */
+        }
+        /* Alignments */
+        .afw-adblocker-notice-bar .enb-textcenter {
+          text-align: center;
+        }
+        .afw-close{
+          color: <?php echo $btn_txt_color;?>;
+          float: right;
+          font-size: 20px;
+          font-weight: bold;
+        }
+        .afw-close:hover,
+        .afw-close:focus {
+          color: #000;
+          text-decoration: none;
+          cursor: pointer;
+        }
+        .afw-button {
+          background-color: <?php echo $btn_background_color;?>; /* Green */
+          border: none;
+          color: <?php echo $btn_txt_color;?>;
+          padding: 5px 10px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 14px;
+          margin: 0px 2px;
+          cursor: pointer;
+          float: right;
+        }
+        @media screen and (max-width: 1024px) {
+          .afw-modal-content {
+            font-size: 14px;
+          }
+          .afw-button{
+            padding:5px 10px;
+            font-size: 14px;
+            float:none;
+          }
+        }
+      </style>
+      <?php 
+        }
+      }
+    }
+   
     public function adsforwp_adblocker_detector(){
         ?>
         <script type="text/javascript">              
@@ -2634,7 +2858,6 @@ class adsforwp_output_functions{
                   if ($('#adsforwp-hidden-block').length == 0 ) {
                        $.getScript("<?php echo site_url().'/'.'front.js' ?>");
                   }
-                 
               });
          </script>
        <?php

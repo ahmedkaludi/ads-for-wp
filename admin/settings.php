@@ -21,7 +21,6 @@ public function adsforwp_add_menu_links() {
 
 
 public function adsforwp_admin_interface_render(){
-    
 	// Authentication
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
@@ -57,7 +56,7 @@ public function adsforwp_admin_interface_render(){
                                                                                                                     			
 			?>
 		</h2>
-                <form action="options.php" method="post" enctype="multipart/form-data" class="adsforwp-settings-form">		
+                <form action="options.php" method="post" enctype="multipart/form-data" class="adsforwp-settings-form" id="adsforwp-settings-form">		
 			<div class="form-wrap">
 			<?php
 			// Output nonce, action, and option_page fields for a settings page.
@@ -102,8 +101,7 @@ public function adsforwp_admin_interface_render(){
 public function adsforwp_settings_init(){
 	register_setting( 'adsforwp_setting_dashboard_group', 'adsforwp_settings', array($this, 'adsforwp_handle_file_upload'));
         
-	        add_settings_section('adsforwp_tools_section',  'Migration', '__return_false', 'adsforwp_tools_section');		                                                                                                  
-                    
+	        add_settings_section('adsforwp_tools_section',  'Migration', '__return_false', 'adsforwp_tools_section');
                     add_settings_field(
                             'adsforwp_import_status',								// ID
                             '',			// Title
@@ -112,8 +110,7 @@ public function adsforwp_settings_init(){
                             'adsforwp_tools_section'							// Settings Section ID
                     );        
                     
-                add_settings_section('adsforwp_advance_section',  'Advance Settings', '__return_false', 'adsforwp_advance_section');		                                                                                                  
-                    
+                add_settings_section('adsforwp_advance_section',  'Advance Settings', '__return_false', 'adsforwp_advance_section');
                     add_settings_field(
                             'adsforwp_advance_status',								// ID
                             '',			// Title
@@ -138,7 +135,23 @@ public function adsforwp_settings_init(){
                             'adsforwp_general_section',							// Page slug
                             'adsforwp_general_section'							// Settings Section ID
                     );
-                                
+                    add_settings_field(
+                            'adsforwp_ad_blocker_notice',								// ID
+                            'Notice For Ad Blocker',			// Title
+                             array($this, 'adsforwp_ad_blocker_notice_callback'),					// Callback
+                            'adsforwp_general_section',							// Page slug
+                            'adsforwp_general_section',							// Settings Section ID
+                            array('class' => 'child-opt')
+                    );
+
+                    add_settings_field(
+                            'adsforwp_ad_blocker_notice_options',								// ID
+                            '',			// Title
+                             array($this, 'adsforwp_ad_blocker_notice_opt_callback'),					// Callback
+                            'adsforwp_general_section',							// Page slug
+                            'adsforwp_general_section',							// Settings Section ID
+                            array('class' => 'subchild-opt')
+                    );              
                     add_settings_field(
                             'adsforwp_ad_performance_tracking',								// ID
                             'Ad Performance Tracking',			// Title
@@ -491,9 +504,7 @@ public function adsforwp_advance_callback(){
                 </li> 
                 
             </ul>
-        
-    <?php    
-    
+    <?php
 }
 
 public function adsforwp_import_callback(){
@@ -601,30 +612,145 @@ public function adsforwp_import_callback(){
         <?php
         
 }
+public function adsforwp_ad_blocker_notice_opt_callback(){
+	$settings = adsforwp_defaultSettings();
+	$notice_type = esc_attr($settings['notice_type']);
+	$notice_title = esc_attr($settings['notice_title']);
+	$notice_description = esc_attr($settings['notice_description']);
+	$notice_close_btn = esc_attr($settings['notice_close_btn']);
+	$btn_txt = esc_attr($settings['btn_txt']);
+	$notice_bg_color = sanitize_hex_color($settings['notice_bg_color']);
+	$notice_txt_color = sanitize_hex_color($settings['notice_txt_color']);
+	$notice_btn_bg_color = sanitize_hex_color($settings['notice_btn_bg_color']);
+	$notice_btn_txt_color = sanitize_hex_color($settings['notice_btn_txt_color']);
+	$cls_checked = '';
+	
+	if(isset($settings['notice_close_btn'])){
+		$cls_checked = "checked";
+	}
+	
+	?>
+	<div class="afw_ad_blocker_notice">
+		<div class="adsfowp_notice_options">
+			<div class="label-align notice-wrap">
+				<label for="afw-bar"><?php echo esc_html__('Notice Type','ads-for-wp');?></label>
+				<div class="afw-nt-flds">
+				<p>
+					<input type="radio" id="afw-bar" class="notice_type" name="adsforwp_settings[notice_type]" value="bar" <?php echo ($notice_type == 'bar')?'checked':'';?> >
+				<label for="afw-bar" class="afw-radio-label"><?php echo esc_html__('Bar','ads-for-wp');?></label>
+				</p>
+				<p>
+					<input type="radio" id="afw-popup" class="notice_type" name="adsforwp_settings[notice_type]" value="popup" <?php echo ($notice_type == 'popup')?'checked':'';?>>
+				<label for="afw-popup" class="afw-radio-label"><?php echo esc_html__('Popup','ads-for-wp');?></label>
+				</p>
+				<p>
+					<input type="radio" id="afw-page-redirect" class="notice_type" name="adsforwp_settings[notice_type]" value="page_redirect" <?php echo ($notice_type == 'page_redirect')?'checked':'';?>>
+				<label for="afw-page-redirect" class="afw-radio-label"><?php echo esc_html__('Page Redirection','ads-for-wp');?></label>
+				</p>
+				</div>
+			</div>
+			<div class="label-align allow_cookies">
+				<label for="allow_cookies"><?php echo esc_html__('Notice Behaviour','ads-for-wp');?> </label>
+				<select name="adsforwp_settings[allow_cookies]">
+					<option value="2" <?php selected( $settings['allow_cookies'], 2);?>>Show on Every Visit</option>
+					<option value="1" <?php selected( $settings['allow_cookies'], 1);?>>Show Only Once</option>
+					
+				</select>
+			</div>
+			<div class="label-align page_redirect">
+				<label for="page_redirect"><?php echo esc_html__('Target Page','ads-for-wp');?> </label>
+	   			<select name="adsforwp_settings[page_redirect]">
+					<?php 
+					$pages = get_pages();
+					echo '<option value="0">--Select Page--</option>';
+					foreach ($pages as $page ) {
+						$title = $page->post_title;
+					if ( empty( $title ) ) {
+						$title = sprintf( esc_html__( 'Untitled %s', 'ads-for-wp' ), '(ID #' . $page->ID . ')' );
+					}
+					?>
+						<option value="<?php echo esc_attr($page->ID);?>" <?php selected( $settings['page_redirect'], $page->ID);?>><?php echo esc_attr($title);?></option>
+					<?php
+					}
+					?>
+				</select>
+			</div>
+		</div>
+		<div class="adsfowp_notice_content">
+			<h2 class="title"><?php echo esc_html__('Notice Content','ads-for-wp');?></h2>
+			<div class="label-align notice_title">
+			<label for="notice_title"> <?php echo esc_html__('Title','ads-for-wp');?> </label>
+				<input id="notice_title" name="adsforwp_settings[notice_title]" type="text" class="regular-text" value="<?php echo esc_attr($notice_title);?>"/>
+			</div>
+			<div class="label-align notice_description">
+				<label for="notice_description" ><?php echo esc_html__('Description','ads-for-wp');?> </label>
+				<fieldset>
+				<textarea name="adsforwp_settings[notice_description]" id="notice_description" type="text" class="large-text code notice_description" rows="5" cols="70"><?php echo esc_attr($notice_description);?></textarea>
+				</fieldset>
+			</div>
+			<div class="label-align notice_close_btn">
+				<label for="notice_close_btn" > <?php echo esc_html__('Close Button','ads-for-wp');?> </label>
+				<input name="adsforwp_settings[notice_close_btn]" id="notice_close_btn" type="checkbox" value="1" <?php echo esc_attr($cls_checked);?>/>
+			</div>
+			<div class="label-align adsforwp_close_btn_txt">
+				<label for="btn_txt"><?php echo esc_html__('Button Text','ads-for-wp');?> </label>
+				<input name="adsforwp_settings[btn_txt]" id="btn_txt" type="text" class="btn_txt" value="<?php echo esc_attr($btn_txt);?>" />
+			</div>
+   		</div>
+   		<div class="adsfowp_notice_design">
+	   		<h2 class="title"><?php echo esc_html__('Notice Design','ads-for-wp');?></h2>
+	   		<div class="label-align notice_txt_color">
+	   			<label for="notice_txt_color"> <?php echo esc_html__('Content Color','ads-for-wp');?> </label>
+	   			<input type="text" value="<?php echo $notice_txt_color;?>" name="adsforwp_settings[notice_txt_color]" id="notice_txt_color" class="adsforwp_cp" data-default-color="#ffffff"/> 
+	   		</div>
+	   		<div class="label-align notice_bg_color">
+	   			<label for="notice_bg_color"> <?php echo esc_html__('Background Color','ads-for-wp');?> </label>
+	   			<input type="text" value="<?php echo $notice_bg_color;?>" name="adsforwp_settings[notice_bg_color]" id="notice_bg_color" class="adsforwp_cp" data-default-color="#1e73be"/>
+	   		</div>
+	   		<div class="label-align notice_btn_txt_color">
+	   			<label for="notice_btn_txt_color"> <?php echo esc_html__('Button Text Color','ads-for-wp');?> </label>
+	   			<input type="text" value="<?php echo $notice_btn_txt_color;?>" name="adsforwp_settings[notice_btn_txt_color]" id="notice_btn_txt_color" class="adsforwp_cp" data-default-color="#ffffff"/>
+	   		</div>
+	   		<div class="label-align notice_btn_bg_color">
+	   		<label for="notice_btn_bg_color"><?php echo esc_html__('Button Background Color','ads-for-wp' );?></label>
+	   			<input type="text" value="<?php echo $notice_btn_bg_color;?>" name="adsforwp_settings[notice_btn_bg_color]" id="notice_btn_bg_color" class="adsforwp_cp" data-default-color="#f44336"/>
+	   		</div>
+   		</div>
+	</div>
+	<?php
+}
+public function adsforwp_ad_blocker_notice_callback(){
+	$settings = adsforwp_defaultSettings();
+    ?>	
+	<fieldset>
+        <?php
+        $checked = '';
+        if(isset($settings['ad_blocker_notice'])){
+            $checked = 'checked';
+        }
+        echo '<input type="checkbox" name="adsforwp_settings[ad_blocker_notice]" class="afw_advnc_ad_blocker_notice" value="1" '.$checked.'>';
+        ?>
+	</fieldset>
+	<?php
+}
 public function adsforwp_ad_blocker_support_callback(){
-	        
 	$settings = adsforwp_defaultSettings();           
         ?>	
 	<fieldset>
-            <?php
-          
-            if(isset($settings['ad_blocker_support'])){
-                echo '<input type="checkbox" name="adsforwp_settings[ad_blocker_support]" class="regular-text afw_advnc_ad_blocker_support" value="1" checked> ';
-            }else{
-                echo '<input type="checkbox" name="adsforwp_settings[ad_blocker_support]" class="regular-text afw_advnc_ad_blocker_support" value="1" >';
-            }
-           
-            ?>
-		
+        <?php
+        $checked = '';
+        if(isset($settings['ad_blocker_support'])){
+            $checked = 'checked';
+        }
+        echo '<input type="checkbox" name="adsforwp_settings[ad_blocker_support]" class="afw_advnc_ad_blocker_support" value="1" '.$checked.'>';
+        ?>
 	</fieldset>
-
+	
 	<?php
-        
 }
 public function adsforwp_ad_performance_tracking_callback(){
-	        
 	$settings = adsforwp_defaultSettings();           
-        ?>	
+    ?>
 	<fieldset>
             <?php
           
@@ -637,7 +763,7 @@ public function adsforwp_ad_performance_tracking_callback(){
             ?>
 		
 	</fieldset>
-
+	
 	<?php
         
 }
