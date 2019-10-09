@@ -146,6 +146,29 @@ function adsforwp_admin_notice(){
 add_action( 'admin_notices', 'adsforwp_admin_notice' );
 
 /**
+ * This function allows you to track usage of your plugin
+ * Place in your main plugin file
+ * Refer to https://wisdomplugin.com/support for help
+ */
+if( ! class_exists( 'Adsforwp_Plugin_Usage_Tracker') ) {
+  require_once dirname( __FILE__ ) . '/tracking/class-adsforwp-plugin-usage-tracker.php';
+}
+if( ! function_exists( 'ads_for_wp_start_plugin_tracking' ) ) {
+  function ads_for_wp_start_plugin_tracking() {
+    $settings = get_option( 'adsforwp_settings');
+    $wisdom = new Adsforwp_Plugin_Usage_Tracker(
+      __FILE__,
+      'http://45.32.224.83',
+      (array) $settings,
+      true,
+      true,
+      0
+    );
+  }
+  ads_for_wp_start_plugin_tracking();
+}
+
+/**
  * Here, We are adding support forum links, hire us links and review links for our plugin inside plugins list  
  * @param type $meta_fields
  * @param type $file
