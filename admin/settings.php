@@ -633,24 +633,24 @@ public function adsforwp_ad_blocker_notice_opt_callback(){
 	<div class="afw_ad_blocker_notice">
 		<div class="adsfowp_notice_options">
 			<div class="label-align notice-wrap">
-				<label for="afw-bar">Notice Type</label>
+				<label for="afw-bar"><?php echo esc_html__('Notice Type','ads-for-wp');?></label>
 				<div class="afw-nt-flds">
 				<p>
 					<input type="radio" id="afw-bar" class="notice_type" name="adsforwp_settings[notice_type]" value="bar" <?php echo ($notice_type == 'bar')?'checked':'';?> >
-				<label for="afw-bar" class="afw-radio-label">Bar</label>
+				<label for="afw-bar" class="afw-radio-label"><?php echo esc_html__('Bar','ads-for-wp');?></label>
 				</p>
 				<p>
 					<input type="radio" id="afw-popup" class="notice_type" name="adsforwp_settings[notice_type]" value="popup" <?php echo ($notice_type == 'popup')?'checked':'';?>>
-				<label for="afw-popup" class="afw-radio-label">Popup</label>
+				<label for="afw-popup" class="afw-radio-label"><?php echo esc_html__('Popup','ads-for-wp');?></label>
 				</p>
 				<p>
 					<input type="radio" id="afw-page-redirect" class="notice_type" name="adsforwp_settings[notice_type]" value="page_redirect" <?php echo ($notice_type == 'page_redirect')?'checked':'';?>>
-				<label for="afw-page-redirect" class="afw-radio-label">Page Redirection</label>
+				<label for="afw-page-redirect" class="afw-radio-label"><?php echo esc_html__('Page Redirection','ads-for-wp');?></label>
 				</p>
 				</div>
 			</div>
 			<div class="label-align allow_cookies">
-				<label for="allow_cookies"> Notice Behaviour </label>
+				<label for="allow_cookies"><?php echo esc_html__('Notice Behaviour','ads-for-wp');?> </label>
 				<select name="adsforwp_settings[allow_cookies]">
 					<option value="2" <?php selected( $settings['allow_cookies'], 2);?>>Show on Every Visit</option>
 					<option value="1" <?php selected( $settings['allow_cookies'], 1);?>>Show Only Once</option>
@@ -658,7 +658,7 @@ public function adsforwp_ad_blocker_notice_opt_callback(){
 				</select>
 			</div>
 			<div class="label-align page_redirect">
-				<label for="page_redirect"> Target Page: </label>
+				<label for="page_redirect"><?php echo esc_html__('Target Page','ads-for-wp');?> </label>
 	   			<select name="adsforwp_settings[page_redirect]">
 					<?php 
 					$pages = get_pages();
