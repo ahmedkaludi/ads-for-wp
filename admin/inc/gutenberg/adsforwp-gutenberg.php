@@ -13,7 +13,7 @@ class Adsforwp_Ads_Gutenberg{
 			return;
 		}
 		
-		register_block_type( 'adsforwp/gblock', array(
+		register_block_type( 'adsforwp/adsblock', array(
 			//'style'         => 'saswp-gutenberg-css-reg',
 			'editor_style'  => 'adsforwp-gb-css-editor',
 			'editor_script' => 'adsforwp-gb-ad-js',
@@ -47,10 +47,10 @@ class Adsforwp_Ads_Gutenberg{
 		}
 		
 		$default = array(
-			'--empty--' => __( '--empty--', 'ads-for-wp' ),
-			'adsforwp' => __( 'Adsforwp Ads', 'ads-for-wp' ),
-			'ads' => __( 'Ads', 'ads-for-wp' ),
-			'adGroups' => __( 'Ad Groups', 'ads-for-wp' ),
+			'--empty--' => esc_html__( '--empty--', 'ads-for-wp' ),
+			'adsforwp' => esc_html__( 'Adsforwp Ads', 'ads-for-wp' ),
+			'ads' => esc_html__( 'Ads', 'ads-for-wp' ),
+			'adGroups' => esc_html__( 'Ad Groups', 'ads-for-wp' ),
 		);
 
 		$inline_script = wp_json_encode(

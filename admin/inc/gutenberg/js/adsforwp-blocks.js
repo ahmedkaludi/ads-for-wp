@@ -2,9 +2,9 @@
     var el = wp.element.createElement; // The wp.element.createElement() function to create elements.
     registerBlockType = wp.blocks.registerBlockType; // The registerBlockType() function to register blocks.
  
-    registerBlockType( 'adsforwp/gblock', {
+    registerBlockType( 'adsforwp/adsblock', {
             title: adsforwpGutenberg.default.adsforwp,
-            icon: 'chart-bar',
+            //icon: 'chart-bar',
             category: 'common',
             attributes: {
                 itemID: {
