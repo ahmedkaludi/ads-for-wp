@@ -159,6 +159,9 @@ function adsforwp_pointer(id,content, status){
             case 'afw_ad_now_pointer':
                 content = '<h3>'+adsforwp_localize_data.pointer_help+'</h3><p>'+adsforwp_localize_data.ad_now_pointer+'</p>';
                 break; 
+            case 'afw_mgid_pointer':
+                content = '<h3>'+adsforwp_localize_data.pointer_help+'</h3><p>'+adsforwp_localize_data.mgid_pointer+'</p>';
+                break; 
             case 'afw_contentad_pointer':
                content = '<h3>'+adsforwp_localize_data.pointer_help+'</h3><p>'+adsforwp_localize_data.contentad_pointer+'</p>';
                 break;
