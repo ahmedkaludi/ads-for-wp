@@ -37,6 +37,7 @@ require_once  ADSFORWP_PLUGIN_DIR.'/admin/ajax-selectbox.php';
 require_once  ADSFORWP_PLUGIN_DIR.'/admin/file-creation.php';
 require_once  ADSFORWP_PLUGIN_DIR.'/admin/analytics-settings.php';
 require_once  ADSFORWP_PLUGIN_DIR.'/admin/analytics.php';
+require_once  ADSFORWP_PLUGIN_DIR.'/admin/inc/gutenberg/adsforwp-gutenberg.php';
 
 /* Loading view Metaboxes*/
 require_once  ADSFORWP_PLUGIN_DIR.'/view/ads-type.php';
