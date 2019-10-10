@@ -91,9 +91,30 @@ class adsforwp_output_functions{
          
         add_action('wp_ajax_adsforwp_update_amp_sticky_ad_status', array($this, 'adsforwp_update_amp_sticky_ad_status'));
         add_action('wp_ajax_adsforwp_check_amp_sticky_ad_status', array($this, 'adsforwp_check_amp_sticky_ad_status'));
-        
         add_action('amp_post_template_css',array($this, 'adsforwp_background_ad_css'));
-                
+        add_action('init',array($this,'adsforwp_add_query_var_front_js'));
+        add_action('parse_query',array($this,'adsforwp_serve_front_js'));
+    }
+
+    public function adsforwp_serve_front_js(WP_Query $query){
+        if($query->get('adsforwp_front_js') == 1){
+            $swHtmlContent  = file_get_contents(ADSFORWP_PLUGIN_DIR."public/assets/js/ads-front.js");
+            echo $swHtmlContent;
+            header('Content-Type: application/javascript');
+            exit;
+        }
+    }
+    public function adsforwp_add_query_var_front_js(){
+        global $wp;
+        $wp->add_query_var('adsforwp_front_js');
+    }
+
+    public function adsforwp_is_file_inroot(){
+        if(is_writable(ABSPATH)){
+            return true;
+        }else{
+            return false;
+        }
     }
     
     public function init(){
@@ -2852,11 +2873,16 @@ class adsforwp_output_functions{
     }
    
     public function adsforwp_adblocker_detector(){
+        if($this->adsforwp_is_file_inroot()){
+            $scriptUrl = site_url().'/'.'front.js';
+        }else{
+            $scriptUrl = site_url()."?adsforwp_front_js=1";
+        }
         ?>
         <script type="text/javascript">              
               jQuery(document).ready( function($) {    
                   if ($('#adsforwp-hidden-block').length == 0 ) {
-                       $.getScript("<?php echo site_url().'/'.'front.js' ?>");
+                       $.getScript("<?php echo esc_url_raw($scriptUrl); ?>");
                   }
               });
          </script>
