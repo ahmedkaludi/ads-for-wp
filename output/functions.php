@@ -1577,7 +1577,7 @@ class adsforwp_output_functions{
                         $this->amp_ads_id[] = $post_ad_id;
                         if(!empty($engageya_widget_ids) && !empty($engageya_website_id) && !empty($engageya_publisher_id)){
                              if($ad_responsive == 1){
-                                $responsive_attr = 'layout="responsive"';
+                                $responsive_attr = 'layout=responsive';
                             }
                             $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                             '.$sponsership_label.'
