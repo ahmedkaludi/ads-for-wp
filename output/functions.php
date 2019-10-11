@@ -2264,15 +2264,19 @@ class adsforwp_output_functions{
             if($dfp_multi_validation == 1){
                 $validation = "true";
             }
-            if($this->is_amp){                                
-                    
+            $layout = 'fixed';
+            if($this->is_amp){
                  $this->amp_ads_id[] = $post_ad_id;
                   if($where_to_display == 'sticky'){
                         if($dfp_multisize_ads == 1){
+                            if($ad_responsive == 1){
+                                $height = 'fluid';
+                                $layout = 'fluid';
+                            }
                             $amp_ad_code = '<amp-ad 
                                       class="afw_ad_amp_'.esc_attr($post_ad_id).'"
                                         type="doubleclick"
-                                        layout="fixed"
+                                        layout="'.esc_attr($layout).'"
                                         width="'. esc_attr($width) .'"
                                         height="'. esc_attr($height).'" 
                                         data-slot="'.esc_attr($ad_slot_id).'"
@@ -2285,7 +2289,21 @@ class adsforwp_output_functions{
                                            </div>
                                         </amp-ad>';
                         }else{
-                            $amp_ad_code = '<amp-ad 
+                            if($ad_responsive == 1){
+                                $amp_ad_code = '<amp-ad 
+                                      class="afw_ad_amp_'.esc_attr($post_ad_id).'"
+                                        type="doubleclick"
+                                        layout="fluid"
+                                        height="fluid"                                   
+                                        data-slot="'.esc_attr($ad_slot_id).'"
+                                        data-enable-refresh="10">
+                                           <div fallback>
+                                           <p>Thank you for trying AMP!</p>
+                                           <p>We have no ad to show to you!</p>
+                                           </div>
+                                  </amp-ad>';
+                            }else{
+                               $amp_ad_code = '<amp-ad 
                                       class="afw_ad_amp_'.esc_attr($post_ad_id).'"
                                         type="doubleclick"
                                         width="'. esc_attr($width) .'"
@@ -2296,7 +2314,9 @@ class adsforwp_output_functions{
                                            <p>Thank you for trying AMP!</p>
                                            <p>We have no ad to show to you!</p>
                                            </div>
-                                  </amp-ad>';
+                                  </amp-ad>'; 
+                            }
+                            
                         }
                       
 
@@ -2311,10 +2331,14 @@ class adsforwp_output_functions{
                   }else{
                     if($ad_slot_id){
                         if($dfp_multisize_ads == 1){
+                            if($ad_responsive == 1){
+                                $height = 'fluid';
+                                $layout = 'fluid';
+                            }
                           $amp_ad_code = '<amp-ad 
                                       class="afw_ad_amp_'.esc_attr($post_ad_id).'"
                                         type="doubleclick"
-                                        layout="fixed"
+                                        layout="'.esc_attr($layout).'"
                                         width="'. esc_attr($width) .'"
                                         height="'. esc_attr($height).'" 
                                         data-slot="'.esc_attr($ad_slot_id).'"
@@ -2327,7 +2351,21 @@ class adsforwp_output_functions{
                                            </div>
                                   </amp-ad>';
                         }else{
-                          $amp_ad_code = '<amp-ad 
+                            if($ad_responsive == 1){
+                                $amp_ad_code = '<amp-ad 
+                                      class="afw_ad_amp_'.esc_attr($post_ad_id).'"
+                                        type="doubleclick"
+                                        layout="fluid"
+                                        height="fluid"                                 
+                                        data-slot="'.esc_attr($ad_slot_id).'"
+                                        data-enable-refresh="10">
+                                           <div fallback>
+                                           <p>Thank you for trying AMP!</p>
+                                           <p>We have no ad to show to you!</p>
+                                           </div>
+                                  </amp-ad>'; 
+                            }else{
+                                $amp_ad_code = '<amp-ad 
                                       class="afw_ad_amp_'.esc_attr($post_ad_id).'"
                                         type="doubleclick"
                                         width="'. esc_attr($width) .'"
@@ -2339,6 +2377,9 @@ class adsforwp_output_functions{
                                            <p>We have no ad to show to you!</p>
                                            </div>
                                   </amp-ad>'; 
+
+                            }
+                          
                         }
                          
                         $ad_code ='<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-md afw_ad afwadid-'.esc_attr($post_ad_id).'">
@@ -2359,9 +2400,6 @@ class adsforwp_output_functions{
                         </div>';   
                     
                 }
-             
-                
-            
             }
             break;
                                     
