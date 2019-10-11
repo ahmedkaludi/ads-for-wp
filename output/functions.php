@@ -1560,6 +1560,37 @@ class adsforwp_output_functions{
                     break;
                 }
               break;
+            case 'engageya':
+                $responsive_attr = '';
+                $width='300';
+                $height='250';
+                $banner_size = adsforwp_rmv_warnings($post_meta_dataset, 'banner_size', 'adsforwp_array');
+                if($banner_size !=''){
+                    $explode_size = explode('x', $banner_size);              
+                    $width = $explode_size[0];            
+                    $height = $explode_size[1];
+                }
+                $engageya_widget_ids = adsforwp_rmv_warnings($post_meta_dataset, 'engageya_widget_ids', 'adsforwp_array');
+                $engageya_website_id = adsforwp_rmv_warnings($post_meta_dataset, 'engageya_site_id', 'adsforwp_array');
+                $engageya_publisher_id = adsforwp_rmv_warnings($post_meta_dataset, 'engageya_publisher_id', 'adsforwp_array');
+                if($this->is_amp){
+                        $this->amp_ads_id[] = $post_ad_id;
+                        if(!empty($engageya_widget_ids) && !empty($engageya_website_id) && !empty($engageya_publisher_id)){
+                             if($ad_responsive == 1){
+                                $responsive_attr = 'layout="responsive"';
+                            }
+                            $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                                            '.$sponsership_label.'
+                                                    <amp-embed class="afw_ad_amp_'.esc_attr($post_ad_id).'" width="'.esc_attr($width).'" height="'.esc_attr($height).'"
+                                                        type="engageya"
+                                                        '.$responsive_attr.'
+                                                        data-widgetIds="'.$engageya_widget_ids.'"
+                                                        data-websiteId="'.$engageya_website_id.'"
+                                                        data-publisherId="'.$engageya_publisher_id.'">
+                                                    </amp-embed></div>'; 
+                        }
+                }
+            break;
             case 'mantis':
                     $width='300';
                     $height='250';
