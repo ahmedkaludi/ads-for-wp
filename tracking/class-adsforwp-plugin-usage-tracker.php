@@ -671,7 +671,6 @@ if( ! class_exists( 'Adsforwp_Plugin_Usage_Tracker') ) {
 			// wisdom_block_notice works the same as wisdom_allow_tracking, an array of plugin names
 			$block_notice = get_option( 'adsforwp_wisdom_block_notice' );
 
-			delete_option( 'adsforwp_wisdom_block_notice' );
 
 			if( isset( $block_notice[$this->plugin_name] ) ) {
 				return;
