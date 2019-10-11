@@ -1583,10 +1583,10 @@ class adsforwp_output_functions{
                                                             '.$sponsership_label.'
                                                     <amp-embed class="afw_ad_amp_'.esc_attr($post_ad_id).'" width="'.esc_attr($width).'" height="'.esc_attr($height).'"
                                                         type="engageya"
-                                                        '.$responsive_attr.'
-                                                        data-widgetIds="'.$engageya_widget_ids.'"
-                                                        data-websiteId="'.$engageya_website_id.'"
-                                                        data-publisherId="'.$engageya_publisher_id.'">
+                                                        '.esc_attr($responsive_attr).'
+                                                        data-widgetIds="'.esc_attr($engageya_widget_ids).'"
+                                                        data-websiteId="'.esc_attr($engageya_website_id).'"
+                                                        data-publisherId="'.esc_attr($engageya_publisher_id).'">
                                                     </amp-embed></div>'; 
                         }
                 }
