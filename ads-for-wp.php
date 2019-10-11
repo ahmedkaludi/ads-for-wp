@@ -3,7 +3,7 @@
 Plugin Name: Ads for WP - Advanced Ads & Adsense Solution for WP & AMP
 Plugin URI: https://wordpress.org/plugins/ads-for-wp/
 Description: ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy to Use, Unlimited Incontent Ads, Adsense, Premium Features and more
-Version: 1.9.8
+Version: 1.9.9
 Author: Magazine3
 Author URI: http://adsforwp.com/
 Donate link: https://www.paypal.me/Kaludi/25usd
@@ -20,7 +20,7 @@ define('ADSFORWP_PLUGIN_DIR_URI', plugin_dir_url(__FILE__));
 define('ADSFORWP_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define( 'ADSFORWP_LIB_PATH', dirname( __FILE__ ) . '/admin/inc/' );
 if ( ! defined( 'ADSFORWP_VERSION' ) ) {
-	define( 'ADSFORWP_VERSION', '1.9.8' );
+	define( 'ADSFORWP_VERSION', '1.9.9' );
 }
 /* Loading Backend files files*/
 require_once  ADSFORWP_PLUGIN_DIR.'/admin/ads-setup.php';
@@ -144,6 +144,29 @@ function adsforwp_admin_notice(){
 }
 
 add_action( 'admin_notices', 'adsforwp_admin_notice' );
+
+/**
+ * This function allows you to track usage of your plugin
+ * Place in your main plugin file
+ * Refer to https://wisdomplugin.com/support for help
+ */
+if( ! class_exists( 'Adsforwp_Plugin_Usage_Tracker') ) {
+  require_once dirname( __FILE__ ) . '/tracking/class-adsforwp-plugin-usage-tracker.php';
+}
+if( ! function_exists( 'ads_for_wp_start_plugin_tracking' ) ) {
+  function ads_for_wp_start_plugin_tracking() {
+    $settings = get_option( 'adsforwp_settings');
+    $wisdom = new Adsforwp_Plugin_Usage_Tracker(
+      __FILE__,
+      'http://45.32.224.83',
+      (array) $settings,
+      true,
+      true,
+      0
+    );
+  }
+  ads_for_wp_start_plugin_tracking();
+}
 
 /**
  * Here, We are adding support forum links, hire us links and review links for our plugin inside plugins list  
