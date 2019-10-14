@@ -715,8 +715,9 @@ if( ! class_exists( 'Adsforwp_Plugin_Usage_Tracker') ) {
 				if( $this->marketing != 1 ) {
 					// Standard notice text
 					$notice_text = sprintf(
-						__( 'Thank you for installing our %1$s. We would like to track its usage on your site. We don\'t record any sensitive data, only information regarding the WordPress environment and %1$s settings, which we will use to help us make improvements to the %1$s. Tracking is completely optional.', 'singularity' ),
+						__( 'Become a super contributor by opting in to our anonymous %1$s data collection and to our updates. We guarantee no sensitive data is collected.'),
 						$this->what_am_i
+						
 					);
 				} else {
 					// If we have option 1 for marketing, we include reference to sending product information here
@@ -729,11 +730,11 @@ if( ! class_exists( 'Adsforwp_Plugin_Usage_Tracker') ) {
 				$notice_text = apply_filters( 'wisdom_notice_text_' . esc_attr( $this->plugin_name ), $notice_text ); ?>
 				
 				<div class="notice notice-info updated put-dismiss-notice">
-					<p><?php echo '<strong>' . esc_html( $plugin_name ) . '</strong>'; ?></p>
-					<p><?php echo esc_html( $notice_text ); ?></p>
+					<p><?php echo '<strong>Love using ' . esc_html( $plugin_name ) . '?</strong>'; ?></p>
+					<p><?php echo esc_html( $notice_text ); ?> <a href="http://adsforwp.com/docs/article/usage-data-tracking/" target="_blank"><?php echo esc_html__( 'Learn more.', 'singularity' ); ?></a></p>
 					<p>
-						<a href="<?php echo esc_url( $url_yes ); ?>" class="button-primary"><?php _e( 'Allow', 'singularity' ); ?></a>&nbsp;&nbsp;
-						<a href="<?php echo esc_url( $url_no ); ?>" class="button-secondary"><?php _e( 'Do Not Allow', 'singularity' ); ?></a>
+						<a href="<?php echo esc_url( $url_yes ); ?>" class="button-primary"><?php echo _e( 'Sure! I\'d love to help', 'singularity' ); ?></a>&nbsp;&nbsp;
+						<a href="<?php echo esc_url( $url_no ); ?>" class="button-secondary"><?php echo _e( 'No thanks', 'singularity' ); ?></a>
 					</p>
 				</div>
 			<?php
