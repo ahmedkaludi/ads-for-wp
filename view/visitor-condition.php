@@ -261,21 +261,37 @@ class adsforwp_view_visitor_condition {
         switch ($type) {
                    
           case 'device':
-              
-                    $device_name  = 'desktop'; 
-                    if(wp_is_mobile()){
-                    $device_name  = 'mobile';                
-                    }                  
-                  if ( $comparison == 'equal' ) {
-                        if ( $device_name == $data ) {
-                          $result = true;
-                        }
+              if(function_exists('ampforwp_is_amp_endpoint')){
+                require_once AMPFORWP_PLUGIN_DIR.'/includes/vendor/Mobile_Detect.php';
+                $mobile_detect = $isTablet = '';
+                // instantiate the Mobile detect class
+                $mobile_detect = new AMPforWP_Mobile_Detect;
+                $isMobile = $mobile_detect->isMobile();
+                $isTablet = $mobile_detect->isTablet();
+
+                $device_name  = 'desktop';
+                if( $isMobile && $isTablet ){ //Only For tablet
+                  $device_name  = 'mobile';
+                }else if($isMobile && !$isTablet){ // Only for mobile
+                  $device_name  = 'mobile';
+                }
+              }else{
+                $device_name  = 'desktop'; 
+                if(wp_is_mobile()){
+                $device_name  = 'mobile';                
+                } 
+              }
+                                
+              if ( $comparison == 'equal' ) {
+                  if ( $device_name == $data ) {
+                    $result = true;
                   }
-                    if ( $comparison == 'not_equal') {              
-                        if ( $device_name != $data ) {
-                          $result = true;
-                        }
-                    }            
+              }
+              if ( $comparison == 'not_equal') {              
+                  if ( $device_name != $data ) {
+                    $result = true;
+                  }
+              }            
           break;
           case 'referrer_url':    
                                         
