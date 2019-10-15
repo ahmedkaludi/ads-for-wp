@@ -730,7 +730,7 @@ if( ! class_exists( 'Adsforwp_Plugin_Usage_Tracker') ) {
 				$notice_text = apply_filters( 'wisdom_notice_text_' . esc_attr( $this->plugin_name ), $notice_text ); ?>
 				
 				<div class="notice notice-info updated put-dismiss-notice">
-					<p><?php echo '<strong>Love using ' . esc_html( $plugin_name ) . '?</strong>'; ?></p>
+					<p><?php echo '<strong>Love using Ads for WP?</strong>'; ?></p>
 					<p><?php echo esc_html( $notice_text ); ?> <a href="http://adsforwp.com/docs/article/usage-data-tracking/" target="_blank"><?php echo esc_html__( 'Learn more.', 'singularity' ); ?></a></p>
 					<p>
 						<a href="<?php echo esc_url( $url_yes ); ?>" class="button-primary"><?php echo _e( 'Sure! I\'d love to help', 'singularity' ); ?></a>&nbsp;&nbsp;
