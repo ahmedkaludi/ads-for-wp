@@ -569,25 +569,28 @@ add_action( 'edit_user_profile_update', 'adsforwp_save_extra_user_profile_fields
  * @param string $title
  * @return string
  */
-function adsforwp_modify_title( $title) {
+function adsforwp_modify_title( $title, $id) {
     
     global $post;
-    if($post){
-        
-    if($post->post_type =='adsforwp'){
-        
-        $adsense_auto = get_post_meta($post->ID, $key='adsense_type', true);
-        
-        if($adsense_auto === 'adsense_auto_ads'){
+    if($id){
+      if($post->post_type =='adsforwp'){
+        $adsense_auto = get_post_meta($id, $key='adsense_type', true);
+        $ad_type = get_post_meta( $id,'select_adtype', true );
+        if($ad_type == 'adsense'){
+          if($adsense_auto === 'adsense_auto_ads'){
             
             $title = $title.' (Auto AdSense Ad)';
             
+          }
+          if($adsense_auto === 'normal' || $adsense_auto === 'adsense_sticky_ads' || $adsense_auto === 'matched_content_ads' || $adsense_auto === 'in_article_ads'){
+              $title = $title;
+          }
         }
-    }    
-}
+      }    
+    }
     return $title;
 }
-add_filter( 'the_title', 'adsforwp_modify_title', 10, 1 );
+add_filter( 'the_title', 'adsforwp_modify_title', 10, 2 );
 
 /**
 * This is a ajax handler function to check adsese auto ads, if it is already added.
@@ -882,7 +885,7 @@ add_filter( 'manage_adsforwp-groups_posts_columns', 'adsforwp_groups_custom_colu
  */
 function adsforwp_group_custom_column_set( $column, $post_id ) {
         
-        global $wpdb;
+        global $wpdb,$has_auto_ads;
         
         $common_function_obj = new adsforwp_admin_common_functions();
         $result = $common_function_obj->adsforwp_check_ads_in_group($post_id);       
@@ -904,8 +907,30 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
                
             }
              $adsforwp_google_token = get_option( 'adsforwp_google_token' );
-                                      
-            switch ( $column ) {        
+             $post_meta = get_post_meta($post_id, $key='', true);
+             $all_ads_post = get_posts(
+                  array(
+                          'post_type'    => 'adsforwp',
+                          'posts_per_page'     => -1,
+                          'post_status'        => 'publish',
+                  )
+              ); 
+              $adsense_types = array();
+              if($all_ads_post){
+                  foreach($all_ads_post as $ads){
+                      $adsense_types[] = get_post_meta( $ads->ID, 'adsense_type', true );         
+                 }
+              }
+            switch ( $column ) {
+                case 'adsforwp_auto_ads_warning':
+                  if(isset($post_meta['select_adtype'])){      
+                    if($post_meta['select_adtype'][0] == 'adsense' && $post_meta['adsense_type'][0] != 'adsense_auto_ads'){
+                      if(in_array('adsense_auto_ads', $adsense_types)){
+                        echo '<i class="adsforwp-tooltip dashicons dashicons-warning"><span class="adsforwp-tooltiptext"><p style="color:#ffffff;">Cannot use Auto Ads and Adsense Ads at a time.</p></span></i>';  
+                      }
+                    }
+                  }
+                break;        
                 case 'adsforwp_group_column' :
                     
                     echo html_entity_decode(esc_attr($post_title)); 
@@ -913,7 +938,7 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
                     break; 
                 case 'adsforwp_ad_image_preview' :
                     
-                    $post_meta = get_post_meta($post_id, $key='', true);  
+                      
                     
                     if(isset($post_meta['select_adtype'])){
                         
@@ -990,6 +1015,7 @@ function adsforwp_custom_columns($columns) {
     $settings = adsforwp_defaultSettings();
     
     unset($columns['date']);
+    $columns['adsforwp_auto_ads_warning']       = '<a>'.esc_html__( '', 'ads-for-wp' ).'<a>'; 
     $columns['adsforwp_ad_image_preview']       = '<a>'.esc_html__( 'Preview', 'ads-for-wp' ).'<a>';
     $columns['adsforwp_expire_column']          = '<a>'.esc_html__( 'Expire On', 'ads-for-wp' ).'<a>';
     $columns['adsforwp_group_column']           = '<a>'.esc_html__( 'Groups', 'ads-for-wp' ).'<a>';
@@ -1012,7 +1038,7 @@ add_filter( 'manage_adsforwp_posts_columns', 'adsforwp_custom_columns' );
  * @param type $post_id
  */
 function adsforwp_custom_column_set( $column, $post_id ) {
-    
+
     switch ( $column ) {        
         case 'ads_group_shortcode' :
             echo '<a>[adsforwp-group id="'.esc_attr($post_id).'"]</a>'; 
