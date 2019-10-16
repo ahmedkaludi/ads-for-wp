@@ -262,20 +262,30 @@ class adsforwp_view_visitor_condition {
                    
           case 'device':
               
-                    $device_name  = 'desktop'; 
-                    if(wp_is_mobile()){
-                    $device_name  = 'mobile';                
-                    }                  
-                  if ( $comparison == 'equal' ) {
-                        if ( $device_name == $data ) {
-                          $result = true;
-                        }
+              require_once ADSFORWP_PLUGIN_DIR.'/vendor/mobile-detect.php';
+              $mobile_detect = $isTablet = '';
+              // instantiate the Mobile detect class
+              $mobile_detect = new Adsforwp_Mobile_Detect;
+              $isMobile = $mobile_detect->isMobile();
+              $isTablet = $mobile_detect->isTablet();
+
+              $device_name  = 'desktop';
+              if( $isMobile && $isTablet ){ //Only For tablet
+                $device_name  = 'mobile';
+              }else if($isMobile && !$isTablet){ // Only for mobile
+                $device_name  = 'mobile';
+              }
+                           
+              if ( $comparison == 'equal' ) {
+                  if ( $device_name == $data ) {
+                    $result = true;
                   }
-                    if ( $comparison == 'not_equal') {              
-                        if ( $device_name != $data ) {
-                          $result = true;
-                        }
-                    }            
+              }
+              if ( $comparison == 'not_equal') {              
+                  if ( $device_name != $data ) {
+                    $result = true;
+                  }
+              }            
           break;
           case 'referrer_url':    
                                         

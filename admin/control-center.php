@@ -1110,8 +1110,29 @@ add_action('admin_enqueue_scripts','adsforwp_admin_enqueue');
 function adsforwp_get_ad_ids(){
         
     $all_ads_id = json_decode(get_transient('adsforwp_transient_ads_ids'), true);
-                          
-     return $all_ads_id;
+    if(!$all_ads_id){
+      $all_ads_post = get_posts(
+            array(
+                    'post_type'    => 'adsforwp',
+                    'posts_per_page'     => -1,
+                    'post_status'        => 'publish',
+            )
+        ); 
+        $ads_post_ids = array();
+        if($all_ads_post){
+
+            foreach($all_ads_post as $ads){
+                $ads_post_ids[] = $ads->ID;         
+           }
+        }
+     
+        if(!empty($ads_post_ids) ){
+          return $ads_post_ids;
+        }else{
+          return false;
+        }
+    }                  
+    return $all_ads_id;
 }
 
 /*
@@ -1164,8 +1185,27 @@ function adsforwp_update_ids_on_untrash(){
 function adsforwp_get_group_ad_ids(){
         
     $all_ads_id = json_decode(get_transient('adsforwp_groups_transient_ids'), true);
-                   
-     return $all_ads_id;
+    if(!$all_ads_id){
+      $all_group_post = get_posts(
+          array(
+                'post_type'        => 'adsforwp-groups',
+                'posts_per_page'     => -1,
+                'post_status'        => 'publish',
+          )
+      );
+      $group_post_ids = array();
+      if($all_group_post){
+          foreach($all_group_post as $group){
+             $group_post_ids[] = $group->ID;         
+          }
+      }
+      if(!empty($group_post_ids)){
+        return $group_post_ids;
+      }else{
+        return false;
+      }
+    }               
+    return $all_ads_id;
 }    
     
 /*
@@ -1250,6 +1290,7 @@ function adsforwp_add_localize_data($object, $object_name){
                $object['doubleclick_pointer']   = esc_html__( 'Insert the Slot Id and Div Gpt Ad. Please <a href="https://adsforwp.com/docs/article/how-to-add-dfp-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
                $object['ad_background_pointer'] = esc_html__( 'Insert the background banner.', 'ads-for-wp' );
                $object['ezoic_pointer'] = esc_html__( 'You can find Data Ezoic ID from ezoic code. Please <a href="https://adsforwp.com/docs/article/how-to-add-ezoic-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
+               $object['engageya_pointer'] = esc_html__( 'You can find Data Widget Id\'s, Website Id and Publisher Id from engageya ad network provider.', 'ads-for-wp' );
                $object['mantis_pointer'] = esc_html__( 'You can find Data Mantis ID from mantis ads code. Please <a href="https://adsforwp.com/docs/article/how-to-add-mantis-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
                $object['outbrain_pointer'] = esc_html__( 'You can find Data Outbrain ID from outbrain ads code. Please <a href="https://adsforwp.com/docs/article/how-to-add-outbrain-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
                $object['mediavine_pointer'] = esc_html__( 'You can find Data Mediavine ID from mediavine ads code. Please <a href="https://adsforwp.com/docs/article/how-to-add-mediavine-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );

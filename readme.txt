@@ -3,7 +3,7 @@ Contributors: magazine3
 Tags: Ads, Google Adsense, Media Net, DFP, Custom Code, Infolinks, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
 Tested up to: 5.2.3
-Stable tag: 1.9.9
+Stable tag: 1.9.10
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -13,6 +13,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy to Use, Unlimited Incontent Ads, Adsense, Premium Features and more
 
 = Features: =
+* NEW: Engageya Support
 * NEW: Outbrain Support
 * NEW: Taboola Support
 * NEW: MANTIS Support
@@ -57,6 +58,18 @@ Chart.js library used https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Char
 Google Api Php Client library used https://github.com/googleapis/google-api-php-client - License URI: https://github.com/googleapis/google-api-php-client/blob/master/LICENSE
 
 == Changelog ==
+
+= 1.9.10 (16 October 2019) =
+
+* New Feature: Added Engageya ads Native support in AMP #256
+* Improvement: Added Fluid compatibility for double click ads #252
+* Bug Fixed: In-article ads type of adsense Ad can’t publish issue has been fixed #270
+* Bug Fixed: Ads are not getting displayed due to transient issue #271
+* Bug Fixed: Warning with Gutenberg #268
+* Bug Fixed: Warning Invalid argument supplied for foreach() #264
+* Improvement: Improving the consent #266
+* Bug Fixed: Wrong error message display for Group ads #265
+* Bug Fixed: Need to detect current version of mobile #261
 
 = 1.9.9 (11 October 2019) =
 

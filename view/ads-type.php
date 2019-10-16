@@ -22,6 +22,7 @@ class adsforwp_view_ads_type {
                                 'ad_now'        => 'AdNow',
                                 'mgid'          => 'MGID',
                                 'contentad'     => 'Content.ad',
+                                'engageya' 		=> 'Engageya',
                                 'ezoic' 		=> 'Ezoic',
                                 'infolinks'     => 'Infolinks',
                                 'mantis'     => 'MANTIS',
@@ -38,6 +39,33 @@ class adsforwp_view_ads_type {
 				
 			),
 		),
+		array(
+			'label'     => 'Widget Id\'s',
+			'id'        => 'engageya_widget_ids',
+			'type'      => 'text',
+			'attributes'=> array(
+				'placeholder'   => 'widget_1,widget_2',
+                'maxlength'     => '30',
+			),
+		),
+		array(
+			'label'     => 'Data WebSite Id',
+			'id'        => 'engageya_site_id',
+			'type'      => 'text',                        
+			'attributes'=> array(
+				'placeholder'   => '123456',
+                'maxlength'     => '30',
+			),
+        ),
+        array(
+			'label'     => 'Data Publisher Id',
+			'id'        => 'engageya_publisher_id',
+			'type'      => 'text',                        
+			'attributes'=> array(
+				'placeholder'   => '123456',
+                'maxlength'     => '30',
+			),
+        ),
 		array(
 			'label'     => 'Data Site Id',
 			'id'        => 'mediavine_site_id',
@@ -74,6 +102,7 @@ class adsforwp_view_ads_type {
                 'outbrain_sticky_ads' => 'Sticky (Only AMP)'
 			)
         ),
+        
 		array(
 			'label'     => 'Widget Id\'s',
 			'id'        => 'outbrain_widget_ids',
