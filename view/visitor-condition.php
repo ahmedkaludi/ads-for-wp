@@ -172,7 +172,41 @@ class adsforwp_view_visitor_condition {
     <?php } ?>
     
     <a style="margin-left: 8px; margin-bottom: 8px;" class="button adsforwp-visitor-condition-or-group afw-placement-button" href="#"><?php echo esc_html__( 'Or', 'ads-for-wp') ?></a>
-</div>    
+  </div>
+  <?php
+  $user_target_type = '';
+  $afwp_cache_mobile_support = '';
+  $visitor_conditions_array = get_post_meta( $post->ID, 'visitor_conditions_array', true);
+  foreach ($visitor_conditions_array as $key => $value) {
+    foreach ($value as $gkey => $gvalue) {
+      foreach ($gvalue as $hkey => $hvalue) {
+        if($hvalue['key_1'] == 'device'){
+          $user_target_type = 1;
+          break;
+        }
+      }
+    }
+  }
+  if(function_exists('wpsc_init')){
+    global $wp_cache_mobile_enabled;
+    if($wp_cache_mobile_enabled){
+        $afwp_cache_mobile_support = 1;
+    }
+  }elseif(defined('WP_ROCKET_FILE')){
+    $wp_rocket_option = get_option( 'wp_rocket_settings' );
+    if($wp_rocket_option['cache_mobile']){
+        $afwp_cache_mobile_support = 1;
+    }
+  }
+ 
+  $visitor_condition_enable = get_post_meta($post->ID, $key='adsforwp_v_condition_enable',true);   
+  if(isset($visitor_condition_enable) && $visitor_condition_enable =='enable'){
+      if($user_target_type == 1 && $afwp_cache_mobile_support == 1){
+  ?>
+  <p><span class="dashicons dashicons-warning"></span> <i>Warning: You have enabled Mobile Support in your cache plugin. Please disable it inorder to use user targeting of 'Device type'.</i></p>   
+  <?php }
+  }  
+  ?>
 </div>
     <?php                                                                                      
     }

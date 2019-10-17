@@ -880,7 +880,7 @@ add_filter( 'manage_adsforwp-groups_posts_columns', 'adsforwp_groups_custom_colu
  */
 function adsforwp_group_custom_column_set( $column, $post_id ) {
         
-        global $wpdb,$has_auto_ads;
+        global $wpdb;
         
         $common_function_obj = new adsforwp_admin_common_functions();
         $result = $common_function_obj->adsforwp_check_ads_in_group($post_id);       
