@@ -578,12 +578,7 @@ function adsforwp_modify_title( $title, $id) {
         $ad_type = get_post_meta( $id,'select_adtype', true );
         if($ad_type == 'adsense'){
           if($adsense_auto === 'adsense_auto_ads'){
-            
             $title = $title.' (Auto AdSense Ad)';
-            
-          }
-          if($adsense_auto === 'normal' || $adsense_auto === 'adsense_sticky_ads' || $adsense_auto === 'matched_content_ads' || $adsense_auto === 'in_article_ads'){
-              $title = $title;
           }
         }
       }    
