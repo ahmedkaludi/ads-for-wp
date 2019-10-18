@@ -1030,6 +1030,7 @@ class adsforwp_output_functions{
                                     
             $where_to_display   = adsforwp_rmv_warnings($post_meta_dataset, 'wheretodisplay', 'adsforwp_array');                          
             $adposition         = adsforwp_rmv_warnings($post_meta_dataset, 'adposition', 'adsforwp_array');    
+                
             
            //Displays all ads according to their settings paragraphs starts here              
             switch ($where_to_display) {
@@ -1147,23 +1148,51 @@ class adsforwp_output_functions{
                 }                                               
                 }
         
-              if($adposition == '50_of_the_content'){
-                   
-                 $closing_p        = '</p>';
-                 $paragraphs       = explode( $closing_p, $content );       
-                 $total_paragraphs = count($paragraphs);
-                 $paragraph_id     = round($total_paragraphs /2);  
+                if($adposition == '50_of_the_content'){
+                    $percent_content = adsforwp_rmv_warnings($post_meta_dataset, 'percent_content', 'adsforwp_array');
+                    if(!empty($percent_content)){
+                        $contentTemp = strip_tags( $content );
+
+                        $total_counts = str_word_count($contentTemp);
+                        $fifty = round($total_counts*($percent_content/100));
+                        $contentTempArray = array_filter(explode(" ", $contentTemp));
+                        $contentTempfirst = array_slice($contentTempArray, 0, $fifty);
+                        $contentTempsecond = array_slice( $contentTempArray, $fifty );
+                        $firstPreText = end( $contentTempfirst );
+                        $secondPostText =  $contentTempsecond[0];
+                        $needleOccueance = substr_count( implode(" ", $contentTempfirst), $firstPreText);
+                        $actualContent = '';
+                        $i=1;
+                        $lastPos = 0;
+                        while (($lastPos = strpos($content, $firstPreText, $lastPos+1))!== false) {
+                            if($i==$needleOccueance){
+                                $part1 = substr( $content, 0, $lastPos);
+                                $part2 = substr( $content, $lastPos, strlen($content));
+                                $actualContent = $part1.' '.$ad_code.' '.$part2;
+                            }
+                            $i++;
+                        }
+                        if(!empty($actualContent)){
+                            $content = $actualContent;
+                        }else{
+                            $content = $content;
+                        }
+                    }else{
+                        $closing_p        = '</p>';
+                        $paragraphs       = explode( $closing_p, $content );       
+                        $total_paragraphs = count($paragraphs);
+                        $paragraph_id     = round($total_paragraphs /2);  
                  
-                 foreach ($paragraphs as $index => $paragraph) {
-                    if ( trim( $paragraph ) ) {
-                        $paragraphs[$index] .= $closing_p;
+                        foreach ($paragraphs as $index => $paragraph) {
+                            if ( trim( $paragraph ) ) {
+                                $paragraphs[$index] .= $closing_p;
+                            }
+                            if ( $paragraph_id == $index + 1 ) {
+                                $paragraphs[$index] .= $ad_code;
+                            }
+                        }
+                        $content = implode( '', $paragraphs ); 
                     }
-                    if ( $paragraph_id == $index + 1 ) {
-                        $paragraphs[$index] .= $ad_code;
-                    }
-                  }
-                   $content = implode( '', $paragraphs ); 
-                   
                  }
                 break;             
              default:

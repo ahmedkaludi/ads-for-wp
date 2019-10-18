@@ -72,6 +72,12 @@ class adsforwp_view_display {
                                'placeholder' 	=> 'div',	                               
 			),
 		),
+        array(
+            'label' => 'Percent of Content',
+            'id' => 'percent_content',
+            'type' => 'number',
+            'default' => 50,
+        ),
 		array(
 			'label' => 'Paragraph',
 			'id' => 'paragraph_number',
@@ -225,7 +231,7 @@ class adsforwp_view_display {
 							esc_html__($value, 'ads-for-wp')                                                        
 						);
 					}
-					$input .= '</select><a href="#" class="adsforwp-advance-option-click">'. esc_html__('Advance Option', 'ads-for-wp').'</a>';
+					$input .= '</select><a href="#" class="adsforwp-precentage-content">'. esc_html__('Advance Option', 'ads-for-wp').'</a><a href="#" class="adsforwp-advance-option-click">'. esc_html__('Advance Option', 'ads-for-wp').'</a>';
 
                                             break;
                                         
