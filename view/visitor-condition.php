@@ -187,23 +187,29 @@ class adsforwp_view_visitor_condition {
       }
     }
   }
+  $message = '';
   if(function_exists('wpsc_init')){
     global $wp_cache_mobile_enabled;
-    if($wp_cache_mobile_enabled){
+    if(!$wp_cache_mobile_enabled){
         $afwp_cache_mobile_support = 1;
+        $message = "You are using WP Super Cache plugin, please enable Mobile Support option in you cache plugin to avoid Ads conflicts in responsive mode.";
     }
   }elseif(defined('WP_ROCKET_FILE')){
     $wp_rocket_option = get_option( 'wp_rocket_settings' );
-    if($wp_rocket_option['cache_mobile']){
+    if(!$wp_rocket_option['cache_mobile']){
         $afwp_cache_mobile_support = 1;
+        $message = "You are using WP Rocket Cache plugin, please enable Mobile Support option in you cache plugin to avoid Ads conflicts in responsive mode.";
     }
+  }elseif( defined('W3TC_FILE') ){
+      $afwp_cache_mobile_support = 1;
+      $message = "You are using WP3 Total Cache plugin, please enable Mobile Support option in you cache plugin to avoid Ads conflicts in responsive mode.";
   }
  
   $visitor_condition_enable = get_post_meta($post->ID, $key='adsforwp_v_condition_enable',true);   
   if(isset($visitor_condition_enable) && $visitor_condition_enable =='enable'){
       if($user_target_type == 1 && $afwp_cache_mobile_support == 1){
   ?>
-  <p><span class="dashicons dashicons-warning"></span> <i>Warning: You have enabled Mobile Support in your cache plugin. Please disable it inorder to use user targeting of 'Device type'.</i></p>   
+  <p><span class="dashicons dashicons-warning"></span> <i>Warning: <?php echo esc_html($message);?></i></p>
   <?php }
   }  
   ?>
