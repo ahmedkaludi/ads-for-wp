@@ -573,7 +573,7 @@ function adsforwp_modify_title( $title, $id) {
     
     global $post;
     if($id){
-      if($post->post_type =='adsforwp'){
+      if(get_post_type( $id ) =='adsforwp'){
         $adsense_auto = get_post_meta($id, $key='adsense_type', true);
         $ad_type = get_post_meta( $id,'select_adtype', true );
         if($ad_type == 'adsense'){
@@ -921,7 +921,7 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
                   if(isset($post_meta['select_adtype'])){      
                     if($post_meta['select_adtype'][0] == 'adsense' && $post_meta['adsense_type'][0] != 'adsense_auto_ads'){
                       if(in_array('adsense_auto_ads', $adsense_types)){
-                        echo '<i class="adsforwp-tooltip dashicons dashicons-warning"><span class="adsforwp-tooltiptext"><p style="color:#ffffff;">Cannot use Auto Ads and Adsense Ads at a time.</p></span></i>';  
+                        echo '<div class="adsforwp-tooltip"><i class=" dashicons dashicons-warning"></i><span class="adsforwp-tooltiptext" style="padding:5px;">Cannot use Auto Ads and different condition Ads at a time from same Company.</span></div>';  
                       }
                     }
                   }
