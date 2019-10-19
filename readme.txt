@@ -3,7 +3,7 @@ Contributors: magazine3
 Tags: Ads, Google Adsense, Media Net, DFP, Custom Code, Infolinks, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
 Tested up to: 5.2.3
-Stable tag: 1.9.10
+Stable tag: 1.9.11
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -58,6 +58,14 @@ Chart.js library used https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Char
 Google Api Php Client library used https://github.com/googleapis/google-api-php-client - License URI: https://github.com/googleapis/google-api-php-client/blob/master/LICENSE
 
 == Changelog ==
+
+= 1.9.11 (19 October 2019) =
+
+* Improvement: Need to add attention message if user using Auto Ads and Normal Ads at a time from same company #269
+* Improvement: Need to Add the optional option to place the Ad in the content based on percentage. #223
+* Improvement: Added "h1 - h6" tags in 'Count As Per The' dropdown #272
+* Improvement: Need to add a notice below the User targeting section, only for the Device Type #210
+* Improvement: Need to add note for infolinks Ads type below ads type dropdown #275
 
 = 1.9.10 (16 October 2019) =
 
