@@ -43,7 +43,7 @@ class adsforwp_view_display {
 			'id' => 'adposition',
 			'type' => 'select',
 			'options' => array(
-				'50_of_the_content'=>'50% of the content',
+				'50_of_the_content'=>'Percent of the content',
 				'number_of_paragraph'=>'Number of paragraph',
 			),
 		),                
@@ -73,7 +73,7 @@ class adsforwp_view_display {
 			),
 		),
         array(
-            'label' => 'Percent of Content',
+            'label' => 'Percent',
             'id' => 'percent_content',
             'type' => 'number',
             'default' => 50,
@@ -231,7 +231,7 @@ class adsforwp_view_display {
 							esc_html__($value, 'ads-for-wp')                                                        
 						);
 					}
-					$input .= '</select><a href="#" class="adsforwp-precentage-content">'. esc_html__('Advance Option', 'ads-for-wp').'</a><a href="#" class="adsforwp-advance-option-click">'. esc_html__('Advance Option', 'ads-for-wp').'</a>';
+					$input .= '</select><a href="#" class="adsforwp-advance-option-click">'. esc_html__('Advance Option', 'ads-for-wp').'</a>';
 
                                             break;
                                         
@@ -408,6 +408,7 @@ class adsforwp_view_display {
                                        
                                        
                                        switch ($meta_field['id']) {
+
                                            case 'paragraph_number':
                                                 $paragraphs_checked = '';
                                                 $paragraphs_number = 0;

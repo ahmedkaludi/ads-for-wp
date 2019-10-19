@@ -278,10 +278,7 @@ Tooltip css ends here
 .adsforwp-general table td{
     padding: 8px 13px;
 }
-.adsforwp-precentage-content,.adsforwp-advance-option-click{
-    padding-left: 20px !important;
-    padding-right: 5px !important;        
-}
+
 #ads_on_every_paragraphs_number{
     margin-left: 20px !important;
     margin-right: 5px !important;        
