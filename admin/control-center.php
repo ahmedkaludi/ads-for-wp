@@ -922,7 +922,7 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
                   if(isset($post_meta['select_adtype'])){      
                     if($post_meta['select_adtype'][0] == 'adsense' && $post_meta['adsense_type'][0] != 'adsense_auto_ads'){
                       if(in_array('adsense_auto_ads', $adsense_types)){
-                        echo '<div class="adsforwp-tooltip"><i class=" dashicons dashicons-warning"></i><span class="adsforwp-tooltiptext" style="padding:5px;">Cannot use Auto Ads and different condition Ads at a time from same Company.</span></div>';  
+                        echo '<div class="adsforwp-tooltip"><i class=" dashicons dashicons-warning"></i><span class="adsforwp-tooltiptext" style="padding:5px;">Cannot use Auto Ads and Normal Ads at a time from same Company.</span></div>';  
                       }
                     }
                   }
