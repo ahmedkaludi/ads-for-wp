@@ -177,32 +177,34 @@ class adsforwp_view_visitor_condition {
   $user_target_type = '';
   $afwp_cache_mobile_support = '';
   $visitor_conditions_array = get_post_meta( $post->ID, 'visitor_conditions_array', true);
-  foreach ($visitor_conditions_array as $key => $value) {
-    foreach ($value as $gkey => $gvalue) {
-      foreach ($gvalue as $hkey => $hvalue) {
-        if($hvalue['key_1'] == 'device'){
-          $user_target_type = 1;
-          break;
+    if(is_array($visitor_conditions_array) && !empty($visitor_conditions_array)){
+      foreach ($visitor_conditions_array as $key => $value) {
+        foreach ($value as $gkey => $gvalue) {
+          foreach ($gvalue as $hkey => $hvalue) {
+            if($hvalue['key_1'] == 'device'){
+              $user_target_type = 1;
+              break;
+            }
+          }
         }
       }
     }
-  }
   $message = '';
   if(function_exists('wpsc_init')){
     global $wp_cache_mobile_enabled;
     if(!$wp_cache_mobile_enabled){
         $afwp_cache_mobile_support = 1;
-        $message = "You are using WP Super Cache plugin, please enable Mobile Support option in you cache plugin to avoid Ads conflicts in responsive mode.";
+        $message = "You are using WP Super Cache plugin, if you want User Targeting of 'Device Type' to work perfectly we recommend you to enable Mobile Support of your cache plugin.";
     }
   }elseif(defined('WP_ROCKET_FILE')){
     $wp_rocket_option = get_option( 'wp_rocket_settings' );
     if(!$wp_rocket_option['cache_mobile']){
         $afwp_cache_mobile_support = 1;
-        $message = "You are using WP Rocket Cache plugin, please enable Mobile Support option in you cache plugin to avoid Ads conflicts in responsive mode.";
+        $message = "You are using WP Rocket Cache plugin, if you want User Targeting of 'Device Type' to work perfectly we recommend you to enable Mobile Support of your cache plugin.";
     }
   }elseif( defined('W3TC_FILE') ){
       $afwp_cache_mobile_support = 1;
-      $message = "You are using WP3 Total Cache plugin, please enable Mobile Support option in you cache plugin to avoid Ads conflicts in responsive mode.";
+      $message = "You are using WP3 Total Cache plugin, if you want User Targeting of 'Device Type' to work perfectly we recommend you to enable Mobile Support of your cache plugin.";
   }
  
   $visitor_condition_enable = get_post_meta($post->ID, $key='adsforwp_v_condition_enable',true);   

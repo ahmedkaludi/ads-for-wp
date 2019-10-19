@@ -722,6 +722,7 @@ function adsforwp_defaultSettings(){
     'ad_blocker_support'	  => 1,
 
     'notice_type'    => 'bar',
+    'page_redirect'  => '',
     'allow_cookies'    => 2,
     'notice_title'    => 'Adblock Detected!',
     'notice_description'    => 'Our website is made possible by displaying online advertisements to our visitors. Please consider supporting us by whitelisting our website.',
