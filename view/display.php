@@ -43,7 +43,7 @@ class adsforwp_view_display {
 			'id' => 'adposition',
 			'type' => 'select',
 			'options' => array(
-				'50_of_the_content'=>'50% of the content',
+				'50_of_the_content'=>'Percent of the content',
 				'number_of_paragraph'=>'Number of paragraph',
 			),
 		),                
@@ -54,8 +54,14 @@ class adsforwp_view_display {
 			'options' => array(                               
 				'p_tag'=>'p (default)',
 				'div_tag'=>'div', 
-                                'img_tag'=>'img',
-                                'custom_tag'=>'custom',
+                'img_tag'=>'img',
+                'h1' => 'H1',
+                'h2' => 'H2',
+                'h3' => 'H3',
+                'h4' => 'H4',
+                'h5' => 'H5',
+                'h6' => 'H6',
+                'custom_tag'=>'custom',
 			),
 		),
                 array(
@@ -66,6 +72,12 @@ class adsforwp_view_display {
                                'placeholder' 	=> 'div',	                               
 			),
 		),
+        array(
+            'label' => 'Percent',
+            'id' => 'percent_content',
+            'type' => 'number',
+            'default' => 50,
+        ),
 		array(
 			'label' => 'Paragraph',
 			'id' => 'paragraph_number',
@@ -396,6 +408,7 @@ class adsforwp_view_display {
                                        
                                        
                                        switch ($meta_field['id']) {
+
                                            case 'paragraph_number':
                                                 $paragraphs_checked = '';
                                                 $paragraphs_number = 0;
