@@ -211,7 +211,7 @@ class adsforwp_view_visitor_condition {
   if(isset($visitor_condition_enable) && $visitor_condition_enable =='enable'){
       if($user_target_type == 1 && $afwp_cache_mobile_support == 1){
   ?>
-  <p class="device-type-notice"><span class="dashicons dashicons-warning"></span><em>Warning: <?php echo esc_html($message);?></em></p>
+  <p class="device-type-notice"><span class="dashicons dashicons-warning"></span><em>Warning: <?php echo esc_html__($message,'ads-for-wp');?></em></p>
   <?php }
   }  
   ?>
