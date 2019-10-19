@@ -194,17 +194,17 @@ class adsforwp_view_visitor_condition {
     global $wp_cache_mobile_enabled;
     if(!$wp_cache_mobile_enabled){
         $afwp_cache_mobile_support = 1;
-        $message = "You are using WP Super Cache plugin, if you want User Targeting of 'Device Type' to work perfectly we recommend you to enable Mobile Support of your cache plugin.";
+        $message = "You are using WP Super Cache plugin, if you want User Targeting for 'Device Type' to work perfectly we recommend you to enable Mobile Support of your cache plugin.";
     }
   }elseif(defined('WP_ROCKET_FILE')){
     $wp_rocket_option = get_option( 'wp_rocket_settings' );
     if(!$wp_rocket_option['cache_mobile']){
         $afwp_cache_mobile_support = 1;
-        $message = "You are using WP Rocket Cache plugin, if you want User Targeting of 'Device Type' to work perfectly we recommend you to enable Mobile Support of your cache plugin.";
+        $message = "You are using WP Rocket Cache plugin, if you want User Targeting for 'Device Type' to work perfectly we recommend you to enable Mobile Support of your cache plugin.";
     }
   }elseif( defined('W3TC_FILE') ){
       $afwp_cache_mobile_support = 1;
-      $message = "You are using WP3 Total Cache plugin, if you want User Targeting of 'Device Type' to work perfectly we recommend you to enable Mobile Support of your cache plugin.";
+      $message = "You are using WP3 Total Cache plugin, if you want User Targeting for 'Device Type' to work perfectly we recommend you to enable Mobile Support of your cache plugin.";
   }
  
   $visitor_condition_enable = get_post_meta($post->ID, $key='adsforwp_v_condition_enable',true);   
