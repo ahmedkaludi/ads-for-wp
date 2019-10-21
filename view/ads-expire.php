@@ -26,7 +26,7 @@ class adsforwp_view_expiredate {
 			'id'    => 'adsforwp_ad_expire_day_enable',
 			'type'  => 'checkbox',
 		),
-            array(
+        array(
 			'label' => 'Days',
 			'id'    => 'adsforwp_ad_expire_days',
 			'type'  => 'select',
@@ -39,6 +39,16 @@ class adsforwp_view_expiredate {
                             '5' => 'Saturday',
                             '6' => 'Sunday'
                         )
+		),
+        array(
+			'label' => 'Expire by Impression Limit',
+			'id'    => 'adsforwp_ad_expire_impression_enable',
+			'type'  => 'checkbox',
+		),
+		array(
+			'label' => 'Set Impression Limit',
+			'id'    => 'adsforwp_ad_expire_impression_limit',
+			'type'  => 'text',
 		)
 	);
 	public function __construct() {
@@ -69,6 +79,15 @@ class adsforwp_view_expiredate {
 			if ( empty( $meta_value ) ) {
 				$meta_value = isset($meta_field['default']); }
 			switch ( $meta_field['type'] ) {
+				case 'text':
+					$input = sprintf('<input %s id="%s" name="%s" class="%s" type="text" value="%s">',
+							$meta_field['type'] !== 'color' ? 'style="width: 100%; background:#fff"' : '',
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['id']),
+						esc_attr($meta_field['type']),
+						esc_attr($meta_value)
+                        );
+				break;
 				case 'checkbox':
 					$input = sprintf(
 						'<input %s id="%s" name="% s" type="checkbox" value="1">',
@@ -174,7 +193,6 @@ class adsforwp_view_expiredate {
 			return $post_id;
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 			return $post_id;
-                
                 
         if ( current_user_can( 'manage_options' ) ) {
                 
