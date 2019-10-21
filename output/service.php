@@ -69,7 +69,7 @@ class adsforwp_output_service{
                                   if(!empty($ad_impression_limit) ){
                                     $ad_stats   = adsforwp_get_ad_stats('sumofstats', $ad_id);
                                     $impression = $ad_stats['impressions'];
-                                      if($impression > $ad_impression_limit){
+                                      if($impression < $ad_impression_limit){
                                           return true;
                                       }  
                                   }
@@ -86,7 +86,7 @@ class adsforwp_output_service{
                         if(!empty($ad_impression_limit) ){
                           $ad_stats   = adsforwp_get_ad_stats('sumofstats', $ad_id);
                           $impression = $ad_stats['impressions'];
-                            if($impression > $ad_impression_limit){
+                            if($impression < $ad_impression_limit){
                                 return true;
                             }  
                         }
@@ -109,6 +109,7 @@ class adsforwp_output_service{
                                   $ad_stats   = adsforwp_get_ad_stats('sumofstats', $ad_id);
                                   $impression = $ad_stats['impressions'];
                                   if($impression < $ad_impression_limit){
+                                    
                                       return true;
                                   }  
                               }
