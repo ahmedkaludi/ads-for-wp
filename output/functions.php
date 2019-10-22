@@ -100,8 +100,43 @@ class adsforwp_output_functions{
         add_action('amp_post_template_css',array($this, 'adsforwp_background_ad_css'));
         add_action('init',array($this,'adsforwp_add_query_var_front_js'));
         add_action('parse_query',array($this,'adsforwp_serve_front_js'));
-    }
 
+        //Amp Story Auto Ads filter
+        add_filter('amp_story_auto_ads_configuration',array($this,'adsforwp_amp_story_auto_ads'));
+    }
+    public function adsforwp_amp_story_auto_ads( $data ){
+
+        $all_ads_post = adsforwp_get_ad_ids();                 
+        //$service = new adsforwp_output_service();
+        $post_meta_dataset = array();                      
+        $data = array();
+        if($all_ads_post){
+            foreach($all_ads_post as $ads){
+                $post_ad_id = $ads;
+                //$ad_status = $service->adsforwp_is_condition($post_ad_id);
+            
+                //if($ad_status){
+                    $post_type = get_post_meta( $post_ad_id, 'select_adtype', true );
+                    $common_function_obj = new adsforwp_admin_common_functions();
+                    $in_group = $common_function_obj->adsforwp_check_ads_in_group($post_ad_id);
+                    
+                    if(empty($in_group)){
+                        if($post_type == 'doubleclick'){
+                            $post_meta_dataset = get_post_meta($post_ad_id,$key='',true);
+                            $ad_slot_id  = adsforwp_rmv_warnings($post_meta_dataset, 'dfp_slot_id', 'adsforwp_array');
+                            $data[] = array( "ad-attributes" => array(
+                                              "type" => "doubleclick",
+                                              "data-slot" => $ad_slot_id,
+                                            ),
+                                    );
+                        }
+                    }
+                //}
+                
+            }
+        }
+        return $data;
+    }
     public function adsforwp_serve_front_js(WP_Query $query){
         if($query->get('adsforwp_front_js') == 1){
             $swHtmlContent  = file_get_contents(ADSFORWP_PLUGIN_DIR."public/assets/js/ads-front.js");
@@ -998,7 +1033,7 @@ class adsforwp_output_functions{
      * @return type string
      */
     public function adsforwp_display_ads($content){       
-                                                                            
+                                                  
             if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {
                 $this->is_amp = true;        
             }         
