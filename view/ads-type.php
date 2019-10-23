@@ -243,7 +243,7 @@ class adsforwp_view_ads_type {
             'required' => array(
 				'type' => 'and',
 				'fields'=> array('select_adtype' => 'adsense',
-								'adsense_type' => array('normal','adsense_auto_ads','in_article_ads','') )
+								'adsense_type' => array('normal','adsense_sticky_ads','matched_content_ads','adsense_auto_ads','in_article_ads') )
 			),
 		),
 		array(
@@ -257,7 +257,7 @@ class adsforwp_view_ads_type {
 			),
             'required' => array(
 				'type' => 'and',
-				'fields'=> array('select_adtype' => 'adsense','adsense_type' => array('in_article_ads','normal') )
+				'fields'=> array('select_adtype' => 'adsense','adsense_type' => array('normal','adsense_sticky_ads','matched_content_ads','in_article_ads') )
 			),
 		),
 		array(
@@ -437,7 +437,7 @@ class adsforwp_view_ads_type {
 			'required' => array(
 				'type' => 'and',
 				'fields'=> array(
-					'select_adtype' => array('adsense','doubleclick','media_net','mgid','engageya')
+					'select_adtype' => array('adsense','doubleclick','media_net','mgid','engageya'),'adsense_type' => array('normal','adsense_sticky_ads')
 				)
 			),
 		),
@@ -568,7 +568,7 @@ class adsforwp_view_ads_type {
 			'id'        => 'adsforwp_ad_responsive',                        
 			'type'      => 'checkbox',
 			'required' => array(
-              	'type' => 'or',
+              	'type' => 'and',
               	'fields'=> array(
                     'select_adtype' => array('adsense','engageya','outbrain','ad_image'),
                 )
