@@ -198,7 +198,7 @@ class adsforwp_view_visitor_condition {
     }
   }elseif(defined('WP_ROCKET_FILE')){
     $wp_rocket_option = get_option( 'wp_rocket_settings' );
-    if( !$wp_rocket_option['cache_mobile'] || !$wp_rocket_option['do_caching_mobile_files'] ){
+    if(!$wp_rocket_option['cache_mobile']){
         $afwp_cache_mobile_support = 1;
         $message = "You are using WP Rocket Cache plugin, if you want User Targeting for 'Device Type' to work perfectly we recommend you to enable Mobile Support of your cache plugin.";
     }
