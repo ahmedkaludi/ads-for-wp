@@ -28,14 +28,39 @@ class adsforwp_view_ads_type {
                                 'outbrain'     => 'Outbrain',
                                 'taboola'     => 'Taboola',
                                 'ad_image'      => 'Image Banner Ad',
-                                'ad_background' => 'Background Ad',                                
+                                'ad_background' => 'Background Ad',
+                                'amp_story_ads' => 'AMP Story Ad',                                
                                 'custom'        => 'Custom Code',
                             
+				),
+            'attributes' => array('required' => 'required'),
+		),
+		array(
+			'label'   => 'Ad Type',
+			'id'      => 'amp_story_adtypes',
+			'type'    => 'select',                        
+			'options' => array(
+				'' => 'Select Ad Type',
+				'doubleclick' => 'DoubleClick'
 			),
-                                'attributes' => array(				
-                                'required' => 'required',                                
-				
+			'required' =>  array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'amp_story_ads')
+	        ),
+		),
+		array(
+			'label'     => 'Data Slot Id',
+			'id'        => 'ampstory_dfp_slot_id',
+			'type'      => 'text',
+            'attributes'=> array(
+							'placeholder'   => '/41****9/mobile_ad_banner',
+                            'maxlength'     => '50',
+                            'provider_type' => 'adsforwp_dfp',
 			),
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'amp_story_ads','amp_story_adtypes' => 'doubleclick')
+            ),
 		),
 		array(
 			'label'     => 'Widget Id\'s',

@@ -570,7 +570,6 @@ add_action( 'edit_user_profile_update', 'adsforwp_save_extra_user_profile_fields
  * @return string
  */
 function adsforwp_modify_title( $title, $id) {
-    
     global $post;
     if($id){
       if(get_post_type( $id ) =='adsforwp'){
@@ -580,6 +579,8 @@ function adsforwp_modify_title( $title, $id) {
           if($adsense_auto === 'adsense_auto_ads'){
             $title = $title.' (Auto AdSense Ad)';
           }
+        }elseif($ad_type == 'amp_story_ads'){
+            $title = $title.' (AMP Story Ad)';
         }
       }    
     }
@@ -1105,11 +1106,21 @@ function adsforwp_admin_enqueue($hook) {
          $ad_type_obj = new adsforwp_view_ads_type();
          $ad_type_array = $ad_type_obj->adsforwp_adtype_metabox_fields();
 
-         $display_metabox_obj = new adsforwp_view_display();
-         $display_metabox = $display_metabox_obj->adsforwp_display_metabox_fields();
+          $display_metabox_obj = new adsforwp_view_display();
+          $display_metabox = $display_metabox_obj->adsforwp_display_metabox_fields();
+          $amp_story_ads_feature = array('amp_story_ad' => false);
+          $experiences = array();
+          if( class_exists('AMP_Options_Manager')){
+            $experiences = AMP_Options_Manager::get_option( 'experiences' );
+          }
 
+          if(in_array('stories', $experiences) || class_exists('Ampforwp_Stories_Post_Type')){
+            $amp_story_ads_feature = array('amp_story_ad' => true);
+          }
+          
          wp_localize_script( 'ads-for-wp-admin-js', 'adtype_metafields', $ad_type_array );
          wp_localize_script( 'ads-for-wp-admin-js', 'display_metafields', $display_metabox );
+         wp_localize_script( 'ads-for-wp-admin-js', 'amp_story_ads_feature', $amp_story_ads_feature );
 
          wp_register_script( 'ads-for-wp-admin-analytics-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/analytics.min.js', array('jquery'), ADSFORWP_VERSION , true );
          wp_enqueue_style( 'wp-color-picker' );

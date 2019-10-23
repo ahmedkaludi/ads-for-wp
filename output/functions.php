@@ -105,7 +105,6 @@ class adsforwp_output_functions{
         add_filter('amp_story_auto_ads_configuration',array($this,'adsforwp_amp_story_auto_ads'));
     }
     public function adsforwp_amp_story_auto_ads( $data ){
-
         $all_ads_post = adsforwp_get_ad_ids();                 
         //$service = new adsforwp_output_service();
         $post_meta_dataset = array();                      
@@ -113,26 +112,23 @@ class adsforwp_output_functions{
         if($all_ads_post){
             foreach($all_ads_post as $ads){
                 $post_ad_id = $ads;
-                //$ad_status = $service->adsforwp_is_condition($post_ad_id);
-            
-                //if($ad_status){
-                    $post_type = get_post_meta( $post_ad_id, 'select_adtype', true );
-                    $common_function_obj = new adsforwp_admin_common_functions();
-                    $in_group = $common_function_obj->adsforwp_check_ads_in_group($post_ad_id);
-                    
-                    if(empty($in_group)){
-                        if($post_type == 'doubleclick'){
-                            $post_meta_dataset = get_post_meta($post_ad_id,$key='',true);
-                            $ad_slot_id  = adsforwp_rmv_warnings($post_meta_dataset, 'dfp_slot_id', 'adsforwp_array');
+                $post_type = get_post_meta( $post_ad_id, 'select_adtype', true );
+                $common_function_obj = new adsforwp_admin_common_functions();
+                $in_group = $common_function_obj->adsforwp_check_ads_in_group($post_ad_id);
+                if(empty($in_group)){
+                    if($post_type == 'amp_story_ads'){
+                        $post_meta_dataset = get_post_meta($post_ad_id,$key='',true);
+                        $amp_story_adtypes  = adsforwp_rmv_warnings($post_meta_dataset, 'amp_story_adtypes', 'adsforwp_array');
+                        if( $amp_story_adtypes == 'doubleclick'){
+                            $ad_slot_id  = adsforwp_rmv_warnings($post_meta_dataset, 'ampstory_dfp_slot_id', 'adsforwp_array');
                             $data[] = array( "ad-attributes" => array(
-                                              "type" => "doubleclick",
-                                              "data-slot" => $ad_slot_id,
-                                            ),
-                                    );
+                                          "type" => "doubleclick",
+                                          "data-slot" => $ad_slot_id,
+                                        ),
+                                );
                         }
                     }
-                //}
-                
+                }
             }
         }
         return $data;
@@ -1037,7 +1033,7 @@ class adsforwp_output_functions{
             if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {
                 $this->is_amp = true;        
             }         
-                  
+            
             //Ads positioning starts here
             $all_ads_post = adsforwp_get_ad_ids();                 
             $service = new adsforwp_output_service();
