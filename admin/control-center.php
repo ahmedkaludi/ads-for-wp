@@ -1102,6 +1102,15 @@ function adsforwp_admin_enqueue($hook) {
          
          wp_enqueue_style( 'ads-for-wp-admin', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/css/adsforwp.min.css', false , ADSFORWP_VERSION );
          wp_register_script( 'ads-for-wp-admin-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/adsforwp.min.js', array('jquery','wp-color-picker'), ADSFORWP_VERSION , true );
+         $ad_type_obj = new adsforwp_view_ads_type();
+         $ad_type_array = $ad_type_obj->adsforwp_adtype_metabox_fields();
+
+         $display_metabox_obj = new adsforwp_view_display();
+         $display_metabox = $display_metabox_obj->adsforwp_display_metabox_fields();
+
+         wp_localize_script( 'ads-for-wp-admin-js', 'adtype_metafields', $ad_type_array );
+         wp_localize_script( 'ads-for-wp-admin-js', 'display_metafields', $display_metabox );
+
          wp_register_script( 'ads-for-wp-admin-analytics-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/analytics.min.js', array('jquery'), ADSFORWP_VERSION , true );
          wp_enqueue_style( 'wp-color-picker' );
 

@@ -4,10 +4,8 @@
  */
 class adsforwp_view_ads_type {
         
-	private $screen = array(		
-            'adsforwp'                                                      
-	);
-        private $common_function = null;
+	private $screen = array('adsforwp');
+    private $common_function = null;
         
 	private $meta_fields = array(
 		array(
@@ -47,6 +45,10 @@ class adsforwp_view_ads_type {
 				'placeholder'   => 'widget_1,widget_2',
                 'maxlength'     => '30',
 			),
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'engageya')
+            ),
 		),
 		array(
 			'label'     => 'Data WebSite Id',
@@ -56,6 +58,10 @@ class adsforwp_view_ads_type {
 				'placeholder'   => '123456',
                 'maxlength'     => '30',
 			),
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'engageya')
+            ),
         ),
         array(
 			'label'     => 'Data Publisher Id',
@@ -65,6 +71,10 @@ class adsforwp_view_ads_type {
 				'placeholder'   => '123456',
                 'maxlength'     => '30',
 			),
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'engageya')
+            ),
         ),
 		array(
 			'label'     => 'Data Site Id',
@@ -74,6 +84,10 @@ class adsforwp_view_ads_type {
 				'placeholder'   => '123456',
                 'maxlength'     => '30',
 			),
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'mediavine')
+            ),
         ),
 		array(
 			'label'     => 'Data Slot Id',
@@ -83,6 +97,10 @@ class adsforwp_view_ads_type {
 				'placeholder'   => '123456',
                 'maxlength'     => '30',
 			),
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'ezoic')
+            ),
         ),
 		array(
 			'label'     => 'Data Publisher Id',
@@ -92,6 +110,10 @@ class adsforwp_view_ads_type {
 				'placeholder'   => '123456',
                 'maxlength'     => '30',
 			),
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'taboola')
+            ),
         ),
 		array(
 			'label'     => 'Outbrain Type',
@@ -100,7 +122,11 @@ class adsforwp_view_ads_type {
 			'options'   => array(				
 				'normal'             => 'Normal',
                 'outbrain_sticky_ads' => 'Sticky (Only AMP)'
-			)
+			),
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'outbrain')
+            ),
         ),
         
 		array(
@@ -111,6 +137,10 @@ class adsforwp_view_ads_type {
 				'placeholder'   => 'widget_1,widget_2',
                 'maxlength'     => '30',
 			),
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'outbrain')
+            ),
 		),
 		array(
 			'label'     => 'Display Type',
@@ -119,7 +149,11 @@ class adsforwp_view_ads_type {
 			'options'   => array(				
 				'display'             => 'Display',
                 'recommend' => 'Recommend'
-			)
+			),
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'mantis')
+            ),
         ),
 		array(
 			'label'     => 'Data Property Id',
@@ -128,7 +162,11 @@ class adsforwp_view_ads_type {
 			'attributes'   => array(				
                 'placeholder'   => '5a5840d00000000000000000',
                 'maxlength'     => '30',
-			)
+			),
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'mantis')
+            ),
 		),
 		array(
 			'label'     => 'Data Zone Name',
@@ -137,7 +175,11 @@ class adsforwp_view_ads_type {
 			'attributes'   => array(				
                 'placeholder'   => 'top',
                 'maxlength'     => '30',
-			)
+			),
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'mantis')
+            ),
 		),
         array(
 			'label'     => 'AdSense Type',
@@ -149,22 +191,34 @@ class adsforwp_view_ads_type {
                 'adsense_sticky_ads' => 'Sticky (Only AMP)',
                 'matched_content_ads' => 'Matched Content Ads',
                 'in_article_ads' => 'In-Article Ads'
-				)
-            ),
+				),
+			'required' =>  array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'adsense')
+	        ),
+        ),
 		array(
 			'label'     => 'Custom Code',
 			'id'        => 'custom_code',
 			'type'      => 'textarea',
+			'required' =>  array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'custom')
+	        ),
 		),
                
 		array(
 			'label'     => 'Data Client ID',
 			'id'        => 'data_client_id',
 			'type'      => 'text',
-                        'attributes'=> array(
-				'placeholder'   => 'ca-pub-2005XXXXXXXXX342',
-                                'maxlength'     => '30',                                
-				
+            'attributes'=> array(
+						'placeholder'   => 'ca-pub-2005XXXXXXXXX342',
+                        'maxlength'     => '30',	
+			),
+            'required' => array(
+				'type' => 'and',
+				'fields'=> array('select_adtype' => 'adsense',
+								'adsense_type' => array('normal','adsense_auto_ads','in_article_ads','') )
 			),
 		),
 		array(
@@ -175,6 +229,10 @@ class adsforwp_view_ads_type {
 				'placeholder'   => '70XXXXXX12',
                                 'maxlength'     => '20',
 				
+			),
+            'required' => array(
+				'type' => 'and',
+				'fields'=> array('select_adtype' => 'adsense','adsense_type' => array('in_article_ads','normal') )
 			),
 		),
 		array(
@@ -188,7 +246,11 @@ class adsforwp_view_ads_type {
                 'image_card_stacked' => 'Image Stacked Above Text With Card',
                 'text' => 'Text Only',
                 'text_card' => 'Text With Card'
-			)
+			),
+			'required' => array(
+				'type' => 'and',
+				'fields'=> array('select_adtype' => 'adsense','adsense_type' => 'matched_content_ads' )
+			),
 		),
 		array(
 			'label'     => 'Number of Rows',
@@ -198,6 +260,10 @@ class adsforwp_view_ads_type {
 				'placeholder'   => '3',
                	'maxlength'     => '20',
 				
+			),
+			'required' => array(
+				'type' => 'and',
+				'fields'=> array('select_adtype' => 'adsense','adsense_type' => 'matched_content_ads' )
 			),
 		),
 		array(
@@ -209,88 +275,110 @@ class adsforwp_view_ads_type {
                 'maxlength'     => '20',
 				
 			),
+			'required' => array(
+				'type' => 'and',
+				'fields'=> array('select_adtype' => 'adsense','adsense_type' => 'matched_content_ads' )
+			),
 		),
             //Media.net fields starts here
-                array(
+        array(
 			'label'     => 'Data CID',
 			'id'        => 'data_cid',
 			'type'      => 'text',
-                        'attributes'=> array(
+            'attributes'=> array(
 				'placeholder'   => '8XXXXX74',
-                                'maxlength'     => '20',
-				
+               	'maxlength'     => '20',
 			),
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'media_net')
+            ),
 		),
-                array(
+        array(
 			'label'      => 'Data CRID',
 			'id'         => 'data_crid',
 			'type'       => 'text',
-                        'attributes' => array(
+            'attributes' => array(
 				'placeholder'   => '1XXXXXX82',
-                                'maxlength'     => '20',
-				
+                'maxlength'     => '20',
 			),
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'media_net')
+            ),
 		),
             //Media.net fields ends here  
             
             //DoubleClick fields starts here
-                array(
+        array(
 			'label'     => 'Slot Id',
 			'id'        => 'dfp_slot_id',
 			'type'      => 'text',
-                        'attributes'=> array(
-				'placeholder'   => '/41****9/mobile_ad_banner',
-                                'maxlength'     => '50',
-                                'provider_type' => 'adsforwp_dfp',
-				
+            'attributes'=> array(
+							'placeholder'   => '/41****9/mobile_ad_banner',
+                            'maxlength'     => '50',
+                            'provider_type' => 'adsforwp_dfp',
 			),
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'doubleclick')
+            ),
 		),
         
-                array(
+   		array(
 			'label'      => 'Div Gpt Ad',
 			'id'         => 'dfp_div_gpt_ad',
 			'type'       => 'text',
-                        'attributes' => array(
+            'attributes' => array(
 				'placeholder'   => 'div-gpt-ad-*************-*',
-                                'maxlength'     => '60',
-                                'provider_type' => 'adsforwp_dfp',
-				
+                'maxlength'     => '60',
+                'provider_type' => 'adsforwp_dfp',
 			),
+            'required' => array(
+              	'type' => 'and',//'and'
+              	'fields'=> array('select_adtype' => 'doubleclick')
+            ),
 		),
-                array(
+       	array(
 			'label'     => 'Data Publisher',
 			'id'        => 'adsforwp_mgid_data_publisher',                        
 			'type'      => 'text',
-                        'attributes' => array(
-				'placeholder'   => 'site.com',                                                                
-				
-			),
+            'attributes' => array('placeholder'   => 'site.com'),
+            'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'mgid')
+            ),
 		),
-                array(
+        array(
 			'label'     => 'Data Widget',
 			'id'        => 'adsforwp_mgid_data_widget',                        
 			'type'      => 'text',
-                        'attributes' => array(
-				'placeholder'   => '123645',                                                                				
-			),
+            'attributes' => array('placeholder'   => '123645'),
+            'required' => array(
+              	'type' => 'and',
+              	'fields'=> array( 'select_adtype' => 'mgid')
+            ),
 		),
-                array(
+        array(
 			'label'     => 'Data Container',
 			'id'        => 'adsforwp_mgid_data_container',                        
 			'type'      => 'text',
-                        'attributes' => array(
-				'placeholder'   => 'M87ScriptRootC123645',                                                                				
-			),
+            'attributes' => array('placeholder'   => 'M87ScriptRootC123645'),
+            'required' => array(
+              	'type' => 'and',
+              	'fields'=> array( 'select_adtype' => 'mgid')
+            ),
 		),
-            
-                array(
+        array(
 			'label'     => 'Data Js Src',
 			'id'        => 'adsforwp_mgid_data_js_src',                        
 			'type'      => 'text',
-                        'note'      => 'Js is require to work in non AMP',
-                        'attributes' => array(
-				'placeholder'   => '//jsc.mgid.com/a/m/adsforwp.com.123645.js',                                                                				
-			),
+            'note'      => 'Js is require to work in non AMP',
+            'attributes' => array('placeholder'   => '//jsc.mgid.com/a/m/adsforwp.com.123645.js'),
+            'required' => array(
+              	'type' => 'and',
+              	'fields'=> array( 'select_adtype' => 'mgid')
+            ),
 		),
             //DoubleClick fields ends here  
 		array(
@@ -321,11 +409,21 @@ class adsforwp_view_ads_type {
                                 '728x20'    =>  'Wide Horizontal (728x20)',
                                 '600x120'   =>  'Horizontal (600x120)',
 			),
+			'required' => array(
+				'type' => 'and',
+				'fields'=> array(
+					'select_adtype' => array('adsense','doubleclick','media_net','mgid','engageya')
+				)
+			),
 		),
 		array(
 			'label'     => 'Multi-size Ads',
 			'id'        => 'dfp_multisize_ads',                        
 			'type'      => 'checkbox',
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'doubleclick')
+            ),
 		),
 		array(
 			'label'     => 'Add Sizes',
@@ -333,69 +431,123 @@ class adsforwp_view_ads_type {
 			'type'      => 'text',
 			'attributes' => array(
 				'placeholder'   => '700x90,700x60,500x60....',
-			)
+			),
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'doubleclick','dfp_multisize_ads' => '1')
+            ),
 		),
 		array(
 			'label'     => 'Multi-size Validation',
 			'id'        => 'dfp_multisize_validation',                        
 			'type'      => 'checkbox',
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'doubleclick', 'dfp_multisize_ads' => '1')
+            ),
 		),
             
-                 array(
+        array(
 			'label'     => 'Upload Ad Image',
 			'id'        => 'adsforwp_ad_image',                        
 			'type'      => 'media',
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'ad_image')
+            ),
 		),
                 array(
 			'label'     => 'Ad Anchor link',
 			'id'        => 'adsforwp_ad_redirect_url',                        
 			'type'      => 'text',
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'ad_image')
+            ),
 		),
               
-                array(
+        array(
 			'label'     => 'AdNow Widget ID',
 			'id'        => 'ad_now_widget_id',                        
 			'type'      => 'text',
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'ad_now')
+            ),
 		),            
-                array(
+        array(
 			'label'     => 'ID',
 			'id'        => 'contentad_id',                        
 			'type'      => 'text',
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'contentad')
+            ),
 		),
-                array(
+        array(
 			'label'     => 'D',
 			'id'        => 'contentad_id_d',                        
 			'type'      => 'text',
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'contentad')
+            ),
 		),
-                array(
+        array(
 			'label'     => 'Content Ad Widget ID',
 			'id'        => 'contentad_widget_id',                        
 			'type'      => 'text',
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'contentad')
+            ),
 		),             
-                array(
+        array(
 			'label'     => 'Infolinks P ID',
 			'id'        => 'infolinks_pid',                        
 			'type'      => 'text',
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'infolinks')
+            ),
 		),
-                array(
+        array(
 			'label'     => 'Infolinks W S ID',
 			'id'        => 'infolinks_wsid',                        
 			'type'      => 'text',
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'infolinks')
+            ),
 		),
                 array(
 			'label'     => 'Upload Ad Image',
 			'id'        => 'ad_background_image',                        
 			'type'      => 'media',
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'ad_background')
+            ),
 		),
                 array(
 			'label'     => 'Ad Anchor link',
 			'id'        => 'ad_background_redirect_url',                        
 			'type'      => 'text',
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'ad_background')
+            ),
 		),
-                array(
+        array(
 			'label'     => 'Responsive',
 			'id'        => 'adsforwp_ad_responsive',                        
 			'type'      => 'checkbox',
+			'required' => array(
+              	'type' => 'or',
+              	'fields'=> array(
+                    'select_adtype' => array('adsense','engageya','outbrain','ad_image'),
+                )
+            ),
 		),
                 array(			
                         'id'        => 'adsforwp_ad_img_height',                        
@@ -432,6 +584,10 @@ class adsforwp_view_ads_type {
 		wp_nonce_field( 'adsforwp_adtype_data', 'adsforwp_adtype_nonce' );
 		$this->adsforwp_field_generator( $post );
 	}
+	public function adsforwp_adtype_metabox_fields(){
+		$allmetafields = $this->meta_fields;
+		return $allmetafields;
+	}
 	public function adsforwp_field_generator( $post ) {
 		$output = '';                     
 		foreach ( $this->meta_fields as $meta_field ) {
@@ -460,21 +616,17 @@ class adsforwp_view_ads_type {
                         }
                         
 			switch ( $meta_field['type'] ) {
-				case 'select':                                                                        
-                    
-                                        if(isset($meta_field['attributes'])){
-                                            
-                                                foreach ( $meta_field['attributes'] as $key => $value ) {
-                                                        $attributes .= esc_attr($key)."=".'"'.esc_attr($value).'"'.' ';
-                                                }
-                                                
-                                        }
-                                    
+				case 'select':  
+					if(isset($meta_field['attributes'])){
+                        foreach ( $meta_field['attributes'] as $key => $value ) {
+                        	$attributes .= esc_attr($key)."=".'"'.esc_attr($value).'"'.' ';
+                        }
+                    }               
 					$input = sprintf(
-						'<select class="afw_select" id="%s" name="%s" %s>',
+						'<select class="afw_select" id="%s" name="%s" %s onchange="adsforwp_get_adtype(this);">',
 						esc_attr($meta_field['id']),
 						esc_attr($meta_field['id']),
-                                                $attributes    
+                        $attributes    
 					);
 					foreach ( $meta_field['options'] as $key => $value ) {
 						$meta_field_value = !is_numeric( $key ) ? $key : $value;
@@ -509,7 +661,7 @@ class adsforwp_view_ads_type {
                                     break;
                                 case 'checkbox':
 					$input = sprintf(
-						'<input %s id="%s" name="%s" type="checkbox" value="1">',
+						'<input %s id="%s" name="%s" type="checkbox" value="1" onclick="adsforwp_get_adtype(this);">',
 						$meta_value === '1' ? 'checked' : '',
 						esc_attr($meta_field['id']),
 						esc_attr($meta_field['id'])
@@ -611,7 +763,7 @@ class adsforwp_view_ads_type {
                                     }
     
                                      $input = sprintf(
-						'<input class="afw_input" %s id="%s" name="%s" type="%s" value="%s" %s>',
+						'<input class="afw_input" %s id="%s" name="%s" type="%s" onblur="adsforwp_get_adtype(this);" value="%s" %s>',
 						$meta_field['type'] !== 'color' ? '' : '',
 						esc_attr($meta_field['id']),
 						esc_attr($meta_field['id']),
