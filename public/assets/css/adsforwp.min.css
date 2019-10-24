@@ -371,6 +371,9 @@ Adsforwp Ads blocker notice option panel css
 .adsforwp-general .form-table tr.child-opt th{
     padding-left: 40px;
 }
+.adsforwp-general .form-table tr.adlabel-child-opt th{
+    padding-left: 40px;
+}
 .label-align{
     display: flex;
     align-items: self-start;

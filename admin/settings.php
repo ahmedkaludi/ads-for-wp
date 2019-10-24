@@ -170,13 +170,20 @@ public function adsforwp_settings_init(){
                     
                     add_settings_field(
                             'adsforwp_ad_sponsorship_label',								// ID
-                            'Sponsorship Label',			// Title
+                            'Ad Label',			// Title
                              array($this, 'adsforwp_ad_sponsorship_label_callback'),					// Callback
                             'adsforwp_general_section',							// Page slug
                             'adsforwp_general_section'							// Settings Section ID
                     ); 
-                    
-                 add_settings_section('adsforwp_support_section', 'Contact Us', '__return_false', 'adsforwp_support_section');		              
+                    add_settings_field(
+                            'adsforwp_ad_label_options',								// ID
+                            '',			// Title
+                             array($this, 'adsforwp_ad_label_options_callback'),					// Callback
+                            'adsforwp_general_section',	// Page slug
+                            'adsforwp_general_section',	// Settings Section ID
+                            array('class' => 'adlabel-child-opt')
+                    );
+                 	add_settings_section('adsforwp_support_section', 'Contact Us', '__return_false', 'adsforwp_support_section');		              
                     add_settings_field(
                             'adsforwp_contact_us_form',								// ID
                             '',			// Title
@@ -630,7 +637,7 @@ public function adsforwp_ad_blocker_notice_opt_callback(){
 	}
 	
 	?>
-	<div class="afw_ad_blocker_notice">
+	<div class="afw_ad_blocker_notice" id="afw_ad_blocker_notice">
 		<div class="adsfowp_notice_options">
 			<div class="label-align notice-wrap">
 				<label for="afw-bar"><?php echo esc_html__('Notice Type','ads-for-wp');?></label>
@@ -791,27 +798,51 @@ public function adsforwp_ad_revenue_sharing_callback(){
 }
 
 public function adsforwp_ad_sponsorship_label_callback(){
-    
-	$settings = adsforwp_defaultSettings();           
-        ?>	
+	$settings = adsforwp_defaultSettings();
+	$checked = '';
+	if($settings['ad_sponsorship_label']){
+		$checked = "checked";
+	}           
+    ?>	
 	<fieldset>
-            <?php
-           
-            if(isset($settings['ad_sponsorship_label'])){
-                echo '<input type="checkbox" name="adsforwp_settings[ad_sponsorship_label]" class="regular-text afw_sponsorship_label" value="1" checked> ';
-            }else{
-                echo '<input type="checkbox" name="adsforwp_settings[ad_sponsorship_label]" class="regular-text afw_sponsorship_label" value="1" >';
-            }
-            
-            ?>		
+        <input type="checkbox" id="afw_ad_label" name="adsforwp_settings[ad_sponsorship_label]" class="regular-text afw_ad_label" value="1" <?php echo $checked;?> >
 	</fieldset>
-        <div class="afw_sponsorship_divider"><p><?php echo esc_html__('Enter the label', 'ads-for-wp') ?></p>
-            <strong><?php echo esc_html__('Label', 'ads-for-wp') ?></strong> <input type="text" placeholder="Enter the label" id="ad_sponsorship_label_text" name="adsforwp_settings[ad_sponsorship_label_text]" value="<?php echo isset( $settings['ad_sponsorship_label_text'] ) ? esc_attr( $settings['ad_sponsorship_label_text']) : ''; ?>">            
-        </div>
-        
 	<?php        
 }
 
+public function adsforwp_ad_label_options_callback(){
+	$settings = adsforwp_defaultSettings();
+	$ad_label_txt_color = $settings['ad_label_txt_color'];
+
+	?>
+	<div class="afw_ad_blocker_notice" id="afw_ad_label_settings">
+		<div class="adsfowp_ad_label_options">
+			<h2 class="title">Ad Label Settings</h2>
+			<div class="label-align ad_label">
+				<label for="ad_label"><?php echo esc_html__('Label','ads-for-wp');?> </label>
+				<input id="afw_ad_label_text" placeholder="Enter the label" name="adsforwp_settings[ad_sponsorship_label_text]" type="text" class="regular-text afw_ad_label_text" value="<?php echo isset( $settings['ad_sponsorship_label_text'] ) ? esc_attr( $settings['ad_sponsorship_label_text']) : ''; ?>"/>
+			</div>
+			<div class="label-align ad_label_postion">
+				<label for="ad_label_postion"><?php echo esc_html__('Position','ads-for-wp');?> </label>
+	   			<select name="adsforwp_settings[ad_label_postion]">
+					<?php 
+					$positions = array('above' => 'Above Ad','below' => 'Below Ad');
+					foreach ($positions as $key => $value ) {
+					?>
+						<option value="<?php echo $key;?>" <?php selected( $settings['ad_label_postion'], $key);?>><?php echo $value;?></option>
+					<?php
+					}
+					?>
+				</select>
+			</div>
+			<div class="label-align ad_label_txt_color">
+	   			<label for="ad_label_txt_color"> <?php echo esc_html__('Text Color','ads-for-wp');?> </label>
+	   			<input type="text" value="<?php echo $ad_label_txt_color;?>" name="adsforwp_settings[ad_label_txt_color]" id="ad_label_txt_color" class="adsforwp_cp" data-default-color="#cccccc"/>
+	   		</div>
+		</div>
+	</div>
+	<?php
+}
 public function adsforwp_contact_us_form_callback(){	        	        
         ?>		        
         <div class="afw_contact_us_div">

@@ -732,10 +732,14 @@ function adsforwp_defaultSettings(){
     'notice_txt_color' => '#ffffff',
     'notice_bg_color' => '#1e73be',
     'notice_btn_txt_color' => '#ffffff',
-    'notice_btn_bg_color' => '#f44336'
+    'notice_btn_bg_color' => '#f44336',
+    'ad_sponsorship_label_text' => 'Advertisement',
+    'ad_label_postion' => 'above',
+    'ad_label_txt_color' => '#cccccc'
 	);  
         
-	$settings = get_option( 'adsforwp_settings', $defaults );         
+	$settings = get_option( 'adsforwp_settings', $defaults );
+        
 	return $settings;
 }
 
