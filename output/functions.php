@@ -100,8 +100,41 @@ class adsforwp_output_functions{
         add_action('amp_post_template_css',array($this, 'adsforwp_background_ad_css'));
         add_action('init',array($this,'adsforwp_add_query_var_front_js'));
         add_action('parse_query',array($this,'adsforwp_serve_front_js'));
-    }
 
+        //Amp Story Auto Ads filter
+        add_filter('amp_story_auto_ads_configuration',array($this,'adsforwp_amp_story_auto_ads'));
+        
+    }
+    
+    public function adsforwp_amp_story_auto_ads( $data ){
+        $all_ads_post = adsforwp_get_ad_ids();                 
+        //$service = new adsforwp_output_service();
+        $post_meta_dataset = array();                      
+        $data = array();
+        if($all_ads_post){
+            foreach($all_ads_post as $ads){
+                $post_ad_id = $ads;
+                $post_type = get_post_meta( $post_ad_id, 'select_adtype', true );
+                $common_function_obj = new adsforwp_admin_common_functions();
+                $in_group = $common_function_obj->adsforwp_check_ads_in_group($post_ad_id);
+                if(empty($in_group)){
+                    if($post_type == 'amp_story_ads'){
+                        $post_meta_dataset = get_post_meta($post_ad_id,$key='',true);
+                        $amp_story_adtypes  = adsforwp_rmv_warnings($post_meta_dataset, 'amp_story_adtypes', 'adsforwp_array');
+                        if( $amp_story_adtypes == 'doubleclick'){
+                            $ad_slot_id  = adsforwp_rmv_warnings($post_meta_dataset, 'ampstory_dfp_slot_id', 'adsforwp_array');
+                            $data[] = array( "ad-attributes" => array(
+                                          "type" => "doubleclick",
+                                          "data-slot" => $ad_slot_id,
+                                        ),
+                                );
+                        }
+                    }
+                }
+            }
+        }
+        return $data;
+    }
     public function adsforwp_serve_front_js(WP_Query $query){
         if($query->get('adsforwp_front_js') == 1){
             $swHtmlContent  = file_get_contents(ADSFORWP_PLUGIN_DIR."public/assets/js/ads-front.js");
@@ -998,11 +1031,11 @@ class adsforwp_output_functions{
      * @return type string
      */
     public function adsforwp_display_ads($content){       
-                                                                            
+                                                  
             if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {
                 $this->is_amp = true;        
             }         
-                  
+            
             //Ads positioning starts here
             $all_ads_post = adsforwp_get_ad_ids();                 
             $service = new adsforwp_output_service();
@@ -1106,12 +1139,15 @@ class adsforwp_output_functions{
                            
                             if ( $paragraph_id == $index + 1 ) {
                                 $paragraphs[$index] .= $ad_code;
+
                             }
                            
                        }
                        
                      }
-                     
+                    if( $p_number > $index ){
+                        $paragraphs[$index] .= $ad_code;
+                    }
                   $content = implode( '', $paragraphs );  
                                      
                 }
@@ -1120,7 +1156,7 @@ class adsforwp_output_functions{
                     
                    $paragraphs       = explode( $closing_p, $content );                   
                    $p_number         = $paragraph_id;  
-                   
+
                     foreach ($paragraphs as $index => $paragraph) {
 
                        if ( trim( $paragraph ) ) {
@@ -1138,15 +1174,18 @@ class adsforwp_output_functions{
                            
                             if ( $paragraph_id == $index + 1 ) {
                                 $paragraphs[$index] .= $ad_code;
+
                             }
                            
                        }
                        
-                     }
-                     
-                  $content = implode( '', $paragraphs );   
+                    }
+                    if( $p_number > $index ){
+                        $paragraphs[$index] .= $ad_code;
+                    }    
+                    $content = implode( '', $paragraphs );   
                 }                                               
-                }
+            }
         
                 if($adposition == '50_of_the_content'){
                     $percent_content = adsforwp_rmv_warnings($post_meta_dataset, 'percent_content', 'adsforwp_array');
@@ -1452,11 +1491,19 @@ class adsforwp_output_functions{
             $ad_redirect_url             = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_redirect_url', 'adsforwp_array');                                                  
             $ad_type                     = adsforwp_rmv_warnings($post_meta_dataset, 'select_adtype', 'adsforwp_array');                                                      
                                                 
-            $sponsership_label           = '';
-            
+            $sponsership_label = '';
+            $ad_label_bottom = '';
             if(isset($settings['ad_sponsorship_label']) && isset($settings['ad_sponsorship_label_text']) && $settings['ad_sponsorship_label_text'] !=''){
-                $sponsership_label = '<div style="text-align:'.$ad_alignment.';">'.$settings['ad_sponsorship_label_text'].'</div>';
+                if($settings['ad_label_postion'] == 'above'){
+                    $sponsership_label = '<div style="font-size:10px;text-align:'.$ad_alignment.';color:'.$settings['ad_label_bg_color'].';">'.$settings['ad_sponsorship_label_text'].'</div>';
+                    $sponsership_label = apply_filters( 'adsforwp_adtext_above_ad', $sponsership_label );
+                }else{
+                    $ad_label_bottom = '<div style="font-size:10px;text-align:'.$ad_alignment.';color:'.$settings['ad_label_bg_color'].';">'.$settings['ad_sponsorship_label_text'].'</div>';
+                    $ad_label_bottom = apply_filters( 'adsforwp_adtext_below_ad', $ad_label_bottom );
+                }
+                
             }
+
             if($ad_text_wraparound == 1 && $where_to_display == 'between_the_content'){
                 if($ad_alignment == 'left'){
                   $ad_text_wrap = 'left';
@@ -1490,6 +1537,7 @@ class adsforwp_output_functions{
                                           data-site="'.esc_attr($mediavine_site_id).'">
                                     </amp-ad>
                                   </div>
+                                  '.$ad_label_bottom.'
                                   </div>';
                       }
                   }
@@ -1515,6 +1563,7 @@ class adsforwp_output_functions{
                                          data-article="auto">
                                     </amp-embed>
                                   </div>
+                                  '.$ad_label_bottom.'
                                   </div>';
                         }
                 
@@ -1533,7 +1582,7 @@ class adsforwp_output_functions{
                                         target_type: "mix"
                                         });
                                       </script>
-                                   
+                                   '.$ad_label_bottom.'
                               </div>';
                       }
 
@@ -1567,6 +1616,7 @@ class adsforwp_output_functions{
                                           data-enable-refresh="10">
                                       </amp-embed>
                                       </div>
+                                      '.$ad_label_bottom.'
                                       </div>';
                             }
                         }else{
@@ -1581,6 +1631,7 @@ class adsforwp_output_functions{
                                           data-enable-refresh="10">
                                       </amp-embed>
                                     </div>
+                                    '.$ad_label_bottom.'
                                     </div>';
                                  
                              }
@@ -1622,7 +1673,9 @@ class adsforwp_output_functions{
                                                         data-widgetIds="'.esc_attr($engageya_widget_ids).'"
                                                         data-websiteId="'.esc_attr($engageya_website_id).'"
                                                         data-publisherId="'.esc_attr($engageya_publisher_id).'">
-                                                    </amp-embed></div>'; 
+                                                    </amp-embed>
+                                                    '.$ad_label_bottom.'
+                                                    </div>'; 
                         }
                 }
             break;
@@ -1649,7 +1702,9 @@ class adsforwp_output_functions{
                                                         layout=responsive
                                                         heights="(min-width:1907px) 56%, (min-width:1100px) 64%, (min-width:780px) 75%, (min-width:480px) 105%, 200%"
                                                         data-property="'.esc_attr($mantis_ad_id).'">
-                                                    </amp-embed></div>';
+                                                    </amp-embed>
+                                                    '.$ad_label_bottom.'
+                                                    </div>';
                           }elseif( !empty($mantis_ad_id) && $mantis_display_type == 'display'){
                               $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                               '.$sponsership_label.'
@@ -1659,6 +1714,7 @@ class adsforwp_output_functions{
                                                             data-property = "'.esc_attr($mantis_ad_id).'"
                                                             data-zone="medium-rectangle">
                                                         </amp-ad>
+                                                        '.$ad_label_bottom.'
                                                       </div>';
                           }
                          
@@ -1728,7 +1784,7 @@ class adsforwp_output_functions{
                                                              data-widget="'. esc_attr($data_widget).'"
                                                              data-container="'. esc_attr($data_container).'">
                                                              </amp-embed>
-
+                                                             '.$ad_label_bottom.'
                                                             </div>';    
 
                         }    
@@ -1738,48 +1794,50 @@ class adsforwp_output_functions{
                         if($data_publisher && $data_widget && $data_container && $data_js_src){
                                                                                     
                             $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).'">
-                                                            '.$sponsership_label.'                                                                   
-                                                            <div id="'. esc_attr($data_container).'"> 
-                                                            <script> 
-                                                             (function() {
-                                                                var D = new Date(),
-                                                                    d = document,
-                                                                    b = "body",
-                                                                    ce = "createElement",
-                                                                    ac = "appendChild",
-                                                                    st = "style",
-                                                                    ds = "display",
-                                                                    n = "none",
-                                                                    gi = "getElementById",
-                                                                    lp = d.location.protocol,
-                                                                    wp = lp.indexOf("http") == 0 ? lp : "https:";
-                                                                var i = d[ce]("iframe");
-                                                                i[st][ds] = n;
-                                                                d[gi]("'. esc_attr($data_container).'")[ac](i);
-                                                                try {
-                                                                    var iw = i.contentWindow.document;
-                                                                    iw.open();
-                                                                    iw.writeln("<ht" + "ml><bo" + "dy></bo" + "dy></ht" + "ml>");
-                                                                    iw.close();
-                                                                    var c = iw;
-                                                                } catch (e) {
-                                                                    var iw = d;
-                                                                    var c = d[gi]("'. esc_attr($data_container).'");
-                                                                }
-                                                                var dv = iw[ce]("div");
-                                                                dv.id = "MG_ID";
-                                                                dv[st][ds] = n;
-                                                                dv.innerHTML = '. esc_attr($data_widget).';
-                                                                c[ac](dv);
-                                                                var s = iw[ce]("script");
-                                                                s.async = "async";
-                                                                s.defer = "defer";
-                                                                s.charset = "utf-8";
-                                                                s.src = wp + "'.esc_url($data_js_src).'?t=" + D.getYear() + D.getMonth() + D.getUTCDate() + D.getUTCHours();
-                                                                c[ac](s);
-                                                            })();
-                                                           </script> </div>
-                                                            </div>';                                                        
+                                '.$sponsership_label.'                               
+                                <div id="'. esc_attr($data_container).'"> 
+                                <script> 
+                                 (function() {
+                                    var D = new Date(),
+                                        d = document,
+                                        b = "body",
+                                        ce = "createElement",
+                                        ac = "appendChild",
+                                        st = "style",
+                                        ds = "display",
+                                        n = "none",
+                                        gi = "getElementById",
+                                        lp = d.location.protocol,
+                                        wp = lp.indexOf("http") == 0 ? lp : "https:";
+                                    var i = d[ce]("iframe");
+                                    i[st][ds] = n;
+                                    d[gi]("'. esc_attr($data_container).'")[ac](i);
+                                    try {
+                                        var iw = i.contentWindow.document;
+                                        iw.open();
+                                        iw.writeln("<ht" + "ml><bo" + "dy></bo" + "dy></ht" + "ml>");
+                                        iw.close();
+                                        var c = iw;
+                                    } catch (e) {
+                                        var iw = d;
+                                        var c = d[gi]("'. esc_attr($data_container).'");
+                                    }
+                                    var dv = iw[ce]("div");
+                                    dv.id = "MG_ID";
+                                    dv[st][ds] = n;
+                                    dv.innerHTML = '. esc_attr($data_widget).';
+                                    c[ac](dv);
+                                    var s = iw[ce]("script");
+                                    s.async = "async";
+                                    s.defer = "defer";
+                                    s.charset = "utf-8";
+                                    s.src = wp + "'.esc_url($data_js_src).'?t=" + D.getYear() + D.getMonth() + D.getUTCDate() + D.getUTCHours();
+                                    c[ac](s);
+                                })();
+                               </script> 
+                               </div>
+                               '.$ad_label_bottom.'
+                            </div>';                                                        
                             
                         }
                                                                                           
@@ -1794,7 +1852,7 @@ class adsforwp_output_functions{
                         if($custom_ad_code){
                             $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                             '.$sponsership_label.'
-                                                            '.strip_tags($custom_ad_code,'<amp-ad><amp-embed>').'
+                                                            '.strip_tags($custom_ad_code,'<amp-ad><amp-embed>').''.$ad_label_bottom.'
                                                             </div>';    
 
                         }    
@@ -1805,7 +1863,7 @@ class adsforwp_output_functions{
                             
                             $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom  afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                         '.$sponsership_label.'
-							'.wp_kses($custom_ad_code, $allowed_html).'
+							'.wp_kses($custom_ad_code, $allowed_html).''.$ad_label_bottom.'
 							</div>';     
                             
                         }
@@ -1830,18 +1888,19 @@ class adsforwp_output_functions{
                                  
                                  $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                         '.$sponsership_label.'
-							<div class="afw_ad_amp_achor afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"><a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><div class="afw_ad_amp_'.esc_attr($post_ad_id).'" style="background-image: url('.esc_url($ad_image).');height:'.esc_attr($ad_img_height).'px;width:'.esc_attr($ad_img_width).'px;display:inline-block;background-size: contain; background-repeat: no-repeat;" ></div>	</a></div>
+							<div class="afw_ad_amp_achor afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"><a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><div class="afw_ad_amp_'.esc_attr($post_ad_id).'" style="background-image: url('.esc_url($ad_image).');height:'.esc_attr($ad_img_height).'px;width:'.esc_attr($ad_img_width).'px;display:inline-block;background-size: contain; background-repeat: no-repeat;" ></div></a></div>
+                                '.$ad_label_bottom.'
 							</div>'; 
                                  
                              }
                                                                                        
                          }else{
-                             
+
                              if($ad_image){
                                  
                                  $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                         '.$sponsership_label.'   
-							<div class="afw_ad_amp_achor afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"><a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><amp-img layout="responsive" class="afw_ad_amp_'.esc_attr($post_ad_id).'" src="'.esc_url($ad_image).'" height="'. esc_attr($ad_img_height).'" width="'.esc_attr($ad_img_width).'"></amp-img></a></div>                                                                                                                       
+							<div class="afw_ad_amp_achor afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"><a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><amp-img layout="responsive" class="afw_ad_amp_'.esc_attr($post_ad_id).'" src="'.esc_url($ad_image).'" height="'. esc_attr($ad_img_height).'" width="'.esc_attr($ad_img_width).'"></amp-img></a></div>'.$ad_label_bottom.'  
 							</div>'; 
                                  
                              }
@@ -1856,20 +1915,16 @@ class adsforwp_output_functions{
                                  
                                  $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                         '.$sponsership_label.'
-							<div class="afw_ad_amp_achor afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"><a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><div class="afw_ad_amp_'.esc_attr($post_ad_id).'" style="background-image: url('.esc_url($ad_image).');height:'.esc_attr($ad_img_height).'px;width:'.esc_attr($ad_img_width).'px;display:inline-block;background-size: contain; background-repeat: no-repeat;" ></div>	</a></div>
-							</div>'; 
-                                 
+							<div class="afw_ad_amp_achor afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"><a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><div class="afw_ad_amp_'.esc_attr($post_ad_id).'" style="background-image: url('.esc_url($ad_image).');height:'.esc_attr($ad_img_height).'px;width:'.esc_attr($ad_img_width).'px;display:inline-block;background-size: contain; background-repeat: no-repeat;" ></div>	</a></div>'.$ad_label_bottom.'
+							</div>';
                              }
-                             
-                             
-                             
                          }else{
-                            
+                           
                              if($ad_image){
-                                 
+                                
                                  $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                         '.$sponsership_label.'
-							<div class="afw_ad_amp_achor afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"><a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><amp-img class="afw_ad_amp_'.esc_attr($post_ad_id).'" src="'.esc_url($ad_image).'" height="'. esc_attr($ad_img_height).'" width="'.esc_attr($ad_img_width).'"></amp-img></a></div>                                                                                                                        
+							<div class="afw_ad_amp_achor afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"><a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><amp-img class="afw_ad_amp_'.esc_attr($post_ad_id).'" src="'.esc_url($ad_image).'" height="'. esc_attr($ad_img_height).'" width="'.esc_attr($ad_img_width).'"></amp-img></a></div>'.$ad_label_bottom.'                                          
 							</div>';  
                                  
                              }
@@ -1889,13 +1944,15 @@ class adsforwp_output_functions{
                              }
                              $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                             '.$sponsership_label.'
-							<a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><img height="auto" max-width="100%" src="'.esc_url($ad_image).'"></a>                                                            
+							<a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><img height="auto" max-width="100%" src="'.esc_url($ad_image).'"></a>
+                            '.$ad_label_bottom.'                                            
 							</div>';  
                          }else{
                              
                              $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                         '.$sponsership_label.'
-							<a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><img height="'. esc_attr($ad_img_height).'" width="'.esc_attr($ad_img_width).'" src="'.esc_url($ad_image).'"></a>                                                          
+							<a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><img height="'. esc_attr($ad_img_height).'" width="'.esc_attr($ad_img_width).'" src="'.esc_url($ad_image).'"></a>
+                            '.$ad_label_bottom.'                                          
 							</div>';  
                              
                          }             
@@ -1928,6 +1985,7 @@ class adsforwp_output_functions{
                                                                 data-enable-refresh="10">
                                                               </amp-ad>
                                                         </a>
+                                                        '.$ad_label_bottom.'
 							</div>';
                         
                     }                        
@@ -1957,6 +2015,7 @@ class adsforwp_output_functions{
                                                               d.getElementById("contentad'.esc_attr($contentad_widget_id).'").appendChild(s);
                                                             })();
                                                           </script>
+                                                          '.$ad_label_bottom.'
 							</div>';   
                             
                         }                                                        
@@ -2137,9 +2196,11 @@ class adsforwp_output_functions{
                                         data-auto-format="rspv"
                                         data-enable-refresh="10" 
                                         data-full-width>
-                                        <div overflow></div>
-                                    </amp-ad>
+                                        <div overflow>
+                                        </div>
+                                        </amp-ad>
                                     </div>
+                                    '.$ad_label_bottom.'
                                     </div>';
                                                                   
                              }                                                        
@@ -2161,6 +2222,7 @@ class adsforwp_output_functions{
                                         data-enable-refresh="10">
                                     </amp-ad>
                                     </div>
+                                    '.$ad_label_bottom.'
                                     </div>';
                                  
                              }
@@ -2188,6 +2250,7 @@ class adsforwp_output_functions{
                                               <script>
                                                       (adsbygoogle = window.adsbygoogle || []).push({});
                                               </script>
+                                              '.$ad_label_bottom.'
                                       </div>';
                               
                           }
@@ -2205,6 +2268,7 @@ class adsforwp_output_functions{
                                                                 <script>
                                                                         (adsbygoogle = window.adsbygoogle || []).push({});
                                                                 </script>
+                                                                '.$ad_label_bottom.'
                                                         </div>'; 
                               
                           }
@@ -2256,6 +2320,7 @@ class adsforwp_output_functions{
         data-enable-refresh="10">
 			    </amp-ad>  
                             </a>
+                            '.$ad_label_bottom.'
                             </div>';   
                         
                     }                                         
@@ -2265,15 +2330,15 @@ class adsforwp_output_functions{
                 
                 if($ad_data_crid && $ad_data_cid){
                     
-                 $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-md afw_ad afwadid-'.esc_attr($post_ad_id).'">
-                                                '.$sponsership_label.'
+                 $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-md afw_ad afwadid-'.esc_attr($post_ad_id).'">'.$sponsership_label.'
 						<script id="mNCC" language="javascript">
                                                             medianet_width = "'.esc_attr($width).'";
                                                             medianet_height = "'.esc_attr($height).'";
                                                             medianet_crid = "'.esc_attr($ad_data_crid).'"
                                                             medianet_versionId ="3111299"
                                                    </script>
-                                                   <script src="//contextual.media.net/nmedianet.js?cid='.esc_attr($ad_data_cid).'"></script>		
+                                                   <script src="//contextual.media.net/nmedianet.js?cid='.esc_attr($ad_data_cid).'"></script>
+                                                   '.$ad_label_bottom.'		
 						</div>';      
                     
                 }                                         
@@ -2361,6 +2426,7 @@ class adsforwp_output_functions{
                             <a class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'">
                                    
                           </a>
+                          '.$ad_label_bottom.'
                         </div>';
                     }
                   }else{

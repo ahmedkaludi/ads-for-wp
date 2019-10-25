@@ -570,7 +570,6 @@ add_action( 'edit_user_profile_update', 'adsforwp_save_extra_user_profile_fields
  * @return string
  */
 function adsforwp_modify_title( $title, $id) {
-    
     global $post;
     if($id){
       if(get_post_type( $id ) =='adsforwp'){
@@ -580,6 +579,8 @@ function adsforwp_modify_title( $title, $id) {
           if($adsense_auto === 'adsense_auto_ads'){
             $title = $title.' (Auto AdSense Ad)';
           }
+        }elseif($ad_type == 'amp_story_ads'){
+            $title = $title.' (AMP Story Ad)';
         }
       }    
     }
@@ -731,10 +732,14 @@ function adsforwp_defaultSettings(){
     'notice_txt_color' => '#ffffff',
     'notice_bg_color' => '#1e73be',
     'notice_btn_txt_color' => '#ffffff',
-    'notice_btn_bg_color' => '#f44336'
+    'notice_btn_bg_color' => '#f44336',
+    'ad_sponsorship_label_text' => 'Advertisement',
+    'ad_label_postion' => 'above',
+    'ad_label_txt_color' => '#cccccc'
 	);  
         
-	$settings = get_option( 'adsforwp_settings', $defaults );         
+	$settings = get_option( 'adsforwp_settings', $defaults );
+        
 	return $settings;
 }
 
@@ -1102,6 +1107,25 @@ function adsforwp_admin_enqueue($hook) {
          
          wp_enqueue_style( 'ads-for-wp-admin', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/css/adsforwp.min.css', false , ADSFORWP_VERSION );
          wp_register_script( 'ads-for-wp-admin-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/adsforwp.min.js', array('jquery','wp-color-picker'), ADSFORWP_VERSION , true );
+         $ad_type_obj = new adsforwp_view_ads_type();
+         $ad_type_array = $ad_type_obj->adsforwp_adtype_metabox_fields();
+
+          $display_metabox_obj = new adsforwp_view_display();
+          $display_metabox = $display_metabox_obj->adsforwp_display_metabox_fields();
+          $amp_story_ads_feature = array('amp_story_ad' => false);
+          $experiences = array();
+          if( class_exists('AMP_Options_Manager')){
+            $experiences = AMP_Options_Manager::get_option( 'experiences' );
+          }
+
+          if(in_array('stories', $experiences) || class_exists('Ampforwp_Stories_Post_Type')){
+            $amp_story_ads_feature = array('amp_story_ad' => true);
+          }
+          
+         wp_localize_script( 'ads-for-wp-admin-js', 'adtype_metafields', $ad_type_array );
+         wp_localize_script( 'ads-for-wp-admin-js', 'display_metafields', $display_metabox );
+         wp_localize_script( 'ads-for-wp-admin-js', 'amp_story_ads_feature', $amp_story_ads_feature );
+
          wp_register_script( 'ads-for-wp-admin-analytics-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/analytics.min.js', array('jquery'), ADSFORWP_VERSION , true );
          wp_enqueue_style( 'wp-color-picker' );
 

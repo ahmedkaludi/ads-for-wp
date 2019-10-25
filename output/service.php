@@ -45,57 +45,93 @@ class adsforwp_output_service{
         $ad_expire_from              = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_expire_from', 'adsforwp_array');                              
         $ad_expire_to                = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_expire_to', 'adsforwp_array');                              
         $ad_days_enable              = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_expire_day_enable', 'adsforwp_array');                                      
-        
+        $ad_impression_enable = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_expire_impression_enable', 'adsforwp_array');
+        $ad_impression_limit = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_expire_impression_limit', 'adsforwp_array');
+
+        $impression = 0; 
+
         $current_date = date("Y-m-d");
                                             
-            if($ad_expire_enable){
+        if($ad_expire_enable){
                 
              if($ad_expire_from && $ad_expire_to )  {     
                  
                 if($ad_expire_from <= $current_date && $ad_expire_to >=$current_date){
                     
-                 if($ad_days_enable){
-                     
-                    if(!empty($ad_expire_days)){
-                    
-                        foreach ($ad_expire_days as $days){
-                        
-                            if(date('Y-m-d', strtotime($days))==$current_date){
-                                
-                                return true;  
-                             
-                            }
-                      }
-                        
-                    } 
+                   if($ad_days_enable){
+                       
+                      if(!empty($ad_expire_days)){
+                      
+                          foreach ($ad_expire_days as $days){
                           
-                }else{
-                    return true;          
-                }                                                        
+                            if(date('Y-m-d', strtotime($days))==$current_date){
+                                if($ad_impression_enable){
+                                  if(!empty($ad_impression_limit) ){
+                                    $ad_stats   = adsforwp_get_ad_stats('sumofstats', $ad_id);
+                                    $impression = $ad_stats['impressions'];
+                                      if($impression < $ad_impression_limit){
+                                          return true;
+                                      }  
+                                  }
+                                }else{
+                                  return true;
+                                }
+                            }
+                        }
+                          
+                      } 
+                            
+                  }else{
+                      if($ad_impression_enable){
+                        if(!empty($ad_impression_limit) ){
+                          $ad_stats   = adsforwp_get_ad_stats('sumofstats', $ad_id);
+                          $impression = $ad_stats['impressions'];
+                            if($impression < $ad_impression_limit){
+                                return true;
+                            }  
+                        }
+                      }else{
+                          return true;
+                      }         
+                  }                                                        
                 }                             
             }else{
               return false;    
             }
-            }else{
-                
-            if($ad_days_enable){
-                  
-                    if($ad_expire_days){
-                        
-                        foreach ($ad_expire_days as $days){
-                        
-                            if(date('Y-m-d', strtotime($days))==$current_date){
+        }else{
 
-                                return true;   
-                            
+            if($ad_days_enable){
+                if($ad_expire_days){
+                    foreach ($ad_expire_days as $days){
+                        if(date('Y-m-d', strtotime($days))==$current_date){
+                            if($ad_impression_enable){
+                              if(!empty($ad_impression_limit) ){
+                                  $ad_stats   = adsforwp_get_ad_stats('sumofstats', $ad_id);
+                                  $impression = $ad_stats['impressions'];
+                                  if($impression < $ad_impression_limit){
+                                    
+                                      return true;
+                                  }  
+                              }
+                            }else{
+                              return true;
                             }
                         }
                     }
-                    
-                }else{
-                    
-                        return true;     
-                 
+                }
+            }else{
+              if($ad_impression_enable){
+                if(!empty($ad_impression_limit) ){
+                  $ad_stats   = adsforwp_get_ad_stats('sumofstats', $ad_id);
+                  $impression = $ad_stats['impressions'];
+                    if($impression < $ad_impression_limit){
+                        return true;
+                    }
+                }
+              }else{
+                return true;  
+              }
+              
             }
         }
               
