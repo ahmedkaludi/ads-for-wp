@@ -1515,7 +1515,41 @@ class adsforwp_output_functions{
             if($ad_type !=""){  
                                                                                  
             switch ($ad_type) {
-              case 'mediavine':
+                case 'revcontent':
+                    $responsive_attr = '';
+                    $data_ssl_attr = '';
+                    $data_heights = '';
+                    $width='300';
+                    $height='250';
+                    $banner_size = adsforwp_rmv_warnings($post_meta_dataset, 'banner_size', 'adsforwp_array');
+                    if($banner_size !=''){
+                      $explode_size = explode('x', $banner_size);              
+                      $width = $explode_size[0];            
+                      $height = $explode_size[1];
+                    }
+                    $revcontent_data_id  = adsforwp_rmv_warnings($post_meta_dataset, 'revcontent_data_id', 'adsforwp_array'); 
+                    $revcontent_data_wrapper  = adsforwp_rmv_warnings($post_meta_dataset, 'revcontent_data_wrapper', 'adsforwp_array');
+                        if($ad_responsive == 1){
+                            $responsive_attr = 'layout=responsive';
+                        }
+                        
+                        if(!empty($revcontent_data_heights)){
+                            $data_heights = 'heights="'.$revcontent_data_heights.'"';
+                        }
+                    if($this->is_amp){
+                        $this->amp_ads_id[] = $post_ad_id;
+                            $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:-webkit-'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                                '.$sponsership_label.'
+                                <amp-ad  width="400"  height="260" '.$responsive_attr.' type="revcontent" heights="(max-width: 320px) 933px,(max-width: 360px) 1087px,(max-width: 375px) 1138px,
+      (max-width: 412px) 1189px,(max-width: 414px) 1072px,(max-width: 568px) 1151px, (max-width: 640px) 1128px, (max-width: 667px) 1151px, (max-width: 732px) 1211px,(max-width: 736px) 1151px, (max-width: 768px) 633px, (max-width: 1024px) 711px,86vw" '.$data_ssl_attr.'data-wrapper="'.$revcontent_data_wrapper.'" data-ssl="true" data-id="'.$revcontent_data_id.'">
+                                    <div placeholder="">Loading ...</div>
+                                </amp-ad>
+                                '.$ad_label_bottom.'
+                                </div>';
+                    }
+
+                break;
+                case 'mediavine':
                 $width='300';
                 $height='250';
                 $banner_size = adsforwp_rmv_warnings($post_meta_dataset, 'banner_size', 'adsforwp_array');

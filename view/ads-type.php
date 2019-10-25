@@ -28,6 +28,7 @@ class adsforwp_view_ads_type {
                                 'taboola'     => 'Taboola',
                                 'ad_image'      => 'Image Banner Ad',
                                 'ad_background' => 'Background Ad',
+                                'revcontent'	=> 'Revcontent Ad',
                                 'amp_story_ads' => 'AMP Story Ad',                                
                                 'custom'        => 'Custom Code',
                             
@@ -42,6 +43,33 @@ class adsforwp_view_ads_type {
             	'engageya' => '<p class="engageya_notice"><i>Note: This Ad type is not implemented in Non-AMP</i>.</p>',
             )
 		),
+		array(
+			'label' => 'Data ID',
+			'id' => 'revcontent_data_id',
+			'type' => 'text',
+			'attributes'=> array(
+				'placeholder'   => '123456',
+                'maxlength'     => '30',
+			),
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'revcontent')
+            ),
+		),
+		array(
+			'label' => 'Data Wrapper',
+			'id' => 'revcontent_data_wrapper',
+			'type' => 'text',
+			'attributes'=> array(
+				'placeholder'   => 'rcjsload_2ff711',
+                'maxlength'     => '30',
+			),
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'revcontent')
+            ),
+		),
+		
 		array(
 			'label'   => 'Ad Type',
 			'id'      => 'amp_story_adtypes',
@@ -583,7 +611,7 @@ class adsforwp_view_ads_type {
 			'required' => array(
               	'type' => 'and',
               	'fields'=> array(
-                    'select_adtype' => array('adsense','engageya','outbrain','ad_image'), 'adsense_type' => array('normal')
+                    'select_adtype' => array('adsense','engageya','outbrain','ad_image','revcontent'), 'adsense_type' => array('normal')
                 )
             ),
 		),
