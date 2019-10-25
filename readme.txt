@@ -13,6 +13,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy to Use, Unlimited Incontent Ads, Adsense, Premium Features and more
 
 = Features: =
+* NEW: AMP Story Ads Support
 * NEW: Engageya Support
 * NEW: Outbrain Support
 * NEW: Taboola Support
@@ -58,6 +59,14 @@ Chart.js library used https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Char
 Google Api Php Client library used https://github.com/googleapis/google-api-php-client - License URI: https://github.com/googleapis/google-api-php-client/blob/master/LICENSE
 
 == Changelog ==
+
+= 1.9.12 (25 October 2019) =
+
+* New Feature: Need to add Feature of AMP Stories Ads #230
+* New Feature: Expiry by impression count #228
+* Improvement: Need to show Advertisement text after the Ad #283
+* Improvement: Need to improve javascript functionality of adsforwp option panel #251
+* Bug Fixed: Ads are not loading properly on Mobile and Desktop, if we set user targeting #282
 
 = 1.9.11 (19 October 2019) =
 
