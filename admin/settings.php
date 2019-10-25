@@ -817,7 +817,7 @@ public function adsforwp_ad_label_options_callback(){
 	?>
 	<div class="afw_ad_blocker_notice" id="afw_ad_label_settings">
 		<div class="adsfowp_ad_label_options">
-			<h2 class="title">Ad Label Settings</h2>
+			<h2 class="title"><?php echo esc_html__('Ad Label Settings','ads-for-wp');?></h2>
 			<div class="label-align ad_label">
 				<label for="ad_label"><?php echo esc_html__('Label','ads-for-wp');?> </label>
 				<input id="afw_ad_label_text" placeholder="Enter the label" name="adsforwp_settings[ad_sponsorship_label_text]" type="text" class="regular-text afw_ad_label_text" value="<?php echo isset( $settings['ad_sponsorship_label_text'] ) ? esc_attr( $settings['ad_sponsorship_label_text']) : ''; ?>"/>

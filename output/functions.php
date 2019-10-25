@@ -1139,12 +1139,15 @@ class adsforwp_output_functions{
                            
                             if ( $paragraph_id == $index + 1 ) {
                                 $paragraphs[$index] .= $ad_code;
+
                             }
                            
                        }
                        
                      }
-                     
+                    if( $p_number > $index ){
+                        $paragraphs[$index] .= $ad_code;
+                    }
                   $content = implode( '', $paragraphs );  
                                      
                 }
@@ -1153,7 +1156,7 @@ class adsforwp_output_functions{
                     
                    $paragraphs       = explode( $closing_p, $content );                   
                    $p_number         = $paragraph_id;  
-                   
+
                     foreach ($paragraphs as $index => $paragraph) {
 
                        if ( trim( $paragraph ) ) {
@@ -1171,15 +1174,18 @@ class adsforwp_output_functions{
                            
                             if ( $paragraph_id == $index + 1 ) {
                                 $paragraphs[$index] .= $ad_code;
+
                             }
                            
                        }
                        
-                     }
-                     
-                  $content = implode( '', $paragraphs );   
+                    }
+                    if( $p_number > $index ){
+                        $paragraphs[$index] .= $ad_code;
+                    }    
+                    $content = implode( '', $paragraphs );   
                 }                                               
-                }
+            }
         
                 if($adposition == '50_of_the_content'){
                     $percent_content = adsforwp_rmv_warnings($post_meta_dataset, 'percent_content', 'adsforwp_array');
