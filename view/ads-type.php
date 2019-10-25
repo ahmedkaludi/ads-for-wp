@@ -5,8 +5,7 @@
 class adsforwp_view_ads_type {
         
 	private $screen = array('adsforwp');
-    private $common_function = null;
-        
+    private $common_function = null;   
 	private $meta_fields = array(
 		array(
 			'label'   => 'Ad Type',
@@ -34,6 +33,14 @@ class adsforwp_view_ads_type {
                             
 				),
             'attributes' => array('required' => 'required'),
+            'metaboxes' => array('ezoic' => array('display-metabox'),'ad_background' => array('display-metabox','adsforwp-location'),'amp_story_ads' => array('display-metabox','setexpiredate','adsforwp-location','adsforwp_visitor_condition_metabox','adsforwp_placement_metabox'),'engageya' => array('adsforwp-location','setexpiredate')),
+            'notice' => array(
+            	'ezoic'=>'<p class="ezoic_notice"><i>Note: This Ad type is not implemented in AMP</i></p>',
+            	'infolinks' => '<p class="infolinks_notice"><i>Note: This Ad type is not implemented in AMP</i>.</p>',
+            	'amp_story_ads' => '<p class="ampstory_notice"><i>Note: Need AMP Story feature inorder to use this Ad Type</i>.</p>',
+            	'ad_now' => '<p class="adnow_notice"><i>Note: This Ad type is not implemented in AMP</i>.</p>',
+            	'engageya' => '<p class="engageya_notice"><i>Note: This Ad type is not implemented in Non-AMP</i>.</p>',
+            )
 		),
 		array(
 			'label'   => 'Ad Type',
@@ -47,6 +54,7 @@ class adsforwp_view_ads_type {
               	'type' => 'and',
               	'fields'=> array('select_adtype' => 'amp_story_ads')
 	        ),
+	        'metaboxes' => array(''=> array('display-metabox','setexpiredate','adsforwp-location','adsforwp_visitor_condition_metabox','adsforwp_placement_metabox'), 'doubleclick'=> array('display-metabox','setexpiredate','adsforwp-location','adsforwp_visitor_condition_metabox','adsforwp_placement_metabox')),
 		),
 		array(
 			'label'     => 'Data Slot Id',
@@ -217,6 +225,11 @@ class adsforwp_view_ads_type {
                 'matched_content_ads' => 'Matched Content Ads',
                 'in_article_ads' => 'In-Article Ads'
 				),
+			'notice' => array('in_article_ads' => '<p class="in_article_notice"><i>Note: This AdSense type is not implemented in AMP</i>.</p>'),
+			'metaboxes' => array(
+				'adsense_sticky_ads' => array('display-metabox','adsforwp-location'),
+				'adsense_auto_ads' => array('display-metabox','adsforwp_visitor_condition_metabox')
+			),
 			'required' =>  array(
               	'type' => 'and',
               	'fields'=> array('select_adtype' => 'adsense')
@@ -570,7 +583,7 @@ class adsforwp_view_ads_type {
 			'required' => array(
               	'type' => 'and',
               	'fields'=> array(
-                    'select_adtype' => array('adsense','engageya','outbrain','ad_image'),
+                    'select_adtype' => array('adsense','engageya','outbrain','ad_image'), 'adsense_type' => array('normal')
                 )
             ),
 		),
