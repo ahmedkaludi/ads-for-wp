@@ -1491,10 +1491,10 @@ class adsforwp_output_functions{
             $ad_label_bottom = '';
             if(isset($settings['ad_sponsorship_label']) && isset($settings['ad_sponsorship_label_text']) && $settings['ad_sponsorship_label_text'] !=''){
                 if($settings['ad_label_postion'] == 'above'){
-                    $sponsership_label = '<div style="font-size:10px;text-align:'.$ad_alignment.';color:'.$settings['ad_label_bg_color'].';">'.$settings['ad_sponsorship_label_text'].'</div>';
+                    $sponsership_label = '<div style="font-size:10px;text-align:'.$ad_alignment.';color:'.$settings['ad_label_txt_color'].';">'.$settings['ad_sponsorship_label_text'].'</div>';
                     $sponsership_label = apply_filters( 'adsforwp_adtext_above_ad', $sponsership_label );
                 }else{
-                    $ad_label_bottom = '<div style="font-size:10px;text-align:'.$ad_alignment.';color:'.$settings['ad_label_bg_color'].';">'.$settings['ad_sponsorship_label_text'].'</div>';
+                    $ad_label_bottom = '<div style="font-size:10px;text-align:'.$ad_alignment.';color:'.$settings['ad_label_txt_color'].';">'.$settings['ad_sponsorship_label_text'].'</div>';
                     $ad_label_bottom = apply_filters( 'adsforwp_adtext_below_ad', $ad_label_bottom );
                 }
                 
