@@ -1178,9 +1178,7 @@ class adsforwp_output_functions{
                        }
                        
                     }
-                    if( $p_number > $index ){
-                        $paragraphs[$index] .= $ad_code;
-                    }    
+                      
                     $content = implode( '', $paragraphs );   
                 }                                               
             }
