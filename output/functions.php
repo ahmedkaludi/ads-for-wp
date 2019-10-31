@@ -55,6 +55,7 @@ class adsforwp_output_functions{
         add_filter('widget_text', 'do_shortcode');    
         
         add_action('wp_head', array($this, 'adsforwp_ezoic_ads_script'),10);
+        add_action('wp_head', array($this, 'adsforwp_adsense_ads_script'));
         add_action('wp_head', array($this, 'adsforwp_mediavines_ads_script'));
 
         add_action('wp_head', array($this, 'adsforwp_taboola_ads_script'),10);
@@ -1187,7 +1188,6 @@ class adsforwp_output_functions{
                     $percent_content = adsforwp_rmv_warnings($post_meta_dataset, 'percent_content', 'adsforwp_array');
                     if(!empty($percent_content)){
                         $contentTemp = strip_tags( $content );
-
                         $total_counts = str_word_count($contentTemp);
                         $fifty = round($total_counts*($percent_content/100));
                         $contentTempArray = array_filter(explode(" ", $contentTemp));
@@ -1881,12 +1881,11 @@ class adsforwp_output_functions{
 
                         }                                       
                     }else{
-                        
                         if($custom_ad_code){
                             
                             $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom  afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                         '.$sponsership_label.'
-							'.wp_kses($custom_ad_code, $allowed_html).''.$ad_label_bottom.'
+							'.$custom_ad_code.''.$ad_label_bottom.'
 							</div>';     
                             
                         }
@@ -2780,6 +2779,11 @@ class adsforwp_output_functions{
                 }
             }
         }
+    }
+    public function adsforwp_adsense_ads_script(){
+        ?>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <?php
     }
     public function adsforwp_ezoic_ads_script(){
         $all_ads_id    = adsforwp_get_ad_ids();
