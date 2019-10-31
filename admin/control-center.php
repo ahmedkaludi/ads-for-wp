@@ -1327,8 +1327,9 @@ function adsforwp_add_localize_data($object, $object_name){
                $object['pointer_help']          = esc_html__( 'Help', 'ads-for-wp' );
                $object['adsense_pointer']       = esc_html__( 'You can find Data Client ID and Data Ad Slot from adsense code. Please <a href="https://adsforwp.com/docs/article/how-to-add-adsense-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
                $object['media_net_pointer']     = esc_html__( 'You can find Data CID id and Data CRID from media.net code. Please <a href="https://adsforwp.com/docs/article/how-to-add-amp-ad-for-media-net/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
-               $object['ad_now_pointer']        = esc_html__( 'You can find Widget ID from adnow code.', 'ads-for-wp' );
-               $object['mgid_pointer']        = esc_html__( 'You can find Publisher and Widget Data from MGID ad code. Please <a href="https://adsforwp.com/docs/article/how-to-add-mgid-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
+               $object['ad_now_pointer'] = esc_html__( 'You can find Widget ID from adnow code.', 'ads-for-wp' );
+               $object['revcontent_pointer'] = esc_html__( 'You can find Data ID and Data Wrapper from revcontent code.', 'ads-for-wp' );
+               $object['mgid_pointer'] = esc_html__( 'You can find Publisher and Widget Data from MGID ad code. Please <a href="https://adsforwp.com/docs/article/how-to-add-mgid-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
                $object['contentad_pointer']     = esc_html__( 'You can find ID id, D and Ad Widget ID from content.ad code.', 'ads-for-wp' );
                $object['infolinks_pointer']     = esc_html__( 'You can find P ID and W S ID from infolinks code. Please <a href="https://adsforwp.com/docs/article/how-to-add-infolinks-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
                $object['ad_image_pointer']      = esc_html__( 'Upload a banner which you want to display as an ad and anchor link which will redirect users to that link on click. Please <a href="https://adsforwp.com/docs/article/how-to-add-custom-banner-ads-in-amp-wordpress/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
