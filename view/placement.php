@@ -250,8 +250,7 @@ class adsforwp_view_placement {
         
         // Get all the users registered
         $user               = wp_get_current_user();
-        $author_id = $post->post_author;
-
+        
         switch ($type) {
         // Basic Controls ------------ 
         
@@ -312,6 +311,7 @@ class adsforwp_view_placement {
               }            
           break;
           case 'user':
+            $author_id = $post->post_author;
             if ( $comparison == 'equal') {
                 if ( $data == 'user-'.$author_id ) {
                     $result = true;

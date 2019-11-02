@@ -36,14 +36,17 @@ class Adsforwp_Ads_Gutenberg{
 	    $all_group_ads = adsforwp_get_group_ad_ids();
 	    $ads = array();
 		$groups = array();
-		
-		foreach ( $all_ads as $ad_id ) {
 
-			$ads[] = array( 'id' => $ad_id, 'title' => get_the_title( $ad_id ) );
+		if (is_array($all_ads) && !empty($all_ads)){
+			foreach ( $all_ads as $ad_id ) {
+				$ads[] = array( 'id' => $ad_id, 'title' => get_the_title( $ad_id ) );
+			}
 		}
-		
-		foreach ( $all_group_ads as $gr_ad_id ) {
-			$groups[] = array( 'id' => $gr_ad_id, 'name' => get_the_title($gr_ad_id) );
+
+		if (is_array($all_group_ads) && !empty($all_group_ads) ){
+			foreach ( $all_group_ads as $gr_ad_id ) {
+				$groups[] = array( 'id' => $gr_ad_id, 'name' => get_the_title($gr_ad_id) );
+			}
 		}
 		
 		$default = array(

@@ -569,25 +569,24 @@ add_action( 'edit_user_profile_update', 'adsforwp_save_extra_user_profile_fields
  * @param string $title
  * @return string
  */
-function adsforwp_modify_title( $title) {
-    
+function adsforwp_modify_title( $title, $id) {
     global $post;
-    if($post){
-        
-    if($post->post_type =='adsforwp'){
-        
-        $adsense_auto = get_post_meta($post->ID, $key='adsense_type', true);
-        
-        if($adsense_auto === 'adsense_auto_ads'){
-            
+    if($id){
+      if(get_post_type( $id ) =='adsforwp'){
+        $adsense_auto = get_post_meta($id, $key='adsense_type', true);
+        $ad_type = get_post_meta( $id,'select_adtype', true );
+        if($ad_type == 'adsense'){
+          if($adsense_auto === 'adsense_auto_ads'){
             $title = $title.' (Auto AdSense Ad)';
-            
+          }
+        }elseif($ad_type == 'amp_story_ads'){
+            $title = $title.' (AMP Story Ad)';
         }
-    }    
-}
+      }    
+    }
     return $title;
 }
-add_filter( 'the_title', 'adsforwp_modify_title', 10, 1 );
+add_filter( 'the_title', 'adsforwp_modify_title', 10, 2 );
 
 /**
 * This is a ajax handler function to check adsese auto ads, if it is already added.
@@ -724,6 +723,7 @@ function adsforwp_defaultSettings(){
     'ad_blocker_support'	  => 1,
 
     'notice_type'    => 'bar',
+    'page_redirect'  => 0,
     'allow_cookies'    => 2,
     'notice_title'    => 'Adblock Detected!',
     'notice_description'    => 'Our website is made possible by displaying online advertisements to our visitors. Please consider supporting us by whitelisting our website.',
@@ -732,10 +732,14 @@ function adsforwp_defaultSettings(){
     'notice_txt_color' => '#ffffff',
     'notice_bg_color' => '#1e73be',
     'notice_btn_txt_color' => '#ffffff',
-    'notice_btn_bg_color' => '#f44336'
+    'notice_btn_bg_color' => '#f44336',
+    'ad_sponsorship_label_text' => 'Advertisement',
+    'ad_label_postion' => 'above',
+    'ad_label_txt_color' => '#cccccc'
 	);  
         
-	$settings = get_option( 'adsforwp_settings', $defaults );         
+	$settings = get_option( 'adsforwp_settings', $defaults );
+        
 	return $settings;
 }
 
@@ -904,8 +908,30 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
                
             }
              $adsforwp_google_token = get_option( 'adsforwp_google_token' );
-                                      
-            switch ( $column ) {        
+             $post_meta = get_post_meta($post_id, $key='', true);
+             $all_ads_post = get_posts(
+                  array(
+                          'post_type'    => 'adsforwp',
+                          'posts_per_page'     => -1,
+                          'post_status'        => 'publish',
+                  )
+              ); 
+              $adsense_types = array();
+              if($all_ads_post){
+                  foreach($all_ads_post as $ads){
+                      $adsense_types[] = get_post_meta( $ads->ID, 'adsense_type', true );         
+                 }
+              }
+            switch ( $column ) {
+                case 'adsforwp_auto_ads_warning':
+                  if(isset($post_meta['select_adtype'])){      
+                    if($post_meta['select_adtype'][0] == 'adsense' && $post_meta['adsense_type'][0] != 'adsense_auto_ads'){
+                      if(in_array('adsense_auto_ads', $adsense_types)){
+                        echo '<div class="adsforwp-tooltip"><i class=" dashicons dashicons-warning"></i><span class="adsforwp-tooltiptext" style="padding:5px;">'.esc_html__('Cannot use Auto Ads and Normal Ads at a time from same Company.','ads-for-wp').'</span></div>';  
+                      }
+                    }
+                  }
+                break;        
                 case 'adsforwp_group_column' :
                     
                     echo html_entity_decode(esc_attr($post_title)); 
@@ -913,7 +939,7 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
                     break; 
                 case 'adsforwp_ad_image_preview' :
                     
-                    $post_meta = get_post_meta($post_id, $key='', true);  
+                      
                     
                     if(isset($post_meta['select_adtype'])){
                         
@@ -990,6 +1016,7 @@ function adsforwp_custom_columns($columns) {
     $settings = adsforwp_defaultSettings();
     
     unset($columns['date']);
+    $columns['adsforwp_auto_ads_warning']       = '<a>'.esc_html__( '', 'ads-for-wp' ).'<a>'; 
     $columns['adsforwp_ad_image_preview']       = '<a>'.esc_html__( 'Preview', 'ads-for-wp' ).'<a>';
     $columns['adsforwp_expire_column']          = '<a>'.esc_html__( 'Expire On', 'ads-for-wp' ).'<a>';
     $columns['adsforwp_group_column']           = '<a>'.esc_html__( 'Groups', 'ads-for-wp' ).'<a>';
@@ -1012,7 +1039,7 @@ add_filter( 'manage_adsforwp_posts_columns', 'adsforwp_custom_columns' );
  * @param type $post_id
  */
 function adsforwp_custom_column_set( $column, $post_id ) {
-    
+
     switch ( $column ) {        
         case 'ads_group_shortcode' :
             echo '<a>[adsforwp-group id="'.esc_attr($post_id).'"]</a>'; 
@@ -1080,6 +1107,25 @@ function adsforwp_admin_enqueue($hook) {
          
          wp_enqueue_style( 'ads-for-wp-admin', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/css/adsforwp.min.css', false , ADSFORWP_VERSION );
          wp_register_script( 'ads-for-wp-admin-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/adsforwp.min.js', array('jquery','wp-color-picker'), ADSFORWP_VERSION , true );
+         $ad_type_obj = new adsforwp_view_ads_type();
+         $ad_type_array = $ad_type_obj->adsforwp_adtype_metabox_fields();
+
+          $display_metabox_obj = new adsforwp_view_display();
+          $display_metabox = $display_metabox_obj->adsforwp_display_metabox_fields();
+          $amp_story_ads_feature = array('amp_story_ad' => false);
+          $experiences = array();
+          if( class_exists('AMP_Options_Manager')){
+            $experiences = AMP_Options_Manager::get_option( 'experiences' );
+          }
+
+          if(in_array('stories', $experiences) || class_exists('Ampforwp_Stories_Post_Type')){
+            $amp_story_ads_feature = array('amp_story_ad' => true);
+          }
+          
+         wp_localize_script( 'ads-for-wp-admin-js', 'adtype_metafields', $ad_type_array );
+         wp_localize_script( 'ads-for-wp-admin-js', 'display_metafields', $display_metabox );
+         wp_localize_script( 'ads-for-wp-admin-js', 'amp_story_ads_feature', $amp_story_ads_feature );
+
          wp_register_script( 'ads-for-wp-admin-analytics-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/analytics.min.js', array('jquery'), ADSFORWP_VERSION , true );
          wp_enqueue_style( 'wp-color-picker' );
 
@@ -1110,8 +1156,29 @@ add_action('admin_enqueue_scripts','adsforwp_admin_enqueue');
 function adsforwp_get_ad_ids(){
         
     $all_ads_id = json_decode(get_transient('adsforwp_transient_ads_ids'), true);
-                          
-     return $all_ads_id;
+    if(!$all_ads_id){
+      $all_ads_post = get_posts(
+            array(
+                    'post_type'    => 'adsforwp',
+                    'posts_per_page'     => -1,
+                    'post_status'        => 'publish',
+            )
+        ); 
+        $ads_post_ids = array();
+        if($all_ads_post){
+
+            foreach($all_ads_post as $ads){
+                $ads_post_ids[] = $ads->ID;         
+           }
+        }
+     
+        if(!empty($ads_post_ids) ){
+          return $ads_post_ids;
+        }else{
+          return false;
+        }
+    }                  
+    return $all_ads_id;
 }
 
 /*
@@ -1164,8 +1231,27 @@ function adsforwp_update_ids_on_untrash(){
 function adsforwp_get_group_ad_ids(){
         
     $all_ads_id = json_decode(get_transient('adsforwp_groups_transient_ids'), true);
-                   
-     return $all_ads_id;
+    if(!$all_ads_id){
+      $all_group_post = get_posts(
+          array(
+                'post_type'        => 'adsforwp-groups',
+                'posts_per_page'     => -1,
+                'post_status'        => 'publish',
+          )
+      );
+      $group_post_ids = array();
+      if($all_group_post){
+          foreach($all_group_post as $group){
+             $group_post_ids[] = $group->ID;         
+          }
+      }
+      if(!empty($group_post_ids)){
+        return $group_post_ids;
+      }else{
+        return false;
+      }
+    }               
+    return $all_ads_id;
 }    
     
 /*
@@ -1250,6 +1336,7 @@ function adsforwp_add_localize_data($object, $object_name){
                $object['doubleclick_pointer']   = esc_html__( 'Insert the Slot Id and Div Gpt Ad. Please <a href="https://adsforwp.com/docs/article/how-to-add-dfp-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
                $object['ad_background_pointer'] = esc_html__( 'Insert the background banner.', 'ads-for-wp' );
                $object['ezoic_pointer'] = esc_html__( 'You can find Data Ezoic ID from ezoic code. Please <a href="https://adsforwp.com/docs/article/how-to-add-ezoic-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
+               $object['engageya_pointer'] = esc_html__( 'You can find Data Widget Id\'s, Website Id and Publisher Id from engageya ad network provider.', 'ads-for-wp' );
                $object['mantis_pointer'] = esc_html__( 'You can find Data Mantis ID from mantis ads code. Please <a href="https://adsforwp.com/docs/article/how-to-add-mantis-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
                $object['outbrain_pointer'] = esc_html__( 'You can find Data Outbrain ID from outbrain ads code. Please <a href="https://adsforwp.com/docs/article/how-to-add-outbrain-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
                $object['mediavine_pointer'] = esc_html__( 'You can find Data Mediavine ID from mediavine ads code. Please <a href="https://adsforwp.com/docs/article/how-to-add-mediavine-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );

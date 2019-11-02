@@ -172,7 +172,49 @@ class adsforwp_view_visitor_condition {
     <?php } ?>
     
     <a style="margin-left: 8px; margin-bottom: 8px;" class="button adsforwp-visitor-condition-or-group afw-placement-button" href="#"><?php echo esc_html__( 'Or', 'ads-for-wp') ?></a>
-</div>    
+  </div>
+  <?php
+  $user_target_type = '';
+  $afwp_cache_mobile_support = '';
+  $visitor_conditions_array = get_post_meta( $post->ID, 'visitor_conditions_array', true);
+    if(is_array($visitor_conditions_array) && !empty($visitor_conditions_array)){
+      foreach ($visitor_conditions_array as $key => $value) {
+        foreach ($value as $gkey => $gvalue) {
+          foreach ($gvalue as $hkey => $hvalue) {
+            if($hvalue['key_1'] == 'device'){
+              $user_target_type = 1;
+              break;
+            }
+          }
+        }
+      }
+    }
+  $message = '';
+  if(function_exists('wpsc_init')){
+    global $wp_cache_mobile_enabled;
+    if(!$wp_cache_mobile_enabled){
+        $afwp_cache_mobile_support = 1;
+        $message = "You are using WP Super Cache plugin, if you want User Targeting for 'Device Type' to work perfectly we recommend you to enable Mobile Support of your cache plugin.";
+    }
+  }elseif(defined('WP_ROCKET_FILE')){
+    $wp_rocket_option = get_option( 'wp_rocket_settings' );
+    if( !$wp_rocket_option['cache_mobile'] || !$wp_rocket_option['do_caching_mobile_files'] ){
+        $afwp_cache_mobile_support = 1;
+        $message = "You are using WP Rocket Cache plugin, if you want User Targeting for 'Device Type' to work perfectly we recommend you to enable Mobile Support of your cache plugin.";
+    }
+  }elseif( defined('W3TC_FILE') ){
+      $afwp_cache_mobile_support = 1;
+      $message = "You are using WP3 Total Cache plugin, if you want User Targeting for 'Device Type' to work perfectly we recommend you to enable Mobile Support of your cache plugin.";
+  }
+ 
+  $visitor_condition_enable = get_post_meta($post->ID, $key='adsforwp_v_condition_enable',true);   
+  if(isset($visitor_condition_enable) && $visitor_condition_enable =='enable'){
+      if($user_target_type == 1 && $afwp_cache_mobile_support == 1){
+  ?>
+  <p class="device-type-notice"><span class="dashicons dashicons-warning"></span><em>Warning: <?php echo esc_html__($message,'ads-for-wp');?></em></p>
+  <?php }
+  }  
+  ?>
 </div>
     <?php                                                                                      
     }
@@ -262,20 +304,30 @@ class adsforwp_view_visitor_condition {
                    
           case 'device':
               
-                    $device_name  = 'desktop'; 
-                    if(wp_is_mobile()){
-                    $device_name  = 'mobile';                
-                    }                  
-                  if ( $comparison == 'equal' ) {
-                        if ( $device_name == $data ) {
-                          $result = true;
-                        }
+              require_once ADSFORWP_PLUGIN_DIR.'/vendor/mobile-detect.php';
+              $mobile_detect = $isTablet = '';
+              // instantiate the Mobile detect class
+              $mobile_detect = new Adsforwp_Mobile_Detect;
+              $isMobile = $mobile_detect->isMobile();
+              $isTablet = $mobile_detect->isTablet();
+
+              $device_name  = 'desktop';
+              if( $isMobile && $isTablet ){ //Only For tablet
+                $device_name  = 'mobile';
+              }else if($isMobile && !$isTablet){ // Only for mobile
+                $device_name  = 'mobile';
+              }
+                           
+              if ( $comparison == 'equal' ) {
+                  if ( $device_name == $data ) {
+                    $result = true;
                   }
-                    if ( $comparison == 'not_equal') {              
-                        if ( $device_name != $data ) {
-                          $result = true;
-                        }
-                    }            
+              }
+              if ( $comparison == 'not_equal') {              
+                  if ( $device_name != $data ) {
+                    $result = true;
+                  }
+              }            
           break;
           case 'referrer_url':    
                                         

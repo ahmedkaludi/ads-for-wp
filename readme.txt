@@ -3,7 +3,7 @@ Contributors: magazine3
 Tags: Ads, Google Adsense, Media Net, DFP, Custom Code, Infolinks, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
 Tested up to: 5.2.3
-Stable tag: 1.9.9
+Stable tag: 1.9.12
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -13,6 +13,8 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy to Use, Unlimited Incontent Ads, Adsense, Premium Features and more
 
 = Features: =
+* NEW: AMP Story Ads Support
+* NEW: Engageya Support
 * NEW: Outbrain Support
 * NEW: Taboola Support
 * NEW: MANTIS Support
@@ -57,6 +59,34 @@ Chart.js library used https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Char
 Google Api Php Client library used https://github.com/googleapis/google-api-php-client - License URI: https://github.com/googleapis/google-api-php-client/blob/master/LICENSE
 
 == Changelog ==
+
+= 1.9.12 (25 October 2019) =
+
+* New Feature: Need to add Feature of AMP Stories Ads #230
+* New Feature: Expiry by impression count #228
+* Improvement: Need to show Advertisement text after the Ad #283
+* Improvement: Need to improve javascript functionality of adsforwp option panel #251
+* Bug Fixed: Ads are not loading properly on Mobile and Desktop, if we set user targeting #282
+
+= 1.9.11 (19 October 2019) =
+
+* Improvement: Need to add attention message if user using Auto Ads and Normal Ads at a time from same company #269
+* Improvement: Need to Add the optional option to place the Ad in the content based on percentage. #223
+* Improvement: Added "h1 - h6" tags in 'Count As Per The' dropdown #272
+* Improvement: Need to add a notice below the User targeting section, only for the Device Type #210
+* Improvement: Need to add note for infolinks Ads type below ads type dropdown #275
+
+= 1.9.10 (16 October 2019) =
+
+* New Feature: Added Engageya ads Native support in AMP #256
+* Improvement: Added Fluid compatibility for double click ads #252
+* Bug Fixed: In-article ads type of adsense Ad can’t publish issue has been fixed #270
+* Bug Fixed: Ads are not getting displayed due to transient issue #271
+* Bug Fixed: Warning with Gutenberg #268
+* Bug Fixed: Warning Invalid argument supplied for foreach() #264
+* Improvement: Improving the consent #266
+* Bug Fixed: Wrong error message display for Group ads #265
+* Bug Fixed: Need to detect current version of mobile #261
 
 = 1.9.9 (11 October 2019) =
 
