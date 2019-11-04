@@ -2292,7 +2292,7 @@ class adsforwp_output_functions{
                                               </script>
                                       <ins 
                                       class="adsbygoogle" 
-                                      style="background:none;display:inline-block;'.$min_width_resp.''.$max_width_resp.'width:100%;height:'.esc_attr($height).'px;max-height:'.esc_attr($height).'px;"                 
+                                      style="background:none;display:inline-block;'.esc_attr($min_width_resp).''.esc_attr($max_width_resp).'width:100%;height:'.esc_attr($height).'px;max-height:'.esc_attr($height).'px;"                 
                                       data-ad-client="'.esc_attr($ad_client).'"
                                       data-ad-slot="'.esc_attr($ad_slot).'"
                                       data-ad-format="auto"
