@@ -1193,7 +1193,6 @@ class adsforwp_output_functions{
                         $contentTempfirst = array_slice($contentTempArray, 0, $fifty);
                         $contentTempsecond = array_slice( $contentTempArray, $fifty );
                         $firstPreText = end( $contentTempfirst );
-                        $secondPostText =  $contentTempsecond[0];
                         $needleOccueance = substr_count( implode(" ", $contentTempfirst), $firstPreText);
                         $actualContent = '';
                         $i=1;

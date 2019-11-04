@@ -616,7 +616,7 @@ function adsforwp_ajax_check_post_availability(){
         );
         $postdata = new WP_Query($cc_args);                      
         $auto_adsense_post = $postdata->posts;         
-
+        $ad_sense_type = '';
         if($postdata->post_count >0){                   
              $ad_sense_type = get_post_meta($auto_adsense_post[0]->ID,$key='adsense_type',true);                     
         }               
