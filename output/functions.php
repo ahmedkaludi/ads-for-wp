@@ -1884,7 +1884,7 @@ class adsforwp_output_functions{
                             
                             $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom  afw_ad afwadid-'.esc_attr($post_ad_id).'">
                                                         '.$sponsership_label.'
-							'.$custom_ad_code.''.$ad_label_bottom.'
+							'.wp_unslash($custom_ad_code).''.$ad_label_bottom.'
 							</div>';     
                             
                         }
