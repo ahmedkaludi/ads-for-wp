@@ -571,18 +571,20 @@ add_action( 'edit_user_profile_update', 'adsforwp_save_extra_user_profile_fields
  */
 function adsforwp_modify_title( $title) {
     global $post;
-    if($post->ID){
-      if(get_post_type( $post->ID ) =='adsforwp'){
-        $adsense_auto = get_post_meta($post->ID, $key='adsense_type', true);
-        $ad_type = get_post_meta( $post->ID,'select_adtype', true );
-        if($ad_type == 'adsense'){
-          if($adsense_auto === 'adsense_auto_ads'){
-            $title = $title.' (Auto AdSense Ad)';
+    if(is_object($post)){
+      if($post->ID){
+        if(get_post_type( $post->ID ) =='adsforwp'){
+          $adsense_auto = get_post_meta($post->ID, $key='adsense_type', true);
+          $ad_type = get_post_meta( $post->ID,'select_adtype', true );
+          if($ad_type == 'adsense'){
+            if($adsense_auto === 'adsense_auto_ads'){
+              $title = $title.' (Auto AdSense Ad)';
+            }
+          }elseif($ad_type == 'amp_story_ads'){
+              $title = $title.' (AMP Story Ad)';
           }
-        }elseif($ad_type == 'amp_story_ads'){
-            $title = $title.' (AMP Story Ad)';
-        }
-      }    
+        }    
+      }  
     }
     return $title;
 }
