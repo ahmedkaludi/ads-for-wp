@@ -14,25 +14,25 @@ class adsforwp_view_ads_type {
 			'options' => array(
 				''              => 'Select Ad Type',
 				'adsense'       => 'AdSense',
-                                'doubleclick'   => 'DoubleClick',
-                                'media_net'     => 'Media.net',
-                                'ad_now'        => 'AdNow',
-                                'mgid'          => 'MGID',
-                                'contentad'     => 'Content.ad',
-                                'engageya' 		=> 'Engageya',
-                                'ezoic' 		=> 'Ezoic',
-                                'infolinks'     => 'Infolinks',
-                                'mantis'     => 'MANTIS',
-                                'mediavine'     => 'Mediavine',
-                                'outbrain'     => 'Outbrain',
-                                'taboola'     => 'Taboola',
-                                'ad_image'      => 'Image Banner Ad',
-                                'ad_background' => 'Background Ad',
-                                'revcontent'	=> 'Revcontent Ad',
-                                'amp_story_ads' => 'AMP Story Ad',                                
-                                'custom'        => 'Custom Code',
+                'doubleclick'   => 'DoubleClick',
+                'media_net'     => 'Media.net',
+                'ad_now'        => 'AdNow',
+                'mgid'          => 'MGID',
+                'contentad'     => 'Content.ad',
+                'engageya' 		=> 'Engageya',
+                'ezoic' 		=> 'Ezoic',
+                'infolinks'     => 'Infolinks',
+                'mantis'     => 'MANTIS',
+                'mediavine'     => 'Mediavine',
+                'outbrain'     => 'Outbrain',
+                'taboola'     => 'Taboola',
+                'ad_image'      => 'Image Banner Ad',
+                'ad_background' => 'Background Ad',
+                'revcontent'	=> 'Revcontent Ad',
+                'amp_story_ads' => 'AMP Story Ad',                                
+                'custom'        => 'Custom Code',
                             
-				),
+			),
             'attributes' => array('required' => 'required'),
             'metaboxes' => array('ezoic' => array('display-metabox'),'ad_background' => array('display-metabox','adsforwp-location'),'amp_story_ads' => array('display-metabox','setexpiredate','adsforwp-location','adsforwp_visitor_condition_metabox','adsforwp_placement_metabox'),'engageya' => array('adsforwp-location','setexpiredate')),
             'notice' => array(
@@ -272,7 +272,7 @@ class adsforwp_view_ads_type {
               	'fields'=> array('select_adtype' => 'custom')
 	        ),
 		),
-               
+             
 		array(
 			'label'     => 'Data Client ID',
 			'id'        => 'data_client_id',
@@ -615,11 +615,33 @@ class adsforwp_view_ads_type {
                 )
             ),
 		),
-                array(			
-                        'id'        => 'adsforwp_ad_img_height',                        
-                        'type'      => 'hidden',
-                    ),
-                array(			
+		array(
+			'label'     => 'Max Width',
+			'id'        => 'ad_responsive_max_width',                        
+			'type'      => 'text',
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array(
+                    'select_adtype' => 'adsense', 'adsense_type' => 'normal','adsforwp_ad_responsive' => '1'
+                )
+            ),
+		),
+		array(
+			'label'     => 'Min Width',
+			'id'        => 'ad_responsive_min_width',                        
+			'type'      => 'text',
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array(
+                    'select_adtype' => 'adsense', 'adsense_type' => 'normal', 'adsforwp_ad_responsive' => '1'
+                )
+            ),
+		),
+        array(			
+            'id'        => 'adsforwp_ad_img_height',                        
+            'type'      => 'hidden',
+        ),
+        array(			
 			'id'        => 'adsforwp_ad_img_width',                        
 			'type'      => 'hidden',
 		),
@@ -732,6 +754,9 @@ class adsforwp_view_ads_type {
 						esc_attr($meta_field['id']),
 						esc_attr($meta_field['id'])
 						);
+					if($meta_field['id'] == 'adsforwp_ad_responsive'){
+						$input .= '  <span class="responsive_advance" style="padding-left:20px;"><a href="#" class="adsforwp_resp_advan">Advance Size Options</a></span>'; 
+					}
 					break;
                                 case 'media':
                                                                             

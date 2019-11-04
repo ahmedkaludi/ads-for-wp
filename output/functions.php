@@ -55,7 +55,6 @@ class adsforwp_output_functions{
         add_filter('widget_text', 'do_shortcode');    
         
         add_action('wp_head', array($this, 'adsforwp_ezoic_ads_script'),10);
-        add_action('wp_head', array($this, 'adsforwp_adsense_ads_script'));
         add_action('wp_head', array($this, 'adsforwp_mediavines_ads_script'));
 
         add_action('wp_head', array($this, 'adsforwp_taboola_ads_script'),10);
@@ -1890,7 +1889,7 @@ class adsforwp_output_functions{
                             
                         }
                                                                                           
-                    }                                                                                
+                    }  
             break;
             
             case 'ad_image':
@@ -2199,7 +2198,8 @@ class adsforwp_output_functions{
                     $width = $explode_size[0];            
                     $height = $explode_size[1];                               
                     
-                    }            
+                    }
+
                     if($this->is_amp){
                        
                         $this->amp_ads_id[] = $post_ad_id;
@@ -2252,9 +2252,17 @@ class adsforwp_output_functions{
                          }                                                        
                                                      
                     }else{     
-                                              
-                      if($ad_responsive == 1){
-                           
+                           $max_width_resp = 'max-width:800px;';
+                           $min_width_resp = '';                 
+                    if($ad_responsive == 1){
+                        $responsive_max_width = adsforwp_rmv_warnings($post_meta_dataset, 'ad_responsive_max_width', 'adsforwp_array');
+                        if(!empty($responsive_max_width)){
+                            $max_width_resp = 'max-width:'.$responsive_max_width.'px;';
+                        } 
+                        $responsive_min_width = adsforwp_rmv_warnings($post_meta_dataset, 'ad_responsive_min_width', 'adsforwp_array'); 
+                        if(!empty($responsive_min_width)){
+                            $min_width_resp = 'min-width:'.$responsive_min_width.'px;';
+                        }
                           if($ad_client && $ad_slot){
                           
                               $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
@@ -2263,7 +2271,7 @@ class adsforwp_output_functions{
                                               </script>
                                       <ins 
                                       class="adsbygoogle" 
-                                      style="background:none;display:inline-block;width:100%;height:'.esc_attr($height).'px;max-height:'.esc_attr($height).'px;max-width:800px;"                 
+                                      style="background:none;display:inline-block;'.$min_width_resp.''.$max_width_resp.'width:100%;height:'.esc_attr($height).'px;max-height:'.esc_attr($height).'px;"                 
                                       data-ad-client="'.esc_attr($ad_client).'"
                                       data-ad-slot="'.esc_attr($ad_slot).'"
                                       data-ad-format="auto"
@@ -2749,10 +2757,9 @@ class adsforwp_output_functions{
         if($ad_code){
         echo json_encode(array('status'=> 't','ad_code'=> $ad_code));        
         }else{
-        echo json_encode(array('status'=> 'f','ad_code'=> 'group code not available'));                                 
+        echo json_encode(array('status'=> 'f','ad_code'=> 'group code not available'));
         }
-        
-           wp_die();           
+        wp_die();           
 }
     /**
      * Function to detect adblocker 
@@ -2779,11 +2786,6 @@ class adsforwp_output_functions{
                 }
             }
         }
-    }
-    public function adsforwp_adsense_ads_script(){
-        ?>
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <?php
     }
     public function adsforwp_ezoic_ads_script(){
         $all_ads_id    = adsforwp_get_ad_ids();
