@@ -2109,6 +2109,28 @@ class adsforwp_output_functions{
             }
             }                                    
             switch ($adsense_type) {
+                case 'in_feed_ads':
+                    $ad_slot = adsforwp_rmv_warnings($post_meta_dataset, 'data_ad_slot', 'adsforwp_array');
+                    $data_layout_key = adsforwp_rmv_warnings($post_meta_dataset, 'data_layout_key', 'adsforwp_array');
+                    if($author_ad_slot_id){
+                        $ad_slot = $author_ad_slot_id;
+                    }
+                    if(!$this->is_amp){
+                        if($ad_client && $ad_slot){
+                            $ad_code =  '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                                    <ins class="adsbygoogle"
+                                         style="display:block;"
+                                         data-ad-format="fluid"
+                                         data-ad-layout-key="'.esc_attr($data_layout_key).'"
+                                         data-ad-client="'.esc_attr($ad_client).'"
+                                         data-ad-slot="'.esc_attr($ad_slot).'"></ins>
+                                    <script>
+                                         (adsbygoogle = window.adsbygoogle || []).push({});
+                                    </script>
+                                    </div>';
+                        }
+                    }
+                break;
                 case 'in_article_ads':
                     $ad_slot = adsforwp_rmv_warnings($post_meta_dataset, 'data_ad_slot', 'adsforwp_array');
                     if($author_ad_slot_id){

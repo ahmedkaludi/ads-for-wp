@@ -251,7 +251,8 @@ class adsforwp_view_ads_type {
                 'adsense_auto_ads'   => 'Auto Ads',
                 'adsense_sticky_ads' => 'Sticky (Only AMP)',
                 'matched_content_ads' => 'Matched Content Ads',
-                'in_article_ads' => 'In-Article Ads'
+                'in_article_ads' => 'In-Article Ads',
+                'in_feed_ads' => 'In-Feed Ads'
 				),
 			'notice' => array('in_article_ads' => '<p class="in_article_notice"><i>Note: This AdSense type is not implemented in AMP</i>.</p>'),
 			'metaboxes' => array(
@@ -272,7 +273,20 @@ class adsforwp_view_ads_type {
               	'fields'=> array('select_adtype' => 'custom')
 	        ),
 		),
-             
+        array(
+			'label'     => 'Data Layout Key',
+			'id'        => 'data_layout_key',
+			'type'      => 'text',
+            'attributes'=> array(
+						'placeholder'   => '-ez+4v+7r-fc+65',
+                        'maxlength'     => '30',	
+			),
+            'required' => array(
+				'type' => 'and',
+				'fields'=> array('select_adtype' => 'adsense',
+								'adsense_type' => array('in_feed_ads') )
+			),
+		),     
 		array(
 			'label'     => 'Data Client ID',
 			'id'        => 'data_client_id',
@@ -284,7 +298,7 @@ class adsforwp_view_ads_type {
             'required' => array(
 				'type' => 'and',
 				'fields'=> array('select_adtype' => 'adsense',
-								'adsense_type' => array('normal','adsense_sticky_ads','matched_content_ads','adsense_auto_ads','in_article_ads') )
+								'adsense_type' => array('normal','adsense_sticky_ads','matched_content_ads','adsense_auto_ads','in_article_ads','in_feed_ads') )
 			),
 		),
 		array(
@@ -298,7 +312,7 @@ class adsforwp_view_ads_type {
 			),
             'required' => array(
 				'type' => 'and',
-				'fields'=> array('select_adtype' => 'adsense','adsense_type' => array('normal','adsense_sticky_ads','matched_content_ads','in_article_ads') )
+				'fields'=> array('select_adtype' => 'adsense','adsense_type' => array('normal','adsense_sticky_ads','matched_content_ads','in_article_ads','in_feed_ads') )
 			),
 		),
 		array(
