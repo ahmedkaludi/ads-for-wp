@@ -41,6 +41,7 @@ class adsforwp_view_ads_type {
             	'amp_story_ads' => '<p class="ampstory_notice"><i>Note: Need AMP Story feature inorder to use this Ad Type</i>.</p>',
             	'ad_now' => '<p class="adnow_notice"><i>Note: This Ad type is not implemented in AMP</i>.</p>',
             	'engageya' => '<p class="engageya_notice"><i>Note: This Ad type is not implemented in Non-AMP</i>.</p>',
+            	'revcontent' => '<p class="revcontent_notice"><i>Note: This Ad type is not implemented in Non-AMP</i>.</p>',
             )
 		),
 		array(
