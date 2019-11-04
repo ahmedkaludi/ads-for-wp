@@ -569,12 +569,12 @@ add_action( 'edit_user_profile_update', 'adsforwp_save_extra_user_profile_fields
  * @param string $title
  * @return string
  */
-function adsforwp_modify_title( $title, $id) {
+function adsforwp_modify_title( $title) {
     global $post;
-    if($id){
-      if(get_post_type( $id ) =='adsforwp'){
-        $adsense_auto = get_post_meta($id, $key='adsense_type', true);
-        $ad_type = get_post_meta( $id,'select_adtype', true );
+    if($post->ID){
+      if(get_post_type( $post->ID ) =='adsforwp'){
+        $adsense_auto = get_post_meta($post->ID, $key='adsense_type', true);
+        $ad_type = get_post_meta( $post->ID,'select_adtype', true );
         if($ad_type == 'adsense'){
           if($adsense_auto === 'adsense_auto_ads'){
             $title = $title.' (Auto AdSense Ad)';
@@ -586,7 +586,7 @@ function adsforwp_modify_title( $title, $id) {
     }
     return $title;
 }
-add_filter( 'the_title', 'adsforwp_modify_title', 10, 2 );
+add_filter( 'the_title', 'adsforwp_modify_title', 10, 1 );
 
 /**
 * This is a ajax handler function to check adsese auto ads, if it is already added.
