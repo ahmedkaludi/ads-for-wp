@@ -2116,7 +2116,7 @@ class adsforwp_output_functions{
                         $ad_slot = $author_ad_slot_id;
                     }
                     if(!$this->is_amp){
-                        if($ad_client && $ad_slot){
+                        if($ad_client && $ad_slot && $data_layout_key){
                             $ad_code =  '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                                     <ins class="adsbygoogle"
                                          style="display:block;"
