@@ -63,7 +63,7 @@ Google Api Php Client library used https://github.com/googleapis/google-api-php-
 
 = 1.9.13 (05 November 2019) =
 
-* New Feature: Need to add support for "Revcontent Ad" #284
+* New Feature: Added support for "Revcontent Ad" #284
 * New Feature: Create support for Google Adsense In-feed ads #281
 * Improvement: Added option to Limit the height and width of responsive Ads #279
 * Bug Fixed: Taxonomy terms condition for selected taxonomy type is not working after first condition #292
