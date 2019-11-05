@@ -61,7 +61,7 @@ Google Api Php Client library used https://github.com/googleapis/google-api-php-
 
 == Changelog ==
 
-= 1.9.13 (04 November 2019) =
+= 1.9.13 (05 November 2019) =
 
 * New Feature: Need to add support for "Revcontent Ad" #284
 * New Feature: Create support for Google Adsense In-feed ads #281
