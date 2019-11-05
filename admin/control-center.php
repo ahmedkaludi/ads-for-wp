@@ -569,24 +569,26 @@ add_action( 'edit_user_profile_update', 'adsforwp_save_extra_user_profile_fields
  * @param string $title
  * @return string
  */
-function adsforwp_modify_title( $title, $id) {
+function adsforwp_modify_title( $title) {
     global $post;
-    if($id){
-      if(get_post_type( $id ) =='adsforwp'){
-        $adsense_auto = get_post_meta($id, $key='adsense_type', true);
-        $ad_type = get_post_meta( $id,'select_adtype', true );
-        if($ad_type == 'adsense'){
-          if($adsense_auto === 'adsense_auto_ads'){
-            $title = $title.' (Auto AdSense Ad)';
+    if(is_object($post)){
+      if($post->ID){
+        if(get_post_type( $post->ID ) =='adsforwp'){
+          $adsense_auto = get_post_meta($post->ID, $key='adsense_type', true);
+          $ad_type = get_post_meta( $post->ID,'select_adtype', true );
+          if($ad_type == 'adsense'){
+            if($adsense_auto === 'adsense_auto_ads'){
+              $title = $title.' (Auto AdSense Ad)';
+            }
+          }elseif($ad_type == 'amp_story_ads'){
+              $title = $title.' (AMP Story Ad)';
           }
-        }elseif($ad_type == 'amp_story_ads'){
-            $title = $title.' (AMP Story Ad)';
-        }
-      }    
+        }    
+      }  
     }
     return $title;
 }
-add_filter( 'the_title', 'adsforwp_modify_title', 10, 2 );
+add_filter( 'the_title', 'adsforwp_modify_title', 10, 1 );
 
 /**
 * This is a ajax handler function to check adsese auto ads, if it is already added.
@@ -614,7 +616,7 @@ function adsforwp_ajax_check_post_availability(){
         );
         $postdata = new WP_Query($cc_args);                      
         $auto_adsense_post = $postdata->posts;         
-
+        $ad_sense_type = '';
         if($postdata->post_count >0){                   
              $ad_sense_type = get_post_meta($auto_adsense_post[0]->ID,$key='adsense_type',true);                     
         }               
@@ -1327,8 +1329,9 @@ function adsforwp_add_localize_data($object, $object_name){
                $object['pointer_help']          = esc_html__( 'Help', 'ads-for-wp' );
                $object['adsense_pointer']       = esc_html__( 'You can find Data Client ID and Data Ad Slot from adsense code. Please <a href="https://adsforwp.com/docs/article/how-to-add-adsense-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
                $object['media_net_pointer']     = esc_html__( 'You can find Data CID id and Data CRID from media.net code. Please <a href="https://adsforwp.com/docs/article/how-to-add-amp-ad-for-media-net/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
-               $object['ad_now_pointer']        = esc_html__( 'You can find Widget ID from adnow code.', 'ads-for-wp' );
-               $object['mgid_pointer']        = esc_html__( 'You can find Publisher and Widget Data from MGID ad code. Please <a href="https://adsforwp.com/docs/article/how-to-add-mgid-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
+               $object['ad_now_pointer'] = esc_html__( 'You can find Widget ID from adnow code.', 'ads-for-wp' );
+               $object['revcontent_pointer'] = esc_html__( 'You can find Data ID and Data Wrapper from revcontent code.', 'ads-for-wp' );
+               $object['mgid_pointer'] = esc_html__( 'You can find Publisher and Widget Data from MGID ad code. Please <a href="https://adsforwp.com/docs/article/how-to-add-mgid-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
                $object['contentad_pointer']     = esc_html__( 'You can find ID id, D and Ad Widget ID from content.ad code.', 'ads-for-wp' );
                $object['infolinks_pointer']     = esc_html__( 'You can find P ID and W S ID from infolinks code. Please <a href="https://adsforwp.com/docs/article/how-to-add-infolinks-ads-in-wordpress-amp/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );
                $object['ad_image_pointer']      = esc_html__( 'Upload a banner which you want to display as an ad and anchor link which will redirect users to that link on click. Please <a href="https://adsforwp.com/docs/article/how-to-add-custom-banner-ads-in-amp-wordpress/" target="_blank">Click Here</a> for more info.', 'ads-for-wp' );

@@ -14,24 +14,25 @@ class adsforwp_view_ads_type {
 			'options' => array(
 				''              => 'Select Ad Type',
 				'adsense'       => 'AdSense',
-                                'doubleclick'   => 'DoubleClick',
-                                'media_net'     => 'Media.net',
-                                'ad_now'        => 'AdNow',
-                                'mgid'          => 'MGID',
-                                'contentad'     => 'Content.ad',
-                                'engageya' 		=> 'Engageya',
-                                'ezoic' 		=> 'Ezoic',
-                                'infolinks'     => 'Infolinks',
-                                'mantis'     => 'MANTIS',
-                                'mediavine'     => 'Mediavine',
-                                'outbrain'     => 'Outbrain',
-                                'taboola'     => 'Taboola',
-                                'ad_image'      => 'Image Banner Ad',
-                                'ad_background' => 'Background Ad',
-                                'amp_story_ads' => 'AMP Story Ad',                                
-                                'custom'        => 'Custom Code',
+                'doubleclick'   => 'DoubleClick',
+                'media_net'     => 'Media.net',
+                'ad_now'        => 'AdNow',
+                'mgid'          => 'MGID',
+                'contentad'     => 'Content.ad',
+                'engageya' 		=> 'Engageya',
+                'ezoic' 		=> 'Ezoic',
+                'infolinks'     => 'Infolinks',
+                'mantis'     => 'MANTIS',
+                'mediavine'     => 'Mediavine',
+                'outbrain'     => 'Outbrain',
+                'taboola'     => 'Taboola',
+                'ad_image'      => 'Image Banner Ad',
+                'ad_background' => 'Background Ad',
+                'revcontent'	=> 'Revcontent Ad',
+                'amp_story_ads' => 'AMP Story Ad',                                
+                'custom'        => 'Custom Code',
                             
-				),
+			),
             'attributes' => array('required' => 'required'),
             'metaboxes' => array('ezoic' => array('display-metabox'),'ad_background' => array('display-metabox','adsforwp-location'),'amp_story_ads' => array('display-metabox','setexpiredate','adsforwp-location','adsforwp_visitor_condition_metabox','adsforwp_placement_metabox'),'engageya' => array('adsforwp-location','setexpiredate')),
             'notice' => array(
@@ -40,8 +41,36 @@ class adsforwp_view_ads_type {
             	'amp_story_ads' => '<p class="ampstory_notice"><i>Note: Need AMP Story feature inorder to use this Ad Type</i>.</p>',
             	'ad_now' => '<p class="adnow_notice"><i>Note: This Ad type is not implemented in AMP</i>.</p>',
             	'engageya' => '<p class="engageya_notice"><i>Note: This Ad type is not implemented in Non-AMP</i>.</p>',
+            	'revcontent' => '<p class="revcontent_notice"><i>Note: This Ad type is not implemented in Non-AMP</i>.</p>',
             )
 		),
+		array(
+			'label' => 'Data ID',
+			'id' => 'revcontent_data_id',
+			'type' => 'text',
+			'attributes'=> array(
+				'placeholder'   => '123456',
+                'maxlength'     => '30',
+			),
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'revcontent')
+            ),
+		),
+		array(
+			'label' => 'Data Wrapper',
+			'id' => 'revcontent_data_wrapper',
+			'type' => 'text',
+			'attributes'=> array(
+				'placeholder'   => 'rcjsload_2ff711',
+                'maxlength'     => '30',
+			),
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'revcontent')
+            ),
+		),
+		
 		array(
 			'label'   => 'Ad Type',
 			'id'      => 'amp_story_adtypes',
@@ -223,7 +252,8 @@ class adsforwp_view_ads_type {
                 'adsense_auto_ads'   => 'Auto Ads',
                 'adsense_sticky_ads' => 'Sticky (Only AMP)',
                 'matched_content_ads' => 'Matched Content Ads',
-                'in_article_ads' => 'In-Article Ads'
+                'in_article_ads' => 'In-Article Ads',
+                'in_feed_ads' => 'In-Feed Ads'
 				),
 			'notice' => array('in_article_ads' => '<p class="in_article_notice"><i>Note: This AdSense type is not implemented in AMP</i>.</p>'),
 			'metaboxes' => array(
@@ -244,7 +274,20 @@ class adsforwp_view_ads_type {
               	'fields'=> array('select_adtype' => 'custom')
 	        ),
 		),
-               
+        array(
+			'label'     => 'Data Layout Key',
+			'id'        => 'data_layout_key',
+			'type'      => 'text',
+            'attributes'=> array(
+						'placeholder'   => '-ez+4v+7r-fc+65',
+                        'maxlength'     => '30',	
+			),
+            'required' => array(
+				'type' => 'and',
+				'fields'=> array('select_adtype' => 'adsense',
+								'adsense_type' => array('in_feed_ads') )
+			),
+		),     
 		array(
 			'label'     => 'Data Client ID',
 			'id'        => 'data_client_id',
@@ -256,7 +299,7 @@ class adsforwp_view_ads_type {
             'required' => array(
 				'type' => 'and',
 				'fields'=> array('select_adtype' => 'adsense',
-								'adsense_type' => array('normal','adsense_sticky_ads','matched_content_ads','adsense_auto_ads','in_article_ads') )
+								'adsense_type' => array('normal','adsense_sticky_ads','matched_content_ads','adsense_auto_ads','in_article_ads','in_feed_ads') )
 			),
 		),
 		array(
@@ -270,7 +313,7 @@ class adsforwp_view_ads_type {
 			),
             'required' => array(
 				'type' => 'and',
-				'fields'=> array('select_adtype' => 'adsense','adsense_type' => array('normal','adsense_sticky_ads','matched_content_ads','in_article_ads') )
+				'fields'=> array('select_adtype' => 'adsense','adsense_type' => array('normal','adsense_sticky_ads','matched_content_ads','in_article_ads','in_feed_ads') )
 			),
 		),
 		array(
@@ -583,15 +626,37 @@ class adsforwp_view_ads_type {
 			'required' => array(
               	'type' => 'and',
               	'fields'=> array(
-                    'select_adtype' => array('adsense','engageya','outbrain','ad_image'), 'adsense_type' => array('normal')
+                    'select_adtype' => array('adsense','engageya','outbrain','ad_image','revcontent'), 'adsense_type' => array('normal')
                 )
             ),
 		),
-                array(			
-                        'id'        => 'adsforwp_ad_img_height',                        
-                        'type'      => 'hidden',
-                    ),
-                array(			
+		array(
+			'label'     => 'Max Width',
+			'id'        => 'ad_responsive_max_width',                        
+			'type'      => 'text',
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array(
+                    'select_adtype' => 'adsense', 'adsense_type' => 'normal','adsforwp_ad_responsive' => '1'
+                )
+            ),
+		),
+		array(
+			'label'     => 'Min Width',
+			'id'        => 'ad_responsive_min_width',                        
+			'type'      => 'text',
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array(
+                    'select_adtype' => 'adsense', 'adsense_type' => 'normal', 'adsforwp_ad_responsive' => '1'
+                )
+            ),
+		),
+        array(			
+            'id'        => 'adsforwp_ad_img_height',                        
+            'type'      => 'hidden',
+        ),
+        array(			
 			'id'        => 'adsforwp_ad_img_width',                        
 			'type'      => 'hidden',
 		),
@@ -704,6 +769,9 @@ class adsforwp_view_ads_type {
 						esc_attr($meta_field['id']),
 						esc_attr($meta_field['id'])
 						);
+					if($meta_field['id'] == 'adsforwp_ad_responsive'){
+						$input .= '  <span class="responsive_advance" style="padding-left:20px;"><a href="#" class="adsforwp_resp_advan">Advance Size Options</a></span>'; 
+					}
 					break;
                                 case 'media':
                                                                             

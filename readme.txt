@@ -3,7 +3,7 @@ Contributors: magazine3
 Tags: Ads, Google Adsense, Media Net, DFP, Custom Code, Infolinks, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
 Tested up to: 5.2.3
-Stable tag: 1.9.12
+Stable tag: 1.9.13
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -13,6 +13,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy to Use, Unlimited Incontent Ads, Adsense, Premium Features and more
 
 = Features: =
+* NEW: Revcontent Ads Support
 * NEW: AMP Story Ads Support
 * NEW: Engageya Support
 * NEW: Outbrain Support
@@ -59,6 +60,20 @@ Chart.js library used https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Char
 Google Api Php Client library used https://github.com/googleapis/google-api-php-client - License URI: https://github.com/googleapis/google-api-php-client/blob/master/LICENSE
 
 == Changelog ==
+
+= 1.9.13 (04 November 2019) =
+
+* New Feature: Need to add support for "Revcontent Ad" #284
+* New Feature: Create support for Google Adsense In-feed ads #281
+* Improvement: Added option to Limit the height and width of responsive Ads #279
+* Bug Fixed: Taxonomy terms condition for selected taxonomy type is not working after first condition #292
+* Bug Fixed: We need to make sure Ads are centered on all browsers. #287
+* Bug Fixed: Ad Label text color not changing. #289
+* Bug Fixed: Undefined offset: 0 #286
+* Bug Fixed: Fatal error function adsforwp_modify_title() #294
+* Bug Fixed: Ads loading inappropriately if we set up number of paragraphs between the content. #291
+* Bug Fixed: custom code option is not stable #278
+* Bug Fixed: amp-iframe not working in custom code #277
 
 = 1.9.12 (25 October 2019) =
 
