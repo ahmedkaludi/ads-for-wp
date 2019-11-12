@@ -182,8 +182,8 @@ class adsforwp_view_display {
 				'append_content'  => 'Inside Element',                                                               
                         )
 		),                                
-                array(		
-                        'label'  => 'Margin',
+        array(		
+            'label'  => 'Margin',
 			'id'     => 'adsforwp_ad_margin',                        
 			'type'   => 'multiple-text',
                         'fields' => array(
@@ -208,7 +208,16 @@ class adsforwp_view_display {
                             'type' => 'number',
                           ),
                         )
-		)
+		),
+        array(
+            'label' => 'Floating Ad',
+            'id' => 'adsforwp_ad_floating',
+            'type' => 'checkbox',
+            'required' => array(
+                'type' => 'and',
+                'fields'=> array('wheretodisplay' => array('ad_shortcode','between_the_content','after_the_content','before_the_content','custom_target','adsforwp_above_the_post_content','adsforwp_below_the_post_content') )
+            ),
+        )
                                 
 	);
 	public function __construct() {                                                                                                     
