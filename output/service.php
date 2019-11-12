@@ -7,8 +7,8 @@ class adsforwp_output_service{
           ?>
           .afwadid-<?php echo $ad_id;?>{
               position:sticky;
-              top:0px;
-              padding-top:20px;
+              top:60px;
+              padding-top:40px;
               display:block;
           }
           <?php
