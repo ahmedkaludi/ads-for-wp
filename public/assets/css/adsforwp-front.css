@@ -76,4 +76,9 @@
  .adsforwp-hide{
      display: none;
  }
- 
+ .afw_floating_ad{
+    position:sticky;
+    top:70px;
+    padding-top:40px;
+    display:block;
+ }
