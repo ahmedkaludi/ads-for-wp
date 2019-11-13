@@ -5,7 +5,7 @@ class adsforwp_output_service{
         $floating_ad = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_floating', 'adsforwp_array');
         if($floating_ad == 1){
           ?>
-          .afwadid-<?php echo $ad_id;?>{
+          .afwadid-<?php echo esc_attr($ad_id);?>{
               position:sticky;
               top:60px;
               padding-top:40px;
