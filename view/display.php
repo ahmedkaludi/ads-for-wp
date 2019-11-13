@@ -358,6 +358,13 @@ class adsforwp_view_display {
                         esc_attr($meta_field['id']),
                         esc_attr($meta_field['id'])
                         );
+                    switch($meta_field['id']){
+                        case 'adsforwp_ad_floating':
+                            $input .= '<span style="cursor:pointer;float:right;" class="afw_display_pointer dashicons-before dashicons-editor-help" id="afw_data_cid_pointer"></span>';
+                            break;
+                        default:
+                           break;
+                    }
                 break;
                 case 'radio':
                     switch ($meta_field['id']) {
