@@ -640,13 +640,7 @@ add_action('wp_ajax_adsforwp_check_meta', 'adsforwp_ajax_check_post_availability
 function adsforwp_admin_link($tab = '', $args = array()){
     
 	$page = 'adsforwp';
-	if ( ! is_multisite() ) {
-		$link = admin_url( 'admin.php?page=' . $page );
-	}
-	else {
-		$link = network_admin_url( 'admin.php?page=' . $page );
-	}
-
+	$link = admin_url( 'admin.php?page=' . $page );
 	if ( $tab ) {
 		$link .= '&tab=' . $tab;
 	}

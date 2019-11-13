@@ -1,7 +1,20 @@
 <?php 
 class adsforwp_output_service{
-             
-   public function adsforwp_enque_amp_sticky_ad_css($ad_id){
+    public function adsforwp_enque_amp_floating_ad_css($ad_id){
+        $post_meta_dataset = get_post_meta($ad_id,$key = '',true);
+        $floating_ad = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_floating', 'adsforwp_array');
+        if($floating_ad == 1){
+          ?>
+          .afwadid-<?php echo esc_attr($ad_id);?>{
+              position:sticky;
+              top:60px;
+              padding-top:40px;
+              display:block;
+          }
+          <?php
+        }
+    }       
+    public function adsforwp_enque_amp_sticky_ad_css($ad_id){
         
         $post_meta_dataset = get_post_meta($ad_id,$key = '',true);       
         $ad_img_width      = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_img_width', 'adsforwp_array');

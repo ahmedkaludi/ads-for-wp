@@ -89,6 +89,7 @@ class adsforwp_output_functions{
         add_action('wp_footer', array($this, 'adsforwp_taboola_footer_loader_js'));
         add_filter('amp_post_template_data',array($this, 'adsforwp_enque_ads_specific_amp_script'));         
         add_action('amp_post_template_css',array($this, 'adsforwp_add_amp_stick_ad_css'));        
+        add_action('amp_post_template_css',array($this, 'adsforwp_add_amp_floating_ad_css'));        
         add_action('amp_post_template_css',array($this, 'adsforwp_global_css_for_amp'));
         add_action('amp_post_template_footer',array($this, 'adsforwp_display_sticky_ads_amp'),9);
         
@@ -289,9 +290,7 @@ class adsforwp_output_functions{
      */
     public function adsforwp_global_css_for_amp(){
         $settings = adsforwp_defaultSettings();
-        
         ?>
-
            ins{
                 background: yellow;
             }
@@ -299,7 +298,25 @@ class adsforwp_output_functions{
                display:block;
             }
             <?php
-    }       
+    }
+    /**
+    *Function to add css for floating Ads on AMP
+    */
+    public function adsforwp_add_amp_floating_ad_css(){
+        $all_ads_id = adsforwp_get_ad_ids();
+        if(!empty($all_ads_id)){    
+            foreach($all_ads_id as $ad_id){
+                $wheretodisplay = get_post_meta($ad_id,$key = 'wheretodisplay',true);
+                if($wheretodisplay != 'sticky'){
+                    $ad_code =  $this->adsforwp_get_ad_code($ad_id, $type="AD");
+                    if($ad_code){
+                        $output_service = new adsforwp_output_service();                      
+                        $output_service->adsforwp_enque_amp_floating_ad_css($ad_id);
+                    }
+                }
+            }
+        }
+    }      
     /**
      * Function to add css for sticky ads on AMP
      */
@@ -767,7 +784,7 @@ class adsforwp_output_functions{
           
           if($result){
               
-          $post_id                  = adsforwp_rmv_warnings($result, 'post_id', 'adsforwp_string');   
+          $post_id  = adsforwp_rmv_warnings($result, 'post_id', 'adsforwp_string');   
           
           $service = new adsforwp_output_service();
           $ad_status = $service->adsforwp_is_condition($post_id);
@@ -1056,15 +1073,14 @@ class adsforwp_output_functions{
             if(empty($in_group)){            
                                         
             $where_to_display   = ""; 
-            $adposition         = "";    
+            $adposition         = "";
             $post_meta_dataset  = array();
             $post_meta_dataset  = get_post_meta($post_ad_id,$key='',true);
             $ad_code            = $this->adsforwp_get_ad_code($post_ad_id, $type="AD");
                                     
             $where_to_display   = adsforwp_rmv_warnings($post_meta_dataset, 'wheretodisplay', 'adsforwp_array');                          
             $adposition         = adsforwp_rmv_warnings($post_meta_dataset, 'adposition', 'adsforwp_array');    
-                
-            
+
            //Displays all ads according to their settings paragraphs starts here              
             switch ($where_to_display) {
                 
@@ -1455,7 +1471,13 @@ class adsforwp_output_functions{
             $post_meta_dataset          = array();                      
             $post_meta_dataset          = get_post_meta($post_ad_id,$key='',true);   
             
-            
+            $floating_ad        = "";
+            $float_ad_class  = '';
+            $floating_ad         = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_floating', 'adsforwp_array');    
+                
+            if($floating_ad == 1){
+                $float_ad_class = 'afw_floating_ad';
+            }
             $where_to_display           = adsforwp_rmv_warnings($post_meta_dataset, 'wheretodisplay', 'adsforwp_array');  
             
             if($type =="AD"){
@@ -1593,7 +1615,7 @@ class adsforwp_output_functions{
                    }else{
                       if( !empty($publisher_id) ){
                         
-                        $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                        $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.'">
                                   '.$sponsership_label.'
                                    <div id="'.esc_attr($placement_id).'" class="afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"></div>
                                       <script type="text/javascript">
@@ -1816,7 +1838,7 @@ class adsforwp_output_functions{
                         
                         if($data_publisher && $data_widget && $data_container && $data_js_src){
                                                                                     
-                            $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                            $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.'">
                                 '.$sponsership_label.'                               
                                 <div id="'. esc_attr($data_container).'"> 
                                 <script> 
@@ -1881,7 +1903,7 @@ class adsforwp_output_functions{
                     }else{
                         if($custom_ad_code){
                             
-                            $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom  afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                            $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_custom  afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.'">
                                                         '.$sponsership_label.'
 							'.wp_unslash($custom_ad_code).''.$ad_label_bottom.'
 							</div>';     
@@ -1962,14 +1984,14 @@ class adsforwp_output_functions{
                              if($ad_alignment == 'left'){
                                 
                              }
-                             $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                             $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.'">
                                                             '.$sponsership_label.'
 							<a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><img height="auto" max-width="100%" src="'.esc_url($ad_image).'"></a>
                             '.$ad_label_bottom.'                                            
 							</div>';  
                          }else{
                              
-                             $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                             $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.'">
                                                         '.$sponsership_label.'
 							<a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><img height="'. esc_attr($ad_img_height).'" width="'.esc_attr($ad_img_width).'" src="'.esc_url($ad_image).'"></a>
                             '.$ad_label_bottom.'                                          
@@ -2014,7 +2036,7 @@ class adsforwp_output_functions{
                                    
                         if($contentad_id && $contentad_id_d && $contentad_widget_id){
                             
-                         $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                         $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.'">
                                                         '.$sponsership_label.'
 							<div id="contentad'.$contentad_widget_id.'"></div><!-- Load Widget Here --></div>
                                                             <script type="text/javascript">
@@ -2051,7 +2073,7 @@ class adsforwp_output_functions{
                         
                      if($ad_now_widget_id){
                         
-                         $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                         $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.'">
 				 <div id="SC_TBlock_'.$ad_now_widget_id.'" class="SC_TBlock">loading...</div>
                                  <script type="text/javascript">
                                       (sc_adv_out = window.sc_adv_out || []).push({
@@ -2076,7 +2098,7 @@ class adsforwp_output_functions{
                         
                         if($infolinks_pid && $infolinks_wsid){
                          
-                            $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                            $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.'">
                                   <script type="text/javascript">
                                     var infolinks_pid = '.esc_attr($infolinks_pid).';
                                     var infolinks_wsid = '.esc_attr($infolinks_wsid).';
@@ -2116,7 +2138,7 @@ class adsforwp_output_functions{
                     }
                     if(!$this->is_amp){
                         if($ad_client && $ad_slot && $data_layout_key){
-                            $ad_code =  '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                            $ad_code =  '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.'"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                                     <ins class="adsbygoogle"
                                          style="display:block;"
                                          data-ad-format="fluid"
@@ -2137,7 +2159,7 @@ class adsforwp_output_functions{
                     }
                     if(!$this->is_amp){
                         if($ad_client && $ad_slot){
-                             $ad_code =  '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                             $ad_code =  '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.'"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                                     <ins class="adsbygoogle"
                                          style="display:block; text-align:center;"
                                          data-ad-layout="in-article"
@@ -2286,7 +2308,7 @@ class adsforwp_output_functions{
                         }
                           if($ad_client && $ad_slot){
                           
-                              $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                              $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.'">
                                                                 '.$sponsership_label.'
                                               <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
                                               </script>
@@ -2310,7 +2332,7 @@ class adsforwp_output_functions{
                           
                           if($ad_client && $ad_slot){
                             
-                              $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).'">
+                              $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.'">
                                                                 '.$sponsership_label.'
                                                                 <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
                                                                 </script>
@@ -2381,7 +2403,7 @@ class adsforwp_output_functions{
                 
                 if($ad_data_crid && $ad_data_cid){
                     
-                 $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-md afw_ad afwadid-'.esc_attr($post_ad_id).'">'.$sponsership_label.'
+                 $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-md afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.'">'.$sponsership_label.'
 						<script id="mNCC" language="javascript">
                                                             medianet_width = "'.esc_attr($width).'";
                                                             medianet_height = "'.esc_attr($height).'";
