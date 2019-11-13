@@ -34,7 +34,7 @@ class adsforwp_view_ads_type {
                             
 			),
             'attributes' => array('required' => 'required'),
-            'metaboxes' => array('ezoic' => array('display-metabox'),'ad_background' => array('display-metabox','adsforwp-location'),'amp_story_ads' => array('display-metabox','setexpiredate','adsforwp-location','adsforwp_visitor_condition_metabox','adsforwp_placement_metabox'),'engageya' => array('adsforwp-location','setexpiredate')),
+            'metaboxes' => array('doubleclick'=>'all','media_net'=>'all','ad_now'=>'all','mgid'=>'all','contentad'=>'all','ezoic' => array('display-metabox'),'infolinks'=>'all','mantis' => 'all','mediavine' => 'all','outbrain'=>'all','taboola'=> 'all','ad_image'=> 'all','ad_background' => array('display-metabox','adsforwp-location'),'amp_story_ads' => array('display-metabox','setexpiredate','adsforwp-location','adsforwp_visitor_condition_metabox','adsforwp_placement_metabox'),'engageya' => array('adsforwp-location','setexpiredate'),'revcontent' => 'all','custom' => 'all'),
             'notice' => array(
             	'ezoic'=>'<p class="ezoic_notice"><i>Note: This Ad type is not implemented in AMP</i></p>',
             	'infolinks' => '<p class="infolinks_notice"><i>Note: This Ad type is not implemented in AMP</i>.</p>',
@@ -257,6 +257,10 @@ class adsforwp_view_ads_type {
 				),
 			'notice' => array('in_article_ads' => '<p class="in_article_notice"><i>Note: This AdSense type is not implemented in AMP</i>.</p>'),
 			'metaboxes' => array(
+				'normal' => array('all'),
+				'matched_content_ads' => array('all'),
+				'in_article_ads' => array('all'),
+				'in_feed_ads' => array('all'),
 				'adsense_sticky_ads' => array('display-metabox','adsforwp-location'),
 				'adsense_auto_ads' => array('display-metabox','adsforwp_visitor_condition_metabox')
 			),
