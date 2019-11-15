@@ -1914,10 +1914,15 @@ class adsforwp_output_functions{
             break;
             
             case 'ad_image':
-                    
+                    $adsforwp_svg_sizes = '';
+                   
                     $ad_img_width  = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_img_width', 'adsforwp_array');
                     $ad_img_height = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_img_height', 'adsforwp_array');                     
-                                                            
+                    $adsforwp_svg_sizes = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_svg_sizes', 'adsforwp_array');                     
+                    if($adsforwp_svg_sizes == 1){
+                        $ad_img_width = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_svg_width', 'adsforwp_array');
+                        $ad_img_height = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_svg_height', 'adsforwp_array');
+                    }                                        
                     if($this->is_amp){
                                                                       
                      $this->amp_ads_id[] = $post_ad_id;   

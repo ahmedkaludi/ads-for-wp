@@ -255,7 +255,7 @@ class adsforwp_view_ads_type {
                 'in_article_ads' => 'In-Article Ads',
                 'in_feed_ads' => 'In-Feed Ads'
 				),
-			'notice' => array('in_article_ads' => '<p class="in_article_notice"><i>Note: This AdSense type is not implemented in AMP</i>.</p>'),
+			'notice' => array('in_article_ads' => '<p class="in_article_notice"><i>Note: This AdSense type is not implemented in AMP</i>.</p>','in_feed_ads' => '<p class="in_feed_notice"><i>Note: This AdSense type is not implemented in AMP</i>.</p>'),
 			'metaboxes' => array(
 				'normal' => array('all'),
 				'matched_content_ads' => array('all'),
@@ -540,6 +540,33 @@ class adsforwp_view_ads_type {
               	'type' => 'and',
               	'fields'=> array('select_adtype' => 'ad_image')
             ),
+		),
+		array(
+			'label'     => 'SVG Image Size',
+			'id'        => 'adsforwp_svg_sizes',                        
+			'type'      => 'checkbox',
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'ad_image')
+            ),
+		),
+		array(
+			'label' => 'Image Width',
+			'id' => 'adsforwp_svg_width',
+			'type' => 'text',
+			'required' => array(
+				'type' => 'and',
+				'fields' => array('select_adtype' => 'ad_image','adsforwp_svg_sizes' => 1)
+			)
+		),
+		array(
+			'label' => 'Image Height',
+			'id' => 'adsforwp_svg_height',
+			'type' => 'text',
+			'required' => array(
+				'type' => 'and',
+				'fields' => array('select_adtype'=> 'ad_image', 'adsforwp_svg_sizes' => 1)
+			)
 		),
                 array(
 			'label'     => 'Ad Anchor link',
