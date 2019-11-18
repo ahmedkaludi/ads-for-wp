@@ -22,6 +22,10 @@ define( 'ADSFORWP_LIB_PATH', dirname( __FILE__ ) . '/admin/inc/' );
 if ( ! defined( 'ADSFORWP_VERSION' ) ) {
 	define( 'ADSFORWP_VERSION', '1.9.14' );
 }
+
+define( 'ADSFORWP_ENVIRONMENT', 'DEV' );
+//define( 'ADSFORWP_ENVIRONMENT', 'PRO' );
+
 /* Loading Backend files files*/
 require_once  ADSFORWP_PLUGIN_DIR.'/admin/ads-setup.php';
 require_once  ADSFORWP_PLUGIN_DIR.'/admin/control-center.php';

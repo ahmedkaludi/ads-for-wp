@@ -353,7 +353,9 @@ class adsforwp_view_visitor_condition {
                     
                               
           break;
-                   
+          case 'browser_width':
+            $result = true;
+          break;         
           case 'browser_language':                      
                    $browser_language = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);                                                                     
                   if ( $comparison == 'equal' ) {
@@ -605,7 +607,8 @@ class adsforwp_view_visitor_condition {
          $output[] = array_map(array($this, 'adsforwp_visitor_condition_logic_checker'), $gropu['visitor_conditions']);     
       }   
       
-      }         
+      }
+
       return $output;
 }   
 
@@ -617,7 +620,6 @@ class adsforwp_view_visitor_condition {
           if(isset($visitor_condition_enable) && $visitor_condition_enable =='enable'){
           
           $resultset = $this->adsforwp_visitor_condition_field_data( $post_id ); 
-          
           if($resultset){
               
           $condition_array = array(); 

@@ -575,11 +575,11 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
                 if( $saved_data == 'browser_width_custom' || $response == 'browser_width'){
                     if($selected_val_key_5 && $saved_data ==  'browser_width_custom'){
                      
-                    $output .= ' <input type="text" class="widefat adsforwp_browser_width_custom" value="'.esc_attr($selected_val_key_5).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_5]"> ';        
+                    $output .= ' <input type="text" class="adsforwp_browser_width_custom" value="'.esc_attr($selected_val_key_5).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_5]"> <span class="adsforwp_browser_width_custom" style="font-style:italic;">px</span>';        
                     
                     }else{
                      
-                    $output .= ' <input placeholder="768" type="text" class="widefat afw_hide adsforwp_browser_width_custom" value="'.esc_attr($selected_val_key_5).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_5]"> ';        
+                    $output .= ' <input placeholder="768" type="text" class="afw_hide adsforwp_browser_width_custom" value="'.esc_attr($selected_val_key_5).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_5]"> <span class="afw_hide adsforwp_browser_width_custom" style="font-style:italic;">px</span>';        
                     
                     } 
                 }
