@@ -1070,7 +1070,7 @@ function adsforwp_frontend_enqueue(){
       wp_register_script('adsforwp-ads-frontend-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-frontend.min.js', array( 'jquery' ), ADSFORWP_VERSION, true);
       wp_register_script('adsforwp-ads-front-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-front.min.js', array( 'jquery' ), ADSFORWP_VERSION, true);
     }           
-    
+    $browserdata = array();
     $object_name = array(
         'ajax_url'               => admin_url( 'admin-ajax.php' ), 
         'adsforwp_front_nonce'   => wp_create_nonce('adsforwp_ajax_check_front_nonce')
@@ -1106,19 +1106,21 @@ function adsforwp_browser_width_conditoinal($data){
             $post_ad_id = $ads;
             $visitor_condition_enable = get_post_meta($post_ad_id, $key='adsforwp_v_condition_enable', true);            
             $visitor_conditions_array = esc_sql ( get_post_meta($post_ad_id, 'visitor_conditions_array', true)  );
-            
-            for($j=0;$j<count($visitor_conditions_array);$j++){
-              $conditions = $visitor_conditions_array['group-'.$j]['visitor_conditions'];
-               foreach($conditions as $key => $value){
-                  if(in_array('browser_width', $value)){
-                     if(count($conditions) > 1){
-                        $and_or_conditions[$post_ad_id]['and'][] = $conditions[$key];
-                     }else{
-                        $and_or_conditions[$post_ad_id]['or'][] = $conditions[$key];
+            if(isset($visitor_condition_enable) && $visitor_condition_enable =='enable'){
+               for($j=0;$j<count($visitor_conditions_array);$j++){
+                  $conditions = $visitor_conditions_array['group-'.$j]['visitor_conditions'];
+                  foreach($conditions as $key => $value){
+                     if(in_array('browser_width', $value)){
+                        if(count($conditions) > 1){
+                           $and_or_conditions[$post_ad_id]['and'][] = $conditions[$key];
+                        }else{
+                           $and_or_conditions[$post_ad_id]['or'][] = $conditions[$key];
+                        }
                      }
                   }
                }
             }
+            
             $i++;   
          }
       $data = $and_or_conditions;
