@@ -78,12 +78,7 @@ function adsforwp_check_plugin() {
         }
         
     }      
-  if ( is_plugin_active('accelerated-mobile-pages/accelerated-moblie-pages.php') ) {
-      
-         require ADSFORWP_PLUGIN_DIR.'/view/amp-compatibility.php';	
-         
-  }
-  
+    require ADSFORWP_PLUGIN_DIR.'/view/amp-compatibility.php';
 }
 
 add_action( 'admin_init', 'adsforwp_check_plugin' );

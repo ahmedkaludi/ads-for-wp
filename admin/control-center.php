@@ -1101,8 +1101,8 @@ function adsforwp_browser_width_conditoinal($data){
   $all_ads_post = adsforwp_get_ad_ids();
   $and_or_conditions = array();
     if($all_ads_post){
-      $i = 0;
-        foreach($all_ads_post as $ads){
+         $i = 0;
+         foreach($all_ads_post as $ads){
             $post_ad_id = $ads;
             $visitor_condition_enable = get_post_meta($post_ad_id, $key='adsforwp_v_condition_enable', true);            
             $visitor_conditions_array = esc_sql ( get_post_meta($post_ad_id, 'visitor_conditions_array', true)  );
@@ -1124,8 +1124,8 @@ function adsforwp_browser_width_conditoinal($data){
             $i++;   
          }
       $data = $and_or_conditions;
-    }
-    return $data;
+   }
+   return $data;
 }
 
 
