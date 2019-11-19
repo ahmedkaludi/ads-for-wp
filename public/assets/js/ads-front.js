@@ -268,9 +268,8 @@ jQuery( document ).ready(function($) {
 var curr_url = window.location.href;
 var red_ulr = localStorage.getItem('curr');
 var modal = document.getElementById("afw-myModal");
-
 var adsforwpAllowedCookie =  adsforwpgetCookie('adsforwpAllowedCookie');
-if(adsforwpOptions){
+if(typeof adsforwpOptions !== 'undefined'){
   if(adsforwpAllowedCookie!=adsforwpOptions.allow_cookies){
     adsforwpsetCookie('adsforwpCookie', '', -1, '/');
     adsforwpsetCookie('adsforwpAllowedCookie', adsforwpOptions.allow_cookies, 1, '/');

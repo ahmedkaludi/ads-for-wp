@@ -2,8 +2,8 @@
 Contributors: magazine3
 Tags: Ads, Google Adsense, Media Net, DFP, Custom Code, Infolinks, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
-Tested up to: 5.2.3
-Stable tag: 1.9.14
+Tested up to: 5.3
+Stable tag: 1.9.15
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -60,6 +60,12 @@ Chart.js library used https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Char
 Google Api Php Client library used https://github.com/googleapis/google-api-php-client - License URI: https://github.com/googleapis/google-api-php-client/blob/master/LICENSE
 
 == Changelog ==
+
+= 1.9.15 (19 November 2019) =
+
+* New Feature: Added Browser Width and Paid Membership Pro conditions under User Targeting #137
+* Bug Fixed: Added Width and Height option when user adds SVG image for Image banner ad type. #297
+* Bug Fixed: Added fully compatible with AMP by automatic. #121
 
 = 1.9.14 (13 November 2019) =
 

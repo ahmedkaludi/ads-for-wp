@@ -47,55 +47,55 @@ add_action( 'init', 'adsforwp_store_user_info_client_side' );
 
 function adsforwp_store_user_info_client_side(){
      
-                  if(!is_admin()){
-                      
-                   $visitor_obj  = new adsforwp_view_visitor_condition();
-                   $user_ip      =  $visitor_obj->adsforwp_get_client_ip();    
-                   
-                   $saved_ip = '';
-                   $saved_ip_list = array();
-                   
-                   if(isset($_COOKIE['adsforwp-user-info'])){
-                    
-                    $saved_ip_list = $_COOKIE['adsforwp-user-info']; 
-                    $saved_ip = trim(base64_decode($saved_ip_list[0]));  
-                    
-                   }
-                   
-                   if(empty($saved_ip_list) && $saved_ip != $user_ip){
-                       $request_day_count  = get_option("adsforwp_ip_request_".date('Y-m-d'));   
-                     
-                    if($request_day_count){ 
-                        
-                        $request_day_count += 1;  
-                        
-                    }else{
-                        
-                        $request_day_count = 1;
-                        
-                    }
-                       
-                    update_option("adsforwp_ip_request_".date('Y-m-d'), $request_day_count);  
-                    
-                    $settings = adsforwp_defaultSettings(); 
-                    
-                    if(isset($settings['adsforwp_geolocation_api']) && $settings['adsforwp_geolocation_api'] !=''){
-                    
-                    $geo_location_data = wp_remote_get('https://api.ipgeolocation.io/ipgeo?apiKey='.$settings['adsforwp_geolocation_api'].'&ip='.$user_ip.'&fields=country_code3' );	
-											
-                    $geo_location_arr  = json_decode($geo_location_data['body'], true);	
-                   
-                                                                              
-                    if(isset($geo_location_arr['ip']) && isset($geo_location_arr['country_code3'])){
-                    
-                        setcookie('adsforwp-user-info[0]', trim(base64_encode($geo_location_arr['ip'])), time() + (86400 * 60), "/"); 
-                        setcookie('adsforwp-user-info[1]', trim(base64_encode ($geo_location_arr['country_code3'])), time() + (86400 * 60), "/"); 
-                        
-                    }
-                    										                   
-                    }
-                   }                                            
-              }                                                                                                                                                                                                                                                                                                                                                         
+        if(!is_admin()){
+            
+         $visitor_obj  = new adsforwp_view_visitor_condition();
+         $user_ip      =  $visitor_obj->adsforwp_get_client_ip();    
+         
+         $saved_ip = '';
+         $saved_ip_list = array();
+         
+         if(isset($_COOKIE['adsforwp-user-info'])){
+          
+          $saved_ip_list = $_COOKIE['adsforwp-user-info']; 
+          $saved_ip = trim(base64_decode($saved_ip_list[0]));  
+          
+         }
+         
+         if(empty($saved_ip_list) && $saved_ip != $user_ip){
+             $request_day_count  = get_option("adsforwp_ip_request_".date('Y-m-d'));   
+           
+          if($request_day_count){ 
+              
+              $request_day_count += 1;  
+              
+          }else{
+              
+              $request_day_count = 1;
+              
+          }
+             
+          update_option("adsforwp_ip_request_".date('Y-m-d'), $request_day_count);  
+          
+          $settings = adsforwp_defaultSettings(); 
+          
+          if(isset($settings['adsforwp_geolocation_api']) && $settings['adsforwp_geolocation_api'] !=''){
+          
+          $geo_location_data = wp_remote_get('https://api.ipgeolocation.io/ipgeo?apiKey='.$settings['adsforwp_geolocation_api'].'&ip='.$user_ip.'&fields=country_code3' );	
+						
+          $geo_location_arr  = json_decode($geo_location_data['body'], true);	
+         
+                                                                    
+          if(isset($geo_location_arr['ip']) && isset($geo_location_arr['country_code3'])){
+          
+              setcookie('adsforwp-user-info[0]', trim(base64_encode($geo_location_arr['ip'])), time() + (86400 * 60), "/"); 
+              setcookie('adsforwp-user-info[1]', trim(base64_encode ($geo_location_arr['country_code3'])), time() + (86400 * 60), "/"); 
+              
+          }
+          										                   
+          }
+        }                                            
+    }         
 } 
 
 /**
@@ -717,7 +717,6 @@ function adsforwp_defaultSettings(){
 		'app_blog_name'		  => get_bloginfo( 'name' ),
 		'advnc_ads_import_check'  => 1,
     'ad_blocker_support'	  => 1,
-
     'notice_type'    => 'bar',
     'page_redirect'  => 0,
     'allow_cookies'    => 2,
@@ -729,6 +728,7 @@ function adsforwp_defaultSettings(){
     'notice_bg_color' => '#1e73be',
     'notice_btn_txt_color' => '#ffffff',
     'notice_btn_bg_color' => '#f44336',
+    'ad_sponsorship_label' => 0,
     'ad_sponsorship_label_text' => 'Advertisement',
     'ad_label_postion' => 'above',
     'ad_label_txt_color' => '#cccccc'
@@ -1061,29 +1061,73 @@ add_action( 'admin_init', 'adsforwp_removing_wysiwig' );
  */
 function adsforwp_frontend_enqueue(){
         
-        $settings = adsforwp_defaultSettings();
-                   
-        wp_register_script('adsforwp-ads-front-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-front.min.js', array( 'jquery' ), ADSFORWP_VERSION, true);
-        
-        $object_name = array(
-            'ajax_url'               => admin_url( 'admin-ajax.php' ), 
-            'adsforwp_front_nonce'   => wp_create_nonce('adsforwp_ajax_check_front_nonce')
-        );
-        
-        if(isset($settings['ad_performance_tracker'])){
-            
-           $object_name['ad_performance_tracker'] = $settings['ad_performance_tracker'];
-            
-        }
-        
-        wp_localize_script('adsforwp-ads-front-js', 'adsforwp_obj', $object_name);
-        wp_enqueue_script('adsforwp-ads-front-js');
-        
-        wp_enqueue_style( 'ads-for-wp-front-css', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/css/adsforwp-front.min.css', false , ADSFORWP_VERSION );
-        
+    $settings = adsforwp_defaultSettings();
+    
+    if( ADSFORWP_ENVIRONMENT == 'DEV'){
+      wp_register_script('adsforwp-ads-frontend-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-frontend.js', array( 'jquery' ), ADSFORWP_VERSION, true);
+      wp_register_script('adsforwp-ads-front-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-front.js', array( 'jquery' ), ADSFORWP_VERSION, true);
+    }else{
+      wp_register_script('adsforwp-ads-frontend-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-frontend.min.js', array( 'jquery' ), ADSFORWP_VERSION, true);
+      wp_register_script('adsforwp-ads-front-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-front.min.js', array( 'jquery' ), ADSFORWP_VERSION, true);
+    }           
+    $browserdata = array();
+    $object_name = array(
+        'ajax_url'               => admin_url( 'admin-ajax.php' ), 
+        'adsforwp_front_nonce'   => wp_create_nonce('adsforwp_ajax_check_front_nonce')
+    );
+    
+    $object_browser = apply_filters('adsforwp_localize_browser_filter',$browserdata,'adsforwp_localize_data');
+
+    if(isset($settings['ad_performance_tracker'])){
+       $object_name['ad_performance_tracker'] = $settings['ad_performance_tracker'];
+    }
+
+    wp_localize_script('adsforwp-ads-front-js', 'adsforwp_obj', $object_name);
+    wp_localize_script('adsforwp-ads-frontend-js', 'adsforwp_browser_obj', $object_browser);
+    wp_enqueue_script('adsforwp-ads-front-js');
+    wp_enqueue_script('adsforwp-ads-frontend-js');
+    if( ADSFORWP_ENVIRONMENT == 'DEV'){
+      wp_enqueue_style( 'ads-for-wp-front-css', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/css/adsforwp-front.css', false , ADSFORWP_VERSION );
+    }else{
+      wp_enqueue_style( 'ads-for-wp-front-css', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/css/adsforwp-front.min.css', false , ADSFORWP_VERSION );
+    }
                 
 }
 add_action( 'wp_enqueue_scripts', 'adsforwp_frontend_enqueue' );
+
+add_filter('adsforwp_localize_browser_filter','adsforwp_browser_width_conditoinal');
+function adsforwp_browser_width_conditoinal($data){
+  $conditions = array(); 
+  $all_ads_post = adsforwp_get_ad_ids();
+  $and_or_conditions = array();
+    if($all_ads_post){
+         $i = 0;
+         foreach($all_ads_post as $ads){
+            $post_ad_id = $ads;
+            $visitor_condition_enable = get_post_meta($post_ad_id, $key='adsforwp_v_condition_enable', true);            
+            $visitor_conditions_array = esc_sql ( get_post_meta($post_ad_id, 'visitor_conditions_array', true)  );
+            if(isset($visitor_condition_enable) && $visitor_condition_enable =='enable'){
+               for($j=0;$j<count($visitor_conditions_array);$j++){
+                  $conditions = $visitor_conditions_array['group-'.$j]['visitor_conditions'];
+                  foreach($conditions as $key => $value){
+                     if(in_array('browser_width', $value)){
+                        if(count($conditions) > 1){
+                           $and_or_conditions[$post_ad_id]['and'][] = $conditions[$key];
+                        }else{
+                           $and_or_conditions[$post_ad_id]['or'][] = $conditions[$key];
+                        }
+                     }
+                  }
+               }
+            }
+            
+            $i++;   
+         }
+      $data = $and_or_conditions;
+   }
+   return $data;
+}
+
 
 /*
  *	Enqueue Javascript and CSS in admin area
@@ -1100,9 +1144,14 @@ function adsforwp_admin_enqueue($hook) {
          wp_enqueue_style('jquery-ui');
 
          wp_enqueue_style( 'jquery-ui', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/vendor/css/jquery-ui.css', false , ADSFORWP_VERSION );
+         if( ADSFORWP_ENVIRONMENT == 'DEV'){
+          wp_enqueue_style( 'ads-for-wp-admin', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/css/adsforwp.css', false , ADSFORWP_VERSION );
+          wp_register_script( 'ads-for-wp-admin-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/adsforwp.js', array('jquery','wp-color-picker'), ADSFORWP_VERSION , true );
+         }else{
+          wp_enqueue_style( 'ads-for-wp-admin', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/css/adsforwp.min.css', false , ADSFORWP_VERSION );
+          wp_register_script( 'ads-for-wp-admin-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/adsforwp.min.js', array('jquery','wp-color-picker'), ADSFORWP_VERSION , true );
+         }
          
-         wp_enqueue_style( 'ads-for-wp-admin', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/css/adsforwp.min.css', false , ADSFORWP_VERSION );
-         wp_register_script( 'ads-for-wp-admin-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/adsforwp.min.js', array('jquery','wp-color-picker'), ADSFORWP_VERSION , true );
          $ad_type_obj = new adsforwp_view_ads_type();
          $ad_type_array = $ad_type_obj->adsforwp_adtype_metabox_fields();
 
@@ -1121,8 +1170,11 @@ function adsforwp_admin_enqueue($hook) {
          wp_localize_script( 'ads-for-wp-admin-js', 'adtype_metafields', $ad_type_array );
          wp_localize_script( 'ads-for-wp-admin-js', 'display_metafields', $display_metabox );
          wp_localize_script( 'ads-for-wp-admin-js', 'amp_story_ads_feature', $amp_story_ads_feature );
-
-         wp_register_script( 'ads-for-wp-admin-analytics-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/analytics.min.js', array('jquery'), ADSFORWP_VERSION , true );
+          if( ADSFORWP_ENVIRONMENT == 'DEV'){
+            wp_register_script( 'ads-for-wp-admin-analytics-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/analytics.js', array('jquery'), ADSFORWP_VERSION , true );
+          }else{
+            wp_register_script( 'ads-for-wp-admin-analytics-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/analytics.min.js', array('jquery'), ADSFORWP_VERSION , true );
+          }
          wp_enqueue_style( 'wp-color-picker' );
 
         $data = array(

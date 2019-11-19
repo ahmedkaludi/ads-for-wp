@@ -55,7 +55,8 @@ class adsforwp_view_visitor_condition {
     //security check
     wp_nonce_field( 'adsforwp_visitor_condition_action_nonce', 'adsforwp_visitor_condition_name_nonce' );?>
 
-    <?php 
+    <?php
+
     // Type Select    
       $choices = array(
         esc_html__("Basic",'ads-for-wp') => array(                               
@@ -68,14 +69,19 @@ class adsforwp_view_visitor_condition {
           'url_parameter'       =>  esc_html__("URL Parameter",'ads-for-wp'),
           'geo_location'        =>  esc_html__("Country",'ads-for-wp'),
           'cookie'              =>  esc_html__("Cookie",'ads-for-wp'), 
+          'browser_width'              =>  esc_html__("Browser Width",'ads-for-wp'), 
         )        
-      ); 
-
+      );
+       
+      if(defined('PMPRO_BASE_FILE')){
+        $choices['Basic']['membership_level'] = esc_html__("Membership Level",'ads-for-wp'); 
+      }
       $comparison = array(
         'equal'         =>  esc_html__( 'Equal to', 'ads-for-wp'), 
         'not_equal'     =>  esc_html__( 'Not Equal to', 'ads-for-wp'),     
       );
-      $total_group_fields = count( $visitor_conditions_array );       
+      $total_group_fields = count( $visitor_conditions_array );
+
       ?>
 <div class="adsforwp_visitor_condition_group" >   
     <input type="hidden" value="<?php echo (isset( $visitor_condition_enable )?  $visitor_condition_enable : 'disable'); ?>" id="adsforwp_v_condition_enable" name="adsforwp_v_condition_enable">    
@@ -132,23 +138,20 @@ class adsforwp_view_visitor_condition {
             </td>
             
             <td style="width:31%; <?php if (  $selected_val_key_1 =='show_globally' ) { echo 'display:none;'; }  ?>">
-              <select class="widefat comparison" name="visitor_conditions_array[group-<?php echo esc_attr( $j) ?>][visitor_conditions][<?php echo esc_attr( $i )?>][key_2]"> <?php
-                foreach ($comparison as $key => $value) { 
-                  $selcomp = '';
-                  if($key == $selected_val_key_2){
-                    $selcomp = 'selected';
-                  }
-                  ?>
-                  <option class="pt-child" value="<?php echo esc_attr( $key );?>" <?php echo esc_attr($selcomp); ?> > <?php echo esc_html__($value,'ads-for-wp');?> </option>
-                  <?php
-                } ?>
-              </select>
+              <div class="adsforwp-insert-comparision-select">              
+                <?php 
+                $ajax_select_box_obj = new adsforwp_ajax_selectbox();
+                $ajax_select_box_obj->adsforwp_comparision_condition_type_values($selected_val_key_1, $selected_val_key_2,$selected_val_key_4,$selected_val_key_5, $i,$j);
+                ?>
+                  <div style="display:none;" class="spinner"></div>                  
+              </div>
+
             </td>
             <td style="width:31%; <?php if (  $selected_val_key_1 =='show_globally' ) { echo 'display:none;'; }  ?>">
               <div class="adsforwp-insert-condition-select">              
                 <?php 
                 $ajax_select_box_obj = new adsforwp_ajax_selectbox();
-                $ajax_select_box_obj->adsforwp_visitor_condition_type_values($selected_val_key_1, $selected_val_key_3,$selected_val_key_4,$selected_val_key_5, $i,$j);                
+                $ajax_select_box_obj->adsforwp_visitor_condition_type_values($selected_val_key_1, $selected_val_key_3,$selected_val_key_4,$selected_val_key_5, $i,$j);
                 ?>
                   <div style="display:none;" class="spinner"></div>                  
               </div>
@@ -350,7 +353,9 @@ class adsforwp_view_visitor_condition {
                     
                               
           break;
-                   
+          case 'browser_width':
+            $result = true;
+          break;         
           case 'browser_language':                      
                    $browser_language = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);                                                                     
                   if ( $comparison == 'equal' ) {
@@ -518,7 +523,8 @@ class adsforwp_view_visitor_condition {
                 if ( in_array( $data, (array) $user->roles ) ) {
                     $result = true;
                 }
-            }            
+            }
+
             if ( $comparison == 'not_equal') {
                 require_once ABSPATH . 'wp-admin/includes/user.php';
                 // Get all the registered user roles
@@ -531,7 +537,6 @@ class adsforwp_view_visitor_condition {
                 $all_user_types = array_flip( $all_user_types );
                 // User Removed
                 unset( $all_user_types[$data] );
-
                 // Check and make the result true that user is not found 
                 if ( in_array( $data, (array) $all_user_types ) ) {
                     $result = true;
@@ -539,7 +544,34 @@ class adsforwp_view_visitor_condition {
             }
             
            break;
-         
+        case 'membership_level':
+          if( $comparison == 'equal') {
+            if(isset($user->membership_level) && function_exists('pmpro_getAllLevels')){
+              if ( in_array( $data, (array) $user->membership_level->id ) ) {
+                    $result = true;
+              }
+            }
+          }
+          if ( $comparison == 'not_equal') {
+              require_once ABSPATH . 'wp-admin/includes/user.php';
+              // Get all the registered user roles
+              if(function_exists('pmpro_getAllLevels')){
+                $all_pmpro_levels = pmpro_getAllLevels(false, true);
+                $all_level_types = array();
+                foreach ($all_pmpro_levels as $key => $value) {
+                  $all_level_types[] = $value->id;
+                }
+                // Flip the array so we can remove the user that is selected from the dropdown
+                $all_level_types = array_flip( $all_level_types );
+                // User Removed
+                unset( $all_level_types[$data] );
+                // Check and make the result true that user is not found
+                if ( in_array( $data, (array) $all_level_types ) ) {
+                    $result = true;
+                }  
+              }
+          } 
+        break;
       default:
         $result = false;
         break;
@@ -575,7 +607,8 @@ class adsforwp_view_visitor_condition {
          $output[] = array_map(array($this, 'adsforwp_visitor_condition_logic_checker'), $gropu['visitor_conditions']);     
       }   
       
-      }         
+      }
+
       return $output;
 }   
 
@@ -587,7 +620,6 @@ class adsforwp_view_visitor_condition {
           if(isset($visitor_condition_enable) && $visitor_condition_enable =='enable'){
           
           $resultset = $this->adsforwp_visitor_condition_field_data( $post_id ); 
-          
           if($resultset){
               
           $condition_array = array(); 

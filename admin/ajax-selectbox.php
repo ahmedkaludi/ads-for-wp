@@ -6,6 +6,7 @@ public function __construct() {
       add_action('wp_ajax_adsforwp_create_ajax_select_box',array($this,'adsforwp_ajax_select_creator')); 
       add_action('wp_ajax_adsforwp_ajax_select_taxonomy',array($this,'adsforwp_create_ajax_select_taxonomy'));      
       add_action('wp_ajax_adsforwp_visitor_condition_type_values',array($this,'adsforwp_visitor_condition_type_values'));
+      add_action('wp_ajax_adsforwp_comparision_condition_type_values',array($this,'adsforwp_comparision_condition_type_values'));
 }
     
 public function adsforwp_post_type_generator(){
@@ -18,7 +19,64 @@ public function adsforwp_post_type_generator(){
     return $post_types;
 }
 
+public function adsforwp_comparision_condition_type_values($data = '', $saved_data= '',$selected_val_key_4='',$selected_val_key_5='', $current_number = '', $current_group_number  = ''){
+    $adsforwp_settings = adsforwp_defaultSettings();
+    $response = $data;
+    $is_ajax  = false;
+    if( $_SERVER['REQUEST_METHOD']=='POST'){
+        $is_ajax = true;
+        if(wp_verify_nonce($_POST["adsforwp_visitor_condition_call_nonce"],'adsforwp_visitor_condition_action_nonce')){
+            if ( isset( $_POST["id"] ) ) {
+                $response = sanitize_text_field(wp_unslash($_POST["id"]));
+            }
+            if ( isset( $_POST["number"] ) ) {
+                $current_number   = intval(sanitize_text_field($_POST["number"]));
+            }
+            if ( isset( $_POST["group_number"] ) ) {
+                $current_group_number   = intval(sanitize_text_field($_POST["group_number"]));
+            }
+        }else{            
+            exit;
+        }
+    }
+    $choices = array();
+    $options['param'] = $response;
+    switch($options['param'])
+    {
+        case "browser_width":
+            $choices = array(
+                'equal' => 'Equal to',
+                'equal_or_greater'  => 'Equal or Greater than',                             
+                'equal_or_lesser'  => 'Equal or Less than',                             
+            );
+        break;
+        default:
+            $choices = array(
+                'equal' => esc_html__( 'Equal to', 'ads-for-wp'),
+                'not_equal'  => esc_html__( 'Not Equal to', 'ads-for-wp'),
+            );
+        break;
+    }
+    $choices = $choices;
 
+    $output = '<select  class="widefat adsforwp-comparision-condition-ajax-output" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_2]">'; 
+    foreach ($choices as $key => $value) {     
+        if ( $saved_data ==  $key ) {
+            $selected = 'selected="selected"';
+        } else {
+            $selected = '';
+        }
+        $output .= '<option '. esc_attr($selected) .' value="' . esc_attr($key) .'"> ' .  esc_html__($value, 'ads-for-wp') .'  </option>';            
+    }    
+    $output .= ' </select> ';
+    
+    $common_function_obj = new adsforwp_admin_common_functions();  
+    $allowed_html = $common_function_obj->adsforwp_expanded_allowed_tags();
+    echo wp_kses($output, $allowed_html);
+    if ( $is_ajax ) {
+      die();
+    } 
+}
 public function adsforwp_visitor_condition_type_values($data = '', $saved_data= '',$selected_val_key_4='',$selected_val_key_5='', $current_number = '', $current_group_number  = '') {
    
     $adsforwp_settings = adsforwp_defaultSettings();
@@ -330,7 +388,16 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
                 'false' => 'False',                                
             );                       
             break; 
-            
+            case "browser_width":
+                $choices = array(
+                    '320' => 'Extra Small Devices (320px)',
+                    '600' => 'Small Devices (600px)',
+                    '768' => 'Medium Devices (768px)',
+                    '992' => 'Large Devices (992px)',
+                    '1200' => 'Extra Large Devices (1200px)',
+                    'browser_width_custom' => 'Custom Width'
+                );
+            break;
           case "user_agent":
 
             $choices = array(
@@ -438,7 +505,16 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
             );
 
             break;
-                            
+            case 'membership_level':
+                if(function_exists('pmpro_getAllLevels')){
+                    $pmpro_levels = pmpro_getAllLevels(false, true);
+                    if(!empty($pmpro_levels)){
+                        foreach($pmpro_levels as $level){
+                            $choices[$level->id] = $level->name; 
+                        }
+                    } 
+                }
+            break;          
         }        
     
         $choices = $choices; 
@@ -499,8 +575,18 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
                  }   
                  
                 }
-                
-                if ( $saved_data ==  'user_agent_custom' || $response =='user_agent') { 
+                if( $saved_data == 'browser_width_custom' || $response == 'browser_width'){
+                    if($selected_val_key_5 && $saved_data ==  'browser_width_custom'){
+                     
+                    $output .= ' <input type="text" class="adsforwp_browser_width_custom" value="'.esc_attr($selected_val_key_5).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_5]"> <span class="adsforwp_browser_width_custom" style="font-style:italic;">px</span>';        
+                    
+                    }else{
+                     
+                    $output .= ' <input placeholder="768" type="text" class="afw_hide adsforwp_browser_width_custom" value="'.esc_attr($selected_val_key_5).'" name="visitor_conditions_array[group-'.esc_attr($current_group_number).'][visitor_conditions]['. esc_attr($current_number) .'][key_5]"> <span class="afw_hide adsforwp_browser_width_custom" style="font-style:italic;">px</span>';        
+                    
+                    } 
+                }
+                if( $saved_data ==  'user_agent_custom' || $response =='user_agent'){ 
                     
                  if($selected_val_key_5 && $saved_data ==  'user_agent_custom'){
                      
