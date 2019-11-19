@@ -138,9 +138,13 @@ class adsforwp_output_functions{
                  }
               $data = $and_or_conditions;
             }
-            $amp_script_file = ADSFORWP_PLUGIN_DIR_URI.'public/assets/js/ads-frontend-amp.js';
+        if( ADSFORWP_ENVIRONMENT == 'DEV'){
+          $amp_script_file = ADSFORWP_PLUGIN_DIR_URI.'public/assets/js/ads-frontend-amp.js';
+        }else{
+          $amp_script_file = ADSFORWP_PLUGIN_DIR_URI.'public/assets/js/ads-frontend-amp.min.js';
+        }
         echo '<amp-state id="adsforwp_browser_obj">  <script type="application/json">'.json_encode($data).'</script></amp-state>';
-        echo '<amp-script layout="container" src="https://localhost/wordpress522/wp-content/plugins/ads-for-wp/public/assets/js/ads-frontend-amp.js" >';
+        echo '<amp-script layout="container" src="'.$amp_script_file.'" >';
     }
     public function adsforwp_amp_story_auto_ads( $data ){
         $all_ads_post = adsforwp_get_ad_ids();                 
@@ -2050,7 +2054,7 @@ class adsforwp_output_functions{
                            
                              if($ad_image){
                                 
-                                 $ad_code = '<div id="hello-sfds" data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).' '.$brw_class.'">
+                                 $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).' '.$brw_class.'">
                                                         '.$sponsership_label.'
 							<div class="afw_ad_amp_achor afw_ad_amp_anchor_'.esc_attr($post_ad_id).'"><a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="nofollow"><amp-img class="afw_ad_amp_'.esc_attr($post_ad_id).'" src="'.esc_url($ad_image).'" height="'. esc_attr($ad_img_height).'" width="'.esc_attr($ad_img_width).'"></amp-img></a></div>'.$ad_label_bottom.'                                          
 							</div>';  

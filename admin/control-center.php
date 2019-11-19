@@ -717,7 +717,6 @@ function adsforwp_defaultSettings(){
 		'app_blog_name'		  => get_bloginfo( 'name' ),
 		'advnc_ads_import_check'  => 1,
     'ad_blocker_support'	  => 1,
-
     'notice_type'    => 'bar',
     'page_redirect'  => 0,
     'allow_cookies'    => 2,
@@ -729,6 +728,7 @@ function adsforwp_defaultSettings(){
     'notice_bg_color' => '#1e73be',
     'notice_btn_txt_color' => '#ffffff',
     'notice_btn_bg_color' => '#f44336',
+    'ad_sponsorship_label' => 0,
     'ad_sponsorship_label_text' => 'Advertisement',
     'ad_label_postion' => 'above',
     'ad_label_txt_color' => '#cccccc'
