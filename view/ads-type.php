@@ -35,14 +35,6 @@ class adsforwp_view_ads_type {
 			),
             'attributes' => array('required' => 'required'),
             'metaboxes' => array('doubleclick'=>array('all'),'media_net'=>array('all'),'ad_now'=>array('all'),'mgid'=>array('all'),'contentad'=>array('all'),'ezoic' => array('display-metabox'),'infolinks'=>array('all'),'mantis' => array('all'),'mediavine' => array('all'),'outbrain'=>array('all'),'taboola'=> array('all'),'ad_image'=> array('all'),'ad_background' => array('display-metabox','adsforwp-location'),'amp_story_ads' => array('display-metabox','setexpiredate','adsforwp-location','adsforwp_visitor_condition_metabox','adsforwp_placement_metabox'),'engageya' => array('adsforwp-location','setexpiredate'),'revcontent' => array('all'),'custom' => array('all')),
-            'notice' => array(
-            	'ezoic'=>'<p class="ezoic_notice"><i>Note: This Ad type is not implemented in AMP</i></p>',
-            	'infolinks' => '<p class="infolinks_notice"><i>Note: This Ad type is not implemented in AMP</i>.</p>',
-            	'amp_story_ads' => '<p class="ampstory_notice"><i>Note: Need AMP Story feature inorder to use this Ad Type</i>.</p>',
-            	'ad_now' => '<p class="adnow_notice"><i>Note: This Ad type is not implemented in AMP</i>.</p>',
-            	'engageya' => '<p class="engageya_notice"><i>Note: This Ad type is not implemented in Non-AMP</i>.</p>',
-            	'revcontent' => '<p class="revcontent_notice"><i>Note: This Ad type is not implemented in Non-AMP</i>.</p>',
-            )
 		),
 		array(
 			'label' => 'Data ID',
@@ -255,7 +247,6 @@ class adsforwp_view_ads_type {
                 'in_article_ads' => 'In-Article Ads',
                 'in_feed_ads' => 'In-Feed Ads'
 				),
-			'notice' => array('in_article_ads' => '<p class="in_article_notice"><i>Note: This AdSense type is not implemented in AMP</i>.</p>','in_feed_ads' => '<p class="in_feed_notice"><i>Note: This AdSense type is not implemented in AMP</i>.</p>'),
 			'metaboxes' => array(
 				'normal' => array('all'),
 				'matched_content_ads' => array('all'),
@@ -693,11 +684,21 @@ class adsforwp_view_ads_type {
 		),
 	);
 	public function __construct() {
-                
-                if($this->common_function == null){
-                    $this->common_function = new adsforwp_admin_common_functions();
-                }
-            
+        $notice_arry = array(
+            	'ezoic'=>'<p class="ezoic_notice"><i>'.esc_html__('Note: This Ad type is not implemented in AMP.','ads-for-wp').'</i></p>',
+            	'infolinks' => '<p class="infolinks_notice"><i>'.esc_html__('Note: This Ad type is not implemented in AMP.','ads-for-wp').'</i></p>',
+            	'amp_story_ads' => '<p class="ampstory_notice"><i>'.esc_html__('Note: Need AMP Story feature inorder to use this Ad Type','ads-for-wp').'</i></p>',
+            	'ad_now' => '<p class="adnow_notice"><i>'.esc_html__('Note: This Ad type is not implemented in AMP.','ads-for-wp').'</i></p>',
+            	'engageya' => '<p class="engageya_notice"><i>'.esc_html__('Note: This Ad type is not implemented in Non-AMP.','ads-for-wp').'</i></p>',
+            	'revcontent' => '<p class="revcontent_notice"><i>'.esc_html__('Note: This Ad type is not implemented in Non-AMP.','ads-for-wp').'</i></p>',
+            );
+        $adsense_type_notice = array('in_article_ads' => '<p class="in_article_notice"><i>'.esc_html__('Note: This AdSense type is not implemented in AMP.','ads-for-wp').'</i></p>','in_feed_ads' => '<p class="in_feed_notice"><i>'.esc_html__('Note: This AdSense type is not implemented in AMP.','ads-for-wp').'</i></p>');
+        $this->meta_fields[0]['notice'] = $notice_arry;       
+       	$this->meta_fields[16]['notice'] = $adsense_type_notice;
+        if($this->common_function == null){
+            $this->common_function = new adsforwp_admin_common_functions();
+        }
+           
 		add_action( 'add_meta_boxes', array( $this, 'adsforwp_add_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'adsforwp_save_fields' ) );
 	}
