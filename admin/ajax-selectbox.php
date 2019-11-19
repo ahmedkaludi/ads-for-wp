@@ -390,8 +390,11 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
             break; 
             case "browser_width":
                 $choices = array(
-                    '480' => '480px',
-                    '768' => '768px',
+                    '320' => 'Extra Small Devices (320px)',
+                    '600' => 'Small Devices (600px)',
+                    '768' => 'Medium Devices (768px)',
+                    '992' => 'Large Devices (992px)',
+                    '1200' => 'Extra Large Devices (1200px)',
                     'browser_width_custom' => 'Custom Width'
                 );
             break;
