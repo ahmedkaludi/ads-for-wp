@@ -107,44 +107,54 @@ class adsforwp_output_functions{
         add_filter('amp_story_auto_ads_configuration',array($this,'adsforwp_amp_story_auto_ads'));
         
     }
+    public function adsforwp_ads_browser_width_condition(){
+      $conditions = array();
+        $data = array(); 
+        $all_ads_post = adsforwp_get_ad_ids();
+        $and_or_conditions = array();
+        if($all_ads_post){
+          foreach($all_ads_post as $ads){
+              $post_ad_id = $ads;
+              $visitor_condition_enable = get_post_meta($post_ad_id, $key='adsforwp_v_condition_enable', true);            
+              $visitor_conditions_array = esc_sql ( get_post_meta($post_ad_id, 'visitor_conditions_array', true)  );
+              $service = new adsforwp_output_service();
+              $ad_status = $service->adsforwp_is_condition($post_ad_id);
+              if(isset($visitor_condition_enable) && $visitor_condition_enable =='enable'){
+                  for($j=0;$j<count($visitor_conditions_array);$j++){
+                    $conditions = $visitor_conditions_array['group-'.$j]['visitor_conditions'];
+                     foreach($conditions as $key => $value){
+                        if(in_array('browser_width', $value) && $ad_status){
+                           if(count($conditions) > 1){
+                              $and_or_conditions[$post_ad_id]['and'][] = $conditions[$key];
+                           }else{
+                              $and_or_conditions[$post_ad_id]['or'][] = $conditions[$key];
+                           }
+                        }
+                     }
+                  }
+              }
+           }
+        $data = $and_or_conditions;
+      }
+      return $data;
+    }
     public function adsforwp_ads_script_end_tag(){
-        echo '</amp-script>';
+        $browser_data = $this->adsforwp_ads_browser_width_condition();
+        if(!empty($browser_data) ){
+          echo '</amp-script>';
+        }
     }
     public function adsforwp_ads_condition_browser_data(){
-        $conditions = array();
-        $data = array(); 
-          $all_ads_post = adsforwp_get_ad_ids();
-          $and_or_conditions = array();
-            if($all_ads_post){
-              $i = 0;
-                foreach($all_ads_post as $ads){
-                    $post_ad_id = $ads;
-                    $visitor_condition_enable = get_post_meta($post_ad_id, $key='adsforwp_v_condition_enable', true);            
-                    $visitor_conditions_array = esc_sql ( get_post_meta($post_ad_id, 'visitor_conditions_array', true)  );
-                    
-                    for($j=0;$j<count($visitor_conditions_array);$j++){
-                      $conditions = $visitor_conditions_array['group-'.$j]['visitor_conditions'];
-                       foreach($conditions as $key => $value){
-                          if(in_array('browser_width', $value)){
-                             if(count($conditions) > 1){
-                                $and_or_conditions[$post_ad_id]['and'][] = $conditions[$key];
-                             }else{
-                                $and_or_conditions[$post_ad_id]['or'][] = $conditions[$key];
-                             }
-                          }
-                       }
-                    }
-                    $i++;   
-                 }
-              $data = $and_or_conditions;
-            }
-        if( ADSFORWP_ENVIRONMENT == 'DEV'){
-          $amp_script_file = ADSFORWP_PLUGIN_DIR_URI.'public/assets/js/ads-frontend-amp.js';
-        }else{
-          $amp_script_file = ADSFORWP_PLUGIN_DIR_URI.'public/assets/js/ads-frontend-amp.min.js';
+        $browser_data = $this->adsforwp_ads_browser_width_condition();
+        if(!empty($browser_data) ){
+          if( ADSFORWP_ENVIRONMENT == 'DEV'){
+            $amp_script_file = ADSFORWP_PLUGIN_DIR_URI.'public/assets/js/ads-frontend-amp.js';
+          }else{
+            $amp_script_file = ADSFORWP_PLUGIN_DIR_URI.'public/assets/js/ads-frontend-amp.min.js';
+          }
+          echo '<amp-state id="adsforwp_browser_obj">  <script type="application/json">'.json_encode($browser_data).'</script></amp-state>';
+          echo '<amp-script layout="container" src="'.$amp_script_file.'" >';
         }
-        echo '<amp-state id="adsforwp_browser_obj">  <script type="application/json">'.json_encode($data).'</script></amp-state>';
-        echo '<amp-script layout="container" src="'.$amp_script_file.'" >';
     }
     public function adsforwp_amp_story_auto_ads( $data ){
         $all_ads_post = adsforwp_get_ad_ids();                 
@@ -835,31 +845,10 @@ class adsforwp_output_functions{
             }
           
           }
-        $conditions = array(); 
-        $all_ads_post = adsforwp_get_ad_ids();
-        $and_or_conditions = array();
-        $status = false;
-        if($all_ads_post){
-            $i = 0;
-            foreach($all_ads_post as $ads){
-                $post_ad_id = $ads;
-                $visitor_condition_enable = get_post_meta($post_ad_id, $key='adsforwp_v_condition_enable', true);            
-                $visitor_conditions_array = esc_sql ( get_post_meta($post_ad_id, 'visitor_conditions_array', true)  );
-                
-                for($j=0;$j<count($visitor_conditions_array);$j++){
-                    $conditions = $visitor_conditions_array['group-'.$j]['visitor_conditions'];
-                    foreach($conditions as $key => $value){
-                        if(in_array('browser_width', $value)){
-                            $status = true;
-                        }
-                    }
-                }
-            }
-        }
-        if($status){
+        $browser_data  = $this->adsforwp_ads_browser_width_condition();
+        if(!empty($browser_data)){
             echo '<meta name="amp-script-src" content="sha384-X8xW7VFd-a-kgeKjsR4wgFSUlffP7x8zpVmqC6lm2DPadWUnwfdCBJ2KbwQn6ADE sha384-nNFaDRiLzgQEgiC5kP28pgiJVfNLVuw-nP3VBV-e2s3fOh0grENnhllLfygAuU_M sha384-u7NPnrcs7p4vsbGLhlYHsId_iDJbcOWxmBd9bhVuPoA_gM_he4vyK6GsuvFvr2ym">';
         }
-        
     }
     /**
      * we are here integrating adsense auto ads amp tag for amp posts
@@ -922,9 +911,9 @@ class adsforwp_output_functions{
                 $post_meta_dataset = get_post_meta($ad_id,$key='',true);
                 $adsense_type = adsforwp_rmv_warnings($post_meta_dataset, 'adsense_type', 'adsforwp_array');
                 $outbrain_type   = adsforwp_rmv_warnings($post_meta_dataset, 'outbrain_type', 'adsforwp_array');
+                $service = new adsforwp_output_service();
+                $ad_status = $service->adsforwp_is_condition($ad_id);
                 if(( $post_type == 'adsense' && $adsense_type == 'adsense_sticky_ads') || ($post_type == 'outbrain' && $outbrain_type == 'outbrain_sticky_ads') ){
-                    $service = new adsforwp_output_service();
-                    $ad_status = $service->adsforwp_is_condition($ad_id);
                     if($ad_status){
                         if ( empty( $data['amp_component_scripts']['amp-sticky-ad'] ) ) {
                             $data['amp_component_scripts']['amp-sticky-ad'] = 'https://cdn.ampproject.org/v0/amp-sticky-ad-latest.js';
@@ -932,7 +921,7 @@ class adsforwp_output_functions{
                     }
                 }
                 $browser_width = $this->adsforwp_get_ad_by_browser_width($ad_id);
-                if(!empty($browser_width)){
+                if(!empty($browser_width) && $ad_status){
                     if( empty( $data['amp_component_scripts']['amp-script'] ) ) {
                         $data['amp_component_scripts']['amp-script'] = 'https://cdn.ampproject.org/v0/amp-script-0.1.js';
                     }
@@ -1497,7 +1486,6 @@ class adsforwp_output_functions{
          }                          
             }
             //Groups positioning ends here
-            
                 
         return $content;    
     }  
@@ -1505,14 +1493,17 @@ class adsforwp_output_functions{
     public function adsforwp_get_ad_by_browser_width($post_ad_id){
         $visitor_condition_enable = get_post_meta($post_ad_id, $key='adsforwp_v_condition_enable', true);            
         $visitor_conditions_array = esc_sql ( get_post_meta($post_ad_id, 'visitor_conditions_array', true)  );
-        for($j=0;$j<count($visitor_conditions_array);$j++){
-            $conditions = $visitor_conditions_array['group-'.$j]['visitor_conditions'];
-            
-            foreach($conditions as $key => $value){
-                if(in_array('browser_width', $value)){
-                    return $brw_class = 'afw_brw-'.$post_ad_id;
-                }
-            }
+        $service = new adsforwp_output_service();
+        $ad_status = $service->adsforwp_is_condition($post_ad_id);
+        if(isset($visitor_condition_enable) && $visitor_condition_enable =='enable'){
+          for($j=0;$j<count($visitor_conditions_array);$j++){
+              $conditions = $visitor_conditions_array['group-'.$j]['visitor_conditions'];
+              foreach($conditions as $key => $value){
+                  if(in_array('browser_width', $value) && $ad_status){
+                      return $brw_class = 'afw_brw-'.$post_ad_id;
+                  }
+              }
+          }
         }
         return '';
     }  
