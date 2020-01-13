@@ -537,8 +537,11 @@ function adsforwp_extra_user_profile_fields( $user ) {
     </table>
 <?php 
 }
+$settings = adsforwp_defaultSettings();
+if(is_array($settings) && array_key_exists('ad_revenue_sharing', $settings)){
 add_action( 'show_user_profile', 'adsforwp_extra_user_profile_fields' );
 add_action( 'edit_user_profile', 'adsforwp_extra_user_profile_fields' );
+}
 
 /**
  * we are saving user extra fields data in database
