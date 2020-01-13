@@ -800,7 +800,7 @@ public function adsforwp_ad_revenue_sharing_callback(){
 public function adsforwp_ad_sponsorship_label_callback(){
 	$settings = adsforwp_defaultSettings();
 	$checked = '';
-	if($settings['ad_sponsorship_label']){
+	if(isset($settings['ad_sponsorship_label'])){
 		$checked = "checked";
 	}           
     ?>	
