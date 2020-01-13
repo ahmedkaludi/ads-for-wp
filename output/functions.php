@@ -823,7 +823,13 @@ class adsforwp_output_functions{
           
           }
         
-    }        
+    }
+    public function adsforwp_auto_ads_amp_script($data){
+      if ( empty( $data['amp_component_scripts']['amp-auto-ads'] ) ) {
+            $data['amp_component_scripts']['amp-auto-ads'] = 'https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js';
+        }
+      return $data;
+    }     
     /**
      * we are here enqueying adsense auto ads script for amp posts
      */
@@ -833,17 +839,14 @@ class adsforwp_output_functions{
           
           if($result){
               
-          $post_id  = adsforwp_rmv_warnings($result, 'post_id', 'adsforwp_string');   
-          
-          $service = new adsforwp_output_service();
-          $ad_status = $service->adsforwp_is_condition($post_id);
-          
+            $post_id  = adsforwp_rmv_warnings($result, 'post_id', 'adsforwp_string');   
+            
+            $service = new adsforwp_output_service();
+            $ad_status = $service->adsforwp_is_condition($post_id);
+            
             if($ad_status){
-
-                 echo '<script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>';   
-
+              add_filter('amp_post_template_data',array($this, 'adsforwp_auto_ads_amp_script'));
             }
-          
           }
         $browser_data  = $this->adsforwp_ads_browser_width_condition();
         if(!empty($browser_data)){
