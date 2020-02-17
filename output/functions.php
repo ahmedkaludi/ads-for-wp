@@ -1281,7 +1281,13 @@ class adsforwp_output_functions{
                             if($i==$needleOccueance){
                                 $part1 = substr( $content, 0, $lastPos);
                                 $part2 = substr( $content, $lastPos, strlen($content));
-                                $actualContent = $part1.' '.$ad_code.' '.$part2;
+                                $close_tag_pos_open = strpos($part2, '</');
+                                $close_tag_pos_close = strpos($part2, '>', $close_tag_pos_open);
+
+                                $part2_start_data = substr($part2,0,$close_tag_pos_close+1);
+                                $part2_end_data = substr($part2,$close_tag_pos_close+1,strlen($part2));
+                                
+                                $actualContent = $part1.' '.$part2_start_data.' '.$ad_code.' '.$part2_end_data;
                             }
                             $i++;
                         }
