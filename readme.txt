@@ -61,7 +61,7 @@ Google Api Php Client library used https://github.com/googleapis/google-api-php-
 
 == Changelog ==
 
-= 1.9.15.3 (20 February 2020) =
+= 1.9.15.3 (17 February 2020) =
 
 * Bug Fixed: Added code to avoid the cutting of content due to 'percent of content' option #316
 
