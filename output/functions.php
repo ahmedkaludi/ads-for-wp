@@ -1582,11 +1582,9 @@ class adsforwp_output_functions{
                 $ad_margin_left         = adsforwp_rmv_warnings($margin_post_meta, 'ad_margin_left', 'adsforwp_string');                                                  
                 $ad_margin_right        = adsforwp_rmv_warnings($margin_post_meta, 'ad_margin_right', 'adsforwp_string');  
             
-                if($where_to_display !='ad_shortcode'){
-
-                    $ad_alignment            = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_align', 'adsforwp_array');                
-
-                }
+                //if($where_to_display !='ad_shortcode'){
+                    $ad_alignment            = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_align', 'adsforwp_array');
+                //}
             } 
             $ad_text_wraparound            = adsforwp_rmv_warnings($post_meta_dataset, 'ads_text_wrap', 'adsforwp_array');           
             $ad_responsive               = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_responsive', 'adsforwp_array');                            
