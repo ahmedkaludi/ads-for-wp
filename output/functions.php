@@ -1079,14 +1079,13 @@ class adsforwp_output_functions{
                             $service = new adsforwp_output_service();
                             $ad_status = $service->adsforwp_is_condition($ad_id);
 
-                            if($ad_status){
+                            if($ad_status && $ad_slot_id){
                                 $data_slot .="googletag.defineSlot('".esc_attr($ad_slot_id)."', [".esc_attr($width).", ".esc_attr($height)."], '".esc_attr($ad_div_gpt)."').addService(googletag.pubads());";
                             }   
 
                             }
-
-                            if( $data_slot !=''){
-                                
+                            
+                            if( $data_slot !=''){   
                              echo "<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
                                    <script>
                                     var googletag = googletag || {};
@@ -1099,8 +1098,7 @@ class adsforwp_output_functions{
                                       googletag.pubads().enableSingleRequest();
                                       googletag.enableServices();
                                     });
-                                  </script>";   
-                                
+                                  </script>";
                             }                            
 
             }                                                    
