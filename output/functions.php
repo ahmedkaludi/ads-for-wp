@@ -2741,7 +2741,7 @@ class adsforwp_output_functions{
         
         $wheretodisplay                 = adsforwp_rmv_warnings($post_group_meta, 'wheretodisplay', 'adsforwp_array');                                
         
-        if($wheretodisplay !='ad_shortcode' && isset($post_group_meta['adsforwp_ad_align'])){
+        if(isset($post_group_meta['adsforwp_ad_align'])){
             
         $ad_alignment      = $post_group_meta['adsforwp_ad_align'][0];    
         
