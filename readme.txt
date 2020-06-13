@@ -3,7 +3,7 @@ Contributors: magazine3
 Tags: Ads, Google Adsense, Media Net, DFP, Custom Code, Infolinks, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
 Tested up to: 5.4
-Stable tag: 1.9.15.4
+Stable tag: 1.9.16
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -60,6 +60,14 @@ Chart.js library used https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Char
 Google Api Php Client library used https://github.com/googleapis/google-api-php-client - License URI: https://github.com/googleapis/google-api-php-client/blob/master/LICENSE
 
 == Changelog ==
+
+= 1.9.16 (13 June 2020) =
+
+* New Feature: Created an option to add link attributes for image banner type ads. #338
+* Bug Fixed: Error in query monitor has been resolved. #325
+* Bug Fixed: Center alignment issue while using Ads through shortcode has been resolved. #329
+* Bug Fixed: Receiving Exception in queued GPT command TypeError in Console has been resolved. #326
+* Bug Fixed: Unable to display ads on page build using Elementor issue has been resolved. #323
 
 = 1.9.15.3 (17 February 2020) =
 
