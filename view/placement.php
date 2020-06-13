@@ -535,7 +535,11 @@ class adsforwp_view_placement {
       }   
       
       }         
-      return $output;
+      if(!empty($output[0][0])){
+        return $output;
+      }else{
+        return '';
+      }
 }   
 
  public function adsforwp_get_post_conditions_status($post_id){

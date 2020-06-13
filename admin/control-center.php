@@ -1134,7 +1134,7 @@ function adsforwp_browser_width_conditoinal($data){
  */
 function adsforwp_admin_enqueue($hook) {
         
-         wp_enqueue_media(); 
+         //wp_enqueue_media(); 
          wp_enqueue_style('thickbox');
          wp_enqueue_script('thickbox'); 
          wp_enqueue_style('wp-pointer');

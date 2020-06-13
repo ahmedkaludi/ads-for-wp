@@ -559,7 +559,7 @@ class adsforwp_view_ads_type {
 				'fields' => array('select_adtype'=> 'ad_image', 'adsforwp_svg_sizes' => 1)
 			)
 		),
-                array(
+        array(
 			'label'     => 'Ad Anchor link',
 			'id'        => 'adsforwp_ad_redirect_url',                        
 			'type'      => 'text',
@@ -568,7 +568,15 @@ class adsforwp_view_ads_type {
               	'fields'=> array('select_adtype' => 'ad_image')
             ),
 		),
-              
+        array(
+			'label'     => 'Ad rel Link Attribute',
+			'id'        => 'adsforwp_ad_rel_attr',                        
+			'type'      => 'text',
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'ad_image')
+            ),
+		),   
         array(
 			'label'     => 'AdNow Widget ID',
 			'id'        => 'ad_now_widget_id',                        
