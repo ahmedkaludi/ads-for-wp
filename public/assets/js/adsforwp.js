@@ -533,12 +533,12 @@ jQuery( document ).ready(function($) {
                         content += '.wp-pointer-content .button-secondary{  left: -25px;background: transparent;top: 5px; border: 0;position: relative; padding: 0; box-shadow: none;margin: 0;color: #0085ba;} .wp-pointer-content .button-primary{ display:none}  #afw_mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; }';
                         content += '</style>';                        
                         content += '<div id="afw_mc_embed_signup">';
-                        content += '<form action="//app.mailerlite.com/webforms/submit/o1s7u3" data-id="258182" data-code="o1s7u3" method="POST" target="_blank">';
+                        content += '<form method="POST" id="ad-forwp-subscribe-newsletter-form">';
                         content += '<div id="afw_mc_embed_signup_scroll">';
                         content += '<div class="afw-mc-field-group" style="    margin-left: 15px;    width: 195px;    float: left;">';
-                        content += '<input type="text" name="fields[name]" class="form-control" placeholder="Name" hidden value="'+adsforwp_localize_data.current_user_name+'" style="display:none">';
-                        content += '<input type="text" value="'+adsforwp_localize_data.current_user_email+'" name="fields[email]" class="form-control" placeholder="Email*"  style="      width: 180px;    padding: 6px 5px;">';
-                        content += '<input type="text" name="fields[company]" class="form-control" placeholder="Website" hidden style=" display:none; width: 168px; padding: 6px 5px;" value="'+adsforwp_localize_data.get_home_url+'">';
+                        content += '<input type="text" name="name" class="form-control" placeholder="Name" hidden value="'+adsforwp_localize_data.current_user_name+'" style="display:none">';
+                        content += '<input type="text" value="'+adsforwp_localize_data.current_user_email+'" name="email" class="form-control" placeholder="Email*"  style="      width: 180px;    padding: 6px 5px;">';
+                        content += '<input type="text" name="company" class="form-control" placeholder="Website" hidden style=" display:none; width: 168px; padding: 6px 5px;" value="'+adsforwp_localize_data.get_home_url+'">';
                         content += '<input type="hidden" name="ml-submit" value="1" />';
                         content += '</div>';
                         content += '<div id="mce-responses">';
@@ -546,7 +546,7 @@ jQuery( document ).ready(function($) {
                         content += '<div class="response" id="mce-success-response" style="display:none"></div>';
                         content += '</div>';
                         content += '<div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_a631df13442f19caede5a5baf_c9a71edce6" tabindex="-1" value=""></div>';
-                        content += '<input type="submit" value="Subscribe" name="subscribe" id="pointer-close" class="button mc-newsletter-sent" style=" background: #0085ba; border-color: #006799; padding: 0px 16px; text-shadow: 0 -1px 1px #006799,1px 0 1px #006799,0 1px 1px #006799,-1px 0 1px #006799; height: 30px; margin-top: 1px; color: #fff; box-shadow: 0 1px 0 #006799;">';
+                        content += '<input type="submit" value="Subscribe" name="subscribe" class="button mc-newsletter-sent" style=" background: #0085ba; border-color: #006799; padding: 0px 16px; text-shadow: 0 -1px 1px #006799,1px 0 1px #006799,0 1px 1px #006799,-1px 0 1px #006799; height: 30px; margin-top: 1px; color: #fff; box-shadow: 0 1px 0 #006799;">';
                         content += '</div>';
                         content += '</form>';
                         content += '</div>';
@@ -607,6 +607,24 @@ jQuery( document ).ready(function($) {
             }
                 
     /* Newletters js ends here */ 
+    /*Newsletter submission*/
+    jQuery("#ad-forwp-subscribe-newsletter-form").on('submit',function(e){
+        e.preventDefault();
+        var form = jQuery(this);
+        var name = form.find('input[name="name"]').val();
+        var email = form.find('input[name="email"]').val();
+        var website = form.find('input[name="company"]').val();
+        jQuery.post(pwaforwp_obj.ajax_url, {action:'adsforwp_subscribe_newsletter',name:name, email:email,website:website},
+          function(data) {
+              jQuery.post (pwaforwp_obj.ajax_url, {
+                      pointer: 'adsforwp_subscribe_pointer',
+                      action: 'dismiss-wp-pointer'
+              }, function(){
+                location.reload();
+              });
+          }
+        );
+    });
            
     /* WP Pointer for ad type information */      
     

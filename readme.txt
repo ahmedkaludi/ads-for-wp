@@ -2,8 +2,8 @@
 Contributors: magazine3
 Tags: Ads, Google Adsense, Media Net, DFP, Custom Code, Infolinks, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
-Tested up to: 5.4
-Stable tag: 1.9.16.1
+Tested up to: 5.7
+Stable tag: 1.9.16.2
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -11,6 +11,10 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
 ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy to Use, Unlimited Incontent Ads, Adsense, Premium Features and more
+
+= Notice =
+
+AdsforWP has been depreciated but the innovation will be continued on another revolutionary plugin called WPQuads, so we recommend you to use [WPQuads](https://wordpress.org/plugins/quick-adsense-reloaded/). Regular development will be done here as well as customer support will be provided.
 
 = Features: =
 * NEW: Revcontent Ads Support
