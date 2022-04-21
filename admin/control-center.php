@@ -1161,11 +1161,13 @@ function adsforwp_admin_enqueue($hook) {
           $experiences = array();
           if( class_exists('AMP_Options_Manager')){
             $experiences = AMP_Options_Manager::get_option( 'experiences' );
-          }
 
+            if( !empty( $experiences ) ){
           if(in_array('stories', $experiences) || class_exists('Ampforwp_Stories_Post_Type')){
             $amp_story_ads_feature = array('amp_story_ad' => true);
           }
+        }
+    }
           
          wp_localize_script( 'ads-for-wp-admin-js', 'adtype_metafields', $ad_type_array );
          wp_localize_script( 'ads-for-wp-admin-js', 'display_metafields', $display_metabox );
