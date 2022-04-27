@@ -2,8 +2,8 @@
 Contributors: magazine3
 Tags: Ads, Google Adsense, Media Net, DFP, Custom Code, Infolinks, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
-Tested up to: 5.7
-Stable tag: 1.9.16.2
+Tested up to: 5.9.3
+Stable tag: 1.9.17
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -14,7 +14,7 @@ ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy t
 
 = Notice =
 
-AdsforWP has been depreciated but the innovation will be continued on another revolutionary plugin called WPQuads, so we recommend you to use [WPQuads](https://wordpress.org/plugins/quick-adsense-reloaded/). Regular development will be done here as well as customer support will be provided.
+AdsforWP is back again and we're actively developing the plugin. Regular development will be done here as well as customer support will be provided from now on.
 
 = Features: =
 * NEW: Revcontent Ads Support
@@ -64,6 +64,11 @@ Chart.js library used https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Char
 Google Api Php Client library used https://github.com/googleapis/google-api-php-client - License URI: https://github.com/googleapis/google-api-php-client/blob/master/LICENSE
 
 == Changelog ==
+
+= 1.9.17 (21 April 2022) =
+
+* Bug Fixed: PHP Fatal error:  Array and string offset access syntax with curly braces is no longer supported. #352
+* Bug Fixed: Warning: in_array() expects parameter 2 to be array. #357
 
 = 1.9.16.1 (15 June 2020) =
 
