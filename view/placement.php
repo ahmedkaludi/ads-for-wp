@@ -417,7 +417,7 @@ class adsforwp_view_placement {
           $current_post = $post->ID;    
           }           
         }else{
-          $current_post = $post->ID;
+          $current_post = isset( $post->ID ) ? $post->ID : null;
         }
             if ( $comparison == 'equal' ) {
                 if ( $current_post == $data ) {

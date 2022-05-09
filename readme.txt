@@ -1,9 +1,9 @@
-=== Ads for WP - Advanced Ads & Adsense Solution for WP & AMP ===
+=== Google Adsense & Banner Ads by AdsforWP ===
 Contributors: magazine3
 Tags: Ads, Google Adsense, Media Net, DFP, Custom Code, Infolinks, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
 Tested up to: 5.9.3
-Stable tag: 1.9.17
+Stable tag: 1.9.18
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -14,21 +14,9 @@ ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy t
 
 = Notice =
 
-AdsforWP is back again and we're actively developing the plugin. Regular development will be done here as well as customer support will be provided from now on.
+AdsforWP Plugin is back again and Active Development has started. Regular development will be done here as well as customer support will be provided from now on.
 
 = Features: =
-* NEW: Revcontent Ads Support
-* NEW: AMP Story Ads Support
-* NEW: Engageya Support
-* NEW: Outbrain Support
-* NEW: Taboola Support
-* NEW: MANTIS Support
-* NEW: Ezoic Support
-* NEW: Mediavine Support
-* NEW: ads.txt Support
-* NEW: MGID Support
-* NEW: Ads Performance Analytics with reports & insights (supports AMP as well)
-* NEW: View Deep Insights of your traffic and Revenue with reports and data. It gives an overview of Mobile VS Desktop, AMP vs Non-AMP of your Traffic & Ad revenue including the comparision of previous time.
 * AdSense Auto Ads Support
 * Ad Groups with AMP Support
 * Ad Widget added
@@ -43,6 +31,18 @@ AdsforWP is back again and we're actively developing the plugin. Regular develop
 * Easily inject Between the content, After the content or Before the content.
 * Migrate from Advanced Ads plugin with One Click!
 * NEW: Align and set margins easily 
+* NEW: Revcontent Ads Support
+* NEW: AMP Story Ads Support
+* NEW: Engageya Support
+* NEW: Outbrain Support
+* NEW: Taboola Support
+* NEW: MANTIS Support
+* NEW: Ezoic Support
+* NEW: Mediavine Support
+* NEW: ads.txt Support
+* NEW: MGID Support
+* NEW: Ads Performance Analytics with reports & insights (supports AMP as well)
+* NEW: View Deep Insights of your traffic and Revenue with reports and data. It gives an overview of Mobile VS Desktop, AMP vs Non-AMP of your Traffic & Ad revenue including the comparision of previous time.
 
 = Active Development: =
 We are actively developing this plugin and our aim is to make this plugin into the #1 solution in the world. You can [Request a Feature](http://www.adsforwp.com/contact/) or [Report a Bug](https://github.com/ahmedkaludi/ads-for-wp/issues). The code is hosted on [Github](https://github.com/ahmedkaludi/ads-for-wp).
@@ -64,6 +64,13 @@ Chart.js library used https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Char
 Google Api Php Client library used https://github.com/googleapis/google-api-php-client - License URI: https://github.com/googleapis/google-api-php-client/blob/master/LICENSE
 
 == Changelog ==
+
+= 1.9.18 (09 May 2022) =
+
+* Bug Fixed: PHP Warning:  Attempt to read property "ID". #359
+* Bug Fixed: The Text" Advertisement" is adding on website when we are using "generate press" theme. #349
+* Bug Fixed: Warning: Undefined array key "ad_sponsorship_label" #349
+* Bug Fixed: Updated Plugin name and Description. #361
 
 = 1.9.17 (21 April 2022) =
 
