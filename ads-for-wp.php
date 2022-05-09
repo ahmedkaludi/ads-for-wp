@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: Ads for WP - Advanced Ads & Adsense Solution for WP & AMP
+Plugin Name: Google Adsense & Banner Ads by AdsforWP
 Plugin URI: https://wordpress.org/plugins/ads-for-wp/
-Description: ADs for WP is an Advanced Ad Inserter solution built for WordPress & AMP. Easy to Use, Unlimited Incontent Ads, Adsense, Premium Features and more
+Description: AdsforWP is an Google Ads & Banner ads plugin built for WordPress & AMP. Easy to Use, Unlimited Incontent Ads, Adsense, Premium Features and more
 Version: 1.9.17
 Author: Magazine3
 Author URI: http://adsforwp.com/
