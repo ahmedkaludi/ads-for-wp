@@ -394,6 +394,9 @@ class adsforwp_view_visitor_condition {
                                         
                    }                                                                                             
                     if ( $comparison == 'equal' ) {
+                      $ip = $this->adsforwp_get_client_ip();
+                      $ipdat = json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=" . $ip));
+                      $country_code = $ipdat->geoplugin_countryCode;
                           if ( $country_code == $data ) {
                             $result = true;
                           }
