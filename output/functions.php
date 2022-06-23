@@ -2085,6 +2085,18 @@ class adsforwp_output_functions{
 							</div>';  
                          }else{
                              
+                          if( defined( 'EWWW_IMAGE_OPTIMIZER_VERSION' ) ){
+                          $image_relative_path = $ad_image.'.webp';
+                          $upload_dir = wp_upload_dir();
+                          $image_path = $upload_dir['basedir'] . $image_relative_path;
+                          $image_path_modify = preg_replace('/http(.*?)\/uploads\/(.*?).webp/', '/$2.webp', $image_path  );
+                          if(file_exists($image_path_modify)){
+                          $ad_image =  $ad_image.'.webp';
+                          }
+                          else{
+                            $ad_image = $ad_image;
+                          }
+                        }
                              $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.' '.$brw_class.'">
                                                         '.$sponsership_label.'
 							<a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="'.esc_attr($ad_rel_attr).'"><img height="'. esc_attr($ad_img_height).'" width="'.esc_attr($ad_img_width).'" src="'.esc_url($ad_image).'"></a>
