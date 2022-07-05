@@ -74,6 +74,7 @@ class adsforwp_output_functions{
         //Background Ad        
                 
         add_action('amp_post_template_head',array($this, 'adsforwp_adsense_auto_ads_amp_script'),1);
+        add_action('amp_post_template_head', array($this, 'adsforwp_preload_images'));
         add_action('amp_post_template_footer',array($this, 'adsforwp_adsense_auto_ads_amp_tag'));
         
         //Adsense Auto Ads hooks for amp and non amp ends here
@@ -2720,6 +2721,46 @@ class adsforwp_output_functions{
                                                    
         }   
                                             
+}
+
+
+public function adsforwp_preload_images(){
+  $all_ads_post = adsforwp_get_ad_ids();
+  $ad_preload_image_ad = '';
+  $service = new adsforwp_output_service();
+  if($all_ads_post){
+    foreach($all_ads_post as $ads){
+      $post_ad_id = $ads;
+      $ad_status = $service->adsforwp_is_condition($post_ad_id);
+      if($ad_status){
+        $post_meta_dataset  = array();
+        $post_meta_dataset  = get_post_meta($post_ad_id,$key='',true);
+        $ad_preload_image_ad = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_preload_image_ad', 'adsforwp_array');
+        if($ad_preload_image_ad == 1){
+        $ad_image_checker =  $post_meta_dataset["select_adtype"] ? $post_meta_dataset["select_adtype"] : '' ; 
+        if( !isset($ad_image_checker[0]) && $ad_image_checker[0] != "ad_image" ){
+          return;
+        }
+          $ad_image = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_image', 'adsforwp_array');
+          if( !empty($ad_image) ){
+            $image_relative_path = $ad_image.'.webp';
+            $url = $image_relative_path;
+            $headers = @get_headers($url);
+            if($headers && strpos( $headers[0], '200')) {
+              $ad_image =  $ad_image.'.webp';
+            }
+            else {
+              $ad_image = $ad_image;
+            }
+          }
+
+          if( isset($ad_preload_image_ad) && $ad_preload_image_ad == 1 ){
+            echo '<link rel="preload" as="image" href="'.$ad_image.'" type="image/webp">';
+          }
+        }
+      }
+    }
+  }
 }
     /**
      * We are displaying ads as per shortcode. eg ["adsforwp id="000"]

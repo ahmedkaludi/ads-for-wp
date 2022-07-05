@@ -660,6 +660,17 @@ class adsforwp_view_ads_type {
                 )
             ),
 		),
+        array(
+			'label'     => 'Preload ImageAd',
+			'id'        => 'adsforwp_ad_preload_image_ad',                        
+			'type'      => 'checkbox',
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array(
+                    'select_adtype' => array('ad_image')
+                )
+            ),
+		),
 		array(
 			'label'     => 'Max Width',
 			'id'        => 'ad_responsive_max_width',                        
