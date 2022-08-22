@@ -3,7 +3,7 @@
 Plugin Name: Google Adsense & Banner Ads by AdsforWP
 Plugin URI: https://wordpress.org/plugins/ads-for-wp/
 Description: AdsforWP is an Google Ads & Banner ads plugin built for WordPress & AMP. Easy to Use, Unlimited Incontent Ads, Adsense, Premium Features and more
-Version: 1.9.21
+Version: 1.9.22
 Author: Magazine3
 Author URI: http://adsforwp.com/
 Donate link: https://www.paypal.me/Kaludi/25usd
@@ -20,7 +20,7 @@ define('ADSFORWP_PLUGIN_DIR_URI', plugin_dir_url(__FILE__));
 define('ADSFORWP_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define( 'ADSFORWP_LIB_PATH', dirname( __FILE__ ) . '/admin/inc/' );
 if ( ! defined( 'ADSFORWP_VERSION' ) ) {
-	define( 'ADSFORWP_VERSION', '1.9.21' );
+	define( 'ADSFORWP_VERSION', '1.9.22' );
 }
 
 //define( 'ADSFORWP_ENVIRONMENT', 'DEV' );
@@ -42,6 +42,7 @@ require_once  ADSFORWP_PLUGIN_DIR.'/admin/file-creation.php';
 require_once  ADSFORWP_PLUGIN_DIR.'/admin/analytics-settings.php';
 require_once  ADSFORWP_PLUGIN_DIR.'/admin/analytics.php';
 require_once  ADSFORWP_PLUGIN_DIR.'/admin/inc/gutenberg/adsforwp-gutenberg.php';
+require_once  ADSFORWP_PLUGIN_DIR.'/admin/mb-helper-function.php';
 
 /* Loading view Metaboxes*/
 require_once  ADSFORWP_PLUGIN_DIR.'/view/ads-type.php';
@@ -143,29 +144,6 @@ function adsforwp_admin_notice(){
 }
 
 add_action( 'admin_notices', 'adsforwp_admin_notice' );
-
-/**
- * This function allows you to track usage of your plugin
- * Place in your main plugin file
- * Refer to https://wisdomplugin.com/support for help
- */
-if( ! class_exists( 'Adsforwp_Plugin_Usage_Tracker') ) {
-  require_once dirname( __FILE__ ) . '/tracking/class-adsforwp-plugin-usage-tracker.php';
-}
-if( ! function_exists( 'ads_for_wp_start_plugin_tracking' ) ) {
-  function ads_for_wp_start_plugin_tracking() {
-    $settings = get_option( 'adsforwp_settings');
-    $wisdom = new Adsforwp_Plugin_Usage_Tracker(
-      __FILE__,
-      'http://45.32.224.83',
-      (array) $settings,
-      true,
-      true,
-      0
-    );
-  }
-  ads_for_wp_start_plugin_tracking();
-}
 
 /**
  * Here, We are adding support forum links, hire us links and review links for our plugin inside plugins list  
