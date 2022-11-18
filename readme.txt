@@ -2,8 +2,8 @@
 Contributors: magazine3
 Tags: Ads, Google Adsense, Media Net, DFP, Custom Code, Infolinks, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
-Tested up to: 6.0
-Stable tag: 1.9.22
+Tested up to: 6.1
+Stable tag: 1.9.23
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -64,6 +64,11 @@ Chart.js library used https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Char
 Google Api Php Client library used https://github.com/googleapis/google-api-php-client - License URI: https://github.com/googleapis/google-api-php-client/blob/master/LICENSE
 
 == Changelog ==
+
+= 1.9.23 (17 November 2022) =
+* Bug Fixed: Doesn't save as "show globally". #372
+* Improvement: Removed deprecated warning in PHP 8.1.10. #373
+* Bug Fixed: Resolved post category in advanced Display Condition. #374
 
 = 1.9.22 (22 August 2022) =
 * Feature Added: Added feedback form on deactivation

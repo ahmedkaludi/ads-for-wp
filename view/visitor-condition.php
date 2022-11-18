@@ -230,7 +230,7 @@ class adsforwp_view_visitor_condition {
       if( !isset( $_POST['adsforwp_visitor_condition_name_nonce'] ) || !wp_verify_nonce( $_POST['adsforwp_visitor_condition_name_nonce'], 'adsforwp_visitor_condition_action_nonce' ) ) return;
       
       // if our current user can't edit this post, bail
-      if( !current_user_can( 'edit_post' ) ) return;  
+      if( !current_user_can( 'manage_options' ) ) return;  
       
             $post_visitor_conditions_array = array();  
             $temp_condition_array          = array();

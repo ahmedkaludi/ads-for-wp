@@ -11,6 +11,7 @@ class Adsforwp_Google_Collection extends Adsforwp_Google_Model implements Iterat
 {
   protected $collection_key = 'items';
 
+  #[\ReturnTypeWillChange]
   public function rewind()
   {
     if (isset($this->modelData[$this->collection_key])
@@ -19,6 +20,7 @@ class Adsforwp_Google_Collection extends Adsforwp_Google_Model implements Iterat
     }
   }
 
+  #[\ReturnTypeWillChange]
   public function current()
   {
     $this->coerceType($this->key());
@@ -27,6 +29,7 @@ class Adsforwp_Google_Collection extends Adsforwp_Google_Model implements Iterat
     }
   }
 
+  #[\ReturnTypeWillChange]
   public function key()
   {
     if (isset($this->modelData[$this->collection_key])
@@ -35,17 +38,20 @@ class Adsforwp_Google_Collection extends Adsforwp_Google_Model implements Iterat
     }
   }
 
+  #[\ReturnTypeWillChange]
   public function next()
   {
     return next($this->modelData[$this->collection_key]);
   }
 
+  #[\ReturnTypeWillChange]
   public function valid()
   {
     $key = $this->key();
     return $key !== null && $key !== false;
   }
 
+  #[\ReturnTypeWillChange]
   public function count()
   {
     return count($this->modelData[$this->collection_key]);

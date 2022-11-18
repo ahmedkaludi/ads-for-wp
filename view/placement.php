@@ -107,8 +107,12 @@ class adsforwp_view_placement {
         for ($i=0; $i < $total_fields; $i++) {  
             
             $selected_val_key_1 = $data_array[$i]['key_1']; 
-            $selected_val_key_2 = $data_array[$i]['key_2']; 
-            $selected_val_key_3 = $data_array[$i]['key_3'];
+            $selected_val_key_2 = $data_array[$i]['key_2'];
+
+            $selected_val_key_3 = '';
+            if(isset($data_array[$i]['key_3'])){
+              $selected_val_key_3 = $data_array[$i]['key_3'];
+            }   
             
             $selected_val_key_4 = '';
             
@@ -193,7 +197,7 @@ class adsforwp_view_placement {
       if( !isset( $_POST['adsforwp_select_name_nonce'] ) || !wp_verify_nonce( $_POST['adsforwp_select_name_nonce'], 'adsforwp_select_action_nonce' ) ) return;
       
       // if our current user can't edit this post, bail
-      if( !current_user_can( 'edit_post' ) ) return;  
+      if( !current_user_can( 'manage_options' ) ) return;  
       
             $post_data_group_array = array();  
             $temp_condition_array  = array();
