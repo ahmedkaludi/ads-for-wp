@@ -461,11 +461,16 @@ function adsforwp_send_query_message(){
             
         require_once ABSPATH . "wp-includes/pluggable.php";    
         $message    = sanitize_textarea_field($_POST['message']);           
+        $email      = sanitize_textarea_field($_POST['email']);           
         $user       = wp_get_current_user();
         $user_data  = $user->data;        
-        $user_email = $user_data->user_email;       
+        $user_email = $user_data->user_email;   
+        
+        if($email){
+            $user_email = $email;
+        }
         //php mailer variables
-        $to         = 'team@magazine3.com';
+        $to         = 'team@magazine3.in';
         $subject    = "Ads For WP Customer Query";
         $headers    = 'From: '. esc_attr($user_email) . "\r\n" .
                       'Reply-To: ' . esc_attr($user_email) . "\r\n";

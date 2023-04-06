@@ -846,9 +846,15 @@ public function adsforwp_ad_label_options_callback(){
 public function adsforwp_contact_us_form_callback(){	        	        
         ?>		        
         <div class="afw_contact_us_div">
-            <strong><?php echo esc_html__('If you have any query, please write the query in below box or email us at', 'ads-for-wp') ?> <a href="mailto:team@magazine3.com">team@magazine3.com</a>. <?php echo esc_html__('We will reply to your email address shortly', 'ads-for-wp') ?></strong>
-       
+            <strong><?php echo esc_html__('If you have any query, please write the query in below box or email us at', 'ads-for-wp') ?> <a href="mailto:team@magazine3.in">team@magazine3.in</a>. <?php echo esc_html__('We will reply to your email address shortly', 'ads-for-wp') ?></strong>
             <ul>
+				<li>
+					<label class="support-label"><?= esc_html_e( 'Email', 'ads-for-wp' ) ?><span class="afw-query-error">*</span></label>
+					<div class="support-input">
+						<input type="text" id="adsforwp_query_email" name="adsforwp_query_email"
+								placeholder="<?= esc_html_e( 'Enter your Email', 'ads-for-wp' ) ?>" required/>
+					</div>
+				</li>
                 <li>
                     <textarea rows="5" cols="60" id="adsforwp_query_message" name="adsforwp_query_message"> </textarea>
                     <br>
@@ -856,8 +862,7 @@ public function adsforwp_contact_us_form_callback(){
                     <span class="afw-query-error afw_hide"><?php echo esc_html__('Message not sent. please check your network connection', 'ads-for-wp'); ?></span>
                 </li> 
                 <li><button class="button afw-send-query"><?php echo esc_html__('Send Message', 'ads-for-wp'); ?></button></li>
-            </ul>            
-                   
+            </ul>  
         </div>
 	<?php        
 }

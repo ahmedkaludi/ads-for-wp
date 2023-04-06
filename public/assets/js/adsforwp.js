@@ -1294,19 +1294,23 @@ jQuery( document ).ready(function($) {
         }
     });
    //query form send starts here
-
+   function isValidEmail(email) {
+        var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        return regex.test(email);
+    }
     $(".afw-send-query").on("click", function(e){
         
     e.preventDefault();   
+    var email = $("#adsforwp_query_email").val();    
     var message = $("#adsforwp_query_message").val();    
     
-    if($.trim(message) !=''){
+    if($.trim(message) !='' && $.trim(email) !='' && isValidEmail(email) == true){
      
             $.ajax({
                     type: "POST",    
                     url:adsforwp_localize_data.ajax_url,                    
                     dataType: "json",
-                    data:{action:"adsforwp_send_query_message", message:message, adsforwp_security_nonce:adsforwp_localize_data.adsforwp_security_nonce},
+                    data:{action:"adsforwp_send_query_message", message:message, email: email,adsforwp_security_nonce:adsforwp_localize_data.adsforwp_security_nonce},
                     success:function(response){                       
                       if(response['status'] =='t'){
                         $(".afw-query-success").show();
@@ -1322,7 +1326,20 @@ jQuery( document ).ready(function($) {
             });
         
     } else{
-        alert('Please type message');
+        if ($.trim(message) == '' && $.trim(email) == '') {
+            alert('Please enter the email, message');
+        } else {
+            if ($.trim(email) == '') {
+                alert('Please enter the email');
+            }
+            if ($.trim(message) == '') {
+                alert('Please enter the message');
+            }            
+            if (isValidEmail(email) == false) {
+                alert('Please enter a valid email');
+            }
+
+        }
     }                                                           
     
 });
