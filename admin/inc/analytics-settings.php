@@ -8,6 +8,8 @@ class Adsforwp_analyticsSettings{
 	public $redirect = 'http://www.adsforwp.com/analtyics/index.php';
 
 	public $settings;
+	protected $client;
+	protected $service;
 	protected $state_data;
 	protected $transient_timeout;
 	protected $load_settings;

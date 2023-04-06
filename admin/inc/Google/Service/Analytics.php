@@ -64,6 +64,7 @@ class Adsforwp_Google_Service_Analytics extends Adsforwp_Google_Service
   public $management_webpropertyUserLinks;
   public $metadata_columns;
   public $provisioning;
+  public $serviceName;
   
 
   /**
