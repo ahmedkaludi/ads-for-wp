@@ -852,7 +852,7 @@ public function adsforwp_contact_us_form_callback(){
 					<label class="support-label"><?= esc_html_e( 'Email', 'ads-for-wp' ) ?><span class="afw-query-error">*</span></label>
 					<div class="support-input">
 						<input type="text" id="adsforwp_query_email" name="adsforwp_query_email"
-								placeholder="<?= esc_html_e( 'Enter your Email', 'ads-for-wp' ) ?>" required/>
+								placeholder="<?= esc_html_e( 'Enter your Email', 'ads-for-wp' ) ?>" />
 					</div>
 				</li>
                 <li>
