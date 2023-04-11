@@ -3335,9 +3335,17 @@ public function adsforwp_preload_image_(){
         }else{
             $scriptUrl = site_url()."?adsforwp_front_js=1";
         }
-        $post_id = get_the_ID();
         $all_ads_post = adsforwp_get_ad_ids();
-        if($all_ads_post && in_array($post_id,$all_ads_post)){
+      if($all_ads_post){
+          $need_to_display = false;
+          foreach ($all_ads_post as $post_ad_id) {
+              $service = new adsforwp_output_service();
+              $ad_status = $service->adsforwp_is_condition($post_ad_id);
+              if ($ad_status) {
+                  $need_to_display = true;
+              }
+          }
+          if ($need_to_display) {
         ?>
         <script type="text/javascript">              
               jQuery(document).ready( function($) {    
@@ -3347,6 +3355,7 @@ public function adsforwp_preload_image_(){
               });
          </script>
        <?php
+          }
         }
     }
 }

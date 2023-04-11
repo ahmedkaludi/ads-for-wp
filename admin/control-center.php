@@ -1068,36 +1068,45 @@ add_action( 'admin_init', 'adsforwp_removing_wysiwig' );
 function adsforwp_frontend_enqueue(){
         
     $settings = adsforwp_defaultSettings();
-    $post_id = get_the_ID();
     $all_ads_post = adsforwp_get_ad_ids();
-    if($all_ads_post && in_array($post_id,$all_ads_post)){
-        if( ADSFORWP_ENVIRONMENT == 'DEV'){
-        wp_register_script('adsforwp-ads-frontend-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-frontend.js', array( 'jquery' ), ADSFORWP_VERSION, true);
-        wp_register_script('adsforwp-ads-front-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-front.js', array( 'jquery' ), ADSFORWP_VERSION, true);
-        }else{
-        wp_register_script('adsforwp-ads-frontend-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-frontend.min.js', array( 'jquery' ), ADSFORWP_VERSION, true);
-        wp_register_script('adsforwp-ads-front-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-front.min.js', array( 'jquery' ), ADSFORWP_VERSION, true);
-        }           
-        $browserdata = array();
-        $object_name = array(
-            'ajax_url'               => admin_url( 'admin-ajax.php' ), 
-            'adsforwp_front_nonce'   => wp_create_nonce('adsforwp_ajax_check_front_nonce')
-        );
-        
-        $object_browser = apply_filters('adsforwp_localize_browser_filter',$browserdata,'adsforwp_localize_data');
-
-        if(isset($settings['ad_performance_tracker'])){
-        $object_name['ad_performance_tracker'] = $settings['ad_performance_tracker'];
+    if($all_ads_post){
+        $need_to_display = false;
+        foreach ($all_ads_post as $post_ad_id) {
+            $service = new adsforwp_output_service();
+            $ad_status = $service->adsforwp_is_condition($post_ad_id);
+            if ($ad_status) {
+                $need_to_display = true;
+            }
         }
+        if ($need_to_display) {        
+            if( ADSFORWP_ENVIRONMENT == 'DEV'){
+            wp_register_script('adsforwp-ads-frontend-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-frontend.js', array( 'jquery' ), ADSFORWP_VERSION, true);
+            wp_register_script('adsforwp-ads-front-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-front.js', array( 'jquery' ), ADSFORWP_VERSION, true);
+            }else{
+            wp_register_script('adsforwp-ads-frontend-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-frontend.min.js', array( 'jquery' ), ADSFORWP_VERSION, true);
+            wp_register_script('adsforwp-ads-front-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-front.min.js', array( 'jquery' ), ADSFORWP_VERSION, true);
+            }     
+            $browserdata = array();
+            $object_name = array(
+                'ajax_url'               => admin_url( 'admin-ajax.php' ), 
+                'adsforwp_front_nonce'   => wp_create_nonce('adsforwp_ajax_check_front_nonce')
+            );
+            
+            $object_browser = apply_filters('adsforwp_localize_browser_filter',$browserdata,'adsforwp_localize_data');
 
-        wp_localize_script('adsforwp-ads-front-js', 'adsforwp_obj', $object_name);
-        wp_localize_script('adsforwp-ads-frontend-js', 'adsforwp_browser_obj', $object_browser);
-        wp_enqueue_script('adsforwp-ads-front-js');
-        wp_enqueue_script('adsforwp-ads-frontend-js');
-        if( ADSFORWP_ENVIRONMENT == 'DEV'){
-        wp_enqueue_style( 'ads-for-wp-front-css', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/css/adsforwp-front.css', false , ADSFORWP_VERSION );
-        }else{
-        wp_enqueue_style( 'ads-for-wp-front-css', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/css/adsforwp-front.min.css', false , ADSFORWP_VERSION );
+            if(isset($settings['ad_performance_tracker'])){
+            $object_name['ad_performance_tracker'] = $settings['ad_performance_tracker'];
+            }
+
+            wp_localize_script('adsforwp-ads-front-js', 'adsforwp_obj', $object_name);
+            wp_localize_script('adsforwp-ads-frontend-js', 'adsforwp_browser_obj', $object_browser);
+                wp_enqueue_script('adsforwp-ads-front-js');
+                wp_enqueue_script('adsforwp-ads-frontend-js');
+                if( ADSFORWP_ENVIRONMENT == 'DEV'){
+                wp_enqueue_style( 'ads-for-wp-front-css', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/css/adsforwp-front.css', false , ADSFORWP_VERSION );
+                }else{
+                wp_enqueue_style( 'ads-for-wp-front-css', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/css/adsforwp-front.min.css', false , ADSFORWP_VERSION );
+            }
         }
     }
                 

@@ -259,9 +259,11 @@ class adsforwp_admin_analytics{
             
             $ad_ids = array_map('sanitize_text_field', $_POST['ad_ids']);
                         
-            $device_name = sanitize_text_field($_POST['device_name']);            
+            $device_name = sanitize_text_field($_POST['device_name']);
             
-            if($ad_ids){
+            $current_user = wp_get_current_user();
+            
+            if($ad_ids && !user_can( $current_user, 'administrator' )){
                 
                 foreach ($ad_ids as $ad_id){
                     
@@ -290,8 +292,8 @@ class adsforwp_admin_analytics{
             
             $device_name = sanitize_text_field($_POST['device_name']);
             $ad_id = sanitize_text_field($_POST['ad_id']);            
-            
-            if($ad_id){     
+            $current_user = wp_get_current_user();
+            if($ad_id && !user_can( $current_user, 'administrator' )){     
               
                 $this->adsforwp_insert_clicks($ad_id, $device_name);
                               
