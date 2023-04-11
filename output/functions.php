@@ -3335,6 +3335,9 @@ public function adsforwp_preload_image_(){
         }else{
             $scriptUrl = site_url()."?adsforwp_front_js=1";
         }
+        $post_id = get_the_ID();
+        $all_ads_post = adsforwp_get_ad_ids();
+        if($all_ads_post && in_array($post_id,$all_ads_post)){
         ?>
         <script type="text/javascript">              
               jQuery(document).ready( function($) {    
@@ -3344,6 +3347,7 @@ public function adsforwp_preload_image_(){
               });
          </script>
        <?php
+        }
     }
 }
 if (class_exists('adsforwp_output_functions')) {
