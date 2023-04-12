@@ -461,7 +461,7 @@ function adsforwp_send_query_message(){
             
         require_once ABSPATH . "wp-includes/pluggable.php";    
         $message    = sanitize_textarea_field($_POST['message']);           
-        $email      = sanitize_textarea_field($_POST['email']);           
+        $email      = sanitize_email($_POST['email']);           
         $user       = wp_get_current_user();
         $user_data  = $user->data;        
         $user_email = $user_data->user_email;   
@@ -811,7 +811,13 @@ function adsforwp_setup_post_type() {
       'menu_position'         => 100  
     );
     register_post_type( 'adsforwp', $args );
-    $not_found_button_group = '<div><p style="float:left;margin-right:5px;">'.esc_html__('Welcome to groups for WP. It looks like you don\'t have any group.', 'ads-for-wp').'</p> <a href="'.esc_url( admin_url( 'post-new.php?post_type=adsforwp-groups' ) ).'" class="button button-primary">'.esc_html__('Let\'s create a new Group', 'ads-for-wp').'</a></div>';
+    $common_function_obj = new adsforwp_admin_common_functions();
+    $all_ads = $common_function_obj->adsforwp_fetch_all_ads();
+
+    $not_found_button_group = '<div><p style="float:left;margin-right:5px;">'.esc_html__('Welcome to groups for WP. It looks like you don\'t have any ads.', 'ads-for-wp').'</p> <a href="'.esc_url( admin_url( 'post-new.php?post_type=adsforwp' ) ).'" class="button button-primary">'.esc_html__('Let\'s create a new Ad', 'ads-for-wp').'</a></div>';
+    if ($all_ads) {
+        $not_found_button_group = '<div><p style="float:left;margin-right:5px;">'.esc_html__('Welcome to groups for WP. It looks like you don\'t have any group.', 'ads-for-wp').'</p> <a href="'.esc_url( admin_url( 'post-new.php?post_type=adsforwp-groups' ) ).'" class="button button-primary">'.esc_html__('Let\'s create a new Group', 'ads-for-wp').'</a></div>';
+    }
     $group_post_type = array(
         'labels' => array(
           'name'    => esc_html__( 'Groups', 'ads-for-wp' ),	        
@@ -1066,7 +1072,6 @@ add_action( 'admin_init', 'adsforwp_removing_wysiwig' );
  *	 REGISTER ALL NON-ADMIN SCRIPTS
  */
 function adsforwp_frontend_enqueue(){
-        
     $settings = adsforwp_defaultSettings();
     $all_ads_post = adsforwp_get_ad_ids();
     if($all_ads_post){
@@ -1076,6 +1081,7 @@ function adsforwp_frontend_enqueue(){
             $ad_status = $service->adsforwp_is_condition($post_ad_id);
             if ($ad_status) {
                 $need_to_display = true;
+                break;
             }
         }
         if ($need_to_display) {        

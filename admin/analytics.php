@@ -261,9 +261,7 @@ class adsforwp_admin_analytics{
                         
             $device_name = sanitize_text_field($_POST['device_name']);
             
-            $current_user = wp_get_current_user();
-            
-            if($ad_ids && !user_can( $current_user, 'administrator' )){
+            if($ad_ids && !$this->is_admin_user()){
                 
                 foreach ($ad_ids as $ad_id){
                     
@@ -275,6 +273,16 @@ class adsforwp_admin_analytics{
                 }//Foreach closed     
             }        
            wp_die();           
+    }
+
+    public function is_admin_user() {
+      $status = false;
+      if( is_user_logged_in() ) {
+        if(current_user_can('administrator' )){
+          $status = true;
+        }
+      }
+      return $status;
     }
     
     /**
@@ -291,12 +299,9 @@ class adsforwp_admin_analytics{
             }      
             
             $device_name = sanitize_text_field($_POST['device_name']);
-            $ad_id = sanitize_text_field($_POST['ad_id']);            
-            $current_user = wp_get_current_user();
-            if($ad_id && !user_can( $current_user, 'administrator' )){     
-              
-                $this->adsforwp_insert_clicks($ad_id, $device_name);
-                              
+            $ad_id = sanitize_text_field($_POST['ad_id']);
+            if($ad_id && !$this->is_admin_user()){
+              $this->adsforwp_insert_clicks($ad_id, $device_name);
             }                           
            wp_die();           
     }

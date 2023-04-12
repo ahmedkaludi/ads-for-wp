@@ -3343,6 +3343,7 @@ public function adsforwp_preload_image_(){
               $ad_status = $service->adsforwp_is_condition($post_ad_id);
               if ($ad_status) {
                   $need_to_display = true;
+                  break;
               }
           }
           if ($need_to_display) {
