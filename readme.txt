@@ -2,8 +2,8 @@
 Contributors: magazine3
 Tags: Ads, Google Adsense, Media Net, DFP, Custom Code, Infolinks, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
-Tested up to: 6.1
-Stable tag: 1.9.23
+Tested up to: 6.2
+Stable tag: 1.9.24
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -64,6 +64,15 @@ Chart.js library used https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Char
 Google Api Php Client library used https://github.com/googleapis/google-api-php-client - License URI: https://github.com/googleapis/google-api-php-client/blob/master/LICENSE
 
 == Changelog ==
+
+= 1.9.24 (13 April 2023) =
+* Improvement: Change email id and put email text field in contact us support tab #386
+* Bug Fixed: Deprecated: Creation of dynamic property in php 8.2.0 #381
+* Improvement: Give notice in group ads list if there are no ads #384
+* Bug Fixed: The ads for wp scripts are loading on homepage without any ads on the homepage #339
+* Bug Fixed: Need to exclude impression count of the admin on local ads #346
+* Bug Fixed: invalid form control with name='adsforwp_query_email' is not focusable. in browser console #385
+* Bug Fixed: Warnings in adsforwp #335
 
 = 1.9.23 (17 November 2022) =
 * Bug Fixed: Doesn't save as "show globally". #372
