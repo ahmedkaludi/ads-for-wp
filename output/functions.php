@@ -1272,12 +1272,16 @@ class adsforwp_output_functions{
                         $contentTempArray = array_filter(explode(" ", $contentTemp));
                         $contentTempfirst = array_slice($contentTempArray, 0, $fifty);
                         $contentTempsecond = array_slice( $contentTempArray, $fifty );
+                        $needleOccueance = 0;
                         $firstPreText = end( $contentTempfirst );
-                        $needleOccueance = substr_count( implode(" ", $contentTempfirst), $firstPreText);
+                        if(!empty($contentTempfirst)){
+                          $needleOccueance = substr_count( implode(" ", $contentTempfirst), $firstPreText);
+                        }                        
                         $actualContent = '';
                         $i=1;
                         $lastPos = 0;
-                        while (($lastPos = strpos($content, $firstPreText, $lastPos+1))!== false) {
+                        
+                        while (($lastPos = (($lastPos+1) <= strlen($content) ? strpos($content, $firstPreText, $lastPos+1) :false))!== false) {
                             if($i==$needleOccueance){
                                 $part1 = substr( $content, 0, $lastPos);
                                 $part2 = substr( $content, $lastPos, strlen($content));
