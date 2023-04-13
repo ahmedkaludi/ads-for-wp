@@ -1272,12 +1272,16 @@ class adsforwp_output_functions{
                         $contentTempArray = array_filter(explode(" ", $contentTemp));
                         $contentTempfirst = array_slice($contentTempArray, 0, $fifty);
                         $contentTempsecond = array_slice( $contentTempArray, $fifty );
+                        $needleOccueance = 0;
                         $firstPreText = end( $contentTempfirst );
-                        $needleOccueance = substr_count( implode(" ", $contentTempfirst), $firstPreText);
+                        if(!empty($contentTempfirst)){
+                          $needleOccueance = substr_count( implode(" ", $contentTempfirst), $firstPreText);
+                        }                        
                         $actualContent = '';
                         $i=1;
                         $lastPos = 0;
-                        while (($lastPos = strpos($content, $firstPreText, $lastPos+1))!== false) {
+                        
+                        while (($lastPos = (($lastPos+1) <= strlen($content) ? strpos($content, $firstPreText, $lastPos+1) :false))!== false) {
                             if($i==$needleOccueance){
                                 $part1 = substr( $content, 0, $lastPos);
                                 $part2 = substr( $content, $lastPos, strlen($content));
@@ -3335,6 +3339,18 @@ public function adsforwp_preload_image_(){
         }else{
             $scriptUrl = site_url()."?adsforwp_front_js=1";
         }
+        $all_ads_post = adsforwp_get_ad_ids();
+      if($all_ads_post){
+          $need_to_display = false;
+          foreach ($all_ads_post as $post_ad_id) {
+              $service = new adsforwp_output_service();
+              $ad_status = $service->adsforwp_is_condition($post_ad_id);
+              if ($ad_status) {
+                  $need_to_display = true;
+                  break;
+              }
+          }
+          if ($need_to_display) {
         ?>
         <script type="text/javascript">              
               jQuery(document).ready( function($) {    
@@ -3344,6 +3360,8 @@ public function adsforwp_preload_image_(){
               });
          </script>
        <?php
+          }
+        }
     }
 }
 if (class_exists('adsforwp_output_functions')) {
