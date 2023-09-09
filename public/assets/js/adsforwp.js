@@ -610,19 +610,18 @@ jQuery( document ).ready(function($) {
     /*Newsletter submission*/
     jQuery("#ad-forwp-subscribe-newsletter-form").on('submit',function(e){
         e.preventDefault();
-        var form = jQuery(this);
-        var name = form.find('input[name="name"]').val();
-        var email = form.find('input[name="email"]').val();
-        var website = form.find('input[name="company"]').val();
-        jQuery.post(pwaforwp_obj.ajax_url, {action:'adsforwp_subscribe_newsletter',name:name, email:email,website:website},
-          function(data) {
-              jQuery.post (pwaforwp_obj.ajax_url, {
-                      pointer: 'adsforwp_subscribe_pointer',
-                      action: 'dismiss-wp-pointer'
-              }, function(){
-                location.reload();
-              });
-          }
+        var $form = $("#ad-forwp-subscribe-newsletter-form");
+        var name = $form.find('input[name="name"]').val();
+        var email = $form.find('input[name="email"]').val();
+        var website = $form.find('input[name="company"]').val();
+        $.post(adsforwp_obj.ajax_url, {action: 'adsforwp_subscribe_for_newsletter', name: name, email: email, website: website, adsforwp_security_nonce: adsforwp_obj.adsforwp_front_admin_nounce},
+                function (data) {
+                    if(data === 'security_nonce_not_verified' ){
+                        alert('Security nonce not verified');
+                        return false;
+                    } 
+                    
+                }
         );
     });
            
