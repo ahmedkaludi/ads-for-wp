@@ -2,7 +2,7 @@
 Contributors: magazine3
 Tags: Ads, Google Adsense, Media Net, DFP, Custom Code, Infolinks, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
-Tested up to: 6.2
+Tested up to: 6.3
 Stable tag: 1.9.24
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
