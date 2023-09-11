@@ -111,28 +111,3 @@ function adsforwp_enqueue_makebetter_email_js(){
 if( is_admin() && adsforwp_is_plugins_page()) {
     add_filter('admin_footer', 'adsforwp_add_deactivation_feedback_modal');
 }
-
-
-add_action( 'wp_ajax_adsforwp_subscribe_for_newsletter', 'adsforwp_subscribe_for_newsletter' );
-add_action( 'wp_ajax_nopriv_adsforwp_subscribe_for_newsletter', 'adsforwp_subscribe_for_newsletter' );
-function adsforwp_subscribe_for_newsletter(){
-    if( !wp_verify_nonce( sanitize_text_field( $_POST['adsforwp_security_nonce'] ), 'adsforwp_ajax_check_admin_news_nonce' ) ) {
-        echo 'security_nonce_not_verified';
-        die();
-    }
-    if ( !current_user_can( 'manage_options' ) ) {
-        die();
-    }
-    $api_url = 'http://magazine3.company/wp-json/api/central/email/subscribe';
-    $api_params = array(
-        'name' => sanitize_text_field($_POST['name']),
-        'email'=> sanitize_email($_POST['email']),
-        'website'=> sanitize_text_field($_POST['website']),
-        'type'=> 'adsforwp'
-    );
-
-    $response = wp_remote_post( $api_url, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
-    $response = wp_remote_retrieve_body( $response );
-    echo $response;
-    die;
-}
