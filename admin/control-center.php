@@ -1191,7 +1191,7 @@ function adsforwp_admin_enqueue($hook) {
             $amp_story_ads_feature = array('amp_story_ad' => true);
           }
         }
-    }
+    }     
           
          wp_localize_script( 'ads-for-wp-admin-js', 'adtype_metafields', $ad_type_array );
          wp_localize_script( 'ads-for-wp-admin-js', 'display_metafields', $display_metabox );

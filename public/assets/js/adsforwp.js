@@ -614,9 +614,10 @@ jQuery( document ).ready(function($) {
         var name = form.find('input[name="name"]').val();
         var email = form.find('input[name="email"]').val();
         var website = form.find('input[name="company"]').val();
-        jQuery.post(pwaforwp_obj.ajax_url, {action:'adsforwp_subscribe_newsletter',name:name, email:email,website:website},
+        var website = form.find('input[name="company"]').val();
+        jQuery.post(adsforwp_localize_data.ajax_url, {action:'adsforwp_subscribe_newsletter', 'adsforwp_security_nonce': adsforwp_localize_data.adsforwp_security_nonce,name:name, email:email,website:website},
           function(data) {
-              jQuery.post (pwaforwp_obj.ajax_url, {
+              jQuery.post (adsforwp_localize_data.ajax_url, {
                       pointer: 'adsforwp_subscribe_pointer',
                       action: 'dismiss-wp-pointer'
               }, function(){
