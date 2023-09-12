@@ -3,7 +3,7 @@ Contributors: magazine3
 Tags: Ads, Google Adsense, Media Net, DFP, Custom Code, Infolinks, AMP, Adsense, SEO, Advertisement
 Requires at least: 3.6
 Tested up to: 6.3
-Stable tag: 1.9.24
+Stable tag: 1.9.25
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -66,10 +66,8 @@ Google Api Php Client library used https://github.com/googleapis/google-api-php-
 == Changelog ==
 
 = 1.9.25 (12 September 2023) =
-* Improvement: Need to test with WordPress 6.3 and update readme.txt
+* Improvement: Tested with WordPress 6.3 #390
 * Fixed: Pop up news letter not working for ads for wp plugin #387
-
-
 
 = 1.9.24 (13 April 2023) =
 * Improvement: Change email id and put email text field in contact us support tab #386
