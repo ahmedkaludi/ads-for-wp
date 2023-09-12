@@ -877,6 +877,16 @@ if(!function_exists('adsforwp_subscribe_newsletter')){
 
 
 	function adsforwp_subscribe_newsletter(){
+		if ( ! current_user_can( 'manage_options' ) ) {
+                    return;
+        }
+
+        if ( ! isset( $_POST['adsforwp_security_nonce'] ) ){
+             return; 
+        }
+        if ( !wp_verify_nonce( $_POST['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
+             return;  
+        }
 	    $api_url = 'http://magazine3.company/wp-json/api/central/email/subscribe';
 	    $api_params = array(
 	        'name' => sanitize_text_field($_POST['name']),
