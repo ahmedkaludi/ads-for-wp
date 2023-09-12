@@ -1192,12 +1192,6 @@ function adsforwp_admin_enqueue($hook) {
           }
         }
     }     
-          $object_name = array(
-                'ajax_url'               => admin_url( 'admin-ajax.php' ), 
-                'adsforwp_front_admin_nounce'   => wp_create_nonce('adsforwp_ajax_check_admin_news_nonce')
-            );
-
-          wp_localize_script('ads-for-wp-admin-js', 'adsforwp_obj', $object_name);
           
          wp_localize_script( 'ads-for-wp-admin-js', 'adtype_metafields', $ad_type_array );
          wp_localize_script( 'ads-for-wp-admin-js', 'display_metafields', $display_metabox );
