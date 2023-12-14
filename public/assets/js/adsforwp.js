@@ -610,6 +610,8 @@ jQuery( document ).ready(function($) {
     /*Newsletter submission*/
     jQuery("#ad-forwp-subscribe-newsletter-form").on('submit',function(e){
         e.preventDefault();
+        jQuery(".mc-newsletter-sent").val('Sending...');        
+
         var form = jQuery(this);
         var name = form.find('input[name="name"]').val();
         var email = form.find('input[name="email"]').val();
@@ -621,6 +623,7 @@ jQuery( document ).ready(function($) {
                       pointer: 'adsforwp_subscribe_pointer',
                       action: 'dismiss-wp-pointer'
               }, function(){
+                 jQuery(".mc-newsletter-sent").val('Subscribe'); 
                 location.reload();
               });
           }
