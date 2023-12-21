@@ -529,7 +529,7 @@ jQuery( document ).ready(function($) {
                 var content = '<h3>You are awesome for using Ads for WP</h3>';
             content += '<p>Do you want the latest on <b>Ads update</b> before others and some best resources on monetization in a single email? - Free just for users of ADS!</p>';
                         content += '<style type="text/css">';
-                        content += '.wp-pointer-buttons{ padding:0; overflow: hidden; }';
+                        content += '.wp-pointer-buttons{ padding:0; overflow: hidden; display:block !important;}';
                         content += '.wp-pointer-content .button-secondary{  left: -25px;background: transparent;top: 5px; border: 0;position: relative; padding: 0; box-shadow: none;margin: 0;color: #0085ba;} .wp-pointer-content .button-primary{ display:none}  #afw_mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; }';
                         content += '</style>';                        
                         content += '<div id="afw_mc_embed_signup">';
