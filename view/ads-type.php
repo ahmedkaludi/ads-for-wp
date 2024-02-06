@@ -312,6 +312,15 @@ class adsforwp_view_ads_type {
 			),
 		),
 		array(
+			'label'     => 'Lazy Load	',
+			'id'        => 'adsforwp_adsense_lazy_load_check',                        
+			'type'      => 'checkbox',
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'adsense')
+            ),
+		),
+		array(
 			'label'     => 'Matched Content Type',
 			'id'        => 'matched_content_type',
 			'type'      => 'select',                        
@@ -549,7 +558,7 @@ class adsforwp_view_ads_type {
 				'type' => 'and',
 				'fields' => array('select_adtype' => 'ad_image','adsforwp_svg_sizes' => 1)
 			)
-		),
+		),		
 		array(
 			'label' => 'Image Height',
 			'id' => 'adsforwp_svg_height',
@@ -557,6 +566,24 @@ class adsforwp_view_ads_type {
 			'required' => array(
 				'type' => 'and',
 				'fields' => array('select_adtype'=> 'ad_image', 'adsforwp_svg_sizes' => 1)
+			)
+		),
+		array(
+			'label'     => 'Lazy Load	',
+			'id'        => 'adsforwp_lazy_load_check',                        
+			'type'      => 'checkbox',
+			'required' => array(
+              	'type' => 'and',
+              	'fields'=> array('select_adtype' => 'ad_image')
+            ),
+		),
+		array(
+			'label' => 'Lazy Load Delay',
+			'id' => 'check_lazy_load_delay',
+			'type' => 'number',
+			'required' => array(
+				'type' => 'and',
+				'fields' => array('select_adtype' => 'ad_image','adsforwp_lazy_load_check' => 1)
 			)
 		),
         array(
@@ -814,12 +841,19 @@ class adsforwp_view_ads_type {
 					); 
                                     break;
                                 case 'checkbox':
+          $adsforwp_lazy_load_check ='';
+          if(($meta_field['id'] == 'adsforwp_lazy_load_check' || $meta_field['id'] =='adsforwp_adsense_lazy_load_check') && !defined( 'ADSFORWP_PRO_VERSION' )){
+          	$adsforwp_lazy_load_check =  "disabled='disabled'";         }
 					$input = sprintf(
-						'<input %s id="%s" name="%s" type="checkbox" value="1" onclick="adsforwp_get_adtype(this);">',
+						'<input %s id="%s" name="%s" type="checkbox" value="1" onclick="adsforwp_get_adtype(this);" '.$adsforwp_lazy_load_check.'>',
 						$meta_value === '1' ? 'checked' : '',
 						esc_attr($meta_field['id']),
 						esc_attr($meta_field['id'])
 						);
+					if(($meta_field['id'] == 'adsforwp_lazy_load_check' || $meta_field['id'] =='adsforwp_adsense_lazy_load_check') && !defined( 'ADSFORWP_PRO_VERSION' )){
+						$input .= '<a href="#" style="text-decoration: none;
+    background-color: #2271b1;color: white;border-radius: 10px;padding: 4px 5px 4px 5px;">Get Pro</a>';
+					}
 					if($meta_field['id'] == 'adsforwp_ad_responsive'){
 						$input .= '  <span class="responsive_advance" style="padding-left:20px;"><a href="#" class="adsforwp_resp_advan">Advance Size Options</a></span>'; 
 					}

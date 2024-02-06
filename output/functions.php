@@ -2009,6 +2009,7 @@ class adsforwp_output_functions{
             break;
             
             case 'ad_image':
+
                     $adsforwp_svg_sizes = '';
                    
                     $ad_img_width  = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_img_width', 'adsforwp_array');
@@ -2017,13 +2018,14 @@ class adsforwp_output_functions{
                     if($adsforwp_svg_sizes == 1){
                         $ad_img_width = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_svg_width', 'adsforwp_array');
                         $ad_img_height = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_svg_height', 'adsforwp_array');
-                    }                                        
+                    }   
+
                     if($this->is_amp){
                                                                       
                      $this->amp_ads_id[] = $post_ad_id;   
                      
                      if($ad_responsive == 1){
-                                                 
+                                                  
                          if($where_to_display == 'sticky'){
                              
                              if($ad_image){
@@ -2108,11 +2110,25 @@ class adsforwp_output_functions{
                              if($ad_alignment == 'left'){
                                 
                              }
+                         if(!defined('ADSFORWP_PRO_VERSION')){
                              $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.' '.$brw_class.'">
                                                             '.$sponsership_label.'
 							<a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="'.esc_attr($ad_rel_attr).'"><img height="auto" max-width="100%" src="'.esc_url($ad_image).'"></a>
-                            '.$ad_label_bottom.'                                            
+                            '.$ad_label_bottom.'             
+
 							</div>';  
+                            }else{
+
+                                ob_start(); // start capturing output.
+                                do_action('adsforwp_pro_adimage_lazyload_action', $post_ad_id, $ad_redirect_url, $ad_rel_attr, $ad_img_height, $ad_img_width,$ad_label_bottom , $ad_image );
+                                $adsforwp_proad_data = ob_get_contents(); // the actions output will now be stored in the variable as a string!
+                                ob_end_clean();
+
+                               $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.' '.$brw_class.'">'.$sponsership_label.$adsforwp_proad_data.$ad_label_bottom.'             
+
+                            </div>';   
+                                
+                            }
                          }else{
                              
                           if( defined( 'EWWW_IMAGE_OPTIMIZER_VERSION' ) ){
@@ -2125,12 +2141,26 @@ class adsforwp_output_functions{
                               $ad_image = $ad_image;
                             }
                           }
-
+                            if(!defined('ADSFORWP_PRO_VERSION')){
                              $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.' '.$brw_class.'">
                                                         '.$sponsership_label.'
+                            
 							<a target="_blank" href="'.esc_url($ad_redirect_url).'" rel="'.esc_attr($ad_rel_attr).'"><img height="'. esc_attr($ad_img_height).'" width="'.esc_attr($ad_img_width).'" src="'.esc_url($ad_image).'"></a>
                             '.$ad_label_bottom.'                                          
 							</div>';  
+                            }else{
+
+                                ob_start(); // start capturing output.
+                                do_action('adsforwp_pro_adimage_lazyload_action', $post_ad_id, $ad_redirect_url, $ad_rel_attr, $ad_img_height, $ad_img_width,$ad_label_bottom , $ad_image );
+                                $adsforwp_proad_data = ob_get_contents(); // the actions output will now be stored in the variable as a string!
+                                ob_end_clean();
+
+                                $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.' '.$brw_class.'">
+                                    '.$sponsership_label.$adsforwp_proad_data.$ad_label_bottom.'                                          
+                            </div>';
+                                
+                            }
+
                              
                          }             
                    }                                                                               
@@ -2274,8 +2304,7 @@ class adsforwp_output_functions{
                     }
                     if(!$this->is_amp){
                         if($ad_client && $ad_slot && $data_layout_key){
-                            $ad_code =  '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.' '.$brw_class.'"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                                    <ins class="adsbygoogle"
+                            $adsHtml = '<ins class="adsbygoogle"
                                          style="display:block;"
                                          data-ad-format="fluid"
                                          data-ad-layout-key="'.esc_attr($data_layout_key).'"
@@ -2283,8 +2312,18 @@ class adsforwp_output_functions{
                                          data-ad-slot="'.esc_attr($ad_slot).'"></ins>
                                     <script>
                                          (adsbygoogle = window.adsbygoogle || []).push({});
-                                    </script>
-                                    </div>';
+                                    </script>';
+                           if(defined('ADSFORWP_PRO_VERSION')){
+                                if (isset($post_meta_dataset['adsforwp_adsense_lazy_load_check'] ) && $post_meta_dataset['adsforwp_adsense_lazy_load_check'][0] == 1) {
+                                    ob_start(); // start capturing output.
+                                    do_action('adsforwp_pro_adsense_lazyload_action', $post_meta_dataset,$adsHtml,$post_ad_id);
+                                    $adsHtml = ob_get_contents(); // the actions output will now be stored in the variable as a string!
+                                    ob_end_clean();
+                                }
+                           }
+
+
+                            $ad_code =  '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.' '.$brw_class.'"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>'.$adsHtml.'</div>';
                         }
                     }
                 break;
@@ -3363,7 +3402,11 @@ public function adsforwp_preload_image_(){
           }
         }
     }
+
+
+    
 }
+
 if (class_exists('adsforwp_output_functions')) {
     
 	$adsforwp_function_obj = new adsforwp_output_functions;
