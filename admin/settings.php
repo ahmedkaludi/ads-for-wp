@@ -183,6 +183,35 @@ public function adsforwp_settings_init(){
                             'adsforwp_general_section',	// Settings Section ID
                             array('class' => 'adlabel-child-opt')
                     );
+                    add_settings_field(
+
+                            'adsforwp_ad_fraud_protection',								// ID
+
+                            'Click Fraud Protection',			// Title
+
+                             array($this, 'adsforwp_ad_fraud_protection_callback'),					// Callback
+
+                            'adsforwp_general_section',							// Page slug
+
+                            'adsforwp_general_section'							// Settings Section ID
+
+                    );
+
+                    add_settings_field(
+
+                            'adsforwp_ad_fraud_protection_options',								// ID
+
+                            '',			// Title
+
+                             array($this, 'adsforwp_ad_fraud_protection_options_callback'),					// Callback
+
+                            'adsforwp_general_section',	// Page slug
+
+                            'adsforwp_general_section',	// Settings Section ID
+
+                            array('class' => 'adlabel-child-opt')
+
+                    );
                  	add_settings_section('adsforwp_support_section', 'Contact Us', '__return_false', 'adsforwp_support_section');		              
                     add_settings_field(
                             'adsforwp_contact_us_form',								// ID
@@ -843,6 +872,114 @@ public function adsforwp_ad_label_options_callback(){
 	</div>
 	<?php
 }
+
+public function adsforwp_ad_fraud_protection_callback(){
+
+	$settings = adsforwp_defaultSettings();
+
+	$checked = '';
+	$disabled = "disabled='disabled'"; 
+	$getProLink = '<a href="#" style="text-decoration: none;
+    background-color: #2271b1;color: white;border-radius: 10px;padding: 4px 5px 4px 5px;">Get Pro</a>';
+
+	if( isset($settings['ad_fraud_protection']) && $settings['ad_fraud_protection'] && defined( 'ADSFORWP_PRO_VERSION' )){
+
+		$checked = "checked";
+		$disabled = false;
+		$getProLink="";
+
+	}           
+
+    ?>	
+
+	<fieldset>
+
+        <input type="checkbox" id="afw_ad_fraud_protection" name="adsforwp_settings[ad_fraud_protection]" class="regular-text afw_ad_fraud_protection" value="1" <?php echo $checked;?> <?php echo $disabled; ?>>
+        <?php echo $getProLink; ?>
+	</fieldset>
+
+	<?php        
+
+}
+
+public function adsforwp_ad_fraud_protection_options_callback(){
+
+	$settings = adsforwp_defaultSettings();
+	if (defined( 'ADSFORWP_PRO_VERSION' ) ) { 
+	?>
+	<div class="afw_ad_blocker_notice" id="afw_ad_fraud_protection_settings">
+
+		<div class="adsfowp_ad_fraud_protection_options">
+
+			<h2 class="title"><?php echo esc_html__('Click Fraud Protection
+
+ Settings','ads-for-wp');?></h2>
+
+			<div class="label-align ad_allowed_click">
+
+				<label for="ad_label"><?php echo esc_html__('Allowed clicks','ads-for-wp');?> </label>
+
+				<input id="afw_ad_allowed_click" placeholder="3" name="adsforwp_settings[ad_allowed_click]" type="text" class="regular-text afw_ad_allowed_click" value="<?php echo isset( $settings['ad_allowed_click'] ) ? esc_attr( $settings['ad_allowed_click']) : ''; ?>"/>
+
+			</div>
+
+			<div class="label-align ad_click_limit">
+
+				<label for="ad_label"><?php echo esc_html__('Click limit (in hours)','ads-for-wp');?> </label>
+
+				<input id="afw_ad_click_limit" placeholder="3" name="adsforwp_settings[ad_click_limit]" type="text" class="regular-text afw_ad_click_limit" value="<?php echo isset( $settings['ad_click_limit'] ) ? esc_attr( $settings['ad_click_limit']) : ''; ?>"/>
+
+			</div>
+
+			<div class="label-align ad_ban_duration">
+
+				<label for="ad_label"><?php echo esc_html__('Ban duration (in days)','ads-for-wp');?> </label>
+
+				<input id="afw_ad_ban_duration" placeholder="3" name="adsforwp_settings[ad_ban_duration]" type="text" class="regular-text afw_ad_ban_duration" value="<?php echo isset( $settings['ad_ban_duration'] ) ? esc_attr( $settings['ad_ban_duration']) : ''; ?>"/>
+
+			</div>	
+			
+			<h2 class="title"><?php echo esc_html__('Blocked ip addresses','ads-for-wp');?><button class="button afw-dlt-blockedip"><?php echo esc_html__('Clear All', 'ads-for-wp'); ?></button></h2>
+			<div class="label-align">
+			<style>
+				.afw-ads-ipblock, .afw-ads-ipblock th, .afw-ads-ipblock td {
+				  border: 1px solid black;
+				  border-collapse: collapse;
+				}
+			</style>				
+				<table class="afw-ads-ipblock">
+						<tr>
+							<th>ID</th>
+							<th>Date/Time</th>
+							<th>IP</th>
+						</tr>
+					<?php
+						$afw_ip = get_option('afw_add_blocked_ip') ? get_option('afw_add_blocked_ip') : array();
+						if(count($afw_ip)){
+							$id=1; 
+							foreach($afw_ip as $key=>$val){
+					 ?>
+							<tr>
+								<td><?php echo $id; ?></td>
+								<td><?php echo $val['time']; ?></td>
+								<td><?php echo $val['ip']; ?></td>
+							</tr>
+						<?php	
+							$id++;
+							}
+						}
+						?>
+				</table>
+			</div>				
+
+		</div>
+
+	</div>
+
+	<?php
+	}
+}
+
 public function adsforwp_contact_us_form_callback(){	        	        
         ?>		        
         <div class="afw_contact_us_div">

@@ -1200,6 +1200,19 @@ jQuery( document ).ready(function($) {
             $("#afw_ad_label_settings").hide(); 
         }     
     }).change();
+    $(".afw_ad_fraud_protection").change(function(){
+
+        if($(this).is(':checked')){
+
+            $("#afw_ad_fraud_protection_settings").show();
+
+        }else{
+
+            $("#afw_ad_fraud_protection_settings").hide(); 
+
+        }     
+
+    }).change();
     $('.afw_advnc_ad_blocker_support').change(function(){
         if($(this).is(':checked')){
             $(".child-opt").show();

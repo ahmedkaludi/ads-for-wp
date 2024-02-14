@@ -2759,7 +2759,13 @@ class adsforwp_output_functions{
              $amp_ads_id_json = json_encode($this->amp_ads_id);             
              set_transient('adsforwp_transient_amp_ids', $amp_ads_id_json); 
                               
-             return $ad_code;
+            if (defined( 'ADSFORWP_PRO_VERSION' ) ) {                 
+                if(adsforwp_click_fraud_on()){
+                    return $ad_code;
+                }
+            }else{
+                return $ad_code;
+            }
                 
             }  
                                                    
