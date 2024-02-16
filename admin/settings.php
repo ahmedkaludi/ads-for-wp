@@ -39,7 +39,7 @@ public function adsforwp_admin_interface_render(){
             
 		settings_errors();
 	    }
-	       $tab = adsforwp_get_tab('general', array('general', 'support', 'tools', 'advance'));
+	       $tab = adsforwp_get_tab('general', array('general', 'support', 'tools', 'advance','pro'));
         
 	?>
 		                            
@@ -53,6 +53,7 @@ public function adsforwp_admin_interface_render(){
                         echo '<a href="' . esc_url(adsforwp_admin_link('advance')) . '" class="nav-tab ' . esc_attr( $tab == 'advance' ? 'nav-tab-active' : '') . '"><span class=""></span> ' . esc_html__('Advanced', 'ads-for-wp') . '</a>';    
                         
                         echo '<a href="' . esc_url(adsforwp_admin_link('support')) . '" class="nav-tab ' . esc_attr( $tab == 'support' ? 'nav-tab-active' : '') . '"><span class=""></span> ' . esc_html__('Support','ads-for-wp') . '</a>';
+                        echo '<a href="' . esc_url(adsforwp_admin_link('pro')) . '" class="nav-tab ' . esc_attr( $tab == 'pro' ? 'nav-tab-active' : '') . '"><span class=""></span> ' . esc_html__('UPGRADE to Pro','ads-for-wp') . '</a>';
                                                                                                                     			
 			?>
 		</h2>
@@ -80,6 +81,11 @@ public function adsforwp_admin_interface_render(){
                         echo "<div class='adsforwp-support' ".( $tab != 'support' ? 'style="display:none;"' : '').">";
 				// general Application Settings
 		        do_settings_sections( 'adsforwp_support_section' );	// Page slug
+			echo "</div>";
+
+			echo "<div class='adsforwp-pro' ".( $tab != 'pro' ? 'style="display:none;"' : '').">";
+				// general Application Settings
+		        do_settings_sections( 'adsforwp_pro_section' );	// Page slug
 			echo "</div>";
 
 			?>
@@ -219,7 +225,16 @@ public function adsforwp_settings_init(){
                              array($this, 'adsforwp_contact_us_form_callback'),					// Callback
                             'adsforwp_support_section',							// Page slug
                             'adsforwp_support_section'							// Settings Section ID
-                    );       
+                    );
+
+					add_settings_section('adsforwp_pro_section', '', '__return_false', 'adsforwp_pro_section');		              
+                    add_settings_field(
+                            'adsforwp_pro_content',								// ID
+                            '',			// Title
+                             array($this, 'adsforwp_pro_content_callback'),					// Callback
+                            'adsforwp_pro_section',							// Page slug
+                            'adsforwp_pro_section'							// Settings Section ID
+                    );         
                           		               
 }
 
@@ -1000,6 +1015,31 @@ public function adsforwp_contact_us_form_callback(){
                 </li> 
                 <li><button class="button afw-send-query"><?php echo esc_html__('Send Message', 'ads-for-wp'); ?></button></li>
             </ul>  
+        </div>
+	<?php        
+}
+public function adsforwp_pro_content_callback(){	        	        
+        ?>	
+        <div class="adsforwp-pro-tab-content">
+        	<?php if ( ! defined( 'ADSFORWP_PRO_VERSION' ) ) { ?>
+
+        	<p style="font-weight: bold;font-size: 30px;color: #000;"><?php esc_html_e( 'Thank YOU for using Easy Table of Content.', 'ads-for-wp' ) ?></p>
+        <p style="font-size: 18px;padding: 0 10%;line-height: 1.7;color: #000;"><?php esc_html_e( 'We strive to create the best ADSFORWP solution in WordPress. Our dedicated development team does continuous development and innovation to make sure we are able to meet your demand.', 'ads-for-wp' ) ?></p>
+        <p style="font-size: 16px;font-weight: 600;color: #000;"><?php esc_html_e( 'Please support us by Upgrading to Premium version.', 'ads-for-wp' ) ?></p>
+        <a target="_blank" href="https://www.adsforwp.com/pricing/">
+            <button class="button-adspro" style="display: inline-block;font-size: 20px;">
+                <span><?php esc_html_e( 'YES! I want to Support by UPGRADING.', 'ads-for-wp' ) ?></span></button>
+        </a>
+        <a href="<?php echo add_query_arg('page', 'adsforwp', admin_url('admin.php')); ?>"
+           style="text-decoration: none;">
+            <button class="button-toc1"
+                    style="display: block;text-align: center;border: 0;margin: 0 auto;background: none;">
+                <span style="cursor: pointer;"><?php esc_html_e( 'No Thanks, I will stick with FREE version for now.', 'ads-for-wp' ) ?></span>
+            </button>
+        </a>
+    	<?php }else{
+    		do_action("afw_admin_upgrade_license_page");
+    	} ?>
         </div>
 	<?php        
 }

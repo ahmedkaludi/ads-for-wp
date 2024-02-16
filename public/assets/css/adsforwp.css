@@ -92,21 +92,35 @@ input[name=adsforwp_group_ref_interval_sec]{
 }
 
 .afw_ad_prev_close {
-    display: block;
-    position: absolute;
-    width:30px;
-    height:30px;
-    top: 12px;
-    right: -10px;
+display: block;
+position: absolute;
+width:30px;
+height:30px;
+top: 12px;
+right: -10px;
+color: #fff;
+font-size: 20px;
+}
+.adsforwp-pro .button-adspro{
+    cursor: pointer;
+    margin: 20px;
     color: #fff;
-    font-size: 20px;
-    }
-    
-.afw_embed_span{
-    font-size: 16px;
+    border-radius: 4px;
+    background-color: #ec407a;
+    border: none;
+    padding: 20px;
+    transition: .5s;
+    font-weight: 600;
+}
+.adsforwp-pro-tab-content {
+    text-align: center;
 }
 
-.adsforwp-support table th{
+.afw_embed_span{
+font-size: 16px;
+}
+
+.adsforwp-support table th, .adsforwp-pro table th{
    width: 0px;
    padding: 0px;
 }
