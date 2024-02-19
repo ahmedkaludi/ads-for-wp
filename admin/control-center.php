@@ -459,13 +459,21 @@ function adsforwp_send_query_message(){
         
         if ( is_user_logged_in() ) {
             
-        require_once ABSPATH . "wp-includes/pluggable.php";    
+        require_once ABSPATH . "wp-includes/pluggable.php";  
+        $customer_type  = 'Are you a premium customer ? No';  
         $message    = sanitize_textarea_field($_POST['message']);           
-        $email      = sanitize_email($_POST['email']);           
+        $premium_cus      = isset($_POST['premium_cus'])? sanitize_textarea_field($_POST['premium_cus']):'';       
         $user       = wp_get_current_user();
         $user_data  = $user->data;        
         $user_email = $user_data->user_email;   
-        
+
+        if($premium_cus == 'yes'){
+              $customer_type  = 'Are you a premium customer ? Yes';
+            }
+         
+        $message = '<p>'.$message.'</p><br><br>'
+                 . $customer_type
+                 . '<br><br>'.'Query from plugin support tab';
         if($email){
             $user_email = $email;
         }
@@ -473,15 +481,14 @@ function adsforwp_send_query_message(){
         $to         = 'team@magazine3.in';
         $subject    = "Ads For WP Customer Query";
         $headers    = 'From: '. esc_attr($user_email) . "\r\n" .
-                      'Reply-To: ' . esc_attr($user_email) . "\r\n";
-        
+                      'Reply-To: ' . esc_attr($user_email) . "\r\n";        
         // Load WP components, no themes.                      
         $sent = wp_mail($to, $subject, strip_tags($message), $headers);    
         
         if($sent){
-             echo json_encode(array('status'=>'t'));            
+             echo json_encode(array('status'=>'t', 'msg'=> 'Request Submitted succeessfully..'));            
         }else{
-            echo json_encode(array('status'=>'f'));            
+            echo json_encode(array('status'=>'f', 'msg'=> 'Something wrong with this request.'));            
         }
         
         }

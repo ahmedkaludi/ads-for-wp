@@ -1019,7 +1019,16 @@ public function adsforwp_contact_us_form_callback(){
                     <span class="afw-query-success afw_hide"><?php echo esc_html__('Message sent successfully, Please wait we will get back to you shortly', 'ads-for-wp'); ?></span>
                     <span class="afw-query-error afw_hide"><?php echo esc_html__('Message not sent. please check your network connection', 'ads-for-wp'); ?></span>
                 </li> 
+                <li>
+                    <strong><?php echo esc_html__('Are you a premium customer ?'); ?></strong>  
+                    <select id="afw_query_premium_cus" name="afw_query_premium_cus">                       
+                        <option value=""><?php echo esc_html__('Select'); ?></option>
+                        <option value="yes"><?php echo esc_html__('Yes'); ?></option>
+                        <option value="no"><?php echo esc_html__('No'); ?></option>
+                    </select>                      
+                </li>
                 <li><button class="button afw-send-query"><?php echo esc_html__('Send Message', 'ads-for-wp'); ?></button></li>
+                <li><span class="afw-admin-suform" style="color: red;font-size: 15px;"></span></li>
             </ul>  
         </div>
 	<?php        

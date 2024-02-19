@@ -1319,23 +1319,28 @@ jQuery( document ).ready(function($) {
         
     e.preventDefault();   
     var email = $("#adsforwp_query_email").val();    
-    var message = $("#adsforwp_query_message").val();    
-    
+    var message = $("#adsforwp_query_message").val();
+    var premium_cus = $("#afw_query_premium_cus").val();  
     if($.trim(message) !='' && $.trim(email) !='' && isValidEmail(email) == true){
-     
+             
+            $(".afw-admin-suform").text('');            
+            $("button.afw-send-query").text('Sending...');
             $.ajax({
                     type: "POST",    
                     url:adsforwp_localize_data.ajax_url,                    
                     dataType: "json",
-                    data:{action:"adsforwp_send_query_message", message:message, email: email,adsforwp_security_nonce:adsforwp_localize_data.adsforwp_security_nonce},
+                    data:{action:"adsforwp_send_query_message", message:message, email: email, premium_cus:premium_cus,adsforwp_security_nonce:adsforwp_localize_data.adsforwp_security_nonce},
                     success:function(response){                       
                       if(response['status'] =='t'){
                         $(".afw-query-success").show();
                         $(".afw-query-error").hide();
+                        $(".afw-admin-suform").text(response['msg']);                        
                       }else{
                         $(".afw-query-success").hide();  
-                        $(".afw-query-error").show();
+                        $(".afw-query-error").show();                       
                       }
+                       $(".afw-admin-suform").text(response['msg']);
+                       $("button.afw-send-query").text('Send Message');
                     },
                     error: function(response){                    
                     console.log(response);
