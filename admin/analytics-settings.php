@@ -38,7 +38,7 @@ class adsforwp_admin_analytics_settings{
                 if(!defined('ADSFORWP_PRO_VERSION') && current_user_can('manage_options')){
                 global $submenu;
                 $permalink = 'javasctipt:void(0);';
-                $submenu['edit.php?post_type=adsforwp'][] = array( '<div style="color:#fff176;" onclick="window.open(\'https://adsforwp.com/pricing/\')">'.esc_html__( 'Upgrade To Premium', 'pwa-for-wp' ).'</div>', 'manage_options', $permalink);
+                $submenu['edit.php?post_type=adsforwp'][] = array( '<div style="color:#270ec7;font-weight:bold" onclick="window.open(\'https://adsforwp.com/pricing/\')">'.esc_html__( 'Upgrade To Premium', 'pwa-for-wp' ).'</div>', 'manage_options', $permalink);
             }
     }
 

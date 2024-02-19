@@ -851,8 +851,8 @@ class adsforwp_view_ads_type {
 						esc_attr($meta_field['id'])
 						);
 					if(($meta_field['id'] == 'adsforwp_lazy_load_check' || $meta_field['id'] =='adsforwp_adsense_lazy_load_check') && !defined( 'ADSFORWP_PRO_VERSION' )){
-						$input .= '<a href="#" style="text-decoration: none;
-    background-color: #2271b1;color: white;border-radius: 10px;padding: 4px 5px 4px 5px;">Get Pro</a>';
+						$input .= '<a href="https://www.adsforwp.com/pricing/" style="text-decoration: none;
+    background-color: #2271b1;color: white;border-radius: 10px;padding: 4px 5px 4px 5px;">Upgrade to Premium</a>';
 					}
 					if($meta_field['id'] == 'adsforwp_ad_responsive'){
 						$input .= '  <span class="responsive_advance" style="padding-left:20px;"><a href="#" class="adsforwp_resp_advan">Advance Size Options</a></span>'; 

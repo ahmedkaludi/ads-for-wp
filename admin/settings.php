@@ -900,8 +900,8 @@ public function adsforwp_ad_fraud_protection_callback(){
 
 	$checked = '';
 	$disabled = "disabled='disabled'"; 
-	$getProLink = '<a href="#" style="text-decoration: none;
-    background-color: #2271b1;color: white;border-radius: 10px;padding: 4px 5px 4px 5px;">Get Pro</a>';
+	$getProLink = '<a href="https://www.adsforwp.com/pricing/" style="text-decoration: none;
+    background-color: #2271b1;color: white;border-radius: 10px;padding: 4px 5px 4px 5px;">Upgrade to Premium</a>';
 
 	if( isset($settings['ad_fraud_protection']) && $settings['ad_fraud_protection'] && defined( 'ADSFORWP_PRO_VERSION' )){
 
@@ -1033,7 +1033,7 @@ public function adsforwp_pro_content_callback(){
         <p style="font-size: 18px;padding: 0 10%;line-height: 1.7;color: #000;"><?php esc_html_e( 'We strive to create the best ADSFORWP solution in WordPress. Our dedicated development team does continuous development and innovation to make sure we are able to meet your demand.', 'ads-for-wp' ) ?></p>
         <p style="font-size: 16px;font-weight: 600;color: #000;"><?php esc_html_e( 'Please support us by Upgrading to Premium version.', 'ads-for-wp' ) ?></p>
         <a target="_blank" href="https://www.adsforwp.com/pricing/">
-            <button class="button-adspro" style="display: inline-block;font-size: 20px;">
+            <button class="button-adspro" style="display: inline-block;font-size: 20px;" onclick="window.open('https://www.adsforwp.com/pricing')">
                 <span><?php esc_html_e( 'YES! I want to Support by UPGRADING.', 'ads-for-wp' ) ?></span></button>
         </a>
         <a href="<?php echo add_query_arg('page', 'adsforwp', admin_url('admin.php')); ?>"
