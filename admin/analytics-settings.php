@@ -4,7 +4,7 @@ class adsforwp_admin_analytics_settings{
     public function __construct() {
     
         add_action( 'admin_enqueue_scripts', array($this, 'adsforwp_chart_register_scripts') );
-        add_action( 'admin_menu', array($this, 'adsforwp_add_analytics_menu_links'),20);
+        add_action( 'admin_menu', array($this, 'adsforwp_add_analytics_menu_links'),10);
         add_filter( 'adsforwp_localize_filter',array($this,'adsforwp_add_localize_analytics_data'),10,2);
                 
     }
@@ -35,6 +35,11 @@ class adsforwp_admin_analytics_settings{
                     'adsforwp-analytics',
                     array($this , 'adsforwp_admin_analytics_render')
                 );
+                if(!defined('ADSFORWP_PRO_VERSION') && current_user_can('manage_options')){
+                global $submenu;
+                $permalink = 'javasctipt:void(0);';
+                $submenu['edit.php?post_type=adsforwp'][] = array( '<div style="color:#fff176;" onclick="window.open(\'https://adsforwp.com/pricing/\')">'.esc_html__( 'Upgrade To Premium', 'pwa-for-wp' ).'</div>', 'manage_options', $permalink);
+            }
     }
 
 

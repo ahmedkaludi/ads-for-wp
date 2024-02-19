@@ -16,7 +16,7 @@ public function adsforwp_add_menu_links() {
                 esc_html__( 'Settings', 'ads-for-wp' ),
                 'manage_options',
                 'adsforwp',
-                array($this, 'adsforwp_admin_interface_render'));	
+                array($this, 'adsforwp_admin_interface_render'));
 }
 
 
@@ -53,7 +53,13 @@ public function adsforwp_admin_interface_render(){
                         echo '<a href="' . esc_url(adsforwp_admin_link('advance')) . '" class="nav-tab ' . esc_attr( $tab == 'advance' ? 'nav-tab-active' : '') . '"><span class=""></span> ' . esc_html__('Advanced', 'ads-for-wp') . '</a>';    
                         
                         echo '<a href="' . esc_url(adsforwp_admin_link('support')) . '" class="nav-tab ' . esc_attr( $tab == 'support' ? 'nav-tab-active' : '') . '"><span class=""></span> ' . esc_html__('Support','ads-for-wp') . '</a>';
-                        echo '<a href="' . esc_url(adsforwp_admin_link('pro')) . '" class="nav-tab ' . esc_attr( $tab == 'pro' ? 'nav-tab-active' : '') . '"><span class=""></span> ' . esc_html__('UPGRADE to Pro','ads-for-wp') . '</a>';
+                        if ( ! defined( 'ADSFORWP_PRO_VERSION' ) ) {
+                        echo '<a style="background-color: #270ec7;
+    						color: #ffff;" href="' . esc_url(adsforwp_admin_link('pro')) . '" class="nav-tab ' . esc_attr( $tab == 'pro' ? 'nav-tab-active' : '') . '"><span class=""></span> ' . esc_html__('Upgrade to Pro','ads-for-wp') . '</a>';
+                    	}else{
+                    		echo '<a style="background-color: #270ec7;
+    						color: #ffff;" href="' . esc_url(adsforwp_admin_link('pro')) . '" class="nav-tab ' . esc_attr( $tab == 'pro' ? 'nav-tab-active' : '') . '"><span class=""></span> ' . esc_html__('License','ads-for-wp') . '</a>';
+                    	}
                                                                                                                     			
 			?>
 		</h2>
@@ -1023,7 +1029,7 @@ public function adsforwp_pro_content_callback(){
         <div class="adsforwp-pro-tab-content">
         	<?php if ( ! defined( 'ADSFORWP_PRO_VERSION' ) ) { ?>
 
-        	<p style="font-weight: bold;font-size: 30px;color: #000;"><?php esc_html_e( 'Thank YOU for using Easy Table of Content.', 'ads-for-wp' ) ?></p>
+        	<p style="font-weight: bold;font-size: 30px;color: #000;"><?php esc_html_e( 'Thank YOU for using Ads for WP', 'ads-for-wp' ) ?></p>
         <p style="font-size: 18px;padding: 0 10%;line-height: 1.7;color: #000;"><?php esc_html_e( 'We strive to create the best ADSFORWP solution in WordPress. Our dedicated development team does continuous development and innovation to make sure we are able to meet your demand.', 'ads-for-wp' ) ?></p>
         <p style="font-size: 16px;font-weight: 600;color: #000;"><?php esc_html_e( 'Please support us by Upgrading to Premium version.', 'ads-for-wp' ) ?></p>
         <a target="_blank" href="https://www.adsforwp.com/pricing/">
@@ -1033,8 +1039,7 @@ public function adsforwp_pro_content_callback(){
         <a href="<?php echo add_query_arg('page', 'adsforwp', admin_url('admin.php')); ?>"
            style="text-decoration: none;">
             <button class="button-toc1"
-                    style="display: block;text-align: center;border: 0;margin: 0 auto;background: none;">
-                <span style="cursor: pointer;"><?php esc_html_e( 'No Thanks, I will stick with FREE version for now.', 'ads-for-wp' ) ?></span>
+                    style="display: block;text-align: center;border: 0;margin: 0 auto;background: none;">                
             </button>
         </a>
     	<?php }else{
