@@ -14,10 +14,15 @@ function adsforwp_display_ads_txt() {
             $link = "https"; 
         } else{
             $link = "http"; 
-        }            
+        } 
+
+        $host = '';
+        if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
+          $host = $_SERVER['HTTP_HOST'];
+        }           
         
         $link .= "://";        
-        $link .= $_SERVER['HTTP_HOST'];        
+        $link .= $host;        
         $link .= esc_url_raw($_SERVER['REQUEST_URI']); 
 
 	if ( trailingslashit(get_site_url()).'ads.txt' === esc_url_raw($link) ) {
