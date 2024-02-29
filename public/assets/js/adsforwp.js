@@ -521,7 +521,7 @@ function adsforwp_pointer(id,content, status){
    }  
 
 jQuery( document ).ready(function($) {
-    
+    $(".adsforwp-upgrade-to-pro").parent().attr({'href': 'https://www.adsforwp.com/pricing/#pricings', 'target': '_blank'});  
     /* Newletters js starts here */      
         
             if(adsforwp_localize_data.do_tour){
@@ -529,7 +529,7 @@ jQuery( document ).ready(function($) {
                 var content = '<h3>You are awesome for using Ads for WP</h3>';
             content += '<p>Do you want the latest on <b>Ads update</b> before others and some best resources on monetization in a single email? - Free just for users of ADS!</p>';
                         content += '<style type="text/css">';
-                        content += '.wp-pointer-buttons{ padding:0; overflow: hidden; }';
+                        content += '.wp-pointer-buttons{ padding:0; overflow: hidden; display:block !important;}';
                         content += '.wp-pointer-content .button-secondary{  left: -25px;background: transparent;top: 5px; border: 0;position: relative; padding: 0; box-shadow: none;margin: 0;color: #0085ba;} .wp-pointer-content .button-primary{ display:none}  #afw_mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; }';
                         content += '</style>';                        
                         content += '<div id="afw_mc_embed_signup">';
@@ -610,6 +610,8 @@ jQuery( document ).ready(function($) {
     /*Newsletter submission*/
     jQuery("#ad-forwp-subscribe-newsletter-form").on('submit',function(e){
         e.preventDefault();
+        jQuery(".mc-newsletter-sent").val('Sending...');        
+
         var form = jQuery(this);
         var name = form.find('input[name="name"]').val();
         var email = form.find('input[name="email"]').val();
@@ -621,6 +623,7 @@ jQuery( document ).ready(function($) {
                       pointer: 'adsforwp_subscribe_pointer',
                       action: 'dismiss-wp-pointer'
               }, function(){
+                 jQuery(".mc-newsletter-sent").val('Subscribe'); 
                 location.reload();
               });
           }
@@ -1197,6 +1200,19 @@ jQuery( document ).ready(function($) {
             $("#afw_ad_label_settings").hide(); 
         }     
     }).change();
+    $(".afw_ad_fraud_protection").change(function(){
+
+        if($(this).is(':checked')){
+
+            $("#afw_ad_fraud_protection_settings").show();
+
+        }else{
+
+            $("#afw_ad_fraud_protection_settings").hide(); 
+
+        }     
+
+    }).change();
     $('.afw_advnc_ad_blocker_support').change(function(){
         if($(this).is(':checked')){
             $(".child-opt").show();
@@ -1303,23 +1319,28 @@ jQuery( document ).ready(function($) {
         
     e.preventDefault();   
     var email = $("#adsforwp_query_email").val();    
-    var message = $("#adsforwp_query_message").val();    
-    
+    var message = $("#adsforwp_query_message").val();
+    var premium_cus = $("#afw_query_premium_cus").val();  
     if($.trim(message) !='' && $.trim(email) !='' && isValidEmail(email) == true){
-     
+             
+            $(".afw-admin-suform").text('');            
+            $("button.afw-send-query").text('Sending...');
             $.ajax({
                     type: "POST",    
                     url:adsforwp_localize_data.ajax_url,                    
                     dataType: "json",
-                    data:{action:"adsforwp_send_query_message", message:message, email: email,adsforwp_security_nonce:adsforwp_localize_data.adsforwp_security_nonce},
+                    data:{action:"adsforwp_send_query_message", message:message, email: email, premium_cus:premium_cus,adsforwp_security_nonce:adsforwp_localize_data.adsforwp_security_nonce},
                     success:function(response){                       
                       if(response['status'] =='t'){
                         $(".afw-query-success").show();
                         $(".afw-query-error").hide();
+                        $(".afw-admin-suform").text(response['msg']);                        
                       }else{
                         $(".afw-query-success").hide();  
-                        $(".afw-query-error").show();
+                        $(".afw-query-error").show();                       
                       }
+                       $(".afw-admin-suform").text(response['msg']);
+                       $("button.afw-send-query").text('Send Message');
                     },
                     error: function(response){                    
                     console.log(response);
@@ -1537,5 +1558,10 @@ $(".adsforwp-feedback-notice-remindme").on("click", function(e){
                        $(".afw-blocker-notice").hide(); 
                  }
         }
-        
+        if(!$('body').hasClass('adsforpremium-active')){
+            $('.edit-php.post-type-adsforwp .page-title-action, .edit-php.post-type-adsforwp-groups .page-title-action').after('<div id="redux-intro-text" class="adsforwppostpage"><a class="technical_support_btn_txt" href="https://www.adsforwp.com/contact/" target="_blank">Technical Support</a> <a class="premium_features_btn" href="https://www.adsforwp.com/pricing/#pricings" target="_blank">Upgrade to PREMIUM</a> </div>');
+            $(".edit-php.post-type-adsforwp .tablenav.top").css({"display": "inline-block"});     
+        }
+       
+
 });

@@ -14,10 +14,15 @@ function adsforwp_display_ads_txt() {
             $link = "https"; 
         } else{
             $link = "http"; 
-        }            
+        } 
+
+        $host = '';
+        if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
+          $host = $_SERVER['HTTP_HOST'];
+        }           
         
         $link .= "://";        
-        $link .= $_SERVER['HTTP_HOST'];        
+        $link .= $host;        
         $link .= esc_url_raw($_SERVER['REQUEST_URI']); 
 
 	if ( trailingslashit(get_site_url()).'ads.txt' === esc_url_raw($link) ) {
@@ -146,9 +151,9 @@ function adsforwp_reset_all_settings(){
         }                
         
         if($result){
-               echo json_encode(array('status'=>'t'));            
+               echo wp_json_encode(array('status'=>'t'));            
         }else{
-               echo json_encode(array('status'=>'f'));            
+               echo wp_json_encode(array('status'=>'f'));            
         }        
            wp_die();           
 }
@@ -318,11 +323,11 @@ function adsforwp_review_notice_remindme(){
         
         if($result){  
             
-            echo json_encode(array('status'=>'t'));            
+            echo wp_json_encode(array('status'=>'t'));            
         
         }else{
             
-            echo json_encode(array('status'=>'f'));            
+            echo wp_json_encode(array('status'=>'f'));            
             
         }        
            wp_die();           
@@ -344,11 +349,11 @@ function adsforwp_review_notice_close(){
         
         if($result){           
             
-            echo json_encode(array('status'=>'t'));            
+            echo wp_json_encode(array('status'=>'t'));            
         
         }else{
             
-            echo json_encode(array('status'=>'f'));            
+            echo wp_json_encode(array('status'=>'f'));            
         
         }        
            wp_die();           
@@ -421,11 +426,11 @@ function adsforwp_import_plugin_data(){
         
         if($result){           
             
-            echo json_encode(array('status'=>'t', 'message'=>esc_html__('Data has been imported succeessfully','ads-for-wp')));            
+            echo wp_json_encode(array('status'=>'t', 'message'=>esc_html__('Data has been imported succeessfully','ads-for-wp')));            
         
         }else{
             
-            echo json_encode(array('status'=>'f', 'message'=>esc_html__('Plugin data is not available or it is not activated','ads-for-wp')));            
+            echo wp_json_encode(array('status'=>'f', 'message'=>esc_html__('Plugin data is not available or it is not activated','ads-for-wp')));            
         
         }        
            wp_die();           
@@ -449,6 +454,9 @@ add_action('admin_menu', 'adsforwp_disable_new_posts');
      * @return type json string
      */
 function adsforwp_send_query_message(){    
+        if ( ! current_user_can( 'manage_options' ) ) {
+            return;
+        }
     
         if ( ! isset( $_POST['adsforwp_security_nonce'] ) ){
            return; 
@@ -459,13 +467,21 @@ function adsforwp_send_query_message(){
         
         if ( is_user_logged_in() ) {
             
-        require_once ABSPATH . "wp-includes/pluggable.php";    
+        require_once ABSPATH . "wp-includes/pluggable.php";  
+        $customer_type  = 'Are you a premium customer ? No';  
         $message    = sanitize_textarea_field($_POST['message']);           
-        $email      = sanitize_email($_POST['email']);           
+        $premium_cus      = isset($_POST['premium_cus'])? sanitize_textarea_field($_POST['premium_cus']):'';       
         $user       = wp_get_current_user();
         $user_data  = $user->data;        
         $user_email = $user_data->user_email;   
-        
+
+        if($premium_cus == 'yes'){
+              $customer_type  = 'Are you a premium customer ? Yes';
+            }
+         
+        $message = '<p>'.$message.'</p><br><br>'
+                 . $customer_type
+                 . '<br><br>'.'Query from plugin support tab';
         if($email){
             $user_email = $email;
         }
@@ -473,15 +489,14 @@ function adsforwp_send_query_message(){
         $to         = 'team@magazine3.in';
         $subject    = "Ads For WP Customer Query";
         $headers    = 'From: '. esc_attr($user_email) . "\r\n" .
-                      'Reply-To: ' . esc_attr($user_email) . "\r\n";
-        
+                      'Reply-To: ' . esc_attr($user_email) . "\r\n";        
         // Load WP components, no themes.                      
         $sent = wp_mail($to, $subject, strip_tags($message), $headers);    
         
         if($sent){
-             echo json_encode(array('status'=>'t'));            
+             echo wp_wp_json_encode(array('status'=>'t', 'msg'=> esc_html__('Request Submitted succeessfully..', 'ads-for-wp' )));            
         }else{
-            echo json_encode(array('status'=>'f'));            
+            echo wp_wp_json_encode(array('status'=>'f', 'msg'=> esc_html__('Something wrong with this request.', 'ads-for-wp' )));            
         }
         
         }
@@ -626,9 +641,9 @@ function adsforwp_ajax_check_post_availability(){
              $ad_sense_type = get_post_meta($auto_adsense_post[0]->ID,$key='adsense_type',true);                     
         }               
         if($ad_sense_type){
-            echo json_encode(array('status'=> 't','post_id'=> $auto_adsense_post[0]->ID, 'adsense_type'=> $ad_sense_type));        
+            echo wp_json_encode(array('status'=> 't','post_id'=> $auto_adsense_post[0]->ID, 'adsense_type'=> $ad_sense_type));        
         }else{
-            echo json_encode(array('status'=> 'f','post_id'=> esc_html__('not available', 'ads-for-wp')));                                 
+            echo wp_json_encode(array('status'=> 'f','post_id'=> esc_html__('not available', 'ads-for-wp')));                                 
         }
         
     wp_die();  
@@ -1280,7 +1295,7 @@ function adsforwp_published(){
         }
      
      if($ads_post_ids){
-         $ads_post_ids_json = json_encode($ads_post_ids);
+         $ads_post_ids_json = wp_json_encode($ads_post_ids);
          set_transient('adsforwp_transient_ads_ids', $ads_post_ids_json); 
      }
                
@@ -1354,7 +1369,7 @@ function adsforwp_groups_published(){
           
      if($group_post_ids){
          
-         $group_post_ids_json = json_encode($group_post_ids);
+         $group_post_ids_json = wp_json_encode($group_post_ids);
          set_transient('adsforwp_groups_transient_ids', $group_post_ids_json); 
          
      }

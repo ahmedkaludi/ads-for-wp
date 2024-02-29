@@ -86,7 +86,7 @@ class adsforwp_admin_common_functions {
                 
                 header('Content-type: application/json');
                 header('Content-disposition: attachment; filename=adsforwpbackup.json');
-                echo json_encode($export_data_all);                                       
+                echo wp_json_encode($export_data_all);                                       
                                  
         wp_die();
     }
@@ -1602,7 +1602,7 @@ class adsforwp_admin_common_functions {
                     )
                  ); 
               
-              set_transient( 'transient_all_afw_ads_data', json_encode($all_ads), 60 ); 
+              set_transient( 'transient_all_afw_ads_data', wp_json_encode($all_ads), 60 ); 
               
             }                                                         
         return $all_ads;        
@@ -1644,7 +1644,7 @@ class adsforwp_admin_common_functions {
                     )
                  ); 
           
-          set_transient( 'transient_all_groups_data', json_encode($all_groups), 60 );           
+          set_transient( 'transient_all_groups_data', wp_json_encode($all_groups), 60 );           
         }
         
         return $all_groups;
