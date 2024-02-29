@@ -65,6 +65,17 @@ Google Api Php Client library used https://github.com/googleapis/google-api-php-
 
 == Changelog ==
 
+= 1.9.26 (29 Febraury 2024) =
+* The subscribe button is not working #391
+* If the extension Contact Form 7 Extension For Mailchimp is enabled then the "No Thanks" button does not appear #392
+* Test with wordpress v6.4 #393
+* Need to add an option for click Fraud prevention #394
+* Need to add an option for click Fraud prevention feature #395
+* Add a new feature for Lazy loading of the ads #396
+* PHP Warning: Undefined array key 'HTTP_HOST' in ads-for-wp control-center.php #398
+
+
+
 = 1.9.25 (12 September 2023) =
 * Improvement: Tested with WordPress 6.3 #390
 * Fixed: Pop up news letter not working for ads for wp plugin #387
