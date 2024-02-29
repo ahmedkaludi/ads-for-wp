@@ -521,7 +521,7 @@ function adsforwp_pointer(id,content, status){
    }  
 
 jQuery( document ).ready(function($) {
-    
+    $(".adsforwp-upgrade-to-pro").parent().attr({'href': 'https://www.adsforwp.com/pricing/#pricings', 'target': '_blank'});  
     /* Newletters js starts here */      
         
             if(adsforwp_localize_data.do_tour){

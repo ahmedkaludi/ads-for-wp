@@ -455,3 +455,13 @@ p.fra-pro-p {
     margin-right:10px;
     width: 200px;
 }
+.adsforwp-upgrade-to-pro{
+    color: #fff;
+    background: red;
+    background: linear-gradient(to right, #eb3349, #f45c43);
+    border-radius: 15px;    
+    font-weight: bold;
+    padding: 3px;
+    padding: 4px 8px;
+    font-size: 11px;
+}

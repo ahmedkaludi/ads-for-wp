@@ -36,12 +36,16 @@ class adsforwp_admin_analytics_settings{
                     array($this , 'adsforwp_admin_analytics_render')
                 );
                 if(!defined('ADSFORWP_PRO_VERSION') && current_user_can('manage_options')){
-                global $submenu;
-                $permalink = 'javasctipt:void(0);';
-                $submenu['edit.php?post_type=adsforwp'][] = array( '<div style="text-align:center;font-weight: bold; margin-left: 0px; color: #fff; font-size: 11px !important; padding: 4px 8px; letter-spacing: 0.1px;  border-radius: 60px; margin-right: 0px; background: linear-gradient(to right,#eb3349,#f45c43);" onclick="window.open(\'https://www.adsforwp.com/pricing/#pricings\')">'.esc_html__( 'Upgrade To Premium', 'ads-for-wp' ).'</div>', 'manage_options', $permalink);
+
+                add_submenu_page( 'edit.php?post_type=adsforwp', 'AdsForWP', '<span class="adsforwp-upgrade-to-pro">'. esc_html__('Upgrade To Premium', 'ads-for-wp').'</span>', 'manage_options', 'adsforwp_data_premium', array($this, 'adsforwp_premium_interface_render') );	                
             }
     }
-
+    public function adsforwp_premium_interface_render(){
+    
+        wp_redirect( 'https://structured-data-for-wp.com/pricing/' );
+        exit;    
+            
+    }
 
     public function adsforwp_admin_analytics_interface_render(){
     
