@@ -238,9 +238,7 @@ class Adsforwp_analyticsSettings{
 					if ( $this->pa_connect() ) { wp_redirect(  esc_url(admin_url( 'edit.php?post_type=adsforwp&page=adsforwp-analytics' ))); }
 				} catch (Exception $e) {
 					echo $e->getMessage();
-				}
-				wp_redirect(  esc_url(admin_url( 'edit.php?post_type=adsforwp&page=adsforwp-analytics' )));
-				exit;
+				}				
 			}
 	}
 
