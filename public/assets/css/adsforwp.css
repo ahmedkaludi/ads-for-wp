@@ -404,6 +404,9 @@ form#adsforwp-settings-form th, form#adsforwp-settings-form .adsforwp-tooltip{
     margin-right: 20px;
 
 }
+.afw_cls-act-b{
+    text-align: left;
+}
 .afw_revenue_divider {
     padding: 20px;
     border: 2px solid #ccc;
