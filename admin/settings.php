@@ -983,9 +983,9 @@ public function adsforwp_ad_fraud_protection_options_callback(){
 			</style>				
 				<table class="afw-ads-ipblock">
 						<tr>
-							<th>ID</th>
-							<th>Date/Time</th>
-							<th>IP</th>
+							<th><?php echo esc_html__('ID', 'ads-for-wp') ?></th>
+							<th><?php echo esc_html__('Date/Time', 'ads-for-wp') ?></th>
+							<th><?php echo esc_html__('IP', 'ads-for-wp') ?></th>
 						</tr>
 					<?php
 						$afw_ip = get_option('afw_add_blocked_ip') ? get_option('afw_add_blocked_ip') : array();
@@ -994,9 +994,9 @@ public function adsforwp_ad_fraud_protection_options_callback(){
 							foreach($afw_ip as $key=>$val){
 					 ?>
 							<tr>
-								<td><?php echo $id; ?></td>
-								<td><?php echo $val['time']; ?></td>
-								<td><?php echo $val['ip']; ?></td>
+								<td><?php echo esc_html($id); ?></td>
+								<td><?php echo esc_html($val['time']); ?></td>
+								<td><?php echo esc_html($val['ip']); ?></td>
 							</tr>
 						<?php	
 							$id++;
