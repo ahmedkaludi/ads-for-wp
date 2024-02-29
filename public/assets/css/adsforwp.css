@@ -253,6 +253,7 @@ Tooltip css starts here
     border-style: solid;
     border-color: black transparent transparent transparent;
 }
+
 /*
 Tooltip css ends here
 
@@ -369,8 +370,77 @@ Adsforwp Ads blocker notice option panel css
     clear: both;
 }
 
-.adsforwp-general .form-table tr.child-opt th{
-    padding-left: 40px;
+.afw-license-tab {
+    border-color: #270ec7;
+}
+p.enter_license_key {
+    text-align: left;
+}
+input#afw_ad_fraud_protection:disabled {
+    opacity: 1;
+}
+form#adsforwp-settings-form th, form#adsforwp-settings-form .adsforwp-tooltip{
+    cursor: pointer;
+}
+.afw-license-tab{
+    background-color: #270ec7;
+    color: #ffff;
+}
+#redux-intro-text {
+    background: transparent;
+    border: 0;
+    margin-top: -2px;
+    color: #999;
+    right: 5px;
+    letter-spacing: 0.8px;
+    box-shadow: none;
+    text-align: right;
+    float: right;
+    margin: 20px 10px;
+}
+#redux-intro-text.adsforwppostpage{
+    margin: 0;
+    margin-top: 17px;
+    margin-right: 20px;
+
+}
+.afw_revenue_divider {
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    background: #eaeaea;
+    position: relative;
+    right: 225px;
+    margin-top: 2%;
+}
+.adsforwp-general fieldset p {
+    display: inline;
+}
+p.fra-pro-p {
+    display: block !important;
+}
+#redux-intro-text a {
+    text-decoration: none;
+}
+#redux-intro-text .technical_support_btn_txt {
+    background: #fdfdfd;
+    box-shadow: 0px 0px 6px #ddd;
+    color: #eb3548 !important;
+    border: 1px solid #ef4746 !important;
+}
+
+.technical_support_btn_txt, .premium_features_btn {
+    margin-left: 10px;
+    font-size: 12px !important;
+    padding: 6px 12px;
+    letter-spacing: 0.1px;
+    border-radius: 60px;
+    margin-right: 0px;
+    background: -webkit-linear-gradient(to right,#eb3349,#f45c43);
+    background: linear-gradient(to right,#eb3349,#f45c43);
+    top: 11px;
+    color: #fff !important;
+    box-shadow: ;
 }
 .label-align{
     display: flex;
