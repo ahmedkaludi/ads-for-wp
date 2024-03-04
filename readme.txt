@@ -4,7 +4,7 @@ Tags: Ads, Media Net, AMP, Adsense, Advertisement
 Requires at least: 3.6
 Tested up to: 6.4
 Requires PHP: 5.6.20
-Stable tag: 1.9.26
+Stable tag: 1.9.27
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -66,6 +66,12 @@ Chart.js library used https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Char
 Google Api Php Client library used https://github.com/googleapis/google-api-php-client - License URI: https://github.com/googleapis/google-api-php-client/blob/master/LICENSE
 
 == Changelog ==
+
+= 1.9.27 (4 March 2024) =
+* Fixed: Call to undefined funciton wp_wp_json_encode #404
+* Fixed: Fatal error: Uncaught Error: Call to undefined function adsforwp_click_fraud_on() #402
+* Fixed: Receiving Warning after installation of plugin. #331
+* Feature: Need to create an option to hide Ad label for the specific ad. #330
 
 = 1.9.26 (29 Febraury 2024) =
 * Bug Fixed: The subscribe button is not working #391
@@ -141,186 +147,5 @@ Google Api Php Client library used https://github.com/googleapis/google-api-php-
 = 1.9.15.2 (13 January 2020) =
 
 * Bug Fixed: Auto Ads script exists more than once when adsense auto ads added #309
-
-= 1.9.15.1 (20 November 2019) =
-
-* Bug Fixed: Added code for amp script issue #300
-
-= 1.9.15 (19 November 2019) =
-
-* New Feature: Added Browser Width and Paid Membership Pro conditions under User Targeting #137
-* Bug Fixed: Added Width and Height option when user adds SVG image for Image banner ad type. #297
-* Bug Fixed: Added fully compatible with AMP by automatic. #121
-
-= 1.9.14 (13 November 2019) =
-
-* New Feature: Added Floating Ads support #293
-* Bug Fixed: Tabs link error in Multisite #290
-
-= 1.9.13 (05 November 2019) =
-
-* New Feature: Added support for "Revcontent Ad" #284
-* New Feature: Create support for Google Adsense In-feed ads #281
-* Improvement: Added option to Limit the height and width of responsive Ads #279
-* Bug Fixed: Taxonomy terms condition for selected taxonomy type is not working after first condition #292
-* Bug Fixed: We need to make sure Ads are centered on all browsers. #287
-* Bug Fixed: Ad Label text color not changing. #289
-* Bug Fixed: Undefined offset: 0 #286
-* Bug Fixed: Fatal error function adsforwp_modify_title() #294
-* Bug Fixed: Ads loading inappropriately if we set up number of paragraphs between the content. #291
-* Bug Fixed: custom code option is not stable #278
-* Bug Fixed: amp-iframe not working in custom code #277
-
-= 1.9.12 (25 October 2019) =
-
-* New Feature: Need to add Feature of AMP Stories Ads #230
-* New Feature: Expiry by impression count #228
-* Improvement: Need to show Advertisement text after the Ad #283
-* Improvement: Need to improve javascript functionality of adsforwp option panel #251
-* Bug Fixed: Ads are not loading properly on Mobile and Desktop, if we set user targeting #282
-
-= 1.9.11 (19 October 2019) =
-
-* Improvement: Need to add attention message if user using Auto Ads and Normal Ads at a time from same company #269
-* Improvement: Need to Add the optional option to place the Ad in the content based on percentage. #223
-* Improvement: Added "h1 - h6" tags in 'Count As Per The' dropdown #272
-* Improvement: Need to add a notice below the User targeting section, only for the Device Type #210
-* Improvement: Need to add note for infolinks Ads type below ads type dropdown #275
-
-= 1.9.10 (16 October 2019) =
-
-* New Feature: Added Engageya ads Native support in AMP #256
-* Improvement: Added Fluid compatibility for double click ads #252
-* Bug Fixed: In-article ads type of adsense Ad can’t publish issue has been fixed #270
-* Bug Fixed: Ads are not getting displayed due to transient issue #271
-* Bug Fixed: Warning with Gutenberg #268
-* Bug Fixed: Warning Invalid argument supplied for foreach() #264
-* Improvement: Improving the consent #266
-* Bug Fixed: Wrong error message display for Group ads #265
-* Bug Fixed: Need to detect current version of mobile #261
-
-= 1.9.9 (11 October 2019) =
-
-* Bug Fixed: front.js 404 javascript issue has been resolved #255
-* Improvement: Feedback box upon deactivation had been added #260
-
-= 1.9.8 (09 October 2019) =
-
-* Improvement: Added Tutorial Links for Ad types in pop up notification field in "Add new ad" section #258
-* Improvement: Custom code Ad type support for Engageya Ad code has been added #180
-* New Feature: Added Block support for Ads with gutenberg #245
-* Improvement: New condition to set ads by author #254
-* New Feature: Ad Blocker Support with Ad blocker notice popup, bar and page redirection #242
-
-= 1.9.7 (26 September 2019) =
-
-* New Feature: In-Article Support in Google Adsense #240
-* New Feature: Importer for Quick Adsense #180
-* Improvement: Improvements in responsive ad units #249
-* Bug Fixed: Responsive Ads issue with Newsmag theme #246
-
-= 1.9.6 (21 September 2019) =
-
-* New Feature: Sticky Ads with DoubleClick Ad type for AMP #174
-* New Feature: Added outbrain Ad type compatibility #207
-* New Feature: Added Taboola Ad support #185
-* New Feature: Added MANTIS Ad Network #145
-* New Feature: Added Ezoic Ad support #187
-* New Feature: Added compatibility of Mediavine #220
-* New Feature: Added Matched Content support #161
-* New Feature: Added new feature to support multi-size ad requests #176
-* Bug Fixed: After update ads are decentralized #244
-
-= 1.9.5 (09 September 2019) =
-
-* New Feature: Added new feature 'data-enable-refresh' for amp-ads.
-* Added: Text wrapper option to wrap text around the ads #234
-* Bug Fixed: Java Script Error: Uncaught (in promise) Error: Element not found #225
-
-= 1.9.4 (05 September 2019) =
-
-* Bug Fixed: Issue with responsive feature in Ads for WP plugin #191
-* Bug Fixed: ins should not have any color in background #213
-* Bug Fixed: Code Stripped of from Custom ad section #227
-* Bug Fixed: AMP scripts should load when any ads related to that script are there. #235
-* Bug Fixed: Expire Date doesn’t work if an ad is in a group #231
-* Bug Fixed: User Targeting last row is not being deleted #222
-* Bug Fixed: Text-align & responsive banner #229
-* Bug Fixed: Responsive Ads option not working in NON-AMP version #214
-
-= 1.9.3 (9 August 2019) =
-
-* Added: MGID Support #215
-* Added: ads.txt support #198
-* Bug Fixed: Advanced display condition is not working when selected Not Equal to #221
-
-= 1.9.2 (15 July 2019) =
-
-* Bug Fixed: Taboola Ads not appearing #218
-
-= 1.9.1 (09 July 2019) =
-
-* Bug Fixed: In Custom ads the custom code is not getting added #211
-
-= 1.9 (29 June 2019) =
-
-* Bug Fixed: Security improvement and other bugs #206.
-
-= 1.8 (26 June 2019) =
-
-* Bug Fixed: error ".afw_ad_amp_12345" not found" #178
-* Bug Fixed: Custom target option removing the classes #168
-* Bug Fixed: Sticky ads with adsense are having 11 instances #175
-* Bug Fixed: After importing the ads from AMPforWP then Non-AMP Visibility should be hidden #157
-* Bug Fixed: Duplicate Queries #194
-* Bug Fixed: Review wave issues (  form submision requires escaping, nonce in "analytics-settings" file ) #160
-* Bug Fixed: If image banner is empty still amp img tag loads which throw amp validation error. #195
-* Improvement: If the "Ad Performance Tracking" is not enabled, then it should not show the Performance count section #197
-* Improvement: AdBlocker notice should have learn more link #177
-
-= 1.7 (31 May 2019) =
-
-* Bug Fixed: Auto ads loads with extra sticky ad amp tag #192
-* Bug Fixed: Amp compatiblity option is not working on auto ads #189
-* Bug Fixed: Draft group post and still is being displayed. #164
-* Bug Fixed: Debug Warnings (#179, #188)
-* Bug Fixed: Debug Notice #159
-
-= 1.6 (25 March 2019) =
-
-* Bug Fixed: Security improvement.
-
-
-= 1.5 (04 March 2019) =
-* Added : AD to be displayed after every number(XX) of paragraphs #154
-* Added : Sponsorship Label that Displays a Word such as "Ad" above the Ad #153
-
-= 1.4.1 (02 March 2019) =
-* Bug Fixed: Ads migrator from AMPforWP ads is not properly working.
-* Bug Fixed: Multiple calls are happening while checking user IP in User Targeting (Ticket was re-opened). #148
-
-= 1.4 (16 February 2019) =
-* Added: Showing monthly ads stats inside analytics section by passing ad id or clicking on ad impression or clicks in ad list ( impression, clicks etc.. )#130
-* Added: Display positioning of AMP and non-AMP should be combined into one dropdown #146
-* Bug Fixed: Multiple calls are happening while checking user IP in User Targeting. #148
-
-= 1.3 (30 January 2019) =
-* Added: Sticky ad support for adsense (Only AMP)
-* Added: Doubleclick (DFP) ad support for AMP and NON AMP 
-* Added: Ad Inserter Plugin ( https://wordpress.org/plugins/ad-inserter/ ) importer. It will import all block ads to ads-for-wp (Note: Ad Inserter Plugin which is available on wordpress.org)
-* Added: AD Performance Tracking Option ( Users can choose whether they want to track ads impressions and clicks or not)
-* Bug Fixed: Normal adsense ad shows responsive even when the responsive option is disabled #135
-
-= 1.2 (17 January 2019) =
-* New Feature: Background Ad Type
-* New Feature: User targeting by Cookie
-* Added: Support for  MGID Ads & Taboola Ads in custom ads type
-* Added: Delete all settings, ads and groups ads at one click
-* Added: Option to filter ads list by ad type
-* Added: Prepared for localization to make plugin translatable
-* Improvement: Notice box to ask for review in day interval should not be shown again, if users click no thanks button
-* Bug Fixed: Update wheretodisplayamp while importing Ads from AMPforWP #125
-* Bug Fixed: If auto ads is selected, then AMP Display Positioning in AMP section should be hidden #114
-* Bug Fixed: Warning issue when no Ads are setup. #128
 
 All changelog available on [GitHub](https://github.com/ahmedkaludi/ads-for-wp/releases).
