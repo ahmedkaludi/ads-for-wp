@@ -1559,8 +1559,7 @@ $(".adsforwp-feedback-notice-remindme").on("click", function(e){
                  }
         }
         if(!$('body').hasClass('adsforpremium-active')){
-            $('.edit-php.post-type-adsforwp .page-title-action, .edit-php.post-type-adsforwp-groups .page-title-action').after('<div id="redux-intro-text" class="adsforwppostpage"><a class="technical_support_btn_txt" href="https://www.adsforwp.com/contact/" target="_blank">Technical Support</a> <a class="premium_features_btn" href="https://www.adsforwp.com/pricing/#pricings" target="_blank">Upgrade to PREMIUM</a> </div>');
-            $(".edit-php.post-type-adsforwp .tablenav.top").css({"display": "inline-block"});     
+            $('.edit-php.post-type-adsforwp .page-title-action, .edit-php.post-type-adsforwp-groups .page-title-action').after('<div id="redux-intro-text" class="adsforwppostpage"><a class="technical_support_btn_txt" href="https://www.adsforwp.com/contact/" target="_blank">Technical Support</a> <a class="premium_features_btn" href="https://www.adsforwp.com/pricing/#pricings" target="_blank">Upgrade to PREMIUM</a> </div>');            
         }
        
 
