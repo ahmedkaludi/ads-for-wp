@@ -9,6 +9,7 @@ input[name=adsforwp_group_shortcode] {
     border: 0px;
     color: black;
 }
+input#adsforwp_query_email{ width: 36.2%;}
 .afw_input {
     width: 50%;
 }
