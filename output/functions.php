@@ -1604,13 +1604,18 @@ class adsforwp_output_functions{
             if(empty($ad_rel_attr)){
                 $ad_rel_attr ='nofollow';
             }
+            $hideAdlabel = get_post_meta($post_ad_id, $key='adsforwp_hide_ad_label',true);
             if(isset($settings['ad_sponsorship_label']) && isset($settings['ad_sponsorship_label_text']) && $settings['ad_sponsorship_label_text'] !=''){
                 if($settings['ad_label_postion'] == 'above'){
-                    $sponsership_label = '<div style="font-size:10px;text-align:'.esc_attr($ad_alignment).';color:'.sanitize_hex_color($settings['ad_label_txt_color']).';">'.esc_html($settings['ad_sponsorship_label_text']).'</div>';
-                    $sponsership_label = apply_filters( 'adsforwp_adtext_above_ad', $sponsership_label );
+                   if($hideAdlabel == 0){
+                     $sponsership_label = '<div style="font-size:10px;text-align:'.esc_attr($ad_alignment).';color:'.sanitize_hex_color($settings['ad_label_txt_color']).';">'.esc_html($settings['ad_sponsorship_label_text']).'</div>';
+                     $sponsership_label = apply_filters( 'adsforwp_adtext_above_ad', $sponsership_label );
+                   }
                 }else{
+                     if($hideAdlabel == 0){
                     $ad_label_bottom = '<div style="font-size:10px;text-align:'.esc_attr($ad_alignment).';color:'.sanitize_hex_color($settings['ad_label_txt_color']).';">'.esc_html($settings['ad_sponsorship_label_text']).'</div>';
                     $ad_label_bottom = apply_filters( 'adsforwp_adtext_below_ad', $ad_label_bottom );
+                    }
                 }
                 
             }

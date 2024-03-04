@@ -217,6 +217,11 @@ class adsforwp_view_display {
                 'type' => 'and',
                 'fields'=> array('wheretodisplay' => array('ad_shortcode','between_the_content','after_the_content','before_the_content','custom_target','adsforwp_above_the_post_content','adsforwp_below_the_post_content') )
             ),
+        ),
+        array(
+            'label' => 'Hide Ad Label',
+            'id' => 'adsforwp_hide_ad_label',
+            'type' => 'checkbox',
         )
                                 
 	);
