@@ -1149,13 +1149,15 @@ function adsforwp_browser_width_conditoinal($data){
                for($j=0;$j<count($visitor_conditions_array);$j++){
                   $conditions = $visitor_conditions_array['group-'.$j]['visitor_conditions'];
                   foreach($conditions as $key => $value){
-                     if(in_array('browser_width', $value)){
-                        if(count($conditions) > 1){
-                           $and_or_conditions[$post_ad_id]['and'][] = $conditions[$key];
-                        }else{
-                           $and_or_conditions[$post_ad_id]['or'][] = $conditions[$key];
-                        }
-                     }
+                    if(is_array($value)){
+                        if(in_array('browser_width', $value)){
+                            if(count($conditions) > 1){
+                               $and_or_conditions[$post_ad_id]['and'][] = $conditions[$key];
+                            }else{
+                               $and_or_conditions[$post_ad_id]['or'][] = $conditions[$key];
+                            }
+                         }
+                    }                     
                   }
                }
             }
