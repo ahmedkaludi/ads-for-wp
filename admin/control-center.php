@@ -494,9 +494,9 @@ function adsforwp_send_query_message(){
         $sent = wp_mail($to, $subject, strip_tags($message), $headers);    
         
         if($sent){
-             echo wp_wp_json_encode(array('status'=>'t', 'msg'=> esc_html__('Request Submitted succeessfully..', 'ads-for-wp' )));            
+             echo wp_json_encode(array('status'=>'t', 'msg'=> esc_html__('Request Submitted succeessfully..', 'ads-for-wp' )));            
         }else{
-            echo wp_wp_json_encode(array('status'=>'f', 'msg'=> esc_html__('Something wrong with this request.', 'ads-for-wp' )));            
+            echo wp_json_encode(array('status'=>'f', 'msg'=> esc_html__('Something wrong with this request.', 'ads-for-wp' )));            
         }
         
         }
