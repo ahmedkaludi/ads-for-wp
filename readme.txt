@@ -4,7 +4,7 @@ Tags: Ads, Media Net, AMP, Adsense, Advertisement
 Requires at least: 3.6
 Tested up to: 6.4
 Requires PHP: 5.6.20
-Stable tag: 1.9.26
+Stable tag: 1.9.27
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -66,6 +66,12 @@ Chart.js library used https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Char
 Google Api Php Client library used https://github.com/googleapis/google-api-php-client - License URI: https://github.com/googleapis/google-api-php-client/blob/master/LICENSE
 
 == Changelog ==
+
+= 1.9.27 (4 March 2024) =
+* Fixed: Call to undefined funciton wp_wp_json_encode #404
+* Fixed: Fatal error: Uncaught Error: Call to undefined function adsforwp_click_fraud_on() #402
+* Fixed: Receiving Warning after installation of plugin. #331
+* Feature: Need to create an option to hide Ad label for the specific ad. #330
 
 = 1.9.26 (29 Febraury 2024) =
 * Bug Fixed: The subscribe button is not working #391
