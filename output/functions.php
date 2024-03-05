@@ -2994,7 +2994,10 @@ public function adsforwp_preload_image_(){
         
         $response['adsforwp_refresh_type']           = adsforwp_rmv_warnings($post_data, 'adsforwp_refresh_type', 'adsforwp_array');                
         $response['adsforwp_group_ref_interval_sec'] = adsforwp_rmv_warnings($post_data, 'adsforwp_group_ref_interval_sec', 'adsforwp_array');               
-        $response['adsforwp_group_type']             = adsforwp_rmv_warnings($post_data, 'adsforwp_group_type', 'adsforwp_array');
+        $response['adsforwp_group_type']             = adsforwp_rmv_warnings($post_data, 'adsforwp_group_type', 'adsforwp_array');  
+        $settings = adsforwp_defaultSettings();
+        $response['adsforwp_group_sponsorship_label_text'] = esc_html($settings['ad_sponsorship_label_text']);     
+        $response['adsforwp_group_hide_ad_label']   = adsforwp_rmv_warnings($post_data, 'adsforwp_hide_ad_label', 'adsforwp_array');
         
         $response['ads'] = $adsresultset;  
         if($response['adsforwp_refresh_type'] == 'on_interval'){
