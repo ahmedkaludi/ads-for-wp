@@ -1156,15 +1156,17 @@ class adsforwp_output_functions{
               $content = $ad_code.$content;
               break;
                                     
-             case 'between_the_content':      
-                 
+             case 'between_the_content':   
               if($adposition == 'number_of_paragraph'){
                 
                 $entered_tag_name     = '';                
                 $display_tag_name     = '';  
                 $every_paragraphs     = 0;
+                $every_paragraphs_before     = 0;
                 
                 $every_paragraphs    = adsforwp_rmv_warnings($post_meta_dataset, 'ads_on_every_paragraphs_number', 'adsforwp_array');
+
+                $every_paragraphs_before    = adsforwp_rmv_warnings($post_meta_dataset, 'ads_before_every_paragraphs_number', 'adsforwp_array');
                 
                 $paragraph_id        = adsforwp_rmv_warnings($post_meta_dataset, 'paragraph_number', 'adsforwp_array');   
                                                 
@@ -1248,7 +1250,13 @@ class adsforwp_output_functions{
                                 $paragraph_id += $p_number;
                            }
                            
-                       }else{
+                       }else if ( $every_paragraphs_before ==1) {
+                           if ( $paragraph_id == $index + $p_number) {
+                                $paragraphs[$index] = $ad_code.$paragraphs[$index];
+                                $paragraph_id += $p_number;
+                                
+                           }  
+                       } else{
                            
                             if ( $paragraph_id == $index + 1 ) {
                                 $paragraphs[$index] .= $ad_code;
@@ -1376,6 +1384,8 @@ class adsforwp_output_functions{
                 $every_paragraphs     = 0;
                 
                 $every_paragraphs    = adsforwp_rmv_warnings($post_meta_dataset, 'ads_on_every_paragraphs_number', 'adsforwp_array');
+                
+                $every_paragraphs_before    = adsforwp_rmv_warnings($post_meta_dataset, 'ads_before_every_paragraphs_number', 'adsforwp_array');
                 
                 $paragraph_id        = adsforwp_rmv_warnings($post_meta_dataset, 'paragraph_number', 'adsforwp_array');   
                                                 
