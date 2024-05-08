@@ -1121,6 +1121,8 @@ jQuery( document ).ready(function($) {
         
       $(".adsforwp-every-paragraphs-text").text('Display After Every '+ $(this).val());
       $(".adsforwp-every-paragraphs-before-text").text('Display Before Every '+ $(this).val());
+    $(".adsforwp-every-paragraphs-before-text-none").text('None');
+
       
     }).change();
     $(".adfwp-select-befor-after-displ").change(function() {

@@ -439,14 +439,19 @@ class adsforwp_view_display {
 
                             $paragraphs_number = get_post_meta( $post->ID, 'ads_on_every_paragraphs_number', true );
                             $paragraphs_number_before = get_post_meta( $post->ID, 'ads_before_every_paragraphs_number', true );
+                            $paragraphs_number_none = get_post_meta( $post->ID, 'ads_before_every_paragraphs_none', true );
                             if($paragraphs_number == 1 ){
                                 $paragraphs_checked = 'checked';                
                             }
                             if($paragraphs_number_before == 1 ){
                                 $paragraphs_checked_before = 'checked';                
                             }
+                            if($paragraphs_number_none == 1 ){
+                                $paragraphs_checked_none = 'checked';                
+                            }
                             $input = sprintf('<input class="afw_input" %s id="%s" name="%s" type="%s" value="%s" %s><br><input type="checkbox" id="ads_on_every_paragraphs_number" name="ads_on_every_paragraphs_number" value="1" '.esc_attr($paragraphs_checked).' class="adfwp-select-befor-after-displ"> <span class="adsforwp-every-paragraphs-text"></span>
-                                <input type="checkbox" id="ads_before_every_paragraphs_number" name="ads_before_every_paragraphs_number" value="1" '.esc_attr($paragraphs_checked_before).' class="adfwp-select-befor-after-displ"><span class="adsforwp-every-paragraphs-before-text"></span>',
+                                <input type="checkbox" id="ads_before_every_paragraphs_number" name="ads_before_every_paragraphs_number" value="1" '.esc_attr($paragraphs_checked_before).' class="adfwp-select-befor-after-displ"><span class="adsforwp-every-paragraphs-before-text"></span>
+                                <input type="checkbox" id="ads_before_every_paragraphs_none" name="ads_before_every_paragraphs_none" value="1" '.esc_attr($paragraphs_checked_none).' class="adfwp-select-befor-after-displ"><span class="adsforwp-every-paragraphs-before-text-none"></span>',
             						$meta_field['type'] !== 'color' ? '' : '',
             						esc_attr($meta_field['id']),
             						esc_attr($meta_field['id']),
@@ -522,6 +527,11 @@ class adsforwp_view_display {
                 update_post_meta($post_id, 'ads_before_every_paragraphs_number', sanitize_text_field($post_meta['ads_before_every_paragraphs_number']));
             }else{
                 update_post_meta($post_id, 'ads_before_every_paragraphs_number', '0');
+            }
+            if(isset($post_meta['ads_before_every_paragraphs_none'])){
+                update_post_meta($post_id, 'ads_before_every_paragraphs_none', sanitize_text_field($post_meta['ads_before_every_paragraphs_none']));
+            }else{
+                update_post_meta($post_id, 'ads_before_every_paragraphs_none', '0');
             }
                 
             foreach ( $this->meta_fields as $meta_field ) {
