@@ -67,7 +67,7 @@ Google Api Php Client library used https://github.com/googleapis/google-api-php-
 
 == Changelog ==
 
-= 1.9.28 (4 May 2024) =
+= 1.9.28 (11 May 2024) =
 * Feature: Request to add more new position for Ads to display #350
 * Feature:: Need to create an option to hide Ad label for the specific group #406
 * Test with WordPress 6.5 and update readme.txt #409
