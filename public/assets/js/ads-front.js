@@ -13,7 +13,7 @@ jQuery( document ).ready(function($) {
      * @returns {html tags}
      */
 
-    function adsforwpShowAdsById(ads_group_id, ads_group_type, adbyindex, j){                   
+    function adsforwpShowAdsById(ads_group_id, ads_group_type, adbyindex, j, ads_groupad_hide_label, ad_grpsponsorship_label_text){                   
             var container = $(".afw_ad_container[data-id='"+ads_group_id+"']");  
             var container_pre = $(".afw_ad_container_pre[data-id='"+ads_group_id+"']");  
             var content ='';            
@@ -54,7 +54,9 @@ jQuery( document ).ready(function($) {
                     container.html(content);                  
                     break;
                 case "ad_image":
-                    content +='<div class="">Advertisement</div>';
+                    if(ads_groupad_hide_label == 0){                        
+                        content +='<div class="">'+ad_grpsponsorship_label_text+'</div>';
+                    }
                     content +='<div data-ad-id="'+adbyindex.ad_id+'" class="afw afw_ad afw_ad_image afw_'+adbyindex.ad_id+'">';                    
                     content +='<a target="_blank" href="'+adbyindex.ad_redirect_url+'"><img src="'+adbyindex.ad_image+'"></a>';
                     content +='</div>';                    
@@ -86,6 +88,8 @@ jQuery( document ).ready(function($) {
             var ads_group_refresh_type = obj.adsforwp_refresh_type; 
             var ads_group_ref_interval_sec = obj.adsforwp_group_ref_interval_sec;
             var ads_group_type = obj.adsforwp_group_type;
+            var ads_groupad_hide_label = obj.adsforwp_group_hide_ad_label;
+            var ad_grpsponsorship_label_text = obj.adsforwp_group_sponsorship_label_text;
          
             var ad_ids = obj.ads; 
                
@@ -96,11 +100,11 @@ jQuery( document ).ready(function($) {
                  j = 1;
                  
                  if(ads_group_type == 'ordered')   {              
-                    adsforwpShowAdsById(ads_group_id, ads_group_type, ad_ids[i], j);                                             
+                    adsforwpShowAdsById(ads_group_id, ads_group_type, ad_ids[i], j, ads_groupad_hide_label, ad_grpsponsorship_label_text);                                             
                 i++;    
                 } else{                    
                     var random_adbyindex = ad_ids[Math.floor(Math.random()*ad_ids.length)];                 
-                    adsforwpShowAdsById(ads_group_id, ads_group_type, random_adbyindex, j);                                 
+                    adsforwpShowAdsById(ads_group_id, ads_group_type, random_adbyindex, j, ads_groupad_hide_label, ad_grpsponsorship_label_text);                                 
                 } 
               j++;  
             var adsforwp_ad_on_interval = function () {                
@@ -110,11 +114,11 @@ jQuery( document ).ready(function($) {
                 var adbyindex ='';
                     adbyindex = ad_ids[i];                    
                 if(ads_group_type == 'ordered')   {              
-                    adsforwpShowAdsById(ads_group_id, ads_group_type, adbyindex, j);                                             
+                    adsforwpShowAdsById(ads_group_id, ads_group_type, adbyindex, j, ads_groupad_hide_label, ad_grpsponsorship_label_text);                                             
                 i++;    
                 } else{                    
                     var random_adbyindex = ad_ids[Math.floor(Math.random()*ad_ids.length)];                 
-                    adsforwpShowAdsById(ads_group_id, ads_group_type, random_adbyindex, j);                                 
+                    adsforwpShowAdsById(ads_group_id, ads_group_type, random_adbyindex, j, ads_groupad_hide_label, ad_grpsponsorship_label_text);                                 
                 }    
                     j++;
                     setTimeout(adsforwp_ad_on_interval, ads_group_ref_interval_sec);

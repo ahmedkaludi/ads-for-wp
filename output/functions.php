@@ -1156,15 +1156,17 @@ class adsforwp_output_functions{
               $content = $ad_code.$content;
               break;
                                     
-             case 'between_the_content':      
-                 
+             case 'between_the_content':   
               if($adposition == 'number_of_paragraph'){
                 
                 $entered_tag_name     = '';                
                 $display_tag_name     = '';  
                 $every_paragraphs     = 0;
+                // $every_paragraphs_before     = 0;
                 
                 $every_paragraphs    = adsforwp_rmv_warnings($post_meta_dataset, 'ads_on_every_paragraphs_number', 'adsforwp_array');
+
+                // $every_paragraphs_before    = adsforwp_rmv_warnings($post_meta_dataset, 'ads_before_every_paragraphs_number', 'adsforwp_array');
                 
                 $paragraph_id        = adsforwp_rmv_warnings($post_meta_dataset, 'paragraph_number', 'adsforwp_array');   
                                                 
@@ -1248,7 +1250,13 @@ class adsforwp_output_functions{
                                 $paragraph_id += $p_number;
                            }
                            
-                       }else{
+                       }else if ( $every_paragraphs ==2) {
+                           if ( $paragraph_id == $index + $p_number) {
+                                $paragraphs[$index] = $ad_code.$paragraphs[$index];
+                                $paragraph_id += $p_number;
+                                
+                           }  
+                       } else{
                            
                             if ( $paragraph_id == $index + 1 ) {
                                 $paragraphs[$index] .= $ad_code;
@@ -1376,6 +1384,8 @@ class adsforwp_output_functions{
                 $every_paragraphs     = 0;
                 
                 $every_paragraphs    = adsforwp_rmv_warnings($post_meta_dataset, 'ads_on_every_paragraphs_number', 'adsforwp_array');
+                
+                // $every_paragraphs_before    = adsforwp_rmv_warnings($post_meta_dataset, 'ads_before_every_paragraphs_number', 'adsforwp_array');
                 
                 $paragraph_id        = adsforwp_rmv_warnings($post_meta_dataset, 'paragraph_number', 'adsforwp_array');   
                                                 
@@ -2994,7 +3004,10 @@ public function adsforwp_preload_image_(){
         
         $response['adsforwp_refresh_type']           = adsforwp_rmv_warnings($post_data, 'adsforwp_refresh_type', 'adsforwp_array');                
         $response['adsforwp_group_ref_interval_sec'] = adsforwp_rmv_warnings($post_data, 'adsforwp_group_ref_interval_sec', 'adsforwp_array');               
-        $response['adsforwp_group_type']             = adsforwp_rmv_warnings($post_data, 'adsforwp_group_type', 'adsforwp_array');
+        $response['adsforwp_group_type']             = adsforwp_rmv_warnings($post_data, 'adsforwp_group_type', 'adsforwp_array');  
+        $settings = adsforwp_defaultSettings();
+        $response['adsforwp_group_sponsorship_label_text'] = esc_html($settings['ad_sponsorship_label_text']);     
+        $response['adsforwp_group_hide_ad_label']   = adsforwp_rmv_warnings($post_data, 'adsforwp_hide_ad_label', 'adsforwp_array');
         
         $response['ads'] = $adsresultset;  
         if($response['adsforwp_refresh_type'] == 'on_interval'){

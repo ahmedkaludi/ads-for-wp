@@ -294,9 +294,12 @@ Tooltip css ends here
 .adsforwp-general table td{
     padding: 8px 13px;
 }
+input#paragraph_number {
+    margin-bottom: 5px;
+}
 
 #ads_on_every_paragraphs_number{
-    margin-left: 20px !important;
+    margin-left: 0px !important;
     margin-right: 5px !important;        
 }
 a.adsforwp-advance-option-click:focus {

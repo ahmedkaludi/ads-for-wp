@@ -1116,13 +1116,19 @@ jQuery( document ).ready(function($) {
      
     }).change();
     
-    $("#paragraph_number").change(function(){       
-        
+    $("#paragraph_number").change(function(){    
         //console.log($(this).val());
         
       $(".adsforwp-every-paragraphs-text").text('Display After Every '+ $(this).val());
+      $(".adsforwp-every-paragraphs-before-text").text('Display Before Every '+ $(this).val());
+    $(".adsforwp-every-paragraphs-before-text-none").text('None');
+
       
     }).change();
+    $(".adfwp-select-befor-after-displ").change(function() {
+        $(".adfwp-select-befor-after-displ").prop('checked', false);
+        $(this).prop('checked', true);
+    });
          
     $(document).on("click",'.afw-ads-group-button', function(){
         var adsval = $("#adsforwp_group_ad_list option:selected").val();
