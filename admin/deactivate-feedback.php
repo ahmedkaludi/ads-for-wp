@@ -18,20 +18,20 @@ shuffle($reasons);
 <div id="ads-for-wp-reloaded-feedback-overlay" style="display: none;">
     <div id="ads-for-wp-reloaded-feedback-content">
 	<form action="" method="post">
-	    <h3><strong><?php _e('If you have a moment, please let us know why you are deactivating:', 'ads-for-wp'); ?></strong></h3>
+	    <h3><strong><?php esc_html_e('If you have a moment, please let us know why you are deactivating:', 'ads-for-wp'); ?></strong></h3>
 	    <ul>
                 <?php 
                 foreach ($reasons as $reason){
-                    echo $reason;
+                    echo wp_kses_post($reason);
                 }
                 ?>
 	    </ul>
 	    <?php if ($email) : ?>
-    	    <input type="hidden" name="adsforwp_disable_from" value="<?php echo $email; ?>"/>
+    	    <input type="hidden" name="adsforwp_disable_from" value="<?php echo esc_attr($email); ?>"/>
 	    <?php endif; ?>
-	    <input id="ads-for-wp-reloaded-feedback-submit" class="button button-primary" type="submit" name="ads-for-wp_disable_submit" value="<?php _e('Submit & Deactivate', 'ads-for-wp'); ?>"/>
-	    <a class="button"><?php _e('Only Deactivate', 'ads-for-wp'); ?></a>
-	    <a class="ads-for-wp-feedback-not-deactivate" href="#"><?php _e('Don\'t deactivate', 'ads-for-wp'); ?></a>
+	    <input id="ads-for-wp-reloaded-feedback-submit" class="button button-primary" type="submit" name="ads-for-wp_disable_submit" value="<?php esc_attr_e('Submit & Deactivate', 'ads-for-wp'); ?>"/>
+	    <a class="button"><?php esc_html_e('Only Deactivate', 'ads-for-wp'); ?></a>
+	    <a class="ads-for-wp-feedback-not-deactivate" href="#"><?php esc_html_e('Don\'t deactivate', 'ads-for-wp'); ?></a>
 	</form>
     </div>
 </div>

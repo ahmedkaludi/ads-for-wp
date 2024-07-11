@@ -482,7 +482,7 @@ class adsforwp_admin_common_functions {
             
             if (is_wp_error($result) ){
                 
-              echo $result->get_error_message(); 
+              echo esc_html($result->get_error_message()); 
               
               $wpdb->query('ROLLBACK');   
               
@@ -1132,9 +1132,9 @@ class adsforwp_admin_common_functions {
             global $wpdb;
               $wpdb->query('START TRANSACTION');
               $result = array();  
-              $result[] = $this->adsforwp_migrate_ampforwp_ads();                              
+              $result = $this->adsforwp_migrate_ampforwp_ads();                              
             if (is_wp_error($result) ){
-              echo $result->get_error_message();              
+              echo wp_kses_post($result->get_error_message());              
               $wpdb->query('ROLLBACK');             
             }else{
               $wpdb->query('COMMIT'); 
@@ -1168,7 +1168,7 @@ class adsforwp_admin_common_functions {
 
               $result[] = $this->adsforwp_migrate_advanced_amp_ads_inloop();                
             if (is_wp_error($result) ){
-              echo $result->get_error_message();              
+              echo wp_kses_post($result->get_error_message());              
               $wpdb->query('ROLLBACK');             
             }else{
               $wpdb->query('COMMIT'); 
@@ -1273,7 +1273,7 @@ class adsforwp_admin_common_functions {
             }                          
               
             if (is_wp_error($result) ){
-              echo $result->get_error_message();              
+              echo wp_kses_post($result->get_error_message());              
               $wpdb->query('ROLLBACK');             
             }else{
               $wpdb->query('COMMIT'); 
@@ -1502,7 +1502,7 @@ class adsforwp_admin_common_functions {
             }
           //die;
           if (is_wp_error($result) ){
-              echo $result->get_error_message();              
+              echo wp_kses_post($result->get_error_message());              
               $wpdb->query('ROLLBACK');             
           }else{
             $wpdb->query('COMMIT'); 

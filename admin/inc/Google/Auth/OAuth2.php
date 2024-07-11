@@ -124,9 +124,9 @@ class Adsforwp_Google_Auth_OAuth2 extends Adsforwp_Google_Auth_Abstract
       throw new Adsforwp_Google_Auth_Exception(
           sprintf(
               "Error fetching OAuth2 access token, message: '%s'",
-              $decodedResponse
+              esc_html($decodedResponse)
           ),
-          $response->getResponseHttpCode()
+          esc_html($response->getResponseHttpCode())
       );
     }
   }
@@ -332,7 +332,7 @@ class Adsforwp_Google_Auth_OAuth2 extends Adsforwp_Google_Auth_Abstract
       $this->token['expires_in'] = $token['expires_in'];
       $this->token['created'] = time();
     } else {
-      throw new Adsforwp_Google_Auth_Exception("Error refreshing the OAuth2 token, message: '$body'", $code);
+      throw new Adsforwp_Google_Auth_Exception("Error refreshing the OAuth2 token, message: '".esc_html($body)."'", esc_html($code));
     }
   }
 
@@ -414,7 +414,7 @@ class Adsforwp_Google_Auth_OAuth2 extends Adsforwp_Google_Auth_Abstract
       } else {
         throw new Adsforwp_Google_Auth_Exception(
             "Failed to retrieve verification certificates: '" .
-            $url . "'."
+            esc_url($url) . "'."
         );
       }
     }
@@ -433,8 +433,8 @@ class Adsforwp_Google_Auth_OAuth2 extends Adsforwp_Google_Auth_Abstract
     }
     throw new Adsforwp_Google_Auth_Exception(
         "Failed to retrieve verification certificates: '" .
-        $request->getResponseBody() . "'.",
-        $request->getResponseHttpCode()
+        wp_kses_post($request->getResponseBody()) . "'.",
+        esc_html($request->getResponseHttpCode())
     );
   }
 
@@ -485,7 +485,7 @@ class Adsforwp_Google_Auth_OAuth2 extends Adsforwp_Google_Auth_Abstract
 
     $segments = explode(".", $jwt);
     if (count($segments) != 3) {
-      throw new Adsforwp_Google_Auth_Exception("Wrong number of segments in token: $jwt");
+      throw new Adsforwp_Google_Auth_Exception("Wrong number of segments in token: ".esc_html($jwt));
     }
     $signed = $segments[0] . "." . $segments[1];
     $signature = Adsforwp_Google_Utils::urlSafeB64Decode($segments[2]);
@@ -493,14 +493,14 @@ class Adsforwp_Google_Auth_OAuth2 extends Adsforwp_Google_Auth_Abstract
     // Parse envelope.
     $envelope = json_decode(Adsforwp_Google_Utils::urlSafeB64Decode($segments[0]), true);
     if (!$envelope) {
-      throw new Adsforwp_Google_Auth_Exception("Can't parse token envelope: " . $segments[0]);
+      throw new Adsforwp_Google_Auth_Exception("Can't parse token envelope: " . esc_html($segments[0]));
     }
 
     // Parse token
     $json_body = Adsforwp_Google_Utils::urlSafeB64Decode($segments[1]);
     $payload = json_decode($json_body, true);
     if (!$payload) {
-      throw new Adsforwp_Google_Auth_Exception("Can't parse token payload: " . $segments[1]);
+      throw new Adsforwp_Google_Auth_Exception("Can't parse token payload: " . esc_html($segments[1]));
     }
 
     // Check signature
@@ -514,7 +514,7 @@ class Adsforwp_Google_Auth_OAuth2 extends Adsforwp_Google_Auth_Abstract
     }
 
     if (!$verified) {
-      throw new Adsforwp_Google_Auth_Exception("Invalid token signature: $jwt");
+      throw new Adsforwp_Google_Auth_Exception("Invalid token signature: ".esc_html($jwt));
     }
 
     // Check issued-at timestamp
@@ -523,7 +523,7 @@ class Adsforwp_Google_Auth_OAuth2 extends Adsforwp_Google_Auth_Abstract
       $iat = $payload["iat"];
     }
     if (!$iat) {
-      throw new Adsforwp_Google_Auth_Exception("No issue time in token: $json_body");
+      throw new Adsforwp_Google_Auth_Exception("No issue time in token: ".esc_html($json_body));
     }
     $earliest = $iat - self::CLOCK_SKEW_SECS;
 
@@ -534,11 +534,11 @@ class Adsforwp_Google_Auth_OAuth2 extends Adsforwp_Google_Auth_Abstract
       $exp = $payload["exp"];
     }
     if (!$exp) {
-      throw new Adsforwp_Google_Auth_Exception("No expiration time in token: $json_body");
+      throw new Adsforwp_Google_Auth_Exception("No expiration time in token: ".esc_html($json_body));
     }
     if ($exp >= $now + $max_expiry) {
       throw new Adsforwp_Google_Auth_Exception(
-          sprintf("Expiration time too far in future: %s", $json_body)
+          sprintf("Expiration time too far in future: %s", esc_html($json_body))
       );
     }
 
@@ -547,9 +547,9 @@ class Adsforwp_Google_Auth_OAuth2 extends Adsforwp_Google_Auth_Abstract
       throw new Adsforwp_Google_Auth_Exception(
           sprintf(
               "Token used too early, %s < %s: %s",
-              $now,
-              $earliest,
-              $json_body
+              esc_html($now),
+              esc_html($earliest),
+              esc_html($json_body)
           )
       );
     }
@@ -557,9 +557,9 @@ class Adsforwp_Google_Auth_OAuth2 extends Adsforwp_Google_Auth_Abstract
       throw new Adsforwp_Google_Auth_Exception(
           sprintf(
               "Token used too late, %s > %s: %s",
-              $now,
-              $latest,
-              $json_body
+              esc_html($now),
+              esc_html($latest),
+              esc_html($json_body)
           )
       );
     }
@@ -569,9 +569,9 @@ class Adsforwp_Google_Auth_OAuth2 extends Adsforwp_Google_Auth_Abstract
       throw new Adsforwp_Google_Auth_Exception(
           sprintf(
               "Invalid issuer, %s != %s: %s",
-              $iss,
-              $issuer,
-              $json_body
+              esc_html($iss),
+              esc_html($issuer),
+              esc_html($json_body)
           )
       );
     }
@@ -582,9 +582,9 @@ class Adsforwp_Google_Auth_OAuth2 extends Adsforwp_Google_Auth_Abstract
       throw new Adsforwp_Google_Auth_Exception(
           sprintf(
               "Wrong recipient, %s != %s:",
-              $aud,
-              $required_audience,
-              $json_body
+              esc_html($aud),
+              esc_html($required_audience),
+              esc_html($json_body)
           )
       );
     }

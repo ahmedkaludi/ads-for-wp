@@ -163,9 +163,18 @@ class Adsforwp_analyticsSettings{
 						<select name="profile_for_dashboard">
 							
 							<option value=""><?php esc_html__('Select profile for Dashboard', 'ads-for-wp' ); ?></option>
-							<?php
-							echo $profileDashboardOpts;
-							?>
+							<?php if(isset($_profile_otions) && $_profile_otions){
+								foreach ($_profile_otions->getItems() as $account) {
+									foreach ( $account->getWebProperties() as  $property ) {
+										foreach ( $property->getProfiles() as $profile ) {
+											?>
+											<option value="<?php echo esc_attr($profile->getId());?>" <?php echo esc_attr(selected( $profile_for_dashboard_value, $profile->getId(),false ));?>><?php echo esc_html($profile->getName()); ?> (<?php echo esc_html($property->getId()); ?>)</option>
+											<?php
+										}
+									}
+								}
+							} 
+			?>
 						</select>
 					</td>
 				</tr>
@@ -237,7 +246,7 @@ class Adsforwp_analyticsSettings{
 					update_option( 'adsforwp_post_analytics_token', $key_google_token ); // Security: Permission verified
 					if ( $this->pa_connect() ) { wp_redirect(  esc_url(admin_url( 'edit.php?post_type=adsforwp&page=adsforwp-analytics' ))); }
 				} catch (Exception $e) {
-					echo $e->getMessage();
+					echo esc_html($e->getMessage());
 				}				
 			}
 	}

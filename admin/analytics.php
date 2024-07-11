@@ -123,8 +123,8 @@ class adsforwp_admin_analytics{
                     }
                 }
             }
-           
-            $ad_impression_script .= '<amp-analytics><script type="application/json">
+            ?>
+           <amp-analytics><script type="application/json">
                   {
                     "requests": {
                       "event": "'.esc_url($ad_impression_url).'&event=${eventId}"
@@ -145,31 +145,32 @@ class adsforwp_admin_analytics{
                       }
                     }
                   }</script></amp-analytics>                                  
-                ';     
+               
             
-            $ad_clicks_script .='<amp-analytics>
-                                <script type="application/json">
-                                  {
-                                    "requests": {
-                                      "event": "'.esc_url_raw($ad_clicks_url).'&event=${eventId}"
-                                    },
-                                    "triggers": {
-                                      "trackAnchorClicks": {
-                                        "on": "click",
-                                        "selector": ".afw_ad_amp_anchor_'.esc_attr($ad_id).'",
-                                        "request": "event",
-                                        "vars": {
-                                          "eventId": "'.esc_attr($ad_id).'"
-                                        }
-                                      }
-                                    }
-                                  }
-                                </script>
-                              </amp-analytics>';
+            <amp-analytics>
+                <script type="application/json">
+                  {
+                    "requests": {
+                      "event": "'.esc_url_raw($ad_clicks_url).'&event=${eventId}"
+                    },
+                    "triggers": {
+                      "trackAnchorClicks": {
+                        "on": "click",
+                        "selector": ".afw_ad_amp_anchor_'.esc_attr($ad_id).'",
+                        "request": "event",
+                        "vars": {
+                          "eventId": "'.esc_attr($ad_id).'"
+                        }
+                      }
+                    }
+                  }
+                </script>
+              </amp-analytics>
+
+                            <?php
            }   
          }                   
-          echo $ad_impression_script; 
-          echo $ad_clicks_script;
+          
          }
             
         }                                           

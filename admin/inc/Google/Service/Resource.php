@@ -86,7 +86,7 @@ class Adsforwp_Google_Service_Resource
     if (! isset($this->methods[$name])) {
       throw new Adsforwp_Google_Exception(
           "Unknown function: " .
-          "{$this->serviceName}->{$this->resourceName}->{$name}()"
+          esc_html($this->serviceName)."->".esc_html($this->resourceName)."->".esc_html($name)."()"
       );
     }
     $method = $this->methods[$name];
@@ -129,7 +129,7 @@ class Adsforwp_Google_Service_Resource
     );
     foreach ($parameters as $key => $val) {
       if ($key != 'postBody' && ! isset($method['parameters'][$key])) {
-        throw new Adsforwp_Google_Exception("($name) unknown parameter: '$key'");
+        throw new Adsforwp_Google_Exception("(".esc_html($name).") unknown parameter: '".esc_html($key)."'");
       }
     }
 
@@ -138,7 +138,7 @@ class Adsforwp_Google_Service_Resource
           $paramSpec['required'] &&
           ! isset($parameters[$paramName])
       ) {
-        throw new Adsforwp_Google_Exception("($name) missing required param: '$paramName'");
+        throw new Adsforwp_Google_Exception("(".esc_html($name).") missing required param: '".esc_html($paramName)."'");
       }
       if (isset($parameters[$paramName])) {
         $value = $parameters[$paramName];

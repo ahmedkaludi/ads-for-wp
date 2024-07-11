@@ -52,7 +52,7 @@ class Adsforwp_Google_Signer_P12 extends Adsforwp_Google_Signer_Abstract
         throw new Adsforwp_Google_Auth_Exception(
             "Unable to parse the p12 file.  " .
             "Is this a .p12 file?  Is the password correct?  OpenSSL error: " .
-            openssl_error_string()
+            esc_html(openssl_error_string())
         );
       }
       // TODO(beaton): is this part of the contract for the openssl_pkcs12_read

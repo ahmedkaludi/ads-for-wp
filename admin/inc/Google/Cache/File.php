@@ -101,7 +101,7 @@ class Adsforwp_Google_Cache_File extends Adsforwp_Google_Cache_Abstract
     $storageDir = $this->path . '/' . substr(md5($file), 0, 2);
     if ($forWrite && ! is_dir($storageDir)) {
       if (! mkdir($storageDir, 0755, true)) {
-        throw new Adsforwp_Google_Cache_Exception("Could not create storage directory: $storageDir");
+        throw new Adsforwp_Google_Cache_Exception("Could not create storage directory: ".esc_html($storageDir));
       }
     }
     return $storageDir;

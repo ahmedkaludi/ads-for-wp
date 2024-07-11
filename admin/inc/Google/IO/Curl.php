@@ -81,7 +81,7 @@ class Adsforwp_Google_IO_Curl extends Adsforwp_Google_IO_Abstract
     $response = curl_exec($curl);
     if ($response === false) {
 
-      throw new Adsforwp_Google_IO_Exception( curl_error( $curl) );
+      throw new Adsforwp_Google_IO_Exception( esc_html(curl_error( $curl)) );
     }
     $headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
 

@@ -112,9 +112,9 @@ class Adsforwp_Google_IO_Stream extends Adsforwp_Google_IO_Abstract
       throw new Adsforwp_Google_IO_Exception(
           sprintf(
               "HTTP Error: Unable to connect: '%s'",
-              $this->trappedErrorString
+              esc_html($this->trappedErrorString)
           ),
-          $this->trappedErrorNumber
+          esc_html($this->trappedErrorNumber)
       );
     }
 
@@ -135,9 +135,9 @@ class Adsforwp_Google_IO_Stream extends Adsforwp_Google_IO_Abstract
       throw new Adsforwp_Google_IO_Exception(
           sprintf(
               "HTTP Error: Unable to connect: '%s'",
-              $respHttpCode
+              esc_html($respHttpCode)
           ),
-          $respHttpCode
+          esc_html($respHttpCode)
       );
     }
 

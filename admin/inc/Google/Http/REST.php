@@ -76,14 +76,14 @@ class Adsforwp_Google_Http_REST
         $errors = $decoded['error']['errors'];
       }
 
-      throw new \Adsforwp_Google_Service_Exception($err, $code, null, $errors);
+      throw new \Adsforwp_Google_Service_Exception(esc_html($err), esc_html($code), null, wp_kses_post($errors));
     }
 
     // Only attempt to decode the response, if the response code wasn't (204) 'no content'
     if ($code != '204') {
       $decoded = json_decode($body, true);
       if ($decoded === null || $decoded === "") {
-        throw new \Adsforwp_Google_Service_Exception("Invalid json in service response: $body");
+        throw new \Adsforwp_Google_Service_Exception("Invalid json in service response: ".esc_html($body));
       }
 
       if ($response->getExpectedClass()) {

@@ -196,7 +196,7 @@ class Adsforwp_Google_Model implements ArrayAccess
   {
     if ($obj && !is_array($obj)) {
       throw new Adsforwp_Google_Exception(
-          "Incorrect parameter type passed to $method(). Expected an array."
+          "Incorrect parameter type passed to ".esc_html($method)."(). Expected an array."
       );
     }
   }
