@@ -112,10 +112,10 @@ class adsforwp_view_expiredate {
                                             $tEnd = strtotime($end);
                                             $tNow = $tStart;
 					    while($tNow <= $tEnd){
-                                            if($meta_value == date("H:i:s",$tNow)){
-                                            $input.= '<option value="'. esc_attr(date("H:i:s",$tNow)).'" selected>'. esc_attr(date("H:i:s",$tNow)).'</option>';    
+                                            if($meta_value == gmdate("H:i:s",$tNow)){
+                                            $input.= '<option value="'. esc_attr(gmdate("H:i:s",$tNow)).'" selected>'. esc_attr(gmdate("H:i:s",$tNow)).'</option>';    
                                             }else{
-                                            $input.= '<option value="'. esc_attr(date("H:i:s",$tNow)).'">'. esc_attr(date("H:i:s",$tNow)).'</option>';    
+                                            $input.= '<option value="'. esc_attr(gmdate("H:i:s",$tNow)).'">'. esc_attr(gmdate("H:i:s",$tNow)).'</option>';    
                                             }                                            
                                             $tNow = strtotime('+30 minutes',$tNow);
                                         }                                        

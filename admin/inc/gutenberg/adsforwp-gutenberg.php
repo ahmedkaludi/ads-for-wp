@@ -83,13 +83,15 @@ class Adsforwp_Ads_Gutenberg{
 		if ( 0 === strpos( $attributes['itemID'], 'ad_' ) ) {
 			$id = substr( $attributes['itemID'], 3 );
 			$output_function_obj = new adsforwp_output_functions();
-			$amp_ad_code = $output_function_obj->adsforwp_get_ad_code($id, $type="AD",'notset');
-			echo $amp_ad_code;
+			$amp_ad_code_escaped = $output_function_obj->adsforwp_get_ad_code($id, $type="AD",'notset');
+			//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- Reason: output is already escaped  
+			echo $amp_ad_code_escaped;
 		} elseif ( 0 === strpos( $attributes['itemID'], 'group_' ) ) {
 			$group_id = substr( $attributes['itemID'], 6 );
 			$output_function_obj = new adsforwp_output_functions();
-   			$group_code =  $output_function_obj->adsforwp_group_ads($atts=null, $group_id, '');     
-   			echo $group_code;
+   			$group_code_escaped =  $output_function_obj->adsforwp_group_ads($atts=null, $group_id, '');
+			//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- Reason: output is already escaped  
+   			echo $group_code_escaped;
 		}
 
 		return ob_get_clean();

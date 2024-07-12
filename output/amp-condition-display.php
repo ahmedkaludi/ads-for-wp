@@ -246,9 +246,9 @@ class adsforwp_output_amp_condition_display{
      * @param type $count
      */
     public function adsforwp_amp_condition_ad_code($condition, $count=null){               
-                
-        $result = $this->adsforwp_amp_condition_get_ad_code($condition, $count);
-        echo $result;
+
+        //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- Reason: output is already escaped  
+        echo $this->adsforwp_amp_condition_get_ad_code($condition, $count);
                         
     }    
     

@@ -20,20 +20,29 @@ class adsforwp_file_creation{
         public function adsforwp_create_adblocker_support_js(){   
             
         $writestatus = '';
-        if(file_exists($this->ad_support)){
-            
-            unlink($this->ad_support);
-            
+
+        if ( ! function_exists( 'WP_Filesystem' ) ) {
+            require_once ABSPATH . '/wp-admin/includes/file.php';
         }
-        if(!file_exists($this->ad_support)){ 
-            
-            $url = site_url();            		
-	    $swHtmlContent  = file_get_contents(ADSFORWP_PLUGIN_DIR."public/assets/js/ads-front.js");	    
-            $handle         = fopen($this->ad_support, 'w');
-            $writestatus    = fwrite($handle, $swHtmlContent);
-            fclose($handle);
-            
+
+        global $wp_filesystem;
+        if ( ! $wp_filesystem ) {
+            WP_Filesystem();
         }
+
+        if($wp_filesystem->exists($this->ad_support)){
+            $wp_filesystem->delete($this->ad_support);
+        }
+      
+        if ( ! $wp_filesystem->exists( $this->ad_support ) ) {
+            $response = wp_remote_get( ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-front.js' );
+
+            if ( ! is_wp_error( $response ) && wp_remote_retrieve_response_code( $response ) === 200 ) {
+                $swHtmlContent = wp_remote_retrieve_body( $response );
+                $writestatus = $wp_filesystem->put_contents( $this->ad_support, $swHtmlContent, FS_CHMOD_FILE );
+            }
+        }
+        
         if($writestatus){
             
             return true;   

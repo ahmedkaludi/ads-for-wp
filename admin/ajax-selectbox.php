@@ -791,7 +791,22 @@ public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $curre
 
           case "post_category" :
 
-            $terms = get_terms( 'category', array( 'hide_empty' => false ) );
+            global $wp_version;
+
+            if (version_compare($wp_version, '4.5.0', '<')) {
+                // For WordPress versions earlier than 4.5.0
+                //phpcs:ignore WordPress.WP.DeprecatedParameters.Get_termsParam2Found --Reason : added for old wordpress support
+                $terms = get_terms('category', array(
+                    'hide_empty' => false,
+                ));
+            } else {
+                // For WordPress 4.5.0 and later versions
+                $terms = get_terms(array(
+                    'taxonomy'   => 'category',
+                    'hide_empty' => false,
+                ));
+            }
+
 
             if( !empty($terms) ) {
 
@@ -997,10 +1012,22 @@ public function adsforwp_create_ajax_select_taxonomy($selectedParentValue = '',$
                     ) ); 
     
     }else{
-        
-        $taxonomies =  get_terms($selectedParentValue, array(
-                        'hide_empty' => true,
-                    ) );   
+
+                    global $wp_version;
+
+                    if (version_compare($wp_version, '4.5.0', '<')) {
+                        // For WordPress versions earlier than 4.5.0
+                        //phpcs:ignore WordPress.WP.DeprecatedParameters.Get_termsParam2Found --Reason : added for old wordpress support
+                        $taxonomies =  get_terms($selectedParentValue, array(
+                          'hide_empty' => true,
+                      ) );
+                    } else {
+                        // For WordPress 4.5.0 and later versions
+                        $taxonomies = get_terms(array(
+                          'taxonomy'   => $selectedParentValue,
+                          'hide_empty' => true,
+                      ));
+                    }   
     
     }    
     

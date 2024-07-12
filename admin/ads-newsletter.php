@@ -19,6 +19,7 @@
                         
                 global $current_user;                
 		$tour     = array ();
+                //phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: No form submissions.
                 $tab      = isset($_GET['tab']) ? esc_attr($_GET['tab']) : '';                   
                 
                 if (!array_key_exists($tab, $tour)) {                

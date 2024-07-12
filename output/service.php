@@ -63,7 +63,7 @@ class adsforwp_output_service{
 
         $impression = 0; 
 
-        $current_date = date("Y-m-d");
+        $current_date = gmdate("Y-m-d");
                                             
         if($ad_expire_enable){
                 
@@ -77,7 +77,7 @@ class adsforwp_output_service{
                       
                           foreach ($ad_expire_days as $days){
                           
-                            if(date('Y-m-d', strtotime($days))==$current_date){
+                            if(gmdate('Y-m-d', strtotime($days))==$current_date){
                                 if($ad_impression_enable){
                                   if(!empty($ad_impression_limit) ){
                                     $ad_stats   = adsforwp_get_ad_stats('sumofstats', $ad_id);
@@ -116,7 +116,7 @@ class adsforwp_output_service{
             if($ad_days_enable){
                 if($ad_expire_days){
                     foreach ($ad_expire_days as $days){
-                        if(date('Y-m-d', strtotime($days))==$current_date){
+                        if(gmdate('Y-m-d', strtotime($days))==$current_date){
                             if($ad_impression_enable){
                               if(!empty($ad_impression_limit) ){
                                   $ad_stats   = adsforwp_get_ad_stats('sumofstats', $ad_id);

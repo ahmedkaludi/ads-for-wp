@@ -770,7 +770,7 @@ class adsforwp_view_ads_type {
 		return $allmetafields;
 	}
 	public function adsforwp_field_generator( $post ) {
-		$output = '';                     
+		$output_escaped = '';                     
 		foreach ( $this->meta_fields as $meta_field ) {
                     
                     $attributes = $provider_type = $label = '';
@@ -972,10 +972,10 @@ class adsforwp_view_ads_type {
                         
                         $input = $input.$note;
                         
-			$output .= $this->adsforwp_format_rows( $label, $input, $provider_type );
+			$output_escaped .= $this->adsforwp_format_rows( $label, $input, $provider_type );
 		}
-                //$output variable's html is already sanitized in above loop.                                                                                		                                
-		echo '<table class="form-table adsforwp-ad-type-table"><tbody>' . $output. '</tbody></table>';
+        //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- Reason: already escaped                                                                                 		                                
+		echo '<table class="form-table adsforwp-ad-type-table"><tbody>' . $output_escaped. '</tbody></table>';
 	}
 	public function adsforwp_format_rows( $label, $input, $provider_type ) {
                                                         

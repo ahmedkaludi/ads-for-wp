@@ -68,7 +68,7 @@ function adsforwp_store_user_info_client_side(){
          }
          
          if(empty($saved_ip_list) && $saved_ip != $user_ip){
-             $request_day_count  = get_option("adsforwp_ip_request_".date('Y-m-d'));   
+             $request_day_count  = get_option("adsforwp_ip_request_".gmdate('Y-m-d'));   
            
           if($request_day_count){ 
               
@@ -80,7 +80,7 @@ function adsforwp_store_user_info_client_side(){
               
           }
              
-          update_option("adsforwp_ip_request_".date('Y-m-d'), $request_day_count);  
+          update_option("adsforwp_ip_request_".gmdate('Y-m-d'), $request_day_count);  
           
           $settings = adsforwp_defaultSettings(); 
           
@@ -161,7 +161,7 @@ function adsforwp_reset_all_settings(){
 add_action('wp_ajax_adsforwp_reset_all_settings', 'adsforwp_reset_all_settings');
 
 function adsforwp_load_plugin_textdomain() {
-    load_plugin_textdomain( 'ads-for-wp', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
+    load_plugin_textdomain( 'ads-for-wp', false , basename( dirname( __FILE__ ) ) . '/languages/' );
 }
 add_action( 'plugins_loaded', 'adsforwp_load_plugin_textdomain' );
 
@@ -319,7 +319,7 @@ function adsforwp_review_notice_remindme(){
         if ( !wp_verify_nonce( $_POST['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){            
            return;  
         }                    
-        $result =  update_option( "review_notice_bar_close_date", date("Y-m-d"));   // Security: Permission and nonce verified
+        $result =  update_option( "review_notice_bar_close_date", gmdate("Y-m-d"));   // Security: Permission and nonce verified
         
         if($result){  
             
@@ -491,7 +491,7 @@ function adsforwp_send_query_message(){
         $headers    = 'From: '. esc_attr($user_email) . "\r\n" .
                       'Reply-To: ' . esc_attr($user_email) . "\r\n";        
         // Load WP components, no themes.                      
-        $sent = wp_mail($to, $subject, strip_tags($message), $headers);    
+        $sent = wp_mail($to, $subject, wp_strip_all_tags($message), $headers);    
         
         if($sent){
              echo wp_json_encode(array('status'=>'t', 'msg'=> esc_html__('Request Submitted succeessfully..', 'ads-for-wp' )));            
@@ -512,8 +512,9 @@ add_action('wp_ajax_adsforwp_send_query_message', 'adsforwp_send_query_message')
 function adsforwp_the_ad($ad_id){
     
    $output_function_obj = new adsforwp_output_functions();
-   $ad_code =  $output_function_obj->adsforwp_get_ad_code($ad_id, $type="AD",  'notset');  
-   echo $ad_code;
+   $ad_code_escaped =  $output_function_obj->adsforwp_get_ad_code($ad_id, $type="AD",  'notset'); 
+   //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- Reason: output is already escaped 
+   echo $ad_code_escaped;
 }
 /*
  * Use of shortcode in php script 
@@ -523,8 +524,9 @@ function adsforwp_the_ad($ad_id){
 function adsforwp_the_group($group_id){
     
    $output_function_obj = new adsforwp_output_functions();
-   $group_code =  $output_function_obj->adsforwp_group_ads($atts=null, $group_id, null, 'notset');     
-   echo $group_code;
+   $group_code_escaped =  $output_function_obj->adsforwp_group_ads($atts=null, $group_id, null, 'notset');
+   //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- Reason: output is already escaped      
+   echo $group_code_escaped;
       
 }   
 
@@ -778,7 +780,7 @@ function adsforwp_update_ads_status(){
         
         if(isset($ads_post_meta['adsforwp_ad_expire_from'][0]) && isset($ads_post_meta['adsforwp_ad_expire_to'][0]) ){
             
-            $current_date = date("Y-m-d");  
+            $current_date = gmdate("Y-m-d");  
             
             if($ads_post_meta['adsforwp_ad_expire_to'][0] <$current_date){
                 
@@ -957,7 +959,7 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
                 break;        
                 case 'adsforwp_group_column' :
                     
-                    echo html_entity_decode(esc_attr($post_title)); 
+                    echo esc_html($post_title); 
                     
                     break; 
                 case 'adsforwp_ad_image_preview' :
@@ -967,7 +969,7 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
                     if(isset($post_meta['select_adtype'])){
                         
                       if($post_meta['select_adtype'][0] == 'ad_image'){
-                          echo '<div><a href="'. esc_url(get_admin_url()).'post.php?post='.esc_attr($post_id).'&action=edit"><img width="150" src="'.$post_meta['adsforwp_ad_image'][0].'"></a></div>';
+                          echo '<div><a href="'. esc_url(get_admin_url()).'post.php?post='.esc_attr($post_id).'&action=edit"><img width="150" src="'.esc_url($post_meta['adsforwp_ad_image'][0]).'"></a></div>';
                       }   
                     }                     
                     break;
@@ -1010,15 +1012,15 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
                     
                     if($expire_date){
                         
-                        $current_date = date("Y-m-d");
+                        $current_date = gmdate("Y-m-d");
                         
                         if($current_date>$expire_date){
                             
-                            echo esc_html__('Expired on', 'ads-for-wp').' '.date('M d Y', strtotime($expire_date));   
+                            echo esc_html__('Expired on', 'ads-for-wp').' '.esc_html(gmdate('M d Y', strtotime($expire_date)));   
                          
                         }else{
                             
-                            echo esc_html__('expires', 'ads-for-wp').' '.date('M d Y', strtotime($expire_date));
+                            echo esc_html__('expires', 'ads-for-wp').' '.esc_html(gmdate('M d Y', strtotime($expire_date)));
                          
                         }
                         
@@ -1039,7 +1041,7 @@ function adsforwp_custom_columns($columns) {
     $settings = adsforwp_defaultSettings();
     
     unset($columns['date']);
-    $columns['adsforwp_auto_ads_warning']       = '<a>'.esc_html__( '', 'ads-for-wp' ).'<a>'; 
+    $columns['adsforwp_auto_ads_warning']       = '<a>'.esc_html__( 'Warning', 'ads-for-wp' ).'<a>'; 
     $columns['adsforwp_ad_image_preview']       = '<a>'.esc_html__( 'Preview', 'ads-for-wp' ).'<a>';
     $columns['adsforwp_expire_column']          = '<a>'.esc_html__( 'Expire On', 'ads-for-wp' ).'<a>';
     $columns['adsforwp_group_column']           = '<a>'.esc_html__( 'Groups', 'ads-for-wp' ).'<a>';

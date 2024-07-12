@@ -183,21 +183,48 @@ class adsforwp_admin_analytics{
      * @param type $ad_id
      * @param type $device_name
      */
-    public function adsforwp_insert_impression($ad_id, $device_name){
-                  
-                global $wpdb;
-                
-                $today = adsforwp_get_date('day');
-                
-                $stats = $wpdb->get_var($wpdb->prepare("SELECT `id` FROM `{$wpdb->prefix}adsforwp_stats` WHERE `ad_id` = %d AND `ad_device_name` = %s AND `ad_thetime` = %d;", $ad_id, trim($device_name), $today ));
-                
-                if($stats > 0) {
-                        $wpdb->query("UPDATE `{$wpdb->prefix}adsforwp_stats` SET `ad_impressions` = `ad_impressions` + 1 WHERE `id` = {$stats};");
-                } else {
-                        $wpdb->insert($wpdb->prefix.'adsforwp_stats', array('ad_id' => $ad_id, 'ad_thetime' => $today, 'ad_clicks' => 0, 'ad_impressions' => 1, 'ad_device_name' => trim($device_name)));
-                }                                                     
-        
-    }
+    public function adsforwp_insert_impression($ad_id, $device_name) {
+      global $wpdb;
+  
+      $today = adsforwp_get_date('day');
+  
+      $stats = $wpdb->get_var(
+          $wpdb->prepare(
+              "SELECT `id` FROM `{$wpdb->prefix}adsforwp_stats` WHERE `ad_id` = %d AND `ad_device_name` = %s AND `ad_thetime` = %d;",
+              $ad_id,
+              trim($device_name),
+              $today
+          )
+      );
+  
+      if ($stats > 0) {
+          $wpdb->query(
+              $wpdb->prepare(
+                  "UPDATE `{$wpdb->prefix}adsforwp_stats` SET `ad_impressions` = `ad_impressions` + 1 WHERE `id` = %d;",
+                  $stats
+              )
+          );
+      } else {
+          $wpdb->insert(
+              $wpdb->prefix.'adsforwp_stats',
+              array(
+                  'ad_id' => $ad_id,
+                  'ad_thetime' => $today,
+                  'ad_clicks' => 0,
+                  'ad_impressions' => 1,
+                  'ad_device_name' => trim($device_name)
+              ),
+              array(
+                  '%d', // ad_id
+                  '%d', // ad_thetime
+                  '%d', // ad_clicks
+                  '%d', // ad_impressions
+                  '%s'  // ad_device_name
+              )
+          );
+      }
+  }
+  
     
     /**
      * Function to insert ad clicks for both (AMP and NON AMP)
@@ -205,22 +232,48 @@ class adsforwp_admin_analytics{
      * @param type $ad_id
      * @param type $device_name
      */
-    public function adsforwp_insert_clicks($ad_id, $device_name){
-        
-        
-                global $wpdb;
-                
-                $today = adsforwp_get_date('day');
-                
-                $stats = $wpdb->get_var($wpdb->prepare("SELECT `id` FROM `{$wpdb->prefix}adsforwp_stats` WHERE `ad_id` = %d AND `ad_device_name` = %s AND `ad_thetime` = %d;", $ad_id, trim($device_name), $today ));
-                
-                if($stats > 0) {
-                        $wpdb->query("UPDATE `{$wpdb->prefix}adsforwp_stats` SET `ad_clicks` = `ad_clicks` + 1 WHERE `id` = {$stats};");
-                } else {
-                        $wpdb->insert($wpdb->prefix.'adsforwp_stats', array('ad_id' => $ad_id, 'ad_thetime' => $today, 'ad_clicks' => 0, 'ad_impressions' => 1, 'ad_device_name' => trim($device_name)));
-                }        
-        
-    }
+    public function adsforwp_insert_clicks($ad_id, $device_name) {
+      global $wpdb;
+  
+      $today = adsforwp_get_date('day');
+  
+      $stats = $wpdb->get_var(
+          $wpdb->prepare(
+              "SELECT `id` FROM `{$wpdb->prefix}adsforwp_stats` WHERE `ad_id` = %d AND `ad_device_name` = %s AND `ad_thetime` = %d;",
+              $ad_id,
+              trim($device_name),
+              $today
+          )
+      );
+  
+      if ($stats > 0) {
+          $wpdb->query(
+              $wpdb->prepare(
+                  "UPDATE `{$wpdb->prefix}adsforwp_stats` SET `ad_clicks` = `ad_clicks` + 1 WHERE `id` = %d;",
+                  $stats
+              )
+          );
+      } else {
+          $wpdb->insert(
+              $wpdb->prefix.'adsforwp_stats',
+              array(
+                  'ad_id' => $ad_id,
+                  'ad_thetime' => $today,
+                  'ad_clicks' => 1, // Initial click count set to 1
+                  'ad_impressions' => 0, // Initial impressions count set to 0
+                  'ad_device_name' => trim($device_name)
+              ),
+              array(
+                  '%d', // ad_id
+                  '%d', // ad_thetime
+                  '%d', // ad_clicks
+                  '%d', // ad_impressions
+                  '%s'  // ad_device_name
+              )
+          );
+      }
+  }
+  
     
     /**
      * Ajax handler to get ad impression in AMP

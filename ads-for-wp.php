@@ -113,14 +113,14 @@ function adsforwp_admin_notice(){
      //Feedback notice
         $activation_date =  get_option("adsforwp_activation_date");  
         
-        $one_day    = date('Y-m-d',strtotime("+1 day",  strtotime($activation_date))); 
-        $seven_days = date('Y-m-d',strtotime("+7 day",  strtotime($activation_date)));
-        $one_month  = date('Y-m-d',strtotime("+30 day", strtotime($activation_date)));
-        $sixty_days = date('Y-m-d',strtotime("+60 day", strtotime($activation_date)));
-        $six_month  = date('Y-m-d',strtotime("+180 day", strtotime($activation_date)));
-        $one_year   = date('Y-m-d',strtotime("+365 day", strtotime($activation_date))); 
+        $one_day    = gmdate('Y-m-d',strtotime("+1 day",  strtotime($activation_date))); 
+        $seven_days = gmdate('Y-m-d',strtotime("+7 day",  strtotime($activation_date)));
+        $one_month  = gmdate('Y-m-d',strtotime("+30 day", strtotime($activation_date)));
+        $sixty_days = gmdate('Y-m-d',strtotime("+60 day", strtotime($activation_date)));
+        $six_month  = gmdate('Y-m-d',strtotime("+180 day", strtotime($activation_date)));
+        $one_year   = gmdate('Y-m-d',strtotime("+365 day", strtotime($activation_date))); 
 
-        $current_date = date("Y-m-d");    
+        $current_date = gmdate("Y-m-d");    
         $list_of_date = array($one_day, $seven_days, $one_month, $sixty_days, $six_month, $one_year);        
         $review_notice_bar_status_date = get_option( "review_notice_bar_close_date");        
         $review_notice_bar_never = get_option( "adsforwp_review_never");

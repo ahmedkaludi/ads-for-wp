@@ -105,8 +105,16 @@ class adsforwp_admin_common_functions {
         $result = '';
         
         if($url){
-            
-        $json_data         = file_get_contents($url);        
+        
+          $response = wp_remote_get($url);
+
+      if (is_wp_error($response)) {
+          // Handle the error.
+          $error_message = $response->get_error_message();
+          // You can log the error or display a message.
+          return;
+      }
+        $json_data         = wp_remote_retrieve_body($response);        
         $json_array        = json_decode($json_data, true);             
         $all_ads_post      = $json_array['ads']; 
         $ads_in_group      = array();
@@ -128,8 +136,12 @@ class adsforwp_admin_common_functions {
                 $post_id = wp_insert_post($post);
                 $result  = $post_id;
                 $guid    = get_option('siteurl') .'/?post_type=adsforwp&p='.$post_id;                
-                
-                $wpdb->get_results("UPDATE wp_posts SET guid ='".$guid."' WHERE ID ='".$post_id."'");                   
+       
+                $wpdb->query($wpdb->prepare(
+                  "UPDATE wp_posts SET guid = %s WHERE ID = %d",
+                  $guid,
+                  $post_id
+              ));                
                 $ads_meta = $ads_post['ads_meta'];
                 
                 if(isset($ads_post['in_groups'])){
@@ -166,8 +178,12 @@ class adsforwp_admin_common_functions {
                 $post_id = wp_insert_post($post);
                 $result  = $post_id;
                 
-                $guid = get_option('siteurl') .'/?post_type=adsforwp-groups&p='.$post_id;                
-                $wpdb->get_results("UPDATE wp_posts SET guid ='".$guid."' WHERE ID ='".$post_id."'");                   
+                $guid = get_option('siteurl') .'/?post_type=adsforwp-groups&p='.$post_id;
+                $wpdb->query($wpdb->prepare(
+                  "UPDATE wp_posts SET guid = %s WHERE ID = %d",
+                  $guid,
+                  $post_id
+              ));                   
                 $ads_meta = $group_post['group_meta'];                               
                 
                 foreach($ads_meta as $key => $ad){
@@ -231,10 +247,20 @@ class adsforwp_admin_common_functions {
     public function adsforwp_get_advads_groups(){
         
         $group_list = array();
-        
-        $terms = get_terms( 'advanced_ads_groups', array(
-        'hide_empty' => false,
-        ));  
+        global $wp_version;
+        if (version_compare($wp_version, '4.5.0', '<')) {
+            // For WordPress versions earlier than 4.5.0
+            //phpcs:ignore WordPress.WP.DeprecatedParameters.Get_termsParam2Found --Reason : added for old wordpress support
+            $terms = get_terms('advanced_ads_groups', array(
+                'hide_empty' => false,
+            ));
+        } else {
+            // For WordPress 4.5.0 and later versions
+            $terms = get_terms(array(
+                'taxonomy'   => 'advanced_ads_groups',
+                'hide_empty' => false,
+            ));
+        }
         
         foreach($terms as $term){
             
@@ -331,7 +357,11 @@ class adsforwp_admin_common_functions {
                 $post_id    = wp_insert_post($ads_post);
                 $result     = $post_id;
                 $guid       = get_option('siteurl') .'/?post_type=adsforwp&p='.$post_id;                
-                $wpdb->get_results("UPDATE wp_posts SET guid ='".$guid."' WHERE ID ='".$post_id."'");
+                $wpdb->query($wpdb->prepare(
+                  "UPDATE wp_posts SET guid = %s WHERE ID = %d",
+                  $guid,
+                  $post_id
+                ));  
                 $advn_meta_value  = array();
                 $advn_meta_value  = get_post_meta($ads->ID, $key='advanced_ads_ad_options', true );                  
                 
@@ -383,12 +413,12 @@ class adsforwp_admin_common_functions {
                     }
                 }                                
                 $ad_expire_enable = 0;
-                $expire_date      = date('Y-m-d');
+                $expire_date      = gmdate('Y-m-d');
                 
                 if(isset($advn_meta_value['expiry_date'])){    
                     
                   $ad_expire_enable = 1;  
-                  $expire_date = date('Y-m-d', $advn_meta_value['expiry_date']);
+                  $expire_date = gmdate('Y-m-d', $advn_meta_value['expiry_date']);
                   
                 }
                 
@@ -467,7 +497,7 @@ class adsforwp_admin_common_functions {
                                                         'Sunday'    => 'Sunday',
                     ), 
                     'adsforwp_ad_expire_enable'     => $ad_expire_enable, 
-                    'adsforwp_ad_expire_from'       => date('Y-m-d', strtotime($ads->post_date)), 
+                    'adsforwp_ad_expire_from'       => gmdate('Y-m-d', strtotime($ads->post_date)), 
                     'adsforwp_ad_expire_to'         => $expire_date,                     
                     'manual_ads_type'               => $shortcode,  
                     'imported_from'                 => 'advance_ads',
@@ -1527,9 +1557,22 @@ class adsforwp_admin_common_functions {
             }
         
             $user_id     = get_current_user_id();
-            $terms       = get_terms( 'advanced_ads_groups', array(
-                            'hide_empty' => false,
-                           ));
+
+            global $wp_version;
+
+            if (version_compare($wp_version, '4.5.0', '<')) {
+                // For WordPress versions earlier than 4.5.0
+                //phpcs:ignore WordPress.WP.DeprecatedParameters.Get_termsParam2Found -- Reason : added for old wordpress support
+                $terms = get_terms('advanced_ads_groups', array(
+                    'hide_empty' => false,
+                ));
+            } else {
+                // For WordPress 4.5.0 and later versions
+                $terms = get_terms(array(
+                    'taxonomy'   => 'advanced_ads_groups',
+                    'hide_empty' => false,
+                ));
+            }
             
             $groups_extra_attr = get_option( 'advads-ad-groups', array());            
             

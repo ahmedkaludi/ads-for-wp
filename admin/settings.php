@@ -530,7 +530,7 @@ public function adsforwp_adstxt_manager_callback(){
 
 					echo esc_html( $message );
 				} else {
-					
+					//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- Reason: output is already escaped  
 					echo $this->adsforwp_format_error( $error );
 				}
 
@@ -542,7 +542,7 @@ public function adsforwp_adstxt_manager_callback(){
 <?php endif; ?>
                         
                         <div class="adsforwp_adstxt_div">                                               
-                        <textarea class="widefat code" rows="10" name="adsforwp_settings[adsforwp_adstxt]" id="adsforwp_adstxt"><?php echo (isset($settings['adsforwp_adstxt'])? $settings['adsforwp_adstxt']: ''); ?></textarea>
+                        <textarea class="widefat code" rows="10" name="adsforwp_settings[adsforwp_adstxt]" id="adsforwp_adstxt"><?php echo (isset($settings['adsforwp_adstxt'])? esc_html($settings['adsforwp_adstxt']): ''); ?></textarea>
                         </div>
                                                         
                         </div>   
@@ -563,8 +563,8 @@ public function adsforwp_advance_callback(){
                 <li><div class="adsforwp-tools-field-title">
                         <div class="adsforwp-tooltip"><strong><?php echo esc_html__('IP Geolocation API','ads-for-wp'); ?></strong>
                         </div>
-                        <input type="text" value="<?php if(isset($settings['adsforwp_geolocation_api'])){ echo $settings['adsforwp_geolocation_api']; } ?>" id="adsforwp-geolocation-api" name="adsforwp_settings[adsforwp_geolocation_api]">                        
-                        <span style="font-weight: 500;">Today, Request Made  -:  <?php echo get_option("adsforwp_ip_request_".date('Y-m-d')); ?></span>
+                        <input type="text" value="<?php if(isset($settings['adsforwp_geolocation_api'])){ echo esc_attr($settings['adsforwp_geolocation_api']); } ?>" id="adsforwp-geolocation-api" name="adsforwp_settings[adsforwp_geolocation_api]">                        
+                        <span style="font-weight: 500;"> <?php esc_html__('Today, Request Made -: ','ads-for-wp'); ?>  <?php echo esc_attr(get_option("adsforwp_ip_request_".gmdate('Y-m-d'))); ?></span>
                         <p><?php echo esc_html__('Note : They have free plan which gives you 50K requests per month. For all that you need to','ads-for-wp'); ?> <a href="https://ipgeolocation.io" target="_blank"><?php echo esc_html__('Signup','ads-for-wp'); ?></a></p>
                     </div>
                 </li> 
@@ -576,11 +576,11 @@ public function adsforwp_advance_callback(){
 public function adsforwp_import_callback(){
     
 	$message                       = '<p>'.esc_html__('This plugin\'s data already has been imported. Do you want to import again?. click on button above button.','ads-for-wp').'</p>';
-        $schema_message                = '';
-        $ampforwp_ads_message          = '';
-        $ampforwp_advanced_ads_msg     = '';
-        $ad_inserter_message           = '';
-        $quick_adsense_message		= '';
+        $schema_message                = 0;
+        $ampforwp_ads_message          = 0;
+        $ampforwp_advanced_ads_msg     = 0;
+        $ad_inserter_message           = 0;
+        $quick_adsense_message		= 0;
         
         
         $schema_plugin         = $this->adsforwp_check_data_imported_from('advance_ads'); 
@@ -592,42 +592,42 @@ public function adsforwp_import_callback(){
         
         
 	if($schema_plugin->post_count !=0){
-         $schema_message =$message;
+         $schema_message =1;
         }
         if($ampforwp_ads->post_count !=0){
-         $ampforwp_ads_message =$message;   
+         $ampforwp_ads_message =1;   
         }
         if($ampforwp_advanced_ads->post_count !=0){
-         $ampforwp_advanced_ads_msg =$message;   
+         $ampforwp_advanced_ads_msg =1;   
         }
         
         if($ad_inserter->post_count !=0){
-         $ad_inserter_message = $message;   
+         $ad_inserter_message = 1;   
         } 
         if($quick_adsense ->post_count !=0){
-         $quick_adsense_message = $message;   
+         $quick_adsense_message = 1;   
         }
         
         ?>	
             <ul>
                 <li><div class="adsforwp-tools-field-title"><div class="adsforwp-tooltip"><strong><?php echo esc_html__('Advanced Ads Plugin','ads-for-wp'); ?></strong></div><button data-id="advanced_ads" class="button adsforwp-import-plugins"><?php echo esc_html__('Import','ads-for-wp'); ?></button>
                         <p class="adsforwp-imported-message"></p>
-                        <?php echo $schema_message; ?>    
+                        <?php echo ($schema_message==1)?'<p>'.esc_html__('This plugin\'s data already has been imported. Do you want to import again?. click on button above button.','ads-for-wp').'</p>':''; ?>    
                     </div>
                 </li> 
                 <li><div class="adsforwp-tools-field-title"><div class="adsforwp-tooltip"><strong><?php echo esc_html__('AMP for WP Ads','ads-for-wp'); ?></strong></div><button data-id="ampforwp_ads" class="button adsforwp-import-plugins"><?php echo esc_html__('Import','ads-for-wp'); ?></button>
                         <p class="adsforwp-imported-message"></p>
-                        <?php echo $ampforwp_ads_message; ?>    
+                        <?php echo ($ampforwp_ads_message==1)?'<p>'.esc_html__('This plugin\'s data already has been imported. Do you want to import again?. click on button above button.','ads-for-wp').'</p>':''; ?>
                     </div>
                 </li>
                 <li><div class="adsforwp-tools-field-title"><div class="adsforwp-tooltip"><strong><?php echo esc_html__('AMP for WP Advanced Ads','ads-for-wp'); ?></strong></div><button data-id="ampforwp_advanced_ads" class="button adsforwp-import-plugins"><?php echo esc_html__('Import','ads-for-wp'); ?></button>
                         <p class="adsforwp-imported-message"></p>
-                        <?php echo $ampforwp_advanced_ads_msg; ?>    
+                        <?php echo ($ampforwp_advanced_ads_msg==1)?'<p>'.esc_html__('This plugin\'s data already has been imported. Do you want to import again?. click on button above button.','ads-for-wp').'</p>':''; ?> 
                     </div>
                 </li>                
                 <li><div class="adsforwp-tools-field-title"><div class="adsforwp-tooltip"><strong><?php echo esc_html__('Quick Adsense Ads','ads-for-wp'); ?></strong></div><button data-id="quick_adsense" class="button adsforwp-import-plugins"><?php echo esc_html__('Import','ads-for-wp'); ?></button>
                         <p class="adsforwp-imported-message"></p>
-                        <?php echo $quick_adsense_message; ?>
+                        <?php echo ($quick_adsense_message==1)?'<p>'.esc_html__('This plugin\'s data already has been imported. Do you want to import again?. click on button above button.','ads-for-wp').'</p>':''; ?>
                             
                     </div>
                 </li>
@@ -635,7 +635,7 @@ public function adsforwp_import_callback(){
                        <p><?php echo esc_html__('This will work perfectly with plugin which is available on wordpress.org', 'ads-for-wp'); ?></p> 
                         <p class="adsforwp-imported-message"></p>
                         
-                        <?php echo $ad_inserter_message; ?>    
+                        <?php echo ($ad_inserter_message==1)?'<p>'.esc_html__('This plugin\'s data already has been imported. Do you want to import again?. click on button above button.','ads-for-wp').'</p>':''; ?>
                     </div>
                 </li>
             </ul>                   
@@ -729,6 +729,7 @@ public function adsforwp_ad_blocker_notice_opt_callback(){
 					foreach ($pages as $page ) {
 						$title = $page->post_title;
 					if ( empty( $title ) ) {
+						/* translators: %s is the page ID */
 						$title = sprintf( esc_html__( 'Untitled %s', 'ads-for-wp' ), '(ID #' . $page->ID . ')' );
 					}
 					?>
@@ -764,19 +765,19 @@ public function adsforwp_ad_blocker_notice_opt_callback(){
 	   		<h2 class="title"><?php echo esc_html__('Notice Design','ads-for-wp');?></h2>
 	   		<div class="label-align notice_txt_color">
 	   			<label for="notice_txt_color"> <?php echo esc_html__('Content Color','ads-for-wp');?> </label>
-	   			<input type="text" value="<?php echo $notice_txt_color;?>" name="adsforwp_settings[notice_txt_color]" id="notice_txt_color" class="adsforwp_cp" data-default-color="#ffffff"/> 
+	   			<input type="text" value="<?php echo esc_attr($notice_txt_color);?>" name="adsforwp_settings[notice_txt_color]" id="notice_txt_color" class="adsforwp_cp" data-default-color="#ffffff"/> 
 	   		</div>
 	   		<div class="label-align notice_bg_color">
 	   			<label for="notice_bg_color"> <?php echo esc_html__('Background Color','ads-for-wp');?> </label>
-	   			<input type="text" value="<?php echo $notice_bg_color;?>" name="adsforwp_settings[notice_bg_color]" id="notice_bg_color" class="adsforwp_cp" data-default-color="#1e73be"/>
+	   			<input type="text" value="<?php echo esc_attr($notice_bg_color);?>" name="adsforwp_settings[notice_bg_color]" id="notice_bg_color" class="adsforwp_cp" data-default-color="#1e73be"/>
 	   		</div>
 	   		<div class="label-align notice_btn_txt_color">
 	   			<label for="notice_btn_txt_color"> <?php echo esc_html__('Button Text Color','ads-for-wp');?> </label>
-	   			<input type="text" value="<?php echo $notice_btn_txt_color;?>" name="adsforwp_settings[notice_btn_txt_color]" id="notice_btn_txt_color" class="adsforwp_cp" data-default-color="#ffffff"/>
+	   			<input type="text" value="<?php echo esc_attr($notice_btn_txt_color);?>" name="adsforwp_settings[notice_btn_txt_color]" id="notice_btn_txt_color" class="adsforwp_cp" data-default-color="#ffffff"/>
 	   		</div>
 	   		<div class="label-align notice_btn_bg_color">
 	   		<label for="notice_btn_bg_color"><?php echo esc_html__('Button Background Color','ads-for-wp' );?></label>
-	   			<input type="text" value="<?php echo $notice_btn_bg_color;?>" name="adsforwp_settings[notice_btn_bg_color]" id="notice_btn_bg_color" class="adsforwp_cp" data-default-color="#f44336"/>
+	   			<input type="text" value="<?php echo esc_attr($notice_btn_bg_color);?>" name="adsforwp_settings[notice_btn_bg_color]" id="notice_btn_bg_color" class="adsforwp_cp" data-default-color="#f44336"/>
 	   		</div>
    		</div>
 	</div>
@@ -791,7 +792,7 @@ public function adsforwp_ad_blocker_notice_callback(){
         if(isset($settings['ad_blocker_notice'])){
             $checked = 'checked';
         }
-        echo '<input type="checkbox" name="adsforwp_settings[ad_blocker_notice]" class="afw_advnc_ad_blocker_notice" value="1" '.$checked.'><p>Notice to users Disable AdBlocker is active <a href="https://adsforwp.com/docs/article/what-is-disable-adblocker-to-use-our-adsforwp-plugin-smoothly-notice-in-dashboard/" target="_blank">'.esc_html__( 'Learn more', 'ads-for-wp' ).'</a></p>';
+        echo '<input type="checkbox" name="adsforwp_settings[ad_blocker_notice]" class="afw_advnc_ad_blocker_notice" value="1" '.esc_attr($checked).'><p>Notice to users Disable AdBlocker is active <a href="https://adsforwp.com/docs/article/what-is-disable-adblocker-to-use-our-adsforwp-plugin-smoothly-notice-in-dashboard/" target="_blank">'.esc_html__( 'Learn more', 'ads-for-wp' ).'</a></p>';
         ?>
 	</fieldset>
 	<?php
@@ -805,7 +806,7 @@ public function adsforwp_ad_blocker_support_callback(){
         if(isset($settings['ad_blocker_support'])){
             $checked = 'checked';
         }
-        echo '<input type="checkbox" name="adsforwp_settings[ad_blocker_support]" class="afw_advnc_ad_blocker_support" value="1" '.$checked.'><p>'.esc_html__( 'Once you check this option blocked ads will be displayed', 'ads-for-wp' ).' <a href="https://adsforwp.com/docs/article/how-to-use-ad-blocker-support-in-wordpress-and-amp/" target="_blank">'.esc_html__( 'Learn more', 'ads-for-wp' ).'</a></p>';
+        echo '<input type="checkbox" name="adsforwp_settings[ad_blocker_support]" class="afw_advnc_ad_blocker_support" value="1" '.esc_attr($checked).'><p>'.esc_html__( 'Once you check this option blocked ads will be displayed', 'ads-for-wp' ).' <a href="https://adsforwp.com/docs/article/how-to-use-ad-blocker-support-in-wordpress-and-amp/" target="_blank">'.esc_html__( 'Learn more', 'ads-for-wp' ).'</a></p>';
         ?>
 	</fieldset>
 	
@@ -869,7 +870,7 @@ public function adsforwp_ad_sponsorship_label_callback(){
 	}           
     ?>	
 	<fieldset>
-        <input type="checkbox" id="afw_ad_label" name="adsforwp_settings[ad_sponsorship_label]" class="regular-text afw_ad_label" value="1" <?php echo $checked;?> >
+        <input type="checkbox" id="afw_ad_label" name="adsforwp_settings[ad_sponsorship_label]" class="regular-text afw_ad_label" value="1" <?php echo esc_attr($checked);?> >
         <p><?php echo esc_html__( 'Add Sponsorship Label in the Ads', 'ads-for-wp' ); ?> <a href="https://adsforwp.com/docs/article/add-sponsorship-label-in-ads/" target="_blank"><?php echo esc_html__( 'Learn more', 'ads-for-wp' ); ?></a></p>
 	</fieldset>
 	<?php        
@@ -894,7 +895,7 @@ public function adsforwp_ad_label_options_callback(){
 					$positions = array('above' => 'Above Ad','below' => 'Below Ad');
 					foreach ($positions as $key => $value ) {
 					?>
-						<option value="<?php echo $key;?>" <?php selected( $settings['ad_label_postion'], $key);?>><?php echo $value;?></option>
+						<option value="<?php echo esc_attr($key);?>" <?php selected( $settings['ad_label_postion'], $key);?>><?php echo esc_html($value);?></option>
 					<?php
 					}
 					?>
@@ -902,7 +903,7 @@ public function adsforwp_ad_label_options_callback(){
 			</div>
 			<div class="label-align ad_label_txt_color">
 	   			<label for="ad_label_txt_color"> <?php echo esc_html__('Text Color','ads-for-wp');?> </label>
-	   			<input type="text" value="<?php echo $ad_label_txt_color;?>" name="adsforwp_settings[ad_label_txt_color]" id="ad_label_txt_color" class="adsforwp_cp" data-default-color="#cccccc"/>
+	   			<input type="text" value="<?php echo esc_attr($ad_label_txt_color);?>" name="adsforwp_settings[ad_label_txt_color]" id="ad_label_txt_color" class="adsforwp_cp" data-default-color="#cccccc"/>
 	   		</div>
 		</div>
 	</div>
@@ -913,27 +914,26 @@ public function adsforwp_ad_fraud_protection_callback(){
 
 	$settings = adsforwp_defaultSettings();
 
-	$checked = '';
-	$disabled = "disabled='disabled'"; 
-	$getProLink = '<a Target="_blank" href="https://www.adsforwp.com/pricing/#pricings" style="text-decoration: none;color: white;
-    font-weight: bold;margin-left: 0px;font-size: 13px !important; padding: 7px 9px;letter-spacing: 0.1px;border-radius: 60px;margin-right: 0px; background: linear-gradient(to right,#eb3349,#f45c43);">'.esc_html__( 'Upgrade to Premium', 'ads-for-wp' ).'</a>';
+	$is_checked = false;
+	$is_disabled = true;
+	$is_pro =  defined( 'ADSFORWP_PRO_VERSION' );
 
-
-	if( defined( 'ADSFORWP_PRO_VERSION' )){
-		$disabled = false;
-		$getProLink="";
-
+	if( $is_pro){
+		$is_disabled = false;
 	} 
     if( isset($settings['ad_fraud_protection']) && $settings['ad_fraud_protection']){
-        $checked = "checked";
+		$is_checked = true;
     }           
 
     ?>	
 
 	<fieldset>
 
-        <input type="checkbox" id="afw_ad_fraud_protection" name="adsforwp_settings[ad_fraud_protection]" class="regular-text afw_ad_fraud_protection" value="1" <?php echo $checked;?> <?php echo $disabled; ?>>
-        <?php echo $getProLink; ?>
+        <input type="checkbox" id="afw_ad_fraud_protection" name="adsforwp_settings[ad_fraud_protection]" class="regular-text afw_ad_fraud_protection" value="1" <?php echo ($is_checked===true)?esc_attr('checked'):'';?> <?php echo ($is_disabled==true)?esc_attr('disabled'):'';?>>
+		<?php if(!$is_pro){ ?>
+			<a target="_blank" href="https://www.adsforwp.com/pricing/#pricings" style="text-decoration: none;color: white;font-weight: bold;margin-left: 0px;font-size: 13px !important; padding: 7px 9px;letter-spacing: 0.1px;border-radius: 60px;margin-right: 0px; background: linear-gradient(to right,#eb3349,#f45c43);"><?php esc_html_e( 'Upgrade to Premium', 'ads-for-wp' );?></a>;
+		<?php } ?>
+		
         <p class="fra-pro-p"><?php echo esc_html__( 'Prevent spam users to click on ads multiple times.' ); ?></p>
 	</fieldset>
 
@@ -1025,10 +1025,10 @@ public function adsforwp_contact_us_form_callback(){
             <strong><?php echo esc_html__('If you have any query, please write the query in below box or email us at', 'ads-for-wp') ?> <a href="mailto:team@magazine3.in">team@magazine3.in</a>. <?php echo esc_html__('We will reply to your email address shortly', 'ads-for-wp') ?></strong>
             <ul>
 				<li>
-					<label class="support-label"><?= esc_html_e( 'Email', 'ads-for-wp' ) ?><span class="afw-query-error">*</span></label>
+					<label class="support-label"><?php esc_html_e( 'Email', 'ads-for-wp' ) ?><span class="afw-query-error">*</span></label>
 					<div class="support-input">
 						<input type="text" id="adsforwp_query_email" name="adsforwp_query_email"
-								placeholder="<?= esc_html_e( 'Enter your Email', 'ads-for-wp' ) ?>" />
+								placeholder="<?php esc_html_e( 'Enter your Email', 'ads-for-wp' ) ?>" />
 					</div>
 				</li>
                 <li>
@@ -1063,7 +1063,7 @@ public function adsforwp_pro_content_callback(){
             <button class="button-adspro" style="display: inline-block;font-size: 20px;" onclick="window.open('https://www.adsforwp.com/pricing')">
                 <span><?php esc_html_e( 'YES! I want to Support by UPGRADING.', 'ads-for-wp' ) ?></span></button>
         </a>
-        <a href="<?php echo add_query_arg('page', 'adsforwp', admin_url('admin.php')); ?>"
+        <a href="<?php echo esc_url(add_query_arg('page', 'adsforwp', admin_url('admin.php'))); ?>"
            style="text-decoration: none;">
             <button class="button-toc1"
                     style="display: block;text-align: center;border: 0;margin: 0 auto;background: none;">                
@@ -1096,6 +1096,7 @@ if(!function_exists('adsforwp_subscribe_newsletter')){
         if ( !wp_verify_nonce( $_POST['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ){
              return;  
         }
+		
 	    $api_url = 'http://magazine3.company/wp-json/api/central/email/subscribe';
 	    $api_params = array(
 	        'name' => sanitize_text_field($_POST['name']),
@@ -1105,7 +1106,7 @@ if(!function_exists('adsforwp_subscribe_newsletter')){
 	    );
 	    $response = wp_remote_post( $api_url, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
 	    $response = wp_remote_retrieve_body( $response );
-	    echo $response;
+	    echo esc_html($response);
 	    die;
 	} 	
 }

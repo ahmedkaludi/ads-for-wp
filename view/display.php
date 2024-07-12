@@ -252,14 +252,14 @@ class adsforwp_view_display {
     }
 	public function adsforwp_field_generator( $post ) {
            
-		$output = '';
+		$output_escaped = '';
 		foreach ( $this->meta_fields as $meta_field ) {
                         $attributes ='';
 			$label = '<label for="' . esc_attr($meta_field['id']) . '">' . esc_html( $meta_field['label'] ) . '</label>';
 			$meta_value = get_post_meta( $post->ID, $meta_field['id'], true );
 			if ( empty( $meta_value ) ) {
                 if($meta_field['id'] == 'adsforwp_new_element'){
-                 $meta_value = esc_html('<div id="'.md5(uniqid(rand(), true)).'"></div>');    
+                 $meta_value = esc_html('<div id="'.md5(uniqid(wp_rand(), true)).'"></div>');    
                 }else{
                  if(isset($meta_field['default'])){
                   $meta_value = $meta_field['default'];    
@@ -474,7 +474,7 @@ class adsforwp_view_display {
                         break;
                     }	
 		        }
-			$output .= $this->adsforwp_format_rows( $label, $input );
+			$output_escaped .= '<tr><th>'.$label.'</th><td>'.$input.'</td></tr>';
 
 		}
         $common_function_obj = new adsforwp_admin_common_functions();
@@ -486,11 +486,14 @@ class adsforwp_view_display {
                 $group_post = get_post($group);                        
                 $group_links .= '<span style="padding-right:5px;"><a href="?post='.esc_attr($group).'&action=edit"> '.esc_html($group_post->post_title).'</a>,</span>';    
                 }
-                echo '<p>'.esc_html__('This ad is associated with ', 'ads-for-wp').''.html_entity_decode(esc_html($group_links)).'group</p>';   
-                echo '<table class="form-table" style="display:none;"><tbody>' . $output . '</tbody></table><div id="afw-embed-code-div"></div>';      
+                ?>
+                <p><?php echo esc_html__('This ad is associated with ', 'ads-for-wp').wp_kses_post($group_links).esc_html__('group','ads-for-wp');?></p>   
+                <table class="form-table" style="display:none;"><tbody>'<?php echo $output_escaped; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- Reason: already escaped ?></tbody></table><div id="afw-embed-code-div"></div>
+                <?php
                 
-        }else{
-                echo '<table class="form-table adsforwp-display-table"><tbody>' . $output . '</tbody></table><div style="display:none;" id="afw-embed-code-div"></div>';   
+        }else{ ?>
+            <table class="form-table adsforwp-display-table"><tbody> <?php echo $output_escaped; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- Reason: already escaped  ?></tbody></table><div style="display:none;" id="afw-embed-code-div"></div>
+        <?php
         }
 		                
 	}

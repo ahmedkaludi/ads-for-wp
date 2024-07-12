@@ -26,7 +26,7 @@ function adsforwp_on_activation() {
     
     add_option('adsforwp_do_activation_redirect', true);       
     set_transient( 'adsforwp_admin_notice_transient', true, 5 );
-    update_option( "adsforwp_activation_date", date("Y-m-d"));  // Security: Permission verified			
+    update_option( "adsforwp_activation_date", gmdate("Y-m-d"));  // Security: Permission verified			
             
     adsforwp_database_install();
                     
@@ -55,7 +55,12 @@ function adsforwp_database_install() {
 		$charset_collate .= " COLLATE {$wpdb->collate}";
 	}
 
-	$found_engine = $wpdb->get_var("SELECT ENGINE FROM `information_schema`.`TABLES` WHERE `TABLE_SCHEMA` = '".DB_NAME."' AND `TABLE_NAME` = '{$wpdb->prefix}posts';");
+    $found_engine = $wpdb->get_var($wpdb->prepare(
+        "SELECT ENGINE FROM `information_schema`.`TABLES` WHERE `TABLE_SCHEMA` = %s AND `TABLE_NAME` = %s;",
+        $DB_NAME,
+        $wpdb->prefix . 'posts'
+    ));
+
         
 	if(strtolower($found_engine) == 'innodb') {
 		$engine = ' ENGINE=InnoDB';
@@ -94,25 +99,20 @@ function adsforwp_now() {
  * @return type string
  */
 function adsforwp_get_date($type) {
-    	
-	switch($type) {
-		
-		case 'day' :
-			$timezone = get_option('timezone_string');
-			if($timezone) {
-				$server_timezone = date('e');
-				date_default_timezone_set($timezone);
-				$result = strtotime('00:00:00') + (get_option('gmt_offset') * 3600);
-				date_default_timezone_set($server_timezone);
-			} else {
-				$result = gmdate('U', gmmktime(0, 0, 0, gmdate('n'), gmdate('j')));
-			}
-		break;
-				
-	}
+    switch ($type) {
+        case 'day':
+            $timezone = get_option('timezone_string');
+            if ($timezone) {
+                $result = strtotime('today', current_time('timestamp'));
+            } else {
+                $result = strtotime('today', current_time('timestamp', true));
+            }
+            break;
+    }
 
-	return $result;
+    return $result;
 }
+
 
 
 /**

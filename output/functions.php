@@ -155,7 +155,7 @@ class adsforwp_output_functions{
             $amp_script_file = ADSFORWP_PLUGIN_DIR_URI.'public/assets/js/ads-frontend-amp.min.js';
           }
           echo '<amp-state id="adsforwp_browser_obj">  <script type="application/json">'.json_encode($browser_data).'</script></amp-state>';
-          echo '<amp-script layout="container" src="'.$amp_script_file.'" >';
+          echo '<amp-script layout="container" src="'.esc_url($amp_script_file).'" >';
         }
     }
     public function adsforwp_amp_story_auto_ads( $data ){
@@ -189,7 +189,15 @@ class adsforwp_output_functions{
     }
     public function adsforwp_serve_front_js(WP_Query $query){
         if($query->get('adsforwp_front_js') == 1){
-            $swHtmlContent  = file_get_contents(ADSFORWP_PLUGIN_DIR."public/assets/js/ads-front.js");
+            if ( ! function_exists( 'WP_Filesystem' ) ) {
+              require_once ABSPATH . '/wp-admin/includes/file.php';
+            }
+            global $wp_filesystem;
+            if ( ! $wp_filesystem ) {
+                WP_Filesystem();
+            }
+            $swHtmlContent = $wp_filesystem->get_contents( ADSFORWP_PLUGIN_DIR."public/assets/js/ads-front.js");
+            //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- Reason: $swHtmlContent contains static js code
             echo $swHtmlContent;
             header('Content-Type: application/javascript');
             exit;
@@ -201,7 +209,8 @@ class adsforwp_output_functions{
     }
 
     public function adsforwp_is_file_inroot(){
-        if(is_writable(ABSPATH)){
+        //phpcs:ignore
+        if(is_writable(ABSPATH)){ 
             return true;
         }else{
             return false;
@@ -478,16 +487,16 @@ class adsforwp_output_functions{
             
              if($wheretodisplay == 'sticky'){  
                  
-               $ad_code =  $this->adsforwp_get_ad_code($ad_id, $type="AD"); 
+               $ad_code_escaped =  $this->adsforwp_get_ad_code($ad_id, $type="AD"); 
                
-               if($ad_code){
-                                                                 
-                echo '<amp-user-notification
+               if($ad_code_escaped){ ?>
+                   <amp-user-notification
                         layout="nodisplay"
-                        id="amp-user-notification_'.esc_attr($ad_id).'" class="afw_ad_amp_'.$ad_id.'">                          
-                        <div class="adsforwp-stick-ad">'.$ad_code.'</div>  
-                        <button on="tap:amp-user-notification_'.esc_attr($ad_id).'.dismiss" class="adsforwp-sticky-ad-close"></button>
-                     </amp-user-notification>';
+                        id="amp-user-notification_<?php echo esc_attr($ad_id)?>" class="afw_ad_amp_<?php echo esc_attr($ad_id);?>">                          
+                        <div class="adsforwp-stick-ad"><?php echo $ad_code_escaped; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- Reason: Already escaped   ?></div>   
+                        <button on="tap:amp-user-notification_<?php echo esc_attr($ad_id)?>.dismiss" class="adsforwp-sticky-ad-close"></button>
+                     </amp-user-notification>            
+                <?php 
                }
                
              }
@@ -508,16 +517,16 @@ class adsforwp_output_functions{
             
              if($wheretodisplay == 'sticky'){  
                                 
-               $ad_code =  $this->adsforwp_group_ads($atts=null, $ad_id); 
+               $ad_code_escaped =  $this->adsforwp_group_ads($atts=null, $ad_id); 
                
-               if($ad_code){
-                                                   
-                echo '<amp-user-notification
+               if($ad_code_escaped){ ?>
+                   <amp-user-notification
                         layout="nodisplay"
-                        id="amp-user-notification_'.esc_attr($ad_id).'" class="afw_ad_amp_'.$ad_id.'">                       
-                        <div class="adsforwp-stick-ad">'.$ad_code.'</div>                      
-                        <button on="tap:amp-user-notification_'.esc_attr($ad_id).'.dismiss" class="adsforwp-sticky-ad-close"></button>
-                     </amp-user-notification>';
+                        id="amp-user-notification_<?php echo esc_attr($ad_id)?>" class="afw_ad_amp_<?php echo esc_attr($ad_id);?>">                          
+                        <div class="adsforwp-stick-ad"><?php echo $ad_code_escaped; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- Reason: already escaped   ?></div>   
+                        <button on="tap:amp-user-notification_<?php echo esc_attr($ad_id)?>.dismiss" class="adsforwp-sticky-ad-close"></button>
+                     </amp-user-notification>
+                <?php 
                }
                
              }
@@ -559,7 +568,7 @@ class adsforwp_output_functions{
         $common_function_obj = new adsforwp_admin_common_functions();
         
          //Ads Sticky starts here
-        $ad_code    ='';
+        $ad_code_escaped    ='';
         $all_ads_id = adsforwp_get_ad_ids();
                         
         if(!empty($all_ads_id)){
@@ -574,7 +583,7 @@ class adsforwp_output_functions{
                  
               
               if(empty($in_group)){
-                  $ad_code .=  $this->adsforwp_get_ad_code($ad_id, $type="AD");   
+                  $ad_code_escaped .=  $this->adsforwp_get_ad_code($ad_id, $type="AD");   
               }
               
              }
@@ -582,19 +591,18 @@ class adsforwp_output_functions{
         }    
         
         }                    
-        if($ad_code){
-        
-            echo '<div class="adsforwp-footer-prompt">'
-           . '<a href="#" class="adsforwp-sticky-ad-close"></a>'  
-           . '<div class="adsforwp-stick-ad">'.$ad_code.'</div>'                
-           . '</div>';
-            
+        if($ad_code_escaped){  ?>
+        <div class="adsforwp-footer-prompt">
+            <a href="#" class="adsforwp-sticky-ad-close"></a>  
+            <div class="adsforwp-stick-ad"><?php echo $ad_code_escaped; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- Reason: already escaped   ?>
+        </div>
+          <?php 
         }    
         //Ads Sticky ends here
         
         //Group Sticky starts here
         $all_group_post = array();
-        $group_ad_code  = '';
+        $group_ad_code_escaped  = '';
         $all_group_post = adsforwp_get_group_ad_ids();
         
         if(!empty($all_group_post)){
@@ -607,20 +615,19 @@ class adsforwp_output_functions{
             
              if($wheretodisplay == 'sticky' && !in_array($ad_id, $explod_ad_id)){  
                  
-               $group_ad_code .=  $this->adsforwp_group_ads($atts=null, $ad_id, $widget);   
+               $group_ad_code_escaped .=  $this->adsforwp_group_ads($atts=null, $ad_id, $widget);   
                
              }
              
         } 
         
         }                    
-        if($group_ad_code){
-            
-            echo '<div class="adsforwp-footer-prompt">'
-                . '<a href="#" class="adsforwp-sticky-ad-close"></a>'  
-                . '<div class="adsforwp-stick-ad">'.$group_ad_code.'</div>'                
-                . '</div>';
-            
+        if($group_ad_code_escaped){ ?>
+        <div class="adsforwp-footer-prompt">
+            <a href="#" class="adsforwp-sticky-ad-close"></a>
+            <div class="adsforwp-stick-ad"><?php echo $group_ad_code_escaped; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- Reason: already escaped   ?>
+        </div>
+        <?php      
         }    
         //Group Sticky ends here
     }                   
@@ -646,7 +653,7 @@ class adsforwp_output_functions{
                     $display_per_in_minute      = (60*$ad_owner_revenue_per)/100;
                     
                     }                    
-                    $current_second = date("s"); 
+                    $current_second = gmdate("s"); 
                     
                     if((!($current_second <= $display_per_in_minute)) && isset($settings['ad_revenue_sharing'])){
                         
@@ -867,17 +874,15 @@ class adsforwp_output_functions{
             
             if($result){
                 
-            $post_id = $result['post_id'];
-            $content =  '<amp-auto-ads class="amp-auto-ads afw_'.esc_attr($post_id).'"
-                                type="adsense"
-                                data-ad-client="'.esc_attr(adsforwp_rmv_warnings($result, 'data_ad_client', 'adsforwp_string')).'">
-                            </amp-auto-ads>';
-             
+            $post_id = $result['post_id'];         
             $service = new adsforwp_output_service();
             $ad_status = $service->adsforwp_is_condition($post_id);
             
             if($ad_status){
-                echo $content;
+                echo '<amp-auto-ads class="amp-auto-ads afw_'.esc_attr($post_id).'"
+                                type="adsense"
+                                data-ad-client="'.esc_attr(adsforwp_rmv_warnings($result, 'data_ad_client', 'adsforwp_string')).'">
+                      </amp-auto-ads>';
             }
             
             }            
@@ -891,20 +896,17 @@ class adsforwp_output_functions{
             if($result){
                 
             $post_id = adsforwp_rmv_warnings($result, 'post_id', 'adsforwp_string'); 
+            $service = new adsforwp_output_service();
+            $ad_status = $service->adsforwp_is_condition($post_id);
             
-            $content = '<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            if($ad_status){
+                echo '<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                   <script>
                   (adsbygoogle = window.adsbygoogle || []).push({
                   google_ad_client: "'.esc_attr(adsforwp_rmv_warnings($result, 'data_ad_client', 'adsforwp_string')).'",
                   enable_page_level_ads: true
                   }); 
-                 </script>';            
-            
-            $service = new adsforwp_output_service();
-            $ad_status = $service->adsforwp_is_condition($post_id);
-            
-            if($ad_status){
-                echo $content;
+                 </script>'; 
             }
             
             }
@@ -979,19 +981,20 @@ class adsforwp_output_functions{
                         
                             if($ad_status){
                             
-                               if($ad_client && $ad_slot){
-                                 
-                                    $output  = '<amp-sticky-ad layout="nodisplay">';
-                                    $output .= '<amp-ad class="amp-sticky-ads afw_'.esc_attr($ad_id).'"
+                               if($ad_client && $ad_slot){ ?>
+
+                                    <amp-sticky-ad layout="nodisplay">
+                                        <amp-ad class="amp-sticky-ads afw_<?php echo esc_attr($ad_id);?>"
                                                      type="adsense"
-                                                     width='. esc_attr($width) .'
-                                                     height='. esc_attr($height) . '
-                                                     data-ad-client="'. esc_attr($ad_client) .'"
-                                                     data-ad-slot="'.  esc_attr($ad_slot) .'"
-                                                     data-enable-refresh="10">';
-                                    $output	.=	'</amp-ad>';
-                                    $output	.= '</amp-sticky-ad>';
-                                    echo $output;
+                                                     width="<?php echo esc_attr($width);?>"
+                                                     height="<?php echo esc_attr($height);?>"
+                                                     data-ad-client="<?php echo esc_attr($ad_client);?>"
+                                                     data-ad-slot="<?php echo esc_attr($ad_slot);?>"
+                                                     data-enable-refresh="10">
+                                                     </amp-ad>
+                                      </amp-sticky-ad>
+
+                                    <?php
                                     break;
                                
                                }                                
@@ -1021,17 +1024,17 @@ class adsforwp_output_functions{
                           $ad_status = $service->adsforwp_is_condition($ad_id);
                           $outbrain_widget_ids     = adsforwp_rmv_warnings($post_meta_dataset, 'outbrain_widget_ids', 'adsforwp_array');
                           if($ad_status){
-                            if(!empty($outbrain_widget_ids)){
-                                $output  = '<amp-sticky-ad layout="nodisplay">';
-                                    $output .= '<amp-ad class="amp-sticky-ads afw_'.esc_attr($ad_id).'"
-                                                  type="outbrain"
-                                                  width='. esc_attr($width) .'
-                                                  height='. esc_attr($height) . '
-                                                  data-widgetids='.esc_attr($outbrain_widget_ids).'
-                                                  data-enable-refresh="10">';
-                                $output .=  '</amp-ad>';
-                                $output .= '</amp-sticky-ad>';
-                                echo $output;
+                            if(!empty($outbrain_widget_ids)){ ?>
+                                  <amp-sticky-ad layout="nodisplay">
+                                    <amp-ad class="amp-sticky-ads afw_<?php echo esc_attr($ad_id)?>"
+                                              type="outbrain"
+                                              width="<?php echo esc_attr($width) ?>"
+                                              height="<?php echo esc_attr($height) ?>"
+                                              data-widgetids="<?php echo esc_attr($outbrain_widget_ids)?>"
+                                              data-enable-refresh="10">'
+                                    </amp-ad>
+                                  </amp-sticky-ad>
+                            <?php
                                 break;
                             }
                           }
@@ -1046,7 +1049,7 @@ class adsforwp_output_functions{
     
     public function adsforwp_doubleclick_head_code(){
                             
-            $data_slot  = '';                   
+            $data_slot_escaped  = '';                   
             $all_ads_id = adsforwp_get_ad_ids(); 
                                   
             if($all_ads_id){
@@ -1082,13 +1085,14 @@ class adsforwp_output_functions{
                             $ad_status = $service->adsforwp_is_condition($ad_id);
 
                             if($ad_status && $ad_slot_id){
-                                $data_slot .="googletag.defineSlot('".esc_attr($ad_slot_id)."', [".esc_attr($width).", ".esc_attr($height)."], '".esc_attr($ad_div_gpt)."').addService(googletag.pubads());";
+                                $data_slot_escaped .="googletag.defineSlot('".esc_attr($ad_slot_id)."', [".esc_attr($width).", ".esc_attr($height)."], '".esc_attr($ad_div_gpt)."').addService(googletag.pubads());";
                             }   
 
                             }
                             
-                            if( $data_slot !=''){   
-                             echo "<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+                            if( $data_slot_escaped !=''){   ?>
+
+                              <script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
                                    <script>
                                     var googletag = googletag || {};
                                     googletag.cmd = googletag.cmd || [];
@@ -1096,11 +1100,13 @@ class adsforwp_output_functions{
 
                                   <script>
                                     googletag.cmd.push(function() {                                                   
-                                      ".$data_slot."  
+                                      <?php echo $data_slot_escaped; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- Reason: already escaped   ?> 
                                       googletag.pubads().enableSingleRequest();
                                       googletag.enableServices();
                                     });
-                                  </script>";
+                                  </script>
+
+                            <?php
                             }                            
 
             }                                                    
@@ -1274,7 +1280,7 @@ class adsforwp_output_functions{
                 if($adposition == '50_of_the_content'){
                     $percent_content = adsforwp_rmv_warnings($post_meta_dataset, 'percent_content', 'adsforwp_array');
                     if(!empty($percent_content)){
-                        $contentTemp = strip_tags( $content );
+                        $contentTemp = wp_strip_all_tags( $content );
                         $total_counts = str_word_count($contentTemp);
                         $fifty = round($total_counts*($percent_content/100));
                         $contentTempArray = array_filter(explode(" ", $contentTemp));
@@ -2820,7 +2826,7 @@ public function adsforwp_preload_images_amp(){
           }
 
           if( isset($ad_preload_image_ad) && $ad_preload_image_ad == 1 ){
-            echo '<link rel="preload" as="image" href="'.$ad_image.'" type="image/webp">';
+            echo '<link rel="preload" as="image" href="'.esc_url($ad_image).'" type="image/webp">';
           }
         }
       }
@@ -2862,7 +2868,7 @@ public function adsforwp_preload_image_(){
           }
 
           if( isset($ad_preload_image_ad) && $ad_preload_image_ad == 1 ){
-            echo '<link rel="preload" as="image" href="'.$ad_image.'" type="image/'.$image_type.'">';
+            echo '<link rel="preload" as="image" href="'.esc_url($ad_image).'" type="image/'.esc_attr($image_type).'">';
           }
         }
       }
@@ -3181,22 +3187,14 @@ public function adsforwp_preload_image_(){
     public function adsforwp_adblocker_notice_jsondata(){
         $settings = adsforwp_defaultSettings();
         $output = '';
-        if( isset($settings['ad_blocker_notice']) && !empty($settings['notice_type'])){
+        if( isset($settings['ad_blocker_notice']) && !empty($settings['notice_type'])){ ?>
           
-          $output    .= '<script type="text/javascript">';
-          $output    .= '/* <![CDATA[ */';
-          $output    .= 'var adsforwpOptions =' .
-            json_encode(
-              array(
-                'adsforwpChoice'          => esc_attr($settings['notice_type']),
-                'page_redirect'          => get_permalink($settings['page_redirect'] ),
-                'allow_cookies'         => esc_attr($settings['allow_cookies'])
-              )
-            );
-          $output    .= '/* ]]> */';
-          $output    .= '</script>';
-          echo $output;
-        }
+          <script type="text/javascript">
+          /* <![CDATA[ */
+         var adsforwpOptions ={"adsforwpChoice":"<?php echo esc_attr($settings['notice_type']);?>","page_redirect":"<?php echo esc_url(get_permalink($settings['page_redirect'] ));?>","allow_cookies":"<?php echo esc_attr($settings['allow_cookies']);?>"};
+         /* ]]> */
+         </script>
+       <?php  }
     }
     public function adsforwp_adblocker_popup_notice(){
       
@@ -3223,11 +3221,11 @@ public function adsforwp_preload_image_(){
               <?php
             }
             ?>
-            <h2 style="text-align: center;padding-top:0;color: <?php echo $content_color;?>;"><?php echo $notice_title;?></h2>
-            <p style="margin:0 0 1.5em;padding: 0;text-align: center;color: <?php echo $content_color;?>;"><?php echo $notice_description;?></p>
+            <h2 style="text-align: center;padding-top:0;color: <?php echo esc_attr($content_color);?>;"><?php echo esc_html($notice_title);?></h2>
+            <p style="margin:0 0 1.5em;padding: 0;text-align: center;color: <?php echo esc_attr($content_color);?>;"><?php echo esc_html($notice_description);?></p>
             <?php if( isset($settings['notice_close_btn']) &&  !empty($button_txt) ){
               ?>
-              <button class="afw-button afw-closebtn afw-cls-notice"><?php echo $button_txt;?></button>
+              <button class="afw-button afw-closebtn afw-cls-notice"><?php echo esc_html($button_txt);?></button>
             <?php
             }
             ?>
@@ -3256,7 +3254,7 @@ public function adsforwp_preload_image_(){
 
         /* Modal Content */
         .afw-modal-content {
-          background-color: <?php echo $background_color;?>;
+          background-color: <?php echo esc_attr($background_color);?>;
           margin: auto;
           padding: 20px;
           border: 1px solid #888;
@@ -3267,7 +3265,7 @@ public function adsforwp_preload_image_(){
 
         /* The Close Button */
         .afw-close{
-          color: <?php echo $btn_txt_color;?>;
+          color: <?php echo esc_attr($btn_txt_color);?>;
           float: right;
           font-size: 28px;
           font-weight: bold;
@@ -3280,9 +3278,9 @@ public function adsforwp_preload_image_(){
           cursor: pointer;
         }
         .afw-button {
-          background-color: <?php echo $btn_background_color;?>; /* Green */
+          background-color: <?php echo esc_attr($btn_background_color);?>; /* Green */
           border: none;
-          color: <?php echo $btn_txt_color;?>;
+          color: <?php echo esc_attr($btn_txt_color);?>;
           padding: 10px 15px;
           text-align: center;
           text-decoration: none;
@@ -3311,13 +3309,6 @@ public function adsforwp_preload_image_(){
         
       if( isset($settings['ad_blocker_notice'])){
         if($settings['notice_type'] == 'bar' ){
-          
-          $notice_description = esc_attr($settings['notice_description']);
-          $button_txt = esc_attr($settings['btn_txt']);
-          $content_color = sanitize_hex_color($settings['notice_txt_color']);
-          $background_color = sanitize_hex_color($settings['notice_bg_color']);
-          $btn_txt_color = sanitize_hex_color($settings['notice_btn_txt_color']);
-          $btn_background_color = sanitize_hex_color($settings['notice_btn_bg_color']);
       ?>
       
       <div id="afw-myModal" class="afw-adblocker-notice-bar">
@@ -3326,10 +3317,10 @@ public function adsforwp_preload_image_(){
           <span class="afw-close afw-cls-notice">&times;</span>  
         <?php } ?>
           <div class="afw-adblocker-message">
-          <?php echo $notice_description;?>
+          <?php echo esc_attr($settings['notice_description']);?>
           </div>
           <?php if( isset($settings['notice_close_btn']) && !empty($button_txt)){?>
-          <button class="afw-button afw-closebtn afw-cls-notice"><?php echo $button_txt;?></button>  
+          <button class="afw-button afw-closebtn afw-cls-notice"><?php echo esc_attr($settings['btn_txt']);?></button>  
         <?php } ?>
         </div>
       </div>
@@ -3340,8 +3331,8 @@ public function adsforwp_preload_image_(){
         .afw-adblocker-notice-bar {
           display: none;
           width: 100%;
-          background: <?php echo $background_color;?>;
-          color: <?php echo $content_color;?>;
+          background: <?php echo sanitize_hex_color($settings['notice_bg_color']);?>;
+          color: <?php echo sanitize_hex_color($settings['notice_txt_color']);?>;
           padding: 0.5em 1em;
           font-size: 16px;
           line-height: 1.8;
@@ -3356,7 +3347,7 @@ public function adsforwp_preload_image_(){
           text-align: center;
         }
         .afw-close{
-          color: <?php echo $btn_txt_color;?>;
+          color: <?php echo sanitize_hex_color($settings['notice_btn_txt_color']);?>;
           float: right;
           font-size: 20px;
           font-weight: bold;
@@ -3368,9 +3359,9 @@ public function adsforwp_preload_image_(){
           cursor: pointer;
         }
         .afw-button {
-          background-color: <?php echo $btn_background_color;?>; /* Green */
+          background-color: <?php echo sanitize_hex_color($settings['notice_btn_bg_color']);?>; /* Green */
           border: none;
-          color: <?php echo $btn_txt_color;?>;
+          color: <?php echo sanitize_hex_color($settings['notice_btn_txt_color']);?>;
           padding: 5px 10px;
           text-align: center;
           text-decoration: none;

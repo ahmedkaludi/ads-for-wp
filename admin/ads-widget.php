@@ -37,9 +37,9 @@ class Adsforwp_Ads_Widget extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
                           
-		echo html_entity_decode(esc_attr($args['before_widget']));
-                                
-        
+		$allow_html = $this->common_function->adsforwp_expanded_allowed_tags();
+		echo wp_kses($args['before_widget'], $allow_html);
+                            
         $all_ads = $this->common_function->adsforwp_fetch_all_ads();
         $all_groups = $this->common_function->adsforwp_fetch_all_groups();   
         
@@ -48,8 +48,9 @@ class Adsforwp_Ads_Widget extends WP_Widget {
             if($ad->ID == $instance['ads']){   
                 
                     $output_function_obj = new adsforwp_output_functions();
-                    $ad_code =  $output_function_obj->adsforwp_get_ad_code($instance['ads'], $type="AD", 'notset');          
-                    echo $ad_code;    
+                    $ad_code_escaped =  $output_function_obj->adsforwp_get_ad_code($instance['ads'], $type="AD", 'notset');
+					//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- Reason: output is already escaped          
+                    echo $ad_code_escaped;    
                     
             }   
             
@@ -60,13 +61,14 @@ class Adsforwp_Ads_Widget extends WP_Widget {
              
                 $output_function_obj = new adsforwp_output_functions();
                 $widget = 'widget';
-                $ad_code =  $output_function_obj->adsforwp_group_ads($atts=null, $instance['ads'], $widget, 'notset');                   
-                echo $ad_code;     
+                $ad_code_escaped =  $output_function_obj->adsforwp_group_ads($atts=null, $instance['ads'], $widget, 'notset');
+				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- Reason: output is already escaped                       
+                echo $ad_code_escaped;       
                 
         }  
         
         }
-        echo html_entity_decode(esc_attr($args['after_widget']));		
+        echo wp_kses($args['after_widget'], $allow_html);		
 	}
 
 	/**

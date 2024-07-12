@@ -84,7 +84,7 @@ class adsforwp_view_visitor_condition {
 
       ?>
 <div class="adsforwp_visitor_condition_group" >   
-    <input type="hidden" value="<?php echo (isset( $visitor_condition_enable )?  $visitor_condition_enable : 'disable'); ?>" id="adsforwp_v_condition_enable" name="adsforwp_v_condition_enable">    
+    <input type="hidden" value="<?php echo (isset( $visitor_condition_enable )?  esc_attr($visitor_condition_enable) : 'disable'); ?>" id="adsforwp_v_condition_enable" name="adsforwp_v_condition_enable">    
     <?php 
         if(isset($visitor_condition_enable) && $visitor_condition_enable =='enable'){
          echo '<div class="adsforwp-visitor-condition-groups">';
@@ -395,8 +395,16 @@ class adsforwp_view_visitor_condition {
                    }                                                                                             
                     if ( $comparison == 'equal' ) {
                       $ip = $this->adsforwp_get_client_ip();
-                      $ipdat = json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=" . $ip));
-                      $country_code = $ipdat->geoplugin_countryCode;
+                      $ipdat = wp_remote_get( 'http://www.geoplugin.net/json.gp?ip=' . $ip );
+
+                      if ( ! is_wp_error( $ipdat ) && wp_remote_retrieve_response_code( $ipdat ) === 200 ) {
+                          $body = wp_remote_retrieve_body( $ipdat );
+                          $ipdat = json_decode( $body );
+
+                          if ( $ipdat !== null ) {
+                            $country_code = $ipdat->geoplugin_countryCode;
+                          } 
+                      }
                           if ( $country_code == $data ) {
                             $result = true;
                           }
