@@ -917,7 +917,7 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
         
             foreach($result as $group){
                $group_post = get_post($group);  
-               $post_title .= '<a href="'. esc_url(get_admin_url()).'post.php?post='.esc_attr($group).'&action=edit">'.esc_html__($group_post->post_title, 'ads-for-wp').'</a>, ';
+               $post_title .= '<a href="'. esc_url(get_admin_url()).'post.php?post='.esc_attr($group).'&action=edit">'.esc_html($group_post->post_title).'</a>, ';
             }
             
             $ad_stats   = adsforwp_get_ad_stats('sumofstats', $post_id);            

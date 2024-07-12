@@ -90,12 +90,12 @@ class Adsforwp_Ads_Widget extends WP_Widget {
 
 		foreach($all_ads as $ad){
 		 
-			$ads_select_html .='<option '. esc_attr(selected( $ads, $ad->ID, false)).' value="'.esc_attr($ad->ID).'">'.esc_html__($ad->post_title, 'ads-for-wp').'</option>';
+			$ads_select_html .='<option '. esc_attr(selected( $ads, $ad->ID, false)).' value="'.esc_attr($ad->ID).'">'.esc_html($ad->post_title).'</option>';
 		 
 		}
 		foreach($all_groups as $group){
 		 
-			$group_select_html .='<option '. esc_attr(selected( $ads, $group->ID, false)).' value="'.esc_attr($group->ID).'">'.esc_html__($group->post_title, 'ads-for-wp').'</option>';
+			$group_select_html .='<option '. esc_attr(selected( $ads, $group->ID, false)).' value="'.esc_attr($group->ID).'">'.esc_html($group->post_title).'</option>';
 		}
 		$allow_html = $this->common_function->adsforwp_expanded_allowed_tags();
 

@@ -66,7 +66,7 @@ public function adsforwp_comparision_condition_type_values($data = '', $saved_da
         } else {
             $selected = '';
         }
-        $output .= '<option '. esc_attr($selected) .' value="' . esc_attr($key) .'"> ' .  esc_html__($value, 'ads-for-wp') .'  </option>';            
+        $output .= '<option '. esc_attr($selected) .' value="' . esc_attr($key) .'"> ' .  esc_html($value) .'  </option>';            
     }    
     $output .= ' </select> ';
     
@@ -553,7 +553,7 @@ public function adsforwp_visitor_condition_type_values($data = '', $saved_data= 
                   
                 }
 
-            $output .= '<option '. esc_attr($selected) .' value="' . esc_attr($key) .'"> ' .  esc_html__($value, 'ads-for-wp') .'  </option>';            
+            $output .= '<option '. esc_attr($selected) .' value="' . esc_attr($key) .'"> ' .  esc_html($value) .'  </option>';            
           } 
         
           $output .= ' </select> '; 
@@ -865,7 +865,7 @@ public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $curre
                   
                 }
 
-                $output .= '<option '. esc_attr($selected) .' value="' .  esc_attr($key) .'"> ' .  esc_html__($value, 'ads-for-wp') .'  </option>';            
+                $output .= '<option '. esc_attr($selected) .' value="' .  esc_attr($key) .'"> ' .  esc_html($value) .'  </option>';            
             }
             
           }
@@ -884,7 +884,7 @@ public function adsforwp_ajax_select_creator($data = '', $saved_data= '', $curre
                   
                 }
 
-            $output .= '<option '. esc_attr($selected) .' value="' . esc_attr($key) .'"> ' .  esc_html__($value, 'ads-for-wp') .'  </option>';            
+            $output .= '<option '. esc_attr($selected) .' value="' . esc_attr($key) .'"> ' .  esc_html($value) .'  </option>';            
             
           } 
           
@@ -1016,7 +1016,7 @@ public function adsforwp_create_ajax_select_taxonomy($selectedParentValue = '',$
         
       }
       
-      $choices .= '<option value="'.esc_attr($taxonomy->slug).'" '.esc_attr($sel).'>'.esc_html__($taxonomy->name,'ads-for-wp').'</option>';
+      $choices .= '<option value="'.esc_attr($taxonomy->slug).'" '.esc_attr($sel).'>'.esc_html($taxonomy->name).'</option>';
       
     }
     

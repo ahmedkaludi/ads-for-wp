@@ -74,7 +74,7 @@ class adsforwp_view_expiredate {
 	public function field_generator( $post ) {
 		$output = '';                                 
 		foreach ( $this->meta_fields as $meta_field ) {
-			$label = '<label for="' . esc_attr($meta_field['id']) . '">' . esc_html__($meta_field['label'], 'ads-for-wp') . '</label>';
+			$label = '<label for="' . esc_attr($meta_field['id']) . '">' . esc_html($meta_field['label']) . '</label>';
 			$meta_value = get_post_meta( $post->ID, $meta_field['id'], true );
 			if ( empty( $meta_value ) ) {
 				$meta_value = isset($meta_field['default']); }
@@ -139,7 +139,7 @@ class adsforwp_view_expiredate {
 							'<option %s value="%s">%s</option>',
                                                         in_array($meta_field_value, $specific_days) ? 'selected' : '',							
 							esc_attr($meta_field_value),
-							esc_html__($value, 'ads-for-wp')
+							esc_html($value)
 						);
 					}
                                         
@@ -157,7 +157,7 @@ class adsforwp_view_expiredate {
 							'<option %s value="%s">%s</option>',
 							$meta_value === $meta_field_value ? 'selected' : '',
 							esc_attr($meta_field_value),
-							esc_html__($value, 'ads-for-wp')
+							esc_html($value)
 						);
 					}
                                         

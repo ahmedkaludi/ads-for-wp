@@ -778,7 +778,7 @@ class adsforwp_view_ads_type {
                     if(isset($meta_field['label'])){
                       $label =  $meta_field['label']; 
                     }
-			$label = '<label for="' . $meta_field['id'] . '">' . esc_html__( $label, 'ads-for-wp' ) . '</label>';
+			$label = '<label for="' . $meta_field['id'] . '">' . esc_html( $label) . '</label>';
 			$meta_value = get_post_meta( $post->ID, $meta_field['id'], true );
 			if ( empty( $meta_value ) ) {
 				$meta_value = isset($meta_field['default']); 
@@ -816,7 +816,7 @@ class adsforwp_view_ads_type {
 							'<option %s value="%s">%s</option>',
 							$meta_value === $meta_field_value ? 'selected' : '',
 							$meta_field_value,
-							esc_html__($value, 'ads-for-wp')
+							esc_html($value)
 						);
 					}
                                         switch($meta_field['id']){

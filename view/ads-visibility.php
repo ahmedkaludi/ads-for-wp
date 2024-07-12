@@ -50,7 +50,7 @@ class adsforwp_view_ads_visibility {
 				case 'radio':
                                         $meta_field_label = isset($meta_field['label']);
 					$input = '<fieldset>';
-					$input .= '<legend class="screen-reader-text">' . esc_html__($meta_field_label, 'ads-for-wp' ) . '</legend>';
+					$input .= '<legend class="screen-reader-text">' . esc_html($meta_field_label) . '</legend>';
 					$i = 0;
 					foreach ( $meta_field['options'] as $key => $value ) {
 						$meta_field_value = !is_numeric( $key ) ? $key : $value;
@@ -61,7 +61,7 @@ class adsforwp_view_ads_visibility {
 							esc_attr($meta_field['id']),
 							esc_attr($meta_field['id']),
 							$meta_field_value,
-							esc_html__($value, 'ads-for-wp'),
+							esc_html($value),
 							$i < count( $meta_field['options'] ) - 1 ? '' : ''
 						);
 						$i++;

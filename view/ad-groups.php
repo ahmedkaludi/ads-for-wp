@@ -99,7 +99,7 @@ class adsforwp_view_ad_groups {
             	$metafieldlabel  = $meta_field['label'];
             }
             
-            $label = '<label for="' . esc_attr($id) . '">' . esc_html__($metafieldlabel, 'ads-for-wp' ) . '</label>';
+            $label = '<label for="' . esc_attr($id) . '">' . esc_html($metafieldlabel) . '</label>';
 			$meta_value = get_post_meta( $post->ID, $id, true );   
                         
 			if ( empty( $meta_value ) ) {
@@ -128,7 +128,7 @@ class adsforwp_view_ad_groups {
                 			if(!$expiry_status){
                 				$post_meta_dataset           = get_post_meta($key,$key='',true);
                 				$ad_expire_to                = adsforwp_rmv_warnings($post_meta_dataset, 'adsforwp_ad_expire_to', 'adsforwp_array');
-                				$expiry_msg = esc_html__('This ad has been expired on this date '.$ad_expire_to.'.', 'ads-for-wp');
+                				$expiry_msg = esc_html__('This ad has been expired on this date ', 'ads-for-wp').esc_html($ad_expire_to);
                 			}
 
 							if(get_post_status($key) == 'publish'){
@@ -166,7 +166,7 @@ class adsforwp_view_ad_groups {
 					}
 
 					$input = '<fieldset>';
-					$input .= '<legend class="screen-reader-text">' . esc_html__($meta_field['label'], 'ads-for-wp') . '</legend>';
+					$input .= '<legend class="screen-reader-text">' . esc_html($meta_field['label']) . '</legend>';
 
 					$i = 0;
 					foreach ( $meta_field['options'] as $key => $value ) {
@@ -177,7 +177,7 @@ class adsforwp_view_ad_groups {
 							esc_attr($id),
 							esc_attr($id),
 							esc_attr($meta_field_value),
-							esc_html__($value,'ads-for-wp'),
+							esc_html($value),
 							$i < count( $meta_field['options'] ) - 1 ? '<br>' : ''
 						);
 						$i++;
@@ -222,7 +222,7 @@ class adsforwp_view_ad_groups {
 									'<option %s value="adsforwp_ads%s">%s</option>',
 									$meta_value === $meta_field_value ? 'selected' : '',
 									esc_attr($meta_field_value),
-									esc_html__($value['ad_name'], 'ads-for-wp')
+									esc_html($value['ad_name'])
 								);  
 							}
 						}
@@ -241,7 +241,7 @@ class adsforwp_view_ad_groups {
 						            '<option %s value="%s">%s</option>',
 						            $meta_value === $meta_field_value ? 'selected' : '',
 						            $meta_field_value,
-						            esc_html__($value, 'ads-for-wp')
+						            esc_html($value)
 						    );
 						 }
 						$input .= '</select>';

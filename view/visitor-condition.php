@@ -130,7 +130,7 @@ class adsforwp_view_visitor_condition {
                   </optgroup>
                   <?php
                   foreach ($choice_value as $sub_key => $sub_value) { ?> 
-                    <option class="pt-child" value="<?php echo esc_attr( $sub_key );?>" <?php selected( $selected_val_key_1, $sub_key );?> > <?php echo esc_html__($sub_value,'ads-for-wp');?> </option>
+                    <option class="pt-child" value="<?php echo esc_attr( $sub_key );?>" <?php selected( $selected_val_key_1, $sub_key );?> > <?php echo esc_html($sub_value);?> </option>
                     <?php
                   }
                 } ?>
@@ -214,7 +214,7 @@ class adsforwp_view_visitor_condition {
   if(isset($visitor_condition_enable) && $visitor_condition_enable =='enable'){
       if($user_target_type == 1 && $afwp_cache_mobile_support == 1){
   ?>
-  <p class="device-type-notice"><span class="dashicons dashicons-warning"></span><em>Warning: <?php echo esc_html__($message,'ads-for-wp');?></em></p>
+  <p class="device-type-notice"><span class="dashicons dashicons-warning"></span><em>Warning: <?php echo esc_html($message);?></em></p>
   <?php }
   }  
   ?>

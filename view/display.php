@@ -255,7 +255,7 @@ class adsforwp_view_display {
 		$output = '';
 		foreach ( $this->meta_fields as $meta_field ) {
                         $attributes ='';
-			$label = '<label for="' . esc_attr($meta_field['id']) . '">' . esc_html__( $meta_field['label'], 'ads-for-wp' ) . '</label>';
+			$label = '<label for="' . esc_attr($meta_field['id']) . '">' . esc_html( $meta_field['label'] ) . '</label>';
 			$meta_value = get_post_meta( $post->ID, $meta_field['id'], true );
 			if ( empty( $meta_value ) ) {
                 if($meta_field['id'] == 'adsforwp_new_element'){
@@ -281,7 +281,7 @@ class adsforwp_view_display {
     							'<option %s value="%s">%s</option>',
     							$meta_value === $meta_field_value ? 'selected' : '',
     							esc_attr($meta_field_value),
-    							esc_html__($value, 'ads-for-wp')                            
+    							esc_html($value)                            
     						);
     					}
                         $input .= '</select><a href="#" class="adsforwp-advance-option-click">'. esc_html__('Advance Option', 'ads-for-wp').'</a>';
@@ -300,7 +300,7 @@ class adsforwp_view_display {
                                             
                         foreach($meta_field['optgroup'] as $dtype => $options){
                             if($dtype =='both-options'){
-                                $input .='<optgroup label="'.esc_html__($opt_label, 'ads-for-wp').'">';
+                                $input .='<optgroup label="'.esc_html($opt_label).'">';
                             }
                             if($dtype =='amp-options'){
                                 $input .='<optgroup label="Partial Support ( AMP Only )">';
@@ -312,7 +312,7 @@ class adsforwp_view_display {
                                         '<option %s value="%s">%s</option>',
                                         $meta_value === $meta_field_value ? 'selected' : '',
                                         esc_attr($meta_field_value),
-                                        esc_html__($value, 'ads-for-wp')
+                                        esc_html($value)
                                 );
                             }
                             $input .='</optgroup>';
@@ -331,7 +331,7 @@ class adsforwp_view_display {
                             $input .= sprintf('<option %s value="%s">%s</option>',
                                             $meta_value === $meta_field_value ? 'selected' : '',
                                             $meta_field_value,
-                                            esc_html__($value, 'ads-for-wp')
+                                            esc_html($value)
                                         );
                         }
                             $input .= '</select>';
@@ -393,7 +393,7 @@ class adsforwp_view_display {
         							$meta_field['id'],
         							$meta_field['id'],
         							$meta_field_value,
-        							esc_html__($value, 'ads-for-wp'),
+        							esc_html($value),
         							$i < count( $meta_field['options'] ) - 1 ? '' : ''
         						);
 						        $i++;
@@ -402,7 +402,7 @@ class adsforwp_view_display {
                         break;
                         case 'adsforwp_custom_target_position':
                             $input = '<fieldset class="adsforwp-custom-target-fields">';
-                            $input .= '<legend class="screen-reader-text">' . esc_html__($meta_field['label'],'ads-for-wp') . '</legend>';
+                            $input .= '<legend class="screen-reader-text">' . esc_html($meta_field['label']) . '</legend>';
                             $i = 0;
                             foreach ( $meta_field['options'] as $key => $value ) {
                                 $meta_field_value = !is_numeric( $key ) ? $key : $value;
@@ -412,7 +412,7 @@ class adsforwp_view_display {
                                         esc_attr($meta_field['id']),
                                         esc_attr($meta_field['id']),
                                         esc_attr($meta_field_value),
-                                        esc_html__($value,'ads-for-wp'),
+                                        esc_html($value),
                                         $i < count( $meta_field['options'] ) - 1 ? '' : ''
                                     );
                                 $i++;
@@ -484,7 +484,7 @@ class adsforwp_view_display {
                 $group_links = '';
                 foreach($in_group as $group){                       
                 $group_post = get_post($group);                        
-                $group_links .= '<span style="padding-right:5px;"><a href="?post='.esc_attr($group).'&action=edit"> '.esc_html__($group_post->post_title, 'ads-for-wp').'</a>,</span>';    
+                $group_links .= '<span style="padding-right:5px;"><a href="?post='.esc_attr($group).'&action=edit"> '.esc_html($group_post->post_title).'</a>,</span>';    
                 }
                 echo '<p>'.esc_html__('This ad is associated with ', 'ads-for-wp').''.html_entity_decode(esc_html($group_links)).'group</p>';   
                 echo '<table class="form-table" style="display:none;"><tbody>' . $output . '</tbody></table><div id="afw-embed-code-div"></div>';      
