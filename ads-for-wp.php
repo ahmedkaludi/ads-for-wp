@@ -34,12 +34,9 @@ require_once  ADSFORWP_PLUGIN_DIR.'/admin/ads-widget.php';
 require_once  ADSFORWP_PLUGIN_DIR.'/admin/common-functions.php';
 require_once  ADSFORWP_PLUGIN_DIR.'/admin/settings.php';
 
-require_once  ADSFORWP_PLUGIN_DIR.'/admin/inc/analytics-settings.php';
-require_once  ADSFORWP_PLUGIN_DIR.'/admin/inc/analytics-common-functions.php';
-
 require_once  ADSFORWP_PLUGIN_DIR.'/admin/ajax-selectbox.php';
 require_once  ADSFORWP_PLUGIN_DIR.'/admin/file-creation.php';
-require_once  ADSFORWP_PLUGIN_DIR.'/admin/analytics-settings.php';
+
 require_once  ADSFORWP_PLUGIN_DIR.'/admin/analytics.php';
 require_once  ADSFORWP_PLUGIN_DIR.'/admin/inc/gutenberg/adsforwp-gutenberg.php';
 require_once  ADSFORWP_PLUGIN_DIR.'/admin/mb-helper-function.php';

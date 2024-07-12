@@ -17,6 +17,11 @@ public function adsforwp_add_menu_links() {
                 'manage_options',
                 'adsforwp',
                 array($this, 'adsforwp_admin_interface_render'));
+
+	if(!defined('ADSFORWP_PRO_VERSION') && current_user_can('manage_options')){
+
+		add_submenu_page( 'edit.php?post_type=adsforwp', 'AdsForWP', '<span class="adsforwp-upgrade-to-pro">'. esc_html__('Upgrade To Premium', 'ads-for-wp').'</span>', 'manage_options', 'adsforwp_data_premium', array($this, 'adsforwp_premium_interface_render') );	                
+	}
 }
 
 
