@@ -83,8 +83,6 @@ class adsforwp_output_functions{
         add_filter('the_content', array($this, 'adsforwp_display_ads'));            
         add_shortcode('adsforwp', array($this,'adsforwp_manual_ads'));
         add_shortcode('adsforwp-group', array($this, 'adsforwp_group_ads'));
-        add_action('wp_ajax_nopriv_adsforwp_get_groups_ad', array($this, 'adsforwp_get_groups_ad'));
-        add_action('wp_ajax_adsforwp_get_groups_ad', array($this, 'adsforwp_get_groups_ad'));
         
         //Hooks for sticky ads
         add_action('wp_footer', array($this, 'adsforwp_display_sticky_ads'));
@@ -3057,41 +3055,7 @@ public function adsforwp_preload_image_(){
       }    
                
     }
-    /**
-     * This is a ajax handler function for ads groups. 
-     * @return type json string
-     */
-    public function adsforwp_get_groups_ad(){  
-        
-        $ad_id                  = sanitize_text_field($_GET['ad_id']);        
-        $ads_group_id           = sanitize_text_field($_GET['ads_group_id']);
-        $ads_group_type         = sanitize_text_field($_GET['ads_group_type']);
-        $ads_group_data         = get_post_meta($ads_group_id,$key='adsforwp_ads',true);
-        
-        switch ($ads_group_type) {
-            
-            case 'rand':
-                
-                if(is_array($ads_group_data)){
-                    $ad_code =  $this->adsforwp_get_ad_code(array_rand($ads_group_data), $type="GROUP");
-                }
-            
-                break;            
-            case 'ordered':                
-                    $ad_code =  $this->adsforwp_get_ad_code($ad_id, $type="GROUP");    
-                break;
-            
-            default:
-                break;
-            
-        }                
-        if($ad_code){
-        echo json_encode(array('status'=> 't','ad_code'=> $ad_code));        
-        }else{
-        echo json_encode(array('status'=> 'f','ad_code'=> 'group code not available'));
-        }
-        wp_die();           
-}
+ 
     /**
      * Function to detect adblocker 
      * Adblocker blocks all the js from adsforwp thats why we have not used wp_enqueue_script here.
