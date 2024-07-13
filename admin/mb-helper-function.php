@@ -109,7 +109,7 @@ function adsforwp_enqueue_makebetter_email_js(){
         return;
     }
 
-    wp_enqueue_script( 'ads-for-wp-make-better-js', plugin_dir_url( __DIR__ ). 'admin/make-better-admin.js', array( 'jquery' ), ADSFORWP_VERSION);
+    wp_enqueue_script( 'ads-for-wp-make-better-js', plugin_dir_url( __DIR__ ). 'admin/make-better-admin.js', array( 'jquery' ), ADSFORWP_VERSION,true);
 
     wp_enqueue_style( 'ads-for-wp-make-better-css', plugin_dir_url( __DIR__ ). 'admin/make-better-admin.css', false , ADSFORWP_VERSION);
 }

@@ -125,6 +125,7 @@ class adsforwp_admin_common_functions {
         
         if($all_ads_post || $all_group_post){
             
+          //phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Reason: We need to run direct query to start transaction
             $wpdb->query('START TRANSACTION');
             
             //ads
@@ -134,14 +135,12 @@ class adsforwp_admin_common_functions {
                 unset($post['ID']); 
                                 
                 $post_id = wp_insert_post($post);
-                $result  = $post_id;
-                $guid    = get_option('siteurl') .'/?post_type=adsforwp&p='.$post_id;                
-       
-                $wpdb->query($wpdb->prepare(
-                  "UPDATE wp_posts SET guid = %s WHERE ID = %d",
-                  $guid,
-                  $post_id
-              ));                
+            
+                wp_update_post( array(
+                  'ID'           => intval($post_id),
+                  'guid'         => sanitize_url(get_option('siteurl') .'/?post_type=adsforwp&p='.$post_id)
+                ));    
+
                 $ads_meta = $ads_post['ads_meta'];
                 
                 if(isset($ads_post['in_groups'])){
@@ -176,14 +175,11 @@ class adsforwp_admin_common_functions {
                 unset($post['ID']);     
                 
                 $post_id = wp_insert_post($post);
-                $result  = $post_id;
-                
-                $guid = get_option('siteurl') .'/?post_type=adsforwp-groups&p='.$post_id;
-                $wpdb->query($wpdb->prepare(
-                  "UPDATE wp_posts SET guid = %s WHERE ID = %d",
-                  $guid,
-                  $post_id
-              ));                   
+
+                wp_update_post( array(
+                  'ID'           => intval($post_id),
+                  'guid'         => sanitize_url(get_option('siteurl') .'/?post_type=adsforwp-groups&p='.$post_id)
+                ));                    
                 $ads_meta = $group_post['group_meta'];                               
                 
                 foreach($ads_meta as $key => $ad){
@@ -229,9 +225,10 @@ class adsforwp_admin_common_functions {
              if (is_wp_error($result) ){
                 
               echo esc_attr($result->get_error_message()); 
-              
+              //phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Reason: We need to run direct query to rollback transaction
               $wpdb->query('ROLLBACK');             
             }else{
+              //phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Reason: We need to run direct query to commit transaction
               $wpdb->query('COMMIT'); 
               return true;
             }
@@ -325,6 +322,7 @@ class adsforwp_admin_common_functions {
         
         if($all_advanced_ads){
             // begin transaction
+            //phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Reason: We need to run direct query to start transaction
             $wpdb->query('START TRANSACTION');
             
             foreach($all_advanced_ads as $ads){    
@@ -354,14 +352,12 @@ class adsforwp_admin_common_functions {
                     'filter'                => $ads->filter,                    
                 );      
                                 
-                $post_id    = wp_insert_post($ads_post);
-                $result     = $post_id;
-                $guid       = get_option('siteurl') .'/?post_type=adsforwp&p='.$post_id;                
-                $wpdb->query($wpdb->prepare(
-                  "UPDATE wp_posts SET guid = %s WHERE ID = %d",
-                  $guid,
-                  $post_id
-                ));  
+                $post_id    = wp_insert_post($ads_post);  
+                wp_update_post( array(
+                  'ID'           => intval($post_id),
+                  'guid'         => sanitize_url(get_option('siteurl') .'/?post_type=adsforwp&p='.$post_id)
+                ));    
+
                 $advn_meta_value  = array();
                 $advn_meta_value  = get_post_meta($ads->ID, $key='advanced_ads_ad_options', true );                  
                 
@@ -514,10 +510,11 @@ class adsforwp_admin_common_functions {
                 
               echo esc_html($result->get_error_message()); 
               
+              //phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Reason: We need to run direct query to rollback transaction
               $wpdb->query('ROLLBACK');   
               
             }else{
-                
+              //phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Reason: We need to run direct query to commit transaction
               $wpdb->query('COMMIT'); 
               return true;
               
@@ -1160,13 +1157,16 @@ class adsforwp_admin_common_functions {
                  return;  
             }
             global $wpdb;
+            //phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Reason: We need to run direct query to start transaction
               $wpdb->query('START TRANSACTION');
               $result = array();  
               $result = $this->adsforwp_migrate_ampforwp_ads();                              
             if (is_wp_error($result) ){
-              echo wp_kses_post($result->get_error_message());              
+              echo wp_kses_post($result->get_error_message());   
+              //phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Reason: We need to run direct query to rollback transaction           
               $wpdb->query('ROLLBACK');             
             }else{
+              //phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Reason: We need to run direct query to commit transaction
               $wpdb->query('COMMIT'); 
              return $result;     
             }                         
@@ -1185,6 +1185,7 @@ class adsforwp_admin_common_functions {
             }
                         
             global $wpdb;
+            //phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Reason: We need to run direct query to start transaction
             $wpdb->query('START TRANSACTION');
               $result = array();                
               
@@ -1198,9 +1199,11 @@ class adsforwp_admin_common_functions {
 
               $result[] = $this->adsforwp_migrate_advanced_amp_ads_inloop();                
             if (is_wp_error($result) ){
-              echo wp_kses_post($result->get_error_message());              
+              echo wp_kses_post($result->get_error_message()); 
+              //phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Reason: We need to run direct query to rollback transaction             
               $wpdb->query('ROLLBACK');             
             }else{
+              //phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Reason: We need to run direct query to commit transaction
               $wpdb->query('COMMIT'); 
              return $result;     
             }                         
@@ -1220,6 +1223,7 @@ class adsforwp_admin_common_functions {
             }
                         
             global $wpdb;
+            //phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Reason: We need to run direct query to start transaction
             $wpdb->query('START TRANSACTION');
             $result = array();                
             $user_id = get_current_user_id();
@@ -1303,9 +1307,11 @@ class adsforwp_admin_common_functions {
             }                          
               
             if (is_wp_error($result) ){
-              echo wp_kses_post($result->get_error_message());              
+              echo wp_kses_post($result->get_error_message());
+              //phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Reason: We need to run direct query to rollback transaction              
               $wpdb->query('ROLLBACK');             
             }else{
+              //phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Reason: We need to run direct query to commit transaction
               $wpdb->query('COMMIT'); 
              return $result;     
             }                         
@@ -1324,6 +1330,7 @@ class adsforwp_admin_common_functions {
             }
                         
             global $wpdb;
+            //phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Reason: We need to run direct query to start transaction
             $wpdb->query('START TRANSACTION');
             $result = array();                
             $user_id = get_current_user_id();
@@ -1516,7 +1523,7 @@ class adsforwp_admin_common_functions {
                   
                   $adforwp_meta_key = array(
                     'select_adtype'     => 'custom',  
-                    'custom_code'       => $ad_code,
+                    'custom_code'       => $ads_content,
                     'adposition'        => $adposition,
                     'paragraph_number'  => $pragraph_no,  
                     'adsforwp_ad_align' => $ad_align,
@@ -1532,9 +1539,11 @@ class adsforwp_admin_common_functions {
             }
           //die;
           if (is_wp_error($result) ){
-              echo wp_kses_post($result->get_error_message());              
+              echo wp_kses_post($result->get_error_message());
+              //phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Reason: We need to run direct query to rollback transaction              
               $wpdb->query('ROLLBACK');             
           }else{
+            //phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Reason: We need to run direct query to commit transaction
             $wpdb->query('COMMIT'); 
            return $result;     
           }

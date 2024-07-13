@@ -187,17 +187,23 @@ class adsforwp_admin_analytics{
       global $wpdb;
   
       $today = adsforwp_get_date('day');
-  
-      $stats = $wpdb->get_var(
-          $wpdb->prepare(
-              "SELECT `id` FROM `{$wpdb->prefix}adsforwp_stats` WHERE `ad_id` = %d AND `ad_device_name` = %s AND `ad_thetime` = %d;",
-              $ad_id,
-              trim($device_name),
-              $today
-          )
-      );
-  
+
+      $stats = wp_cache_get('adsforwp_get_stats_impr_' . $ad_id);
+
+      if($stats === false){
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Reason:working on custom table
+        $stats = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT `id` FROM `{$wpdb->prefix}adsforwp_stats` WHERE `ad_id` = %d AND `ad_device_name` = %s AND `ad_thetime` = %d;",
+                $ad_id,
+                trim($device_name),
+                $today
+            )
+        );
+        wp_cache_set('adsforwp_get_stats_impr_' . $ad_id, $stats);
+      } 
       if ($stats > 0) {
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Reason:working on custom table
           $wpdb->query(
               $wpdb->prepare(
                   "UPDATE `{$wpdb->prefix}adsforwp_stats` SET `ad_impressions` = `ad_impressions` + 1 WHERE `id` = %d;",
@@ -205,6 +211,7 @@ class adsforwp_admin_analytics{
               )
           );
       } else {
+         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Reason:working on custom table
           $wpdb->insert(
               $wpdb->prefix.'adsforwp_stats',
               array(
@@ -236,17 +243,23 @@ class adsforwp_admin_analytics{
       global $wpdb;
   
       $today = adsforwp_get_date('day');
-  
-      $stats = $wpdb->get_var(
-          $wpdb->prepare(
-              "SELECT `id` FROM `{$wpdb->prefix}adsforwp_stats` WHERE `ad_id` = %d AND `ad_device_name` = %s AND `ad_thetime` = %d;",
-              $ad_id,
-              trim($device_name),
-              $today
-          )
-      );
-  
+
+      $stats = wp_cache_get('adsforwp_get_stats_clicks_' . $ad_id);
+
+      if($stats === false){
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Reason:working on custom table
+        $stats = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT `id` FROM `{$wpdb->prefix}adsforwp_stats` WHERE `ad_id` = %d AND `ad_device_name` = %s AND `ad_thetime` = %d;",
+                $ad_id,
+                trim($device_name),
+                $today
+            )
+        );
+        wp_cache_set('adsforwp_get_stats_clicks_' . $ad_id, $stats);
+      }  
       if ($stats > 0) {
+        //phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Reason: working on custom table
           $wpdb->query(
               $wpdb->prepare(
                   "UPDATE `{$wpdb->prefix}adsforwp_stats` SET `ad_clicks` = `ad_clicks` + 1 WHERE `id` = %d;",
@@ -254,6 +267,7 @@ class adsforwp_admin_analytics{
               )
           );
       } else {
+        //phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Reason: working on custom table
           $wpdb->insert(
               $wpdb->prefix.'adsforwp_stats',
               array(

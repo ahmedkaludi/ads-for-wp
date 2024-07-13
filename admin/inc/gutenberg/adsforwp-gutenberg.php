@@ -29,7 +29,9 @@ class Adsforwp_Ads_Gutenberg{
 	    wp_register_script(
             'adsforwp-gb-ad-js',
             ADSFORWP_PLUGIN_DIR_URI . 'admin/inc/gutenberg/js/adsforwp-blocks.js',
-            array( 'wp-i18n', 'wp-element', 'wp-blocks', 'wp-components', 'wp-editor' )
+            array( 'wp-i18n', 'wp-element', 'wp-blocks', 'wp-components', 'wp-editor' ),
+			ADSFORWP_VERSION,
+			true
         );                                         
 	   
 	    $all_ads = adsforwp_get_ad_ids(); 

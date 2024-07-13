@@ -897,15 +897,16 @@ class adsforwp_output_functions{
             $service = new adsforwp_output_service();
             $ad_status = $service->adsforwp_is_condition($post_id);
             
-            if($ad_status){
-                echo '<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            if($ad_status){ 
+              //phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- Reason: Need to add google adsense script to the head ?>
+               <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                   <script>
                   (adsbygoogle = window.adsbygoogle || []).push({
-                  google_ad_client: "'.esc_attr(adsforwp_rmv_warnings($result, 'data_ad_client', 'adsforwp_string')).'",
+                  google_ad_client: "<?php echo esc_attr(adsforwp_rmv_warnings($result, 'data_ad_client', 'adsforwp_string'));?>",
                   enable_page_level_ads: true
                   }); 
-                 </script>'; 
-            }
+                 </script>
+           <?php  }
             
             }
            
@@ -1088,9 +1089,9 @@ class adsforwp_output_functions{
 
                             }
                             
-                            if( $data_slot_escaped !=''){   ?>
-
-                              <script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+                            if( $data_slot_escaped !=''){   
+                              //phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- Reason:  Google tag manager script need to be added to head  ?>
+                               <script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
                                    <script>
                                     var googletag = googletag || {};
                                     googletag.cmd = googletag.cmd || [];
@@ -1894,8 +1895,7 @@ class adsforwp_output_functions{
                                       z.src = "//assets.mantisadnetwork.com/recommend.min.js";
                                       var s = document.getElementsByTagName(\'head\')[0];
                                       s.parentNode.insertBefore(z, s);
-                                    </script>
-                                    <link href="//assets.mantisadnetwork.com/recommend.3columns.css" rel="stylesheet" type="text/css" />';
+                                    </script>';
                       }elseif( !empty($mantis_ad_id) && $mantis_display_type == 'display' ){
                             $ad_code = '<div data-mantis-zone="'.esc_attr($mantis_zone_name).'"></div>
                                       <script type="text/javascript">
@@ -2264,9 +2264,9 @@ class adsforwp_output_functions{
                                         id : "'.esc_attr($ad_now_widget_id).'",
                                         domain : "n.ads1-adnow.com"
                                        });
-                                 </script>
-                                 <script type="text/javascript" src="//st-n.ads1-adnow.com/js/a.js"></script>    
-				 </div>';
+                                 </script>';
+                          //phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- Reason: This is adcode which needs to be added as it is 
+                          $ad_code .= '<script type="text/javascript" src="//st-n.ads1-adnow.com/js/a.js"></script></div>';
                                                   
                      }   
                                                      
@@ -2286,8 +2286,9 @@ class adsforwp_output_functions{
                                   <script type="text/javascript">
                                     var infolinks_pid = '.esc_attr($infolinks_pid).';
                                     var infolinks_wsid = '.esc_attr($infolinks_wsid).';
-                                  </script>
-                                <script type="text/javascript" src="http://resources.infolinks.com/js/infolinks_main.js"></script>
+                                  </script>';
+                                 //phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- Reason: This is part of adcode which needs to be added as it is 
+                                  $ad_code .='<script type="text/javascript" src="http://resources.infolinks.com/js/infolinks_main.js"></script>
                                 </div>';
                             
                         }                                                     
@@ -2341,7 +2342,7 @@ class adsforwp_output_functions{
                                 }
                            }
 
-
+                           //phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- Reason: This is part of adcode which needs to be added as it is 
                             $ad_code =  '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.' '.$brw_class.'"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>'.$adsHtml.'</div>';
                         }
                     }
@@ -2353,6 +2354,7 @@ class adsforwp_output_functions{
                     }
                     if(!$this->is_amp){
                         if($ad_client && $ad_slot){
+                              //phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- Reason: This is part of adcode which needs to be added as it is 
                              $ad_code =  '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.' '.$brw_class.'"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                                     <ins class="adsbygoogle"
                                          style="display:block; text-align:center;"
@@ -2504,9 +2506,10 @@ class adsforwp_output_functions{
                           if($ad_client && $ad_slot){
                           
                               $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.' '.$brw_class.'">
-                                                                '.$sponsership_label.'
-                                              <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
-                                              </script>
+                                                                '.$sponsership_label;
+                                       //phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- Reason: This is part of adcode which needs to be added as it is
+                                       $ad_code ='<script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>';
+                                       $ad_code .='
                                       <ins 
                                       class="adsbygoogle" 
                                       style="background:none;display:inline-block;'.esc_attr($min_width_resp).''.esc_attr($max_width_resp).'width:100%;height:'.esc_attr($height).'px;max-height:'.esc_attr($height).'px;"                 
@@ -2525,12 +2528,12 @@ class adsforwp_output_functions{
                           
                       }else{
                           if($ad_client && $ad_slot){
-                            
+                            //phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- Reason: This is part of adcode which needs to be added as it is 
                               $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-ga afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.' '.$brw_class.'">
-                                                                '.$sponsership_label.'
-                                                                <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
-                                                                </script>
-                                                                <ins class="adsbygoogle" style="background:none;display:inline-block;width:'.esc_attr($width).'px;height:'.esc_attr($height).'px" data-ad-client="'.esc_attr($ad_client).'" data-ad-slot="'.esc_attr($ad_slot).'">
+                                                                '.$sponsership_label;
+                                          //phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- Reason: This is part of adcode which needs to be added as it is 
+                                          $ad_code .='<script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>';
+                                          $ad_code .='<ins class="adsbygoogle" style="background:none;display:inline-block;width:'.esc_attr($width).'px;height:'.esc_attr($height).'px" data-ad-client="'.esc_attr($ad_client).'" data-ad-slot="'.esc_attr($ad_slot).'">
                                                                 </ins>
                                                                 <script>
                                                                         (adsbygoogle = window.adsbygoogle || []).push({});
@@ -2596,16 +2599,16 @@ class adsforwp_output_functions{
             }else{                                  
                 
                 if($ad_data_crid && $ad_data_cid){
-                    
                  $ad_code = '<div data-ad-id="'.esc_attr($post_ad_id).'" style="text-align:'.esc_attr($ad_alignment).'; margin-top:'.esc_attr($ad_margin_top).'px; margin-bottom:'.esc_attr($ad_margin_bottom).'px; margin-left:'.esc_attr($ad_margin_left).'px; margin-right:'.esc_attr($ad_margin_right).'px;float:'.esc_attr($ad_text_wrap).';" class="afw afw-md afw_ad afwadid-'.esc_attr($post_ad_id).' '.$float_ad_class.' '.$brw_class.'">'.$sponsership_label.'
 						<script id="mNCC" language="javascript">
                                                             medianet_width = "'.esc_attr($width).'";
                                                             medianet_height = "'.esc_attr($height).'";
                                                             medianet_crid = "'.esc_attr($ad_data_crid).'"
                                                             medianet_versionId ="3111299"
-                                                   </script>
-                                                   <script src="//contextual.media.net/nmedianet.js?cid='.esc_attr($ad_data_cid).'"></script>
-                                                   '.$ad_label_bottom.'		
+                                                   </script>';
+                  //phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- Reason: This is part of adcode which needs to be added as it is                                  
+                  $ad_code .='<script src="//contextual.media.net/nmedianet.js?cid='.esc_attr($ad_data_cid).'"></script>' ;
+                  $ad_code .=$ad_label_bottom.'		
 						</div>';      
                     
                 }                                         
@@ -3076,6 +3079,7 @@ public function adsforwp_preload_image_(){
                 if( $ad_status && $post_type == 'mediavine' && !empty($mediavine_site_id)){
                   ?>
                   <link rel='dns-prefetch' href='//scripts.mediavine.com' />
+                  <?php //phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- Reason: This is part of adcode which needs to be added as it is  ?>
                   <script type='text/javascript' async="async" data-noptimize="1" data-cfasync="false" src='//scripts.mediavine.com/tags/<?php echo esc_attr($mediavine_site_id);?>.js?ver=5.2.3'></script>
                   <?php
                 }
@@ -3097,6 +3101,7 @@ public function adsforwp_preload_image_(){
         ?>
         <!-- AMPforWP Ezoic Code -->
         <script>var ezoicId = <?php echo esc_attr($ezoic_slot_id);?>;</script>
+        <?php //phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- Reason: This is part of adcode which needs to be added as it is  ?>
         <script type="text/javascript" src="//go.ezoic.net/ezoic/ezoic.js"></script>
         <!-- AMPforWP Ezoic Code -->
         <?php
@@ -3140,7 +3145,7 @@ public function adsforwp_preload_image_(){
                   $outbrain_widget_ids   = adsforwp_rmv_warnings($post_meta_dataset, 'outbrain_widget_ids', 'adsforwp_array');
                   $ad_status = $service->adsforwp_is_condition($ad_id);
                   if($ad_status && !empty($outbrain_widget_ids)){
-                  ?>
+                  //phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- Reason: This is part of adcode which needs to be added as it is ?>
                   <script type="text/javascript" async="async" src="http://widgets.outbrain.com/outbrain.js "></script>
                   <?php
                 }
