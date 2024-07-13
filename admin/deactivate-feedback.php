@@ -27,8 +27,9 @@ shuffle($reasons);
                 ?>
 	    </ul>
 	    <?php if ($email) : ?>
-    	    <input type="hidden" name="adsforwp_disable_from" value="<?php echo esc_attr($email); ?>"/>
+    		<input type="hidden" name="adsforwp_disable_from" value="<?php echo esc_attr($email); ?>"/>
 	    <?php endif; ?>
+		<?php wp_nonce_field( 'adsforwp_deactivate_form', '_adsforwp_deactivate' ); ?>
 	    <input id="ads-for-wp-reloaded-feedback-submit" class="button button-primary" type="submit" name="ads-for-wp_disable_submit" value="<?php esc_attr_e('Submit & Deactivate', 'ads-for-wp'); ?>"/>
 	    <a class="button"><?php esc_html_e('Only Deactivate', 'ads-for-wp'); ?></a>
 	    <a class="ads-for-wp-feedback-not-deactivate" href="#"><?php esc_html_e('Don\'t deactivate', 'ads-for-wp'); ?></a>

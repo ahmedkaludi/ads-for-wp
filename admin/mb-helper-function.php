@@ -50,9 +50,15 @@ function adsforwp_add_deactivation_feedback_modal() {
  * @since 1.4.0
  */
 function adsforwp_send_feedback() {
+    //phpcs:ignore WordPress.Security.NonceVerification.Missing -- Reason : Since form is serialised nonce is verified after parsing the recieved data.
+    if( isset( $_POST['data'] ) ) { parse_str( $_POST['data'], $form );}
 
-    if( isset( $_POST['data'] ) ) {
-        parse_str( $_POST['data'], $form );
+    if(empty($form) || !is_array($form)){
+        wp_die('Invalid Data Received');
+    }
+
+    if( !isset( $form['_adsforwp_deactivate'] ) || !wp_verify_nonce( $form['_adsforwp_deactivate'], 'adsforwp_deactivate_form' ) ) {
+        wp_die('Security check failed');
     }
 
     $text = '';

@@ -31,15 +31,16 @@ public function adsforwp_admin_interface_render(){
 		return;
 	}     	       
 	// Handing save settings
+	//phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason : Only Checking if the form was submitted
 	if ( isset( $_GET['settings-updated'] ) ) {
             
             $settings = adsforwp_defaultSettings();              
             $file_creation = new adsforwp_file_creation();
             
             if(isset($settings['ad_blocker_support'])){                
-                $result = $file_creation->adsforwp_create_adblocker_support_js();                
+                $file_creation->adsforwp_create_adblocker_support_js();                
             }else{
-                $result = $file_creation->adsforwp_delete_adblocker_support_js(); 
+                $file_creation->adsforwp_delete_adblocker_support_js(); 
             }
             
 		settings_errors();
@@ -265,7 +266,10 @@ public function adsforwp_handle_file_upload($option){
         if ( ! current_user_can( 'upload_files' ) ) {
                     return $option;
         }
-        
+		if ( ! check_admin_referer('adsforwp_setting_dashboard_group-options') ){
+			return $option; 
+	   }
+	  
         $fileInfo = wp_check_filetype(basename($_FILES['adsforwp_import_backup']['name']));
         
         if (!empty($fileInfo['ext']) && $fileInfo['ext'] == 'json') {

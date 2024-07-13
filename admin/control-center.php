@@ -211,10 +211,9 @@ function adsforwp_filter_tracked_plugins() {
         'custom_target'       => esc_html__('Custom Target','ads-for-wp'),
         'sticky'              => esc_html__('Sticky','ads-for-wp'),
 			); // Options for the filter select field
-      $current_plugin = '';
-      if( isset( $_GET['slug'] ) ) {
-        $current_plugin = esc_attr($_GET['slug']); // Check if option has been selected
-      } ?>
+        //phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason : setting select box value if ad-type-slug is present in url without making any sensitive changes or performing critical actions.
+         $current_plugin = isset( $_GET['slug'])?esc_attr($_GET['slug']):''; 
+       ?>
       <select name="slug" id="slug">
         <option value="all" <?php selected( 'all', $current_plugin ); ?>><?php esc_html_e( 'All', 'ads-for-wp' ); ?></option>
         <?php foreach( $plugins as $key=>$value ) { ?>
@@ -235,12 +234,15 @@ function adsforwp_sort_ads_by_display_type( $query ) {
     
   global $pagenow;
   // Get the post type
+  //phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason : Nonce verification is not required here , using post_type for filtering
   $post_type = isset( $_GET['post_type'] ) ? $_GET['post_type'] : '';
+  //phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason : Nonce verification is not required here , using slug for filtering
+  $slug = isset( $_GET['slug'] ) ? $_GET['slug'] : '';
   
-  if ( is_admin() && $pagenow == 'edit.php' && $post_type == 'adsforwp' && isset( $_GET['slug'] ) && $_GET['slug'] !='all' ) {
+  if ( is_admin() && $pagenow == 'edit.php' && $post_type == 'adsforwp' &&  $slug !='all' ) {
       
     $query->query_vars['meta_key']     = 'wheretodisplay';
-    $query->query_vars['meta_value']   = esc_attr($_GET['slug']);
+    $query->query_vars['meta_value']   = esc_attr( $slug );
     $query->query_vars['meta_compare'] = '=';
     
   }
@@ -271,12 +273,9 @@ function adsforwp_filter_by_ad_type() {
           'ad_image'  => esc_html__('Image Banner Ad','ads-for-wp'),
           'custom'    => esc_html__('Custom Code','ads-for-wp'),
 	); // Options for the filter select field
-      
-      $current_plugin = '';
-      
-      if( isset( $_GET['ad-type-slug'] ) ) {
-        $current_plugin = esc_attr($_GET['ad-type-slug']); // Check if option has been selected
-      } ?>
+        //phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason : setting select box value if ad-type-slug is present in url without making any sensitive changes or performing critical actions.
+      $current_plugin =  isset( $_GET['ad-type-slug'] ) ? esc_attr($_GET['ad-type-slug']) :'';
+     ?>
       <select name="ad-type-slug" id="ad-type-slug">
         <option value="all" <?php selected( 'all', $current_plugin ); ?>><?php esc_html_e( 'All', 'ads-for-wp' ); ?></option>
         <?php foreach( $plugins as $key=>$value ) { ?>
@@ -297,10 +296,13 @@ function adsforwp_sort_ads_by_type( $query ) {
     
   global $pagenow; 
   // Get the post type
+  //phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason : Nonce verification is not required here , using post_type for filtering
   $post_type = isset( $_GET['post_type'] ) ? $_GET['post_type'] : '';
-  if ( is_admin() && $pagenow=='edit.php' && $post_type == 'adsforwp' && isset( $_GET['ad-type-slug'] ) && $_GET['ad-type-slug'] !='all' ) {
+   //phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason : Nonce verification is not required here , using ad-type-slug for filtering
+  $ad_type_slug = isset( $_GET['ad-type-slug'] ) ? $_GET['ad-type-slug'] : '';
+  if ( is_admin() && $pagenow=='edit.php' && $post_type == 'adsforwp' &&  $ad_type_slug !='all' ) {
     $query->query_vars['meta_key']     = 'select_adtype';
-    $query->query_vars['meta_value']   = esc_attr($_GET['ad-type-slug']);
+    $query->query_vars['meta_value']   = esc_attr($ad_type_slug);
     $query->query_vars['meta_compare'] = '=';
   }
 }
@@ -555,6 +557,7 @@ function adsforwp_extra_user_profile_fields( $user ) {
             <span class="description"><?php esc_html_e("Please enter your ad slot ID.", "ads-for-wp"); ?></span>
         </td>
     </tr>
+    <?php  wp_nonce_field( 'adsforwp_save_adsense_info', '_adsforwp_adsense_nonce', true, false ); ?>
     
     </table>
 <?php 
@@ -569,8 +572,13 @@ add_action( 'edit_user_profile', 'adsforwp_extra_user_profile_fields' );
  */
 function adsforwp_save_extra_user_profile_fields( $user_id ) {
     
-    if ( !current_user_can( 'edit_user', $user_id ) ) { 
-        return false; 
+    if ( ! current_user_can( 'edit_user', $user_id ) ) {
+        return false;
+    }
+
+    // Check if the nonce field is set and verify it
+    if ( ! isset( $_POST['_adsforwp_adsense_nonce'] ) || ! wp_verify_nonce( $_POST['_adsforwp_adsense_nonce'], 'adsforwp_save_adsense_info' ) ) {
+        return false;
     }
     
     $adsense_pub_id     = sanitize_text_field($_POST['adsense_pub_id']);
@@ -684,12 +692,8 @@ function adsforwp_admin_link($tab = '', $args = array()){
  */
 function adsforwp_analytics_admin_link($tab = '', $args = array()){	
     
-        $ad_id = '';
-        
-        if(isset($_GET['ad_id'])){
-            
-            $ad_id = '&ad_id='.sanitize_text_field($_GET['ad_id']);
-        }
+    //phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason : Nonce verification is not required here , using ad_id for url building
+    $ad_id = isset($_GET['ad_id'])? '&ad_id='.sanitize_text_field($_GET['ad_id']):'';
             
 	$page = 'analytics';
         
@@ -721,6 +725,7 @@ function adsforwp_analytics_admin_link($tab = '', $args = array()){
  */
 function adsforwp_get_tab( $default = '', $available = array() ) {
 
+    //phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason : Nonce verification is not required here , using tab for url tab selection
 	$tab = isset( $_GET['tab'] ) ? sanitize_text_field($_GET['tab']) : $default;
         
 	if ( ! in_array( $tab, $available ) ) {
