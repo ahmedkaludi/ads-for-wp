@@ -8,10 +8,11 @@ Stable tag: 1.9.28
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
+AdsforWP is an Google Ads & Banner ads plugin built for WordPress & AMP. Easy to Use, Unlimited Incontent Ads, Adsense, Premium Features and more.
 
 
 == Description ==
-AdsforWP is an Google Ads & Banner ads plugin built for WordPress & AMP. Easy to Use, Unlimited Incontent Ads, Adsense, Premium Features and more
+AdsforWP is an Google Ads & Banner ads plugin built for WordPress & AMP. Easy to Use, Unlimited Incontent Ads, Adsense, Premium Features and more.
 
 
 = Features: =
