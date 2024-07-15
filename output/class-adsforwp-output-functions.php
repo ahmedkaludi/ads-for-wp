@@ -1952,7 +1952,7 @@ class Adsforwp_Output_Functions {
 										if ( defined( 'EWWW_IMAGE_OPTIMIZER_VERSION' ) ) {
 											$image_relative_path = $ad_image . '.webp';
 											$url                 = $image_relative_path;
-											$headers             = @get_headers( $url );
+											$headers             = get_headers( $url );
 											if ( $headers && strpos( $headers[0], '200' ) ) {
 												$ad_image = $ad_image . '.webp';
 											} else {
@@ -1961,7 +1961,7 @@ class Adsforwp_Output_Functions {
 										}
 
 										$ad_code = '<div data-ad-id="' . esc_attr( $post_ad_id ) . '" style="text-align:' . esc_attr( $ad_alignment ) . '; margin-top:' . esc_attr( $ad_margin_top ) . 'px; margin-bottom:' . esc_attr( $ad_margin_bottom ) . 'px; margin-left:' . esc_attr( $ad_margin_left ) . 'px; margin-right:' . esc_attr( $ad_margin_right ) . 'px;float:' . esc_attr( $ad_text_wrap ) . ';" class="afw afw_ad_image afw_ad afwadid-' . esc_attr( $post_ad_id ) . ' ' . $brw_class . '">
-                                                        ' . $sponsership_labfel . '
+                                                        ' . $sponsership_label . '
 							<div class="afw_ad_amp_achor afw_ad_amp_anchor_' . esc_attr( $post_ad_id ) . '"><a target="_blank" href="' . esc_url( $ad_redirect_url ) . '" rel="' . esc_attr( $ad_rel_attr ) . '"><div class="afw_ad_amp_' . esc_attr( $post_ad_id ) . '" style="background-image: url(' . esc_url( $ad_image ) . ');height:' . esc_attr( $ad_img_height ) . 'px;width:' . esc_attr( $ad_img_width ) . 'px;display:inline-block;background-size: contain; background-repeat: no-repeat;" ></div></a></div>
                                 ' . $ad_label_bottom . '
 							</div>';
@@ -1972,7 +1972,7 @@ class Adsforwp_Output_Functions {
 									if ( defined( 'EWWW_IMAGE_OPTIMIZER_VERSION' ) ) {
 										$image_relative_path = $ad_image . '.webp';
 										$url                 = $image_relative_path;
-										$headers             = @get_headers( $url );
+										$headers             = get_headers( $url );
 										if ( $headers && strpos( $headers[0], '200' ) ) {
 											$ad_image = $ad_image . '.webp';
 										} else {
@@ -2030,7 +2030,7 @@ class Adsforwp_Output_Functions {
 							if ( defined( 'EWWW_IMAGE_OPTIMIZER_VERSION' ) ) {
 									$image_relative_path = $ad_image . '.webp';
 									$url                 = $image_relative_path;
-									$headers             = @get_headers( $url );
+									$headers             = get_headers( $url );
 								if ( $headers && strpos( $headers[0], '200' ) ) {
 									$ad_image = $ad_image . '.webp';
 								} else {
@@ -2641,7 +2641,7 @@ class Adsforwp_Output_Functions {
 						if ( ! empty( $ad_image ) ) {
 							$image_relative_path = $ad_image . '.webp';
 							$url                 = $image_relative_path;
-							$headers             = @get_headers( $url );
+							$headers             = get_headers( $url );
 							if ( $headers && strpos( $headers[0], '200' ) ) {
 								$ad_image = $ad_image . '.webp';
 							} else {
@@ -2680,7 +2680,7 @@ class Adsforwp_Output_Functions {
 						if ( ! empty( $ad_image ) ) {
 							$image_relative_path = $ad_image . '.webp';
 							$url                 = $image_relative_path;
-							$headers             = @get_headers( $url );
+							$headers             = get_headers( $url );
 							if ( $headers && strpos( $headers[0], '200' ) ) {
 								$ad_image   = $ad_image . '.webp';
 								$image_type = 'webp';

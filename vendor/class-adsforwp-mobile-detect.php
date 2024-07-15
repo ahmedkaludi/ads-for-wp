@@ -1261,7 +1261,7 @@ class Adsforwp_Mobile_Detect {
 		$arrVer = explode( '.', $ver, 2 );
 
 		if ( isset( $arrVer[1] ) ) {
-			$arrVer[1] = @str_replace( '.', '', $arrVer[1] ); // @todo: treat strings versions.
+			$arrVer[1] = str_replace( '.', '', $arrVer[1] ); // @todo: treat strings versions.
 		}
 
 		return (float) implode( '.', $arrVer );
