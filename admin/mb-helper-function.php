@@ -15,9 +15,16 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return bool
  */
 function adsforwp_is_plugins_page() {
-	global $pagenow;
 
-	return ( 'plugins.php' === $pagenow );
+	if(function_exists('get_current_screen')){
+        $screen = get_current_screen();
+            if(is_object($screen)){
+                if($screen->id == 'plugins' || $screen->id == 'plugins-network'){
+                    return true;
+                }
+            }
+    }
+    return false;
 }
 
 /**
@@ -41,6 +48,19 @@ function adsforwp_add_deactivation_feedback_modal() {
 	include_once ADSFORWP_PLUGIN_DIR . 'admin/deactivate-feedback.php';
 }
 
+if( !is_admin() && !superpwa_is_plugins_page()) {
+	return;
+}
+
+$current_user = wp_get_current_user();
+if( !($current_user instanceof WP_User) ) {
+	$email = '';
+} else {
+	$email = trim( $current_user->user_email );
+}
+
+require_once SUPERPWA_PATH_ABS."admin/deactivate-feedback.php";
+
 /**
  * send feedback via email
  *
@@ -54,11 +74,11 @@ function adsforwp_send_feedback() {
 	}
 
 	if ( empty( $form ) || ! is_array( $form ) ) {
-		wp_die( 'Invalid Data Received' );
+		wp_die( esc_html__('Invalid Data Received','wpdbbkp') );
 	}
 
 	if ( ! isset( $form['_adsforwp_deactivate'] ) || ! wp_verify_nonce( $form['_adsforwp_deactivate'], 'adsforwp_deactivate_form' ) ) {
-		wp_die( 'Security check failed' );
+		wp_die( esc_html__('Security check failed','wpdbbkp') );
 	}
 
 	$text = '';
@@ -113,6 +133,5 @@ function adsforwp_enqueue_makebetter_email_js() {
 	wp_enqueue_style( 'ads-for-wp-make-better-css', plugin_dir_url( __DIR__ ) . 'admin/make-better-admin.css', false, ADSFORWP_VERSION );
 }
 
-if ( is_admin() && adsforwp_is_plugins_page() ) {
 	add_filter( 'admin_footer', 'adsforwp_add_deactivation_feedback_modal' );
-}
+
