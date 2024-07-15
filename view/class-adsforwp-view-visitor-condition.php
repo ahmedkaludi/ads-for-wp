@@ -38,7 +38,7 @@ class Adsforwp_View_Visitor_Condition {
 	public function adsforwp_visitor_condition_callback( $post ) {
 
 			$visitor_condition_enable = get_post_meta( $post->ID, $key = 'adsforwp_v_condition_enable', true );
-			$visitor_conditions_array = esc_sql( get_post_meta( $post->ID, 'visitor_conditions_array', true ) );
+			$visitor_conditions_array = get_post_meta( $post->ID, 'visitor_conditions_array', true ) ;
 			$visitor_conditions_array = is_array( $visitor_conditions_array ) ? array_values( $visitor_conditions_array ) : array();
 
 		if ( empty( $visitor_conditions_array ) ) {
@@ -55,9 +55,7 @@ class Adsforwp_View_Visitor_Condition {
 		}
 
 		// security check
-		wp_nonce_field( 'adsforwp_visitor_condition_action_nonce', 'adsforwp_visitor_condition_name_nonce' );?>
-
-		<?php
+		wp_nonce_field( 'adsforwp_visitor_condition_action_nonce', 'adsforwp_visitor_condition_name_nonce' );
 
 		// Type Select
 		$choices = array(

@@ -118,7 +118,7 @@ class Adsforwp_Output_Functions {
 			foreach ( $all_ads_post as $ads ) {
 				$post_ad_id               = $ads;
 				$visitor_condition_enable = get_post_meta( $post_ad_id, $key = 'adsforwp_v_condition_enable', true );
-				$visitor_conditions_array = esc_sql( get_post_meta( $post_ad_id, 'visitor_conditions_array', true ) );
+				$visitor_conditions_array = get_post_meta( $post_ad_id, 'visitor_conditions_array', true ) ;
 				$service                  = new Adsforwp_Output_Service();
 				$ad_status                = $service->adsforwp_is_condition( $post_ad_id );
 				if ( isset( $visitor_condition_enable ) && $visitor_condition_enable == 'enable' ) {
@@ -1455,7 +1455,7 @@ class Adsforwp_Output_Functions {
 
 	public function adsforwp_get_ad_by_browser_width( $post_ad_id ) {
 		$visitor_condition_enable = get_post_meta( $post_ad_id, $key = 'adsforwp_v_condition_enable', true );
-		$visitor_conditions_array = esc_sql( get_post_meta( $post_ad_id, 'visitor_conditions_array', true ) );
+		$visitor_conditions_array = get_post_meta( $post_ad_id, 'visitor_conditions_array', true ) ;
 		$service                  = new Adsforwp_Output_Service();
 		$ad_status                = $service->adsforwp_is_condition( $post_ad_id );
 		if ( isset( $visitor_condition_enable ) && $visitor_condition_enable == 'enable' ) {

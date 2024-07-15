@@ -1191,7 +1191,7 @@ function adsforwp_browser_width_conditoinal( $data ) {
 		foreach ( $all_ads_post as $ads ) {
 			$post_ad_id               = $ads;
 			$visitor_condition_enable = get_post_meta( $post_ad_id, $key = 'adsforwp_v_condition_enable', true );
-			$visitor_conditions_array = esc_sql( get_post_meta( $post_ad_id, 'visitor_conditions_array', true ) );
+			$visitor_conditions_array = get_post_meta( $post_ad_id, 'visitor_conditions_array', true ) ;
 			if ( isset( $visitor_condition_enable ) && $visitor_condition_enable == 'enable' ) {
 				for ( $j = 0;$j < count( $visitor_conditions_array );$j++ ) {
 					$conditions = $visitor_conditions_array[ 'group-' . $j ]['visitor_conditions'];
