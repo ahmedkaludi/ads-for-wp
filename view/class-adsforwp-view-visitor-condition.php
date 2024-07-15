@@ -1,4 +1,8 @@
 <?php
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 class Adsforwp_View_Visitor_Condition {
 
 	public function __construct() {

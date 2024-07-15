@@ -1,14 +1,17 @@
-<?php class Adsforwp_Ads_Newsletter {
+<?php 
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+class Adsforwp_Ads_Newsletter {
 
 
-
-
-	function __construct() {
+	public function __construct() {
 
 				add_filter( 'adsforwp_localize_filter', array( $this, 'adsforwp_add_localize_footer_data' ), 10, 2 );
 	}
 
-	function adsforwp_add_localize_footer_data( $object, $object_name ) {
+	public function adsforwp_add_localize_footer_data( $object, $object_name ) {
 
 		$dismissed = explode( ',', get_user_meta( wp_get_current_user()->ID, 'dismissed_wp_pointers', true ) );
 		$do_tour   = ! in_array( 'adsforwp_subscribe_pointer', $dismissed );

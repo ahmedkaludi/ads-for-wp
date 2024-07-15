@@ -1,4 +1,8 @@
 <?php
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * Display the contents of /ads.txt when requested.
  * since v1.9.3

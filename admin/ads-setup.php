@@ -1,5 +1,8 @@
 <?php
-
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 add_action( 'admin_init', 'adsforwp_create_database_for_existing_users' );
 
 function adsforwp_create_database_for_existing_users() {

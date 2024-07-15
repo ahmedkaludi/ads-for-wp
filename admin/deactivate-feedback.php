@@ -1,4 +1,8 @@
 <?php
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 $reasons = array(
 	1 => '<li><label><input type="radio" name="adsforwp_disable_reason" value="temporary"/>' . __( 'It is only temporary', 'ads-for-wp' ) . '</label></li>',
 	2 => '<li><label><input type="radio" name="adsforwp_disable_reason" value="stopped"/>' . __( 'I stopped using Ads for WP on my site', 'ads-for-wp' ) . '</label></li>',

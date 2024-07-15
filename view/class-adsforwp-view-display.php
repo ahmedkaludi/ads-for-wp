@@ -1,4 +1,8 @@
 <?php
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 // Metabox to create display areas for ads in ads admin post
 class Adsforwp_View_Display {
 

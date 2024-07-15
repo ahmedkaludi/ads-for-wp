@@ -1,4 +1,8 @@
 <?php
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /*
  *  Metabox displays in admin sidebar to show and hide ads on particular post
  */

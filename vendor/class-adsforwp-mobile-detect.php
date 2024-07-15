@@ -20,6 +20,10 @@
  *
  * @version 2.8.33
  */
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 class Adsforwp_Mobile_Detect {
 
 	/**

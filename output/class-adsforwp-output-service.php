@@ -1,4 +1,8 @@
 <?php
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 class Adsforwp_Output_Service {
 
 	public function adsforwp_enque_amp_floating_ad_css( $ad_id ) {

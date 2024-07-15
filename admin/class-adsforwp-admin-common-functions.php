@@ -1,4 +1,8 @@
 <?php
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * This is a common class for all common functions which we will use in different classes in our plugin
  */
