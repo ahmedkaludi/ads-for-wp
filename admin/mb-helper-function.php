@@ -48,19 +48,6 @@ function adsforwp_add_deactivation_feedback_modal() {
 	include_once ADSFORWP_PLUGIN_DIR . 'admin/deactivate-feedback.php';
 }
 
-if( !is_admin() && !superpwa_is_plugins_page()) {
-	return;
-}
-
-$current_user = wp_get_current_user();
-if( !($current_user instanceof WP_User) ) {
-	$email = '';
-} else {
-	$email = trim( $current_user->user_email );
-}
-
-require_once SUPERPWA_PATH_ABS."admin/deactivate-feedback.php";
-
 /**
  * send feedback via email
  *
@@ -74,11 +61,11 @@ function adsforwp_send_feedback() {
 	}
 
 	if ( empty( $form ) || ! is_array( $form ) ) {
-		wp_die( esc_html__('Invalid Data Received','wpdbbkp') );
+		wp_die( esc_html__('Invalid Data Received','ads-for-wp') );
 	}
 
 	if ( ! isset( $form['_adsforwp_deactivate'] ) || ! wp_verify_nonce( $form['_adsforwp_deactivate'], 'adsforwp_deactivate_form' ) ) {
-		wp_die( esc_html__('Security check failed','wpdbbkp') );
+		wp_die( esc_html__('Security check failed','ads-for-wp') );
 	}
 
 	$text = '';

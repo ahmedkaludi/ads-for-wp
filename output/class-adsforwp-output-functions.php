@@ -2838,7 +2838,7 @@ class Adsforwp_Output_Functions {
 					$response['ads'] = $adsresultset;
 					if ( $response['adsforwp_refresh_type'] == 'on_interval' ) {
 
-						$ad_code  = '<div class="afw-groups-ads-json" afw-group-id="' . esc_attr( $post_group_id ) . '" data-json="' . esc_attr( json_encode( $response ) ) . '">';
+						$ad_code  = '<div class="afw-groups-ads-json" afw-group-id="' . esc_attr( $post_group_id ) . '" data-json="' . json_encode( $response ) . '">';
 						$ad_code .= '</div>';
 						$ad_code .= '<div style="display:none;" data-id="' . esc_attr( $post_group_id ) . '" class="afw_ad_container_pre"></div><div data-id="' . esc_attr( $post_group_id ) . '" class="afw afw_ad_container"></div>';
 
