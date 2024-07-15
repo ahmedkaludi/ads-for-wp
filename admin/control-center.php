@@ -579,7 +579,7 @@ function adsforwp_extra_user_profile_fields( $user ) {
 	<tr>
 		<th><label for="afw-data-client-id"><?php esc_html_e( 'AdSense Publisher ID', 'ads-for-wp' ); ?></label></th>
 		<td>
-			<input placeholder="ca-pub-13XXXXXXXXXXXX64" type="text" name="adsense_pub_id" id="adsense_pub_id" value="<?php echo esc_attr( get_the_author_meta( 'adsense_pub_id', $user->ID ) ); ?>" class="regular-text" /><br />
+			<input placeholder="<?php echo esc_attr__("ca-pub-13XXXXXXXXXXXX64","ads-for-wp");?>" type="text" name="adsense_pub_id" id="adsense_pub_id" value="<?php echo esc_attr( get_the_author_meta( 'adsense_pub_id', $user->ID ) ); ?>" class="regular-text" /><br />
 			<span class="description"><?php esc_html_e( 'Please enter your pub ID.', 'ads-for-wp' ); ?></span>
 		</td>
 	</tr>
@@ -587,7 +587,7 @@ function adsforwp_extra_user_profile_fields( $user ) {
 	<tr>
 		<th><label for="afw-data-ad-slot"><?php esc_html_e( 'Data Ad Slot', 'ads-for-wp' ); ?></label></th>
 		<td>
-			<input placeholder="70XXXXXX12" type="text" name="adsense_ad_slot_id" id="adsense_ad_slot_id" value="<?php echo esc_attr( get_the_author_meta( 'adsense_ad_slot_id', $user->ID ) ); ?>" class="regular-text" /><br />
+			<input placeholder="<?php echo esc_attr__("70XXXXXX12","ads-for-wp");?>" type="text" name="adsense_ad_slot_id" id="adsense_ad_slot_id" value="<?php echo esc_attr( get_the_author_meta( 'adsense_ad_slot_id', $user->ID ) ); ?>" class="regular-text" /><br />
 			<span class="description"><?php esc_html_e( 'Please enter your ad slot ID.', 'ads-for-wp' ); ?></span>
 		</td>
 	</tr>

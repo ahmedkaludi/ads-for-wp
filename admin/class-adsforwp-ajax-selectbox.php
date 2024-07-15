@@ -577,7 +577,7 @@ class Adsforwp_Ajax_Selectbox {
 
 				} else {
 
-					$output .= ' <input placeholder="'.esc_attr('768').'" type="text" class="afw_hide adsforwp_browser_width_custom" value="' . esc_attr( $selected_val_key_5 ) . '" name="visitor_conditions_array[group-' . esc_attr( $current_group_number ) . '][visitor_conditions][' . esc_attr( $current_number ) . '][key_5]"> <span class="afw_hide adsforwp_browser_width_custom" style="font-style:italic;">px</span>';
+					$output .= ' <input placeholder="'.esc_attr__('768','ads-for-wp').'" type="text" class="afw_hide adsforwp_browser_width_custom" value="' . esc_attr( $selected_val_key_5 ) . '" name="visitor_conditions_array[group-' . esc_attr( $current_group_number ) . '][visitor_conditions][' . esc_attr( $current_number ) . '][key_5]"> <span class="afw_hide adsforwp_browser_width_custom" style="font-style:italic;">px</span>';
 
 				}
 			}
@@ -589,7 +589,7 @@ class Adsforwp_Ajax_Selectbox {
 
 				} else {
 
-					$output .= ' <input placeholder ="Android" type="text" class="widefat afw_hide adsforwp_user_agent_custom" value="' . esc_attr( $selected_val_key_5 ) . '" name="visitor_conditions_array[group-' . esc_attr( $current_group_number ) . '][visitor_conditions][' . esc_attr( $current_number ) . '][key_5]"> ';
+					$output .= ' <input placeholder ="'.esc_attr__('Android','ads-for-wp').'" type="text" class="widefat afw_hide adsforwp_user_agent_custom" value="' . esc_attr( $selected_val_key_5 ) . '" name="visitor_conditions_array[group-' . esc_attr( $current_group_number ) . '][visitor_conditions][' . esc_attr( $current_number ) . '][key_5]"> ';
 
 				}
 			}
