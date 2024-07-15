@@ -154,7 +154,7 @@ class Adsforwp_Output_Functions {
 			} else {
 				$amp_script_file = ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-frontend-amp.min.js';
 			}
-			echo '<amp-state id="adsforwp_browser_obj">  <script type="application/json">' . json_encode( $browser_data ) . '</script></amp-state>';
+			echo '<amp-state id="adsforwp_browser_obj">  <script type="application/json">' . wp_json_encode( $browser_data ) . '</script></amp-state>';
 			echo '<amp-script layout="container" src="' . esc_url( $amp_script_file ) . '" >';
 		}
 	}
@@ -445,15 +445,15 @@ class Adsforwp_Output_Functions {
 		if ( get_post_type( $ad_id ) == 'adsforwp-groups' ) {
 
 			if ( $wheretodisplay == 'sticky' && ! in_array( $ad_id, $explod_ad_id ) ) {
-				echo json_encode( array( 'showNotification' => true ) );
+				echo wp_json_encode( array( 'showNotification' => true ) );
 			} else {
-				echo json_encode( array( 'showNotification' => false ) );
+				echo wp_json_encode( array( 'showNotification' => false ) );
 			}
 		} elseif ( $wheretodisplay == 'sticky' && ! in_array( $ad_id, $explod_ad_id ) && empty( $in_group ) ) {
 
-				echo json_encode( array( 'showNotification' => true ) );
+				echo wp_json_encode( array( 'showNotification' => true ) );
 		} else {
-			echo json_encode( array( 'showNotification' => false ) );
+			echo wp_json_encode( array( 'showNotification' => false ) );
 		}
 
 		wp_die();
@@ -2609,7 +2609,7 @@ class Adsforwp_Output_Functions {
 						break;
 				}
 
-				$amp_ads_id_json = json_encode( $this->amp_ads_id );
+				$amp_ads_id_json = wp_json_encode( $this->amp_ads_id );
 				set_transient( 'adsforwp_transient_amp_ids', $amp_ads_id_json );
 
 				if ( defined( 'ADSFORWP_PRO_VERSION' ) && isset( $settings['ad_fraud_protection'] ) && ! empty( $settings['ad_fraud_protection'] ) ) {
@@ -2838,7 +2838,7 @@ class Adsforwp_Output_Functions {
 					$response['ads'] = $adsresultset;
 					if ( $response['adsforwp_refresh_type'] == 'on_interval' ) {
 
-						$ad_code  = '<div class="afw-groups-ads-json" afw-group-id="' . esc_attr( $post_group_id ) . '" data-json="' . json_encode( $response ) . '">';
+						$ad_code  = '<div class="afw-groups-ads-json" afw-group-id="' . esc_attr( $post_group_id ) . '" data-json="' . wp_json_encode( $response ) . '">';
 						$ad_code .= '</div>';
 						$ad_code .= '<div style="display:none;" data-id="' . esc_attr( $post_group_id ) . '" class="afw_ad_container_pre"></div><div data-id="' . esc_attr( $post_group_id ) . '" class="afw afw_ad_container"></div>';
 
@@ -2987,7 +2987,7 @@ class Adsforwp_Output_Functions {
 
 				$content_color        = sanitize_hex_color( $settings['notice_txt_color'] );
 				$notice_title         = esc_attr( $settings['notice_title'] );
-				$notice_description   = esc_attr( $settings['notice_description'] );
+				$notice_description   = esc_html( $settings['notice_description'] );
 				$button_txt           = esc_attr( $settings['btn_txt'] );
 				$background_color     = sanitize_hex_color( $settings['notice_bg_color'] );
 				$btn_txt_color        = sanitize_hex_color( $settings['notice_btn_txt_color'] );

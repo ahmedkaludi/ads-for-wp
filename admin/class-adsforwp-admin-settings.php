@@ -674,7 +674,7 @@ class Adsforwp_Admin_Settings {
 		$settings             = adsforwp_defaultSettings();
 		$notice_type          = esc_attr( $settings['notice_type'] );
 		$notice_title         = esc_attr( $settings['notice_title'] );
-		$notice_description   = esc_attr( $settings['notice_description'] );
+		$notice_description   = esc_html( $settings['notice_description'] );
 		$notice_close_btn     = esc_attr( $settings['notice_close_btn'] );
 		$btn_txt              = esc_attr( $settings['btn_txt'] );
 		$notice_bg_color      = sanitize_hex_color( $settings['notice_bg_color'] );
@@ -744,7 +744,7 @@ class Adsforwp_Admin_Settings {
 			<div class="label-align notice_description">
 				<label for="notice_description" ><?php echo esc_html__( 'Description', 'ads-for-wp' ); ?> </label>
 				<fieldset>
-				<textarea name="adsforwp_settings[notice_description]" id="notice_description" type="text" class="large-text code notice_description" rows="5" cols="70"><?php echo esc_attr( $notice_description ); ?></textarea>
+				<textarea name="adsforwp_settings[notice_description]" id="notice_description" type="text" class="large-text code notice_description" rows="5" cols="70"><?php echo esc_html( $notice_description ); ?></textarea>
 				</fieldset>
 			</div>
 			<div class="label-align notice_close_btn">
