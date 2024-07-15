@@ -67,7 +67,7 @@ function adsforwp_check_plugin() {
 	if ( get_option( 'adsforwp_do_activation_redirect', false ) ) {
 
 		delete_option( 'adsforwp_do_activation_redirect' );
-
+		//phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason : Using get param as flag.
 		if ( ! isset( $_GET['activate-multi'] ) ) {
 			$url = esc_url( admin_url( 'edit.php?post_type=adsforwp' ) );
 			wp_redirect( $url );

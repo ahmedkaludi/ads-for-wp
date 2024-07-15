@@ -49,6 +49,7 @@ function adsforwp_add_deactivation_feedback_modal() {
 function adsforwp_send_feedback() {
     //phpcs:ignore WordPress.Security.NonceVerification.Missing -- Reason : Since form is serialised nonce is verified after parsing the recieved data.
 	if ( isset( $_POST['data'] ) ) {
+		//phpcs:ignore WordPress.Security.NonceVerification.Missing -- Reason : Since form is serialised nonce is verified after parsing the recieved data.
 		parse_str( $_POST['data'], $form );
 	}
 
