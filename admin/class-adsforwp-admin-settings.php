@@ -846,11 +846,11 @@ class Adsforwp_Admin_Settings {
 
 			<div class="label-align ad_label">
 				<label for="ad_label"><?php echo esc_html__( 'Owner', 'ads-for-wp' ); ?> </label>
-				<input type="number" placeholder="percentage" id="adsforwp_owner_revenue_per" name="adsforwp_settings[ad_owner_revenue_per]" value="<?php echo isset( $settings['ad_owner_revenue_per'] ) ? esc_attr( $settings['ad_owner_revenue_per'] ) : ''; ?>">
+				<input type="number" placeholder="<?php echo esc_attr__("percentage","ads-for-wp");?>" id="adsforwp_owner_revenue_per" name="adsforwp_settings[ad_owner_revenue_per]" value="<?php echo isset( $settings['ad_owner_revenue_per'] ) ? esc_attr( $settings['ad_owner_revenue_per'] ) : ''; ?>">
 			</div>
 			<div class="label-align ad_label">
 				<label for="ad_label"><?php echo esc_html__( 'Author', 'ads-for-wp' ); ?> </label>
-				<input type="number"  placeholder="percentage" id="adsforwp_author_revenue_per" name="adsforwp_settings[ad_author_revenue_per]" value="<?php echo isset( $settings['ad_author_revenue_per'] ) ? esc_attr( $settings['ad_author_revenue_per'] ) : ''; ?>">
+				<input type="number"  placeholder="<?php echo esc_attr__("percentage","ads-for-wp");?>" id="adsforwp_author_revenue_per" name="adsforwp_settings[ad_author_revenue_per]" value="<?php echo isset( $settings['ad_author_revenue_per'] ) ? esc_attr( $settings['ad_author_revenue_per'] ) : ''; ?>">
 			</div> 
 		</div>
 		<?php
@@ -880,7 +880,7 @@ class Adsforwp_Admin_Settings {
 			<h2 class="title"><?php echo esc_html__( 'Ad Label Settings', 'ads-for-wp' ); ?></h2>
 			<div class="label-align ad_label">
 				<label for="ad_label"><?php echo esc_html__( 'Label', 'ads-for-wp' ); ?> </label>
-				<input id="afw_ad_label_text" placeholder="Enter the label" name="adsforwp_settings[ad_sponsorship_label_text]" type="text" class="regular-text afw_ad_label_text" value="<?php echo isset( $settings['ad_sponsorship_label_text'] ) ? esc_attr( $settings['ad_sponsorship_label_text'] ) : ''; ?>"/>
+				<input id="afw_ad_label_text" placeholder="<?php echo esc_attr__("Enter the label","ads-for-wp");?>" name="adsforwp_settings[ad_sponsorship_label_text]" type="text" class="regular-text afw_ad_label_text" value="<?php echo isset( $settings['ad_sponsorship_label_text'] ) ? esc_attr( $settings['ad_sponsorship_label_text'] ) : ''; ?>"/>
 			</div>
 			<div class="label-align ad_label_postion">
 				<label for="ad_label_postion"><?php echo esc_html__( 'Position', 'ads-for-wp' ); ?> </label>
@@ -961,7 +961,7 @@ class Adsforwp_Admin_Settings {
 
 				<label for="ad_label"><?php echo esc_html__( 'Allowed clicks', 'ads-for-wp' ); ?> </label>
 
-				<input id="afw_ad_allowed_click" placeholder="3" name="adsforwp_settings[ad_allowed_click]" type="text" class="regular-text afw_ad_allowed_click" value="<?php echo isset( $settings['ad_allowed_click'] ) ? esc_attr( $settings['ad_allowed_click'] ) : ''; ?>"/>
+				<input id="afw_ad_allowed_click" placeholder="<?php echo esc_attr__("3","ads-for-wp");?>" name="adsforwp_settings[ad_allowed_click]" type="text" class="regular-text afw_ad_allowed_click" value="<?php echo isset( $settings['ad_allowed_click'] ) ? esc_attr( $settings['ad_allowed_click'] ) : ''; ?>"/>
 
 			</div>
 
@@ -969,7 +969,7 @@ class Adsforwp_Admin_Settings {
 
 				<label for="ad_label"><?php echo esc_html__( 'Click limit (in hours)', 'ads-for-wp' ); ?> </label>
 
-				<input id="afw_ad_click_limit" placeholder="3" name="adsforwp_settings[ad_click_limit]" type="text" class="regular-text afw_ad_click_limit" value="<?php echo isset( $settings['ad_click_limit'] ) ? esc_attr( $settings['ad_click_limit'] ) : ''; ?>"/>
+				<input id="afw_ad_click_limit" placeholder="<?php echo esc_attr__("3","ads-for-wp");?>" name="adsforwp_settings[ad_click_limit]" type="text" class="regular-text afw_ad_click_limit" value="<?php echo isset( $settings['ad_click_limit'] ) ? esc_attr( $settings['ad_click_limit'] ) : ''; ?>"/>
 
 			</div>
 
@@ -977,7 +977,7 @@ class Adsforwp_Admin_Settings {
 
 				<label for="ad_label"><?php echo esc_html__( 'Ban duration (in days)', 'ads-for-wp' ); ?> </label>
 
-				<input id="afw_ad_ban_duration" placeholder="3" name="adsforwp_settings[ad_ban_duration]" type="text" class="regular-text afw_ad_ban_duration" value="<?php echo isset( $settings['ad_ban_duration'] ) ? esc_attr( $settings['ad_ban_duration'] ) : ''; ?>"/>
+				<input id="afw_ad_ban_duration" placeholder="<?php echo esc_attr__("3","ads-for-wp");?>" name="adsforwp_settings[ad_ban_duration]" type="text" class="regular-text afw_ad_ban_duration" value="<?php echo isset( $settings['ad_ban_duration'] ) ? esc_attr( $settings['ad_ban_duration'] ) : ''; ?>"/>
 
 			</div>    
 			 
@@ -1031,7 +1031,7 @@ class Adsforwp_Admin_Settings {
 					<label class="support-label"><?php esc_html_e( 'Email', 'ads-for-wp' ); ?><span class="afw-query-error">*</span></label>
 					<div class="support-input">
 						<input type="text" id="adsforwp_query_email" name="adsforwp_query_email"
-								placeholder="<?php esc_html_e( 'Enter your Email', 'ads-for-wp' ); ?>" />
+								placeholder="<?php echo esc_attr__( 'Enter your Email', 'ads-for-wp' ); ?>" />
 					</div>
 				</li>
 				<li>

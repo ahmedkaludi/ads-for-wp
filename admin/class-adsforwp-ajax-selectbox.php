@@ -520,12 +520,12 @@ class Adsforwp_Ajax_Selectbox {
 
 			if ( $options['param'] == 'url_parameter' ) {
 
-				$output = '<input type="text" placeholder="' . esc_html__( 'blog', 'ads-for-wp' ) . '" class="widefat adsforwp-url-parameter" value="' . esc_attr( $saved_data ) . '" name="visitor_conditions_array[group-' . esc_attr( $current_group_number ) . '][visitor_conditions][' . esc_attr( $current_number ) . '][key_3]">';
+				$output = '<input type="text" placeholder="' . esc_attr__( 'blog', 'ads-for-wp' ) . '" class="widefat adsforwp-url-parameter" value="' . esc_attr( $saved_data ) . '" name="visitor_conditions_array[group-' . esc_attr( $current_group_number ) . '][visitor_conditions][' . esc_attr( $current_number ) . '][key_3]">';
 			}
 
 			if ( $options['param'] == 'cookie' ) {
 
-				$output = '<div class="adsforwp-cookie-value"><input type="text" placeholder="' . esc_html__( 'Cookie Value', 'ads-for-wp' ) . '" class="widefat " value="' . esc_attr( $saved_data ) . '" name="visitor_conditions_array[group-' . esc_attr( $current_group_number ) . '][visitor_conditions][' . esc_attr( $current_number ) . '][key_3]">'
+				$output = '<div class="adsforwp-cookie-value"><input type="text" placeholder="' . esc_attr__( 'Cookie Value', 'ads-for-wp' ) . '" class="widefat " value="' . esc_attr( $saved_data ) . '" name="visitor_conditions_array[group-' . esc_attr( $current_group_number ) . '][visitor_conditions][' . esc_attr( $current_number ) . '][key_3]">'
 						. '<p>Leave empty to check if cookie is set</p></div>';
 			}
 		} else {
@@ -566,7 +566,7 @@ class Adsforwp_Ajax_Selectbox {
 
 				} else {
 
-					$output .= ' <input placeholder ="https://www.example.com/" type="text" class="widefat afw_hide adsforwp_url_custom" value="' . esc_attr( $selected_val_key_4 ) . '" name="visitor_conditions_array[group-' . esc_attr( $current_group_number ) . '][visitor_conditions][' . esc_attr( $current_number ) . '][key_4]"> ';
+					$output .= ' <input placeholder ="'.esc_url('https://www.example.com/').'" type="text" class="widefat afw_hide adsforwp_url_custom" value="' . esc_attr( $selected_val_key_4 ) . '" name="visitor_conditions_array[group-' . esc_attr( $current_group_number ) . '][visitor_conditions][' . esc_attr( $current_number ) . '][key_4]"> ';
 
 				}
 			}
@@ -577,7 +577,7 @@ class Adsforwp_Ajax_Selectbox {
 
 				} else {
 
-					$output .= ' <input placeholder="768" type="text" class="afw_hide adsforwp_browser_width_custom" value="' . esc_attr( $selected_val_key_5 ) . '" name="visitor_conditions_array[group-' . esc_attr( $current_group_number ) . '][visitor_conditions][' . esc_attr( $current_number ) . '][key_5]"> <span class="afw_hide adsforwp_browser_width_custom" style="font-style:italic;">px</span>';
+					$output .= ' <input placeholder="'.esc_attr('768').'" type="text" class="afw_hide adsforwp_browser_width_custom" value="' . esc_attr( $selected_val_key_5 ) . '" name="visitor_conditions_array[group-' . esc_attr( $current_group_number ) . '][visitor_conditions][' . esc_attr( $current_number ) . '][key_5]"> <span class="afw_hide adsforwp_browser_width_custom" style="font-style:italic;">px</span>';
 
 				}
 			}
