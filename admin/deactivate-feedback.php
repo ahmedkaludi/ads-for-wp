@@ -7,13 +7,13 @@ $reasons = array(
 	1 => '<li><label><input type="radio" name="adsforwp_disable_reason" value="temporary"/>' . esc_html__( 'It is only temporary', 'ads-for-wp' ) . '</label></li>',
 	2 => '<li><label><input type="radio" name="adsforwp_disable_reason" value="stopped"/>' . esc_html__( 'I stopped using Ads for WP on my site', 'ads-for-wp' ) . '</label></li>',
 	3 => '<li><label><input type="radio" name="adsforwp_disable_reason" value="missing"/>' . esc_html__( 'I miss a feature', 'ads-for-wp' ) . '</label></li>
-		<li><input class="mb-box missing" type="text" name="adsforwp_disable_text[]" value="" placeholder="Please describe the feature"/></li>',
+		<li><input class="mb-box missing" type="text" name="adsforwp_disable_text[]" value="" placeholder="' .esc_attr__( 'Please describe the feature', 'ads-for-wp' ). '"/></li>',
 	4 => '<li><label><input type="radio" name="adsforwp_disable_reason" value="technical"/>' . esc_html__( 'Technical Issue', 'ads-for-wp' ) . '</label></li>
-		<li><textarea class="mb-box technical" name="adsforwp_disable_text[]" placeholder="' . esc_html__( 'How Can we help? Please describe your problem', 'ads-for-wp' ) . '"></textarea></li>',
+		<li><textarea class="mb-box technical" name="adsforwp_disable_text[]" placeholder="' . esc_attr__( 'How Can we help? Please describe your problem', 'ads-for-wp' ) . '"></textarea></li>',
 	5 => '<li><label><input type="radio" name="adsforwp_disable_reason" value="another"/>' . esc_html__( 'I switched to another plugin', 'ads-for-wp' ) . '</label></li>
 		<li><input class="mb-box another" type="text" name="adsforwp_disable_text[]" value="" placeholder="Name of the plugin"/></li>',
 	6 => '<li><label><input type="radio" name="adsforwp_disable_reason" value="other"/>' . esc_html__( 'Other reason', 'ads-for-wp' ) . '</label></li>
-		<li><textarea class="mb-box other" name="adsforwp_disable_text[]" placeholder="' . esc_html__( 'Please specify, if possible', 'ads-for-wp' ) . '"></textarea></li>',
+		<li><textarea class="mb-box other" name="adsforwp_disable_text[]" placeholder="' . esc_attr__( 'Please specify, if possible', 'ads-for-wp' ) . '"></textarea></li>',
 );
 shuffle( $reasons );
 ?>
@@ -25,9 +25,9 @@ shuffle( $reasons );
 		<h3><strong><?php esc_html_e( 'If you have a moment, please let us know why you are deactivating:', 'ads-for-wp' ); ?></strong></h3>
 		<ul>
 				<?php
-				foreach ( $reasons as $reason ) {
+				foreach ( $reasons as $reason_escaped ) {
 					//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Reason: Output is escaped in the esc_html__ function.
-					echo $reason;
+					echo $reason_escaped;
 				}
 				?>
 		</ul>

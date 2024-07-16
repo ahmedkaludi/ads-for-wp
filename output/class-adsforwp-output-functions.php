@@ -197,9 +197,9 @@ class Adsforwp_Output_Functions {
 			if ( ! $wp_filesystem ) {
 				WP_Filesystem();
 			}
-			$swHtmlContent = $wp_filesystem->get_contents( ADSFORWP_PLUGIN_DIR . 'public/assets/js/ads-front.js' );
+			$swhtmlcontent_escaped = $wp_filesystem->get_contents( ADSFORWP_PLUGIN_DIR . 'public/assets/js/ads-front.js' );
             //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- Reason: $swHtmlContent contains static js code
-			echo $swHtmlContent;
+			echo $swhtmlcontent_escaped;
 			header( 'Content-Type: application/javascript' );
 			exit;
 		}

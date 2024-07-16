@@ -498,8 +498,7 @@ class Adsforwp_View_Display {
 			$output_escaped .= '<tr><th>' . $label . '</th><td>' . $input . '</td></tr>';
 
 		}
-		$common_function_obj = new Adsforwp_Admin_Common_Functions();
-		$allowed_html        = $common_function_obj->adsforwp_expanded_allowed_tags();
+		$common_function_obj = new Adsforwp_Admin_Common_Functions();		
 		$in_group            = $common_function_obj->adsforwp_check_ads_in_group( $post->ID );
 		if ( ! empty( $in_group ) ) {
 			$group_links = '';
@@ -517,10 +516,7 @@ class Adsforwp_View_Display {
 			<table class="form-table adsforwp-display-table"><tbody> <?php echo $output_escaped; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped    -- Reason: already escaped ?></tbody></table><div style="display:none;" id="afw-embed-code-div"></div>
 			<?php
 		}
-	}
-	public function adsforwp_format_rows( $label, $input ) {
-		return '<tr><th>' . $label . '</th><td>' . $input . '</td></tr>';
-	}
+	}	
 	public function adsforwp_save_fields( $post_id ) {
 
 		if ( ! isset( $_POST['adsforwp_display_nonce'] ) ) {

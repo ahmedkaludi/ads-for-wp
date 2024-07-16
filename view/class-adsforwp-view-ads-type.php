@@ -1035,15 +1035,11 @@ class Adsforwp_View_Ads_Type {
 
 						$input = $input . $note;
 
-			$output_escaped .= $this->adsforwp_format_rows( $label, $input, $provider_type );
+			$output_escaped .= '<tr class="' . esc_attr( $provider_type ) . '"><th>' . $label . '</th><td>' . $input . '</td></tr>';
 		}
-        //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- Reason: already escaped                                                                                 		                                
+        //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- Reason: already escaped
 		echo '<table class="form-table adsforwp-ad-type-table"><tbody>' . $output_escaped . '</tbody></table>';
-	}
-	public function adsforwp_format_rows( $label, $input, $provider_type ) {
-
-		return '<tr class="' . esc_attr( $provider_type ) . '"><th>' . $label . '</th><td>' . $input . '</td></tr>';
-	}
+	}	
 	public function adsforwp_save_fields( $post_id ) {
 
 		if ( ! isset( $_POST['adsforwp_adtype_nonce'] ) ) {

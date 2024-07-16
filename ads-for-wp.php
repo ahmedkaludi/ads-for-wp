@@ -25,8 +25,8 @@ if ( ! defined( 'ADSFORWP_VERSION' ) ) {
 	define( 'ADSFORWP_VERSION', '1.9.29' );
 }
 
-// define( 'ADSFORWP_ENVIRONMENT', 'DEV' );
-define( 'ADSFORWP_ENVIRONMENT', 'PRO' );
+define( 'ADSFORWP_ENVIRONMENT', 'DEV' );
+//define( 'ADSFORWP_ENVIRONMENT', 'PRO' );
 
 /* Loading Backend files files*/
 require_once ADSFORWP_PLUGIN_DIR . '/admin/ads-setup.php';

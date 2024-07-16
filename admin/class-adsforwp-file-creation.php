@@ -69,7 +69,7 @@ class Adsforwp_File_Creation {
 
 		if ( file_exists( $this->ad_support ) ) {
 
-			$result = unlink( $this->ad_support );
+			$result = wp_delete_file( $this->ad_support );
 
 		}
 

@@ -87,7 +87,7 @@ class Adsforwp_View_Ad_Groups {
 		public function adsforwp_field_generator( $post ) {
 
 					$all_ads = $this->common_function->adsforwp_fetch_all_ads();
-					$output  = '';
+					$output_escaped  = '';
 
 			foreach ( $this->meta_fields as $meta_field ) {
 
@@ -285,18 +285,14 @@ class Adsforwp_View_Ad_Groups {
 								break;
 						}
 				}
-				$output .= $this->adsforwp_format_rows( $label, $input );
+				$output_escaped .= '<tr><th>' . $label . '</th><td>' . $input . '</td></tr>';
 			}
 
 			$allowed_html = $this->common_function->adsforwp_expanded_allowed_tags();
-			echo '<table class="form-table afw-ads-groups-box-table"><tbody>' . wp_kses( $output, $allowed_html ) . '</tbody></table>';
+			//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- Reason: already escaped
+			echo '<table class="form-table afw-ads-groups-box-table"><tbody>' . wp_kses( $output_escaped, $allowed_html ) . '</tbody></table>';
 		}
-
-		public function adsforwp_format_rows( $label, $input ) {
-			// $label and $input are already escaped while calling of this function
-			return '<tr><th>' . $label . '</th><td>' . $input . '</td></tr>';
-		}
-
+		
 		public function adsforwp_save_fields( $post_id ) {
 
 			if ( ! isset( $_POST['adgroup_nonce'] ) ) {
