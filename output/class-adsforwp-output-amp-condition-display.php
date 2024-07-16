@@ -12,7 +12,7 @@ class Adsforwp_Output_Amp_Condition_Display {
 
 	private $output_function = null;
 
-	function __construct() {
+	public function __construct() {
 
 		if ( $this->output_function == null ) {
 			$this->output_function = new Adsforwp_Output_Functions();

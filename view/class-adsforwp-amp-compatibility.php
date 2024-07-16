@@ -10,7 +10,7 @@ class Adsforwp_Amp_Compatibility {
 		add_action( 'add_meta_boxes', array( $this, 'adsforwp_amp_comp_add_meta_box' ) );
 		add_action( 'save_post', array( $this, 'adsforwp_amp_comp_save' ) );
 	}
-	function adsforwp_amp_comp_add_meta_box() {
+	public function adsforwp_amp_comp_add_meta_box() {
 
 			global $post;
 			$in_group = array();
@@ -34,7 +34,7 @@ class Adsforwp_Amp_Compatibility {
 
 		}
 	}
-	function adsforwp_amp_comp_get_meta( $value ) {
+	public function adsforwp_amp_comp_get_meta( $value ) {
 
 		global $post;
 
@@ -46,7 +46,7 @@ class Adsforwp_Amp_Compatibility {
 				return false;
 		}
 	}
-	function adsforwp_meta_box_callback( $post ) {
+	public function adsforwp_meta_box_callback( $post ) {
 			wp_nonce_field( 'adsforwp_amp_compatibility_nonce', 'adsforwp_amp_compatibility_nonce' ); ?>                                               
 				<div class="misc-pub-section">
 					<div class="afw-amp-compatibility">
@@ -88,7 +88,7 @@ class Adsforwp_Amp_Compatibility {
 					<?php
 	}
 
-	function adsforwp_amp_comp_save( $post_id ) {
+	public function adsforwp_amp_comp_save( $post_id ) {
 
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return;

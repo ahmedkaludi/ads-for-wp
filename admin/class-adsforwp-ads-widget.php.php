@@ -19,7 +19,7 @@ class Adsforwp_Ads_Widget extends WP_Widget {
 	/**
 	 * Register widget with WordPress.
 	 */
-	function __construct() {
+	public function __construct() {
 
 		if ( $this->common_function == null ) {
 			$this->common_function = new Adsforwp_Admin_Common_Functions();
