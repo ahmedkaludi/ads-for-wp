@@ -4,7 +4,7 @@ Tags: Ads, Media Net, AMP, Adsense, Advertisement
 Requires at least: 3.6
 Tested up to: 6.5
 Requires PHP: 5.6.20
-Stable tag: 1.9.28
+Stable tag: 1.9.29
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -68,12 +68,13 @@ Google Api Php Client library used https://github.com/googleapis/google-api-php-
 
 == Changelog ==
 
+= 1.9.29 (16 July 2024) =
+* Fixed: Bug reported by patchstack.
+
 = 1.9.28 (4 May 2024) =
 * Feature: Request to add more new position for Ads to display #350
 * Feature:: Need to create an option to hide Ad label for the specific group #406
 * Test with WordPress 6.5 and update readme.txt #409
-
-* Fixed
 
 = 1.9.27 (4 March 2024) =
 * Fixed: Call to undefined funciton wp_wp_json_encode #404
