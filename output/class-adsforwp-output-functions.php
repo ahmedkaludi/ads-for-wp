@@ -2836,9 +2836,8 @@ class Adsforwp_Output_Functions {
 					$response['adsforwp_group_hide_ad_label']          = adsforwp_rmv_warnings( $post_data, 'adsforwp_hide_ad_label', 'adsforwp_array' );
 
 					$response['ads'] = $adsresultset;
-					if ( $response['adsforwp_refresh_type'] == 'on_interval' ) {
-
-						$ad_code  = '<div class="afw-groups-ads-json" afw-group-id="' . esc_attr( $post_group_id ) . '" data-json="' . wp_json_encode( $response ) . '">';
+					if ( $response['adsforwp_refresh_type'] == 'on_interval' ) {						
+						$ad_code  = '<div class="afw-groups-ads-json" afw-group-id="' . esc_attr( $post_group_id ) . '" data-json="' . esc_attr(wp_json_encode( $response )) . '">';
 						$ad_code .= '</div>';
 						$ad_code .= '<div style="display:none;" data-id="' . esc_attr( $post_group_id ) . '" class="afw_ad_container_pre"></div><div data-id="' . esc_attr( $post_group_id ) . '" class="afw afw_ad_container"></div>';
 
