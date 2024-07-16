@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Google Adsense & Banner Ads by AdsforWP
+Plugin Name: Easy Google Adsense and Banner Ads Manager - AdsforWP
 Plugin URI: https://wordpress.org/plugins/ads-for-wp/
 Description: AdsforWP is an Google Ads & Banner ads plugin built for WordPress & AMP. Easy to Use, Unlimited Incontent Ads, Adsense, Premium Features and more
 Version: 1.9.29
