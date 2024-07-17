@@ -1,8 +1,8 @@
 === Easy Google Adsense and Banner Ads Manager - AdsforWP ===
 Contributors: magazine3
 Tags: Ads, Media Net, AMP, Adsense, Advertisement
-Requires at least: 3.6
-Tested up to: 6.5
+Requires at least: 4.5
+Tested up to: 6.6
 Requires PHP: 5.6.20
 Stable tag: 1.9.29
 Donate link: https://www.paypal.me/Kaludi/25usd
@@ -68,7 +68,7 @@ Google Api Php Client library used https://github.com/googleapis/google-api-php-
 
 == Changelog ==
 
-= 1.9.29 (16 July 2024) =
+= 1.9.29 (17 July 2024) =
 * Fixed: Bug reported by patchstack.
 
 = 1.9.28 (4 May 2024) =

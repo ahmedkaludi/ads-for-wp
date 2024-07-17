@@ -278,12 +278,14 @@ class Adsforwp_Admin_Settings {
 	}
 
 	public function adsforwp_check_data_imported_from( $plugin_post_type_name ) {
+		
 		$cc_args       = array(
 			'posts_per_page' => -1,
 			'post_type'      => 'adsforwp',
-			'meta_key'       => 'imported_from',
-			'meta_value'     => $plugin_post_type_name,
+			'meta_key'       => 'imported_from',//phpcs:ignore -- WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- just using in import button click not all the time
+			'meta_value'     => $plugin_post_type_name,//phpcs:ignore -- WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- just using in import button click not all the time
 		);
+		
 		$imported_from = new WP_Query( $cc_args );
 		return $imported_from;
 	}

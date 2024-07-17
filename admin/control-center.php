@@ -257,9 +257,9 @@ function adsforwp_sort_ads_by_display_type( $query ) {
 	$slug = isset( $_GET['slug'] ) ? $_GET['slug'] : '';
 
 	if ( is_admin() && $pagenow == 'edit.php' && $post_type == 'adsforwp' && $slug != 'all' ) {
-
-		$query->query_vars['meta_key']     = 'wheretodisplay';
-		$query->query_vars['meta_value']   = esc_attr( $slug );
+	
+		$query->query_vars['meta_key']     = 'wheretodisplay';//phpcs:ignore -- WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- just using in admin on ads list page
+		$query->query_vars['meta_value']   = esc_attr( $slug );//phpcs:ignore -- WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- just using in admin on ads list page
 		$query->query_vars['meta_compare'] = '=';
 
 	}
@@ -320,8 +320,9 @@ function adsforwp_sort_ads_by_type( $query ) {
    //phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason : Nonce verification is not required here , using ad-type-slug for filtering
 	$ad_type_slug = isset( $_GET['ad-type-slug'] ) ? $_GET['ad-type-slug'] : '';
 	if ( is_admin() && $pagenow == 'edit.php' && $post_type == 'adsforwp' && $ad_type_slug != 'all' ) {
-		$query->query_vars['meta_key']     = 'select_adtype';
-		$query->query_vars['meta_value']   = esc_attr( $ad_type_slug );
+		
+		$query->query_vars['meta_key']     = 'select_adtype';//phpcs:ignore -- WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- just using in import button click not all the time
+		$query->query_vars['meta_value']   = esc_attr( $ad_type_slug );//phpcs:ignore -- WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- just using in import button click not all the time
 		$query->query_vars['meta_compare'] = '=';
 	}
 }
@@ -673,13 +674,14 @@ function adsforwp_ajax_check_post_availability() {
 	if ( ! wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ) {
 		return;
 	}
-
+	   
 		$cc_args           = array(
 			'posts_per_page' => -1,
 			'post_type'      => 'adsforwp',
-			'meta_key'       => 'adsense_type',
-			'meta_value'     => 'adsense_auto_ads',
+			'meta_key'       => 'adsense_type',//phpcs:ignore -- WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- just using in adsense ads loading context
+			'meta_value'     => 'adsense_auto_ads',//phpcs:ignore -- WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- just using in adsense ads loading context
 		);
+		
 		$postdata          = new WP_Query( $cc_args );
 		$auto_adsense_post = $postdata->posts;
 		$ad_sense_type     = '';
@@ -971,16 +973,10 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
 
 		$common_function_obj = new Adsforwp_Admin_Common_Functions();
 		$result              = $common_function_obj->adsforwp_check_ads_in_group( $post_id );
-		$post_title          = '';
 
-	foreach ( $result as $group ) {
-		$group_post  = get_post( $group );
-		$post_title .= '<a href="' . esc_url( get_admin_url() ) . 'post.php?post=' . esc_attr( $group ) . '&action=edit">' . esc_html( $group_post->post_title ) . '</a>, ';
-	}
-
-			$ad_stats   = adsforwp_get_ad_stats( 'sumofstats', $post_id );
-			$impression = 0;
-			$clicks     = 0;
+		$ad_stats   = adsforwp_get_ad_stats( 'sumofstats', $post_id );
+		$impression = 0;
+		$clicks     = 0;
 
 	if ( $ad_stats ) {
 
@@ -1014,7 +1010,13 @@ function adsforwp_group_custom_column_set( $column, $post_id ) {
 			}
 			break;
 		case 'adsforwp_group_column':
-			echo esc_html( $post_title );
+
+			if( ! empty($result) ) {
+				foreach ( $result as $group ) {
+					$group_post  = get_post( $group );
+					echo '<a href="' . esc_url( get_admin_url() ) . 'post.php?post=' . esc_attr( $group ) . '&action=edit">' . esc_html( $group_post->post_title ) . '</a>, ';
+				}
+			}						
 
 			break;
 		case 'adsforwp_ad_image_preview':
@@ -1149,11 +1151,11 @@ function adsforwp_frontend_enqueue() {
 		}
 		if ( $need_to_display ) {
 			if ( ADSFORWP_ENVIRONMENT == 'DEV' ) {
-				wp_register_script( 'adsforwp-ads-frontend-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-frontend.js', array( 'jquery' ), ADSFORWP_VERSION, true );
-				wp_register_script( 'adsforwp-ads-front-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-front.js', array( 'jquery' ), ADSFORWP_VERSION, true );
+				wp_register_script( 'adsforwp-ads-frontend-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-frontend.js', array( 'jquery' ), ADSFORWP_VERSION, true );//phpcs:ignore EnqueuedScriptsScope -- if you look at above we have added manual condion to load the script
+				wp_register_script( 'adsforwp-ads-front-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-front.js', array( 'jquery' ), ADSFORWP_VERSION, true );//phpcs:ignore EnqueuedScriptsScope -- if you look at above we have added manual condion to load the script
 			} else {
-				wp_register_script( 'adsforwp-ads-frontend-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-frontend.min.js', array( 'jquery' ), ADSFORWP_VERSION, true );
-				wp_register_script( 'adsforwp-ads-front-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-front.min.js', array( 'jquery' ), ADSFORWP_VERSION, true );
+				wp_register_script( 'adsforwp-ads-frontend-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-frontend.min.js', array( 'jquery' ), ADSFORWP_VERSION, true );//phpcs:ignore EnqueuedScriptsScope -- if you look at above we have added manual condion to load the script
+				wp_register_script( 'adsforwp-ads-front-js', ADSFORWP_PLUGIN_DIR_URI . 'public/assets/js/ads-front.min.js', array( 'jquery' ), ADSFORWP_VERSION, true );//phpcs:ignore EnqueuedScriptsScope -- if you look at above we have added manual condion to load the script
 			}
 			$browserdata = array();
 			$object_name = array(
@@ -1167,8 +1169,8 @@ function adsforwp_frontend_enqueue() {
 				$object_name['ad_performance_tracker'] = $settings['ad_performance_tracker'];
 			}
 
-			wp_localize_script( 'adsforwp-ads-front-js', 'adsforwp_obj', $object_name );
-			wp_localize_script( 'adsforwp-ads-frontend-js', 'adsforwp_browser_obj', $object_browser );
+			    wp_localize_script( 'adsforwp-ads-front-js', 'adsforwp_obj', $object_name );
+			    wp_localize_script( 'adsforwp-ads-frontend-js', 'adsforwp_browser_obj', $object_browser );
 				wp_enqueue_script( 'adsforwp-ads-front-js' );
 				wp_enqueue_script( 'adsforwp-ads-frontend-js' );
 			if ( ADSFORWP_ENVIRONMENT == 'DEV' ) {

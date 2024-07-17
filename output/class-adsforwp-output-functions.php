@@ -649,13 +649,14 @@ class Adsforwp_Output_Functions {
 
 					$data_ad_client = '';
 					$response       = array();
+					
 					$cc_args        = array(
 						'posts_per_page' => -1,
 						'post_type'      => 'adsforwp',
-						'meta_key'       => 'adsense_type',
-						'meta_value'     => 'adsense_auto_ads',
+						'meta_key'       => 'adsense_type',//phpcs:ignore -- WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- just using in adsense context
+						'meta_value'     => 'adsense_auto_ads',//phpcs:ignore -- WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- just using in adsense context
 					);
-
+					
 					$postdata          = new WP_Query( $cc_args );
 					$auto_adsense_post = $postdata->posts;
 
