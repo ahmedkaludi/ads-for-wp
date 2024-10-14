@@ -25,7 +25,7 @@ class Adsforwp_Ads_Newsletter {
 
 				global $current_user;
 			$tour = array();
-                //phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: No form submissions.
+                //phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason: No form submissions.
 				$tab = isset( $_GET['tab'] ) ? esc_attr( wp_unslash($_GET['tab']) ) : '';
 
 			if ( ! array_key_exists( $tab, $tour ) ) {

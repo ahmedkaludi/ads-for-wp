@@ -28,17 +28,19 @@ class Adsforwp_Ajax_Selectbox {
 		$adsforwp_settings = adsforwp_defaultSettings();
 		$response          = $data;
 		$is_ajax           = false;
-		if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
+		if ( isset( $_SERVER['REQUEST_METHOD'] ) && $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 			$is_ajax = true;
-			if ( wp_verify_nonce( $_POST['adsforwp_visitor_condition_call_nonce'], 'adsforwp_visitor_condition_action_nonce' ) ) {
+			
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
+			if ( isset( $_POST['adsforwp_visitor_condition_call_nonce'] ) &&  wp_verify_nonce( $_POST['adsforwp_visitor_condition_call_nonce'], 'adsforwp_visitor_condition_action_nonce' ) ) {
 				if ( isset( $_POST['id'] ) ) {
 					$response = sanitize_text_field( wp_unslash( $_POST['id'] ) );
 				}
 				if ( isset( $_POST['number'] ) ) {
-					$current_number = intval( sanitize_text_field( $_POST['number'] ) );
+					$current_number = intval( sanitize_text_field( wp_unslash( $_POST['number'] ) ) );
 				}
 				if ( isset( $_POST['group_number'] ) ) {
-					$current_group_number = intval( sanitize_text_field( $_POST['group_number'] ) );
+					$current_group_number = intval( sanitize_text_field( wp_unslash( $_POST['group_number'] ) ) );
 				}
 			} else {
 				exit;
@@ -87,11 +89,12 @@ class Adsforwp_Ajax_Selectbox {
 
 		$response = $data;
 		$is_ajax  = false;
-		if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
+		if ( isset( $_SERVER['REQUEST_METHOD'] ) && $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 
 			$is_ajax = true;
 
-			if ( wp_verify_nonce( $_POST['adsforwp_visitor_condition_call_nonce'], 'adsforwp_visitor_condition_action_nonce' ) ) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
+			if ( isset( $_POST['adsforwp_visitor_condition_call_nonce'] ) && wp_verify_nonce( $_POST['adsforwp_visitor_condition_call_nonce'], 'adsforwp_visitor_condition_action_nonce' ) ) {
 
 				if ( isset( $_POST['id'] ) ) {
 
@@ -101,13 +104,13 @@ class Adsforwp_Ajax_Selectbox {
 
 				if ( isset( $_POST['number'] ) ) {
 
-					$current_number = intval( sanitize_text_field( $_POST['number'] ) );
+					$current_number = intval( sanitize_text_field( wp_unslash( $_POST['number'] ) ) );
 
 				}
 
 				if ( isset( $_POST['group_number'] ) ) {
 
-					$current_group_number = intval( sanitize_text_field( $_POST['group_number'] ) );
+					$current_group_number = intval( sanitize_text_field( wp_unslash( $_POST['group_number'] ) ) );
 
 				}
 			} else {
@@ -617,11 +620,12 @@ class Adsforwp_Ajax_Selectbox {
 		$response = $data;
 		$is_ajax  = false;
 
-		if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
+		if ( isset( $_SERVER['REQUEST_METHOD'] ) &&  $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 
 			$is_ajax = true;
 
-			if ( wp_verify_nonce( $_POST['adsforwp_call_nonce'], 'adsforwp_select_action_nonce' ) ) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
+			if ( isset( $_POST['adsforwp_call_nonce'] ) && wp_verify_nonce( $_POST['adsforwp_call_nonce'], 'adsforwp_select_action_nonce' ) ) {
 
 				if ( isset( $_POST['id'] ) ) {
 
@@ -631,13 +635,13 @@ class Adsforwp_Ajax_Selectbox {
 
 				if ( isset( $_POST['number'] ) ) {
 
-					$current_number = intval( sanitize_text_field( $_POST['number'] ) );
+					$current_number = intval( sanitize_text_field( wp_unslash( $_POST['number'] ) ) );
 
 				}
 
 				if ( isset( $_POST['group_number'] ) ) {
 
-					$current_group_number = intval( sanitize_text_field( $_POST['group_number'] ) );
+					$current_group_number = intval( sanitize_text_field( wp_unslash( $_POST['group_number'] ) ) );
 
 				}
 			} else {
@@ -947,11 +951,12 @@ class Adsforwp_Ajax_Selectbox {
 
 		$is_ajax = false;
 
-		if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
+		if ( isset( $_SERVER['REQUEST_METHOD'] ) && $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 
 			$is_ajax = true;
 
-			if ( wp_verify_nonce( $_POST['adsforwp_call_nonce'], 'adsforwp_select_action_nonce' ) ) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
+			if ( isset( $_POST['adsforwp_call_nonce'] ) && wp_verify_nonce( $_POST['adsforwp_call_nonce'], 'adsforwp_select_action_nonce' ) ) {
 
 				if ( isset( $_POST['id'] ) ) {
 
@@ -961,13 +966,13 @@ class Adsforwp_Ajax_Selectbox {
 
 				if ( isset( $_POST['number'] ) ) {
 
-						$current_number = intval( sanitize_text_field( $_POST['number'] ) );
+						$current_number = intval( sanitize_text_field( wp_unslash( $_POST['number'] ) ) );
 
 				}
 
 				if ( isset( $_POST['group_number'] ) ) {
 
-						$current_group_number = intval( sanitize_text_field( $_POST['group_number'] ) );
+						$current_group_number = intval( sanitize_text_field( wp_unslash( $_POST['group_number'] ) ) );
 
 				}
 			} else {

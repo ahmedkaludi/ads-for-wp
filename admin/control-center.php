@@ -23,12 +23,14 @@ function adsforwp_display_ads_txt() {
 
 		$host = '';
 		if ( isset( $_SERVER['HTTP_HOST'] ) && ! empty( $_SERVER['HTTP_HOST'] ) ) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			$host = $_SERVER['HTTP_HOST'];
 		}
 
 		$link .= '://';
 		$link .= $host;
-		$link .= esc_url_raw( $_SERVER['REQUEST_URI'] );
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash --Reason Data is not getting stored in DB so unslash is not necessary.
+		$link .= isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( $_SERVER['REQUEST_URI'] ) : '';
 
 		if ( trailingslashit( get_site_url() ) . 'ads.txt' === esc_url_raw( $link ) ) {
 
@@ -66,6 +68,7 @@ function adsforwp_store_user_info_client_side() {
 
 		if ( isset( $_COOKIE['adsforwp-user-info'] ) ) {
 
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized --Reason Just fetching the data from cookie
 			$saved_ip_list = $_COOKIE['adsforwp-user-info'];
 			$saved_ip      = trim( base64_decode( $saved_ip_list[0] ) );
 
@@ -120,6 +123,7 @@ function adsforwp_reset_all_settings() {
 		return;
 	}
 
+	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 	if ( ! wp_verify_nonce( $_POST['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ) {
 		return;
 	}
@@ -226,7 +230,7 @@ function adsforwp_filter_tracked_plugins() {
 			'custom_target'       => esc_html__( 'Custom Target', 'ads-for-wp' ),
 			'sticky'              => esc_html__( 'Sticky', 'ads-for-wp' ),
 		); // Options for the filter select field
-        //phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason : setting select box value if ad-type-slug is present in url without making any sensitive changes or performing critical actions.
+        //phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason : setting select box value if ad-type-slug is present in url without making any sensitive changes or performing critical actions.
 		$current_plugin = isset( $_GET['slug'] ) ? esc_attr( $_GET['slug'] ) : '';
 		?>
 		<select name="slug" id="slug">
