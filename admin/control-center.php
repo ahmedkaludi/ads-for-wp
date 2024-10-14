@@ -127,7 +127,7 @@ function adsforwp_reset_all_settings() {
 		$result = '';
 
 		// Deleting Settings
-		update_option( 'adsforwp_settings', array() ); // Security: Permission and nonce verified
+		delete_option( 'adsforwp_settings' ); // Security: Permission and nonce verified
 
 		// Deleting Ads
 		$allposts = get_posts(

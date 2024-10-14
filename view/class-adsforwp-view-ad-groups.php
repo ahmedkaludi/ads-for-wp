@@ -209,6 +209,7 @@ class Adsforwp_View_Ad_Groups {
 
 								foreach ( $this->ads_list as $value ) {
 
+									$ad_name 		  = ! empty( $value['ad_name'] ) ? $value['ad_name'] : '(no title)';
 									if ( $this->added_ad_list ) {
 										if ( ! array_key_exists( $value['ad_id'], $this->added_ad_list ) ) {
 											$meta_field_value = '[' . esc_attr( $value['ad_id'] ) . ']';
@@ -216,7 +217,7 @@ class Adsforwp_View_Ad_Groups {
 												'<option %s value="adsforwp_ads%s">%s</option>',
 												$meta_value === $meta_field_value ? 'selected' : '',
 												esc_attr( $meta_field_value ),
-												esc_attr( $value['ad_name'] )
+												esc_attr( $ad_name )
 											);
 										}
 									} else {
@@ -225,7 +226,7 @@ class Adsforwp_View_Ad_Groups {
 											'<option %s value="adsforwp_ads%s">%s</option>',
 											$meta_value === $meta_field_value ? 'selected' : '',
 											esc_attr( $meta_field_value ),
-											esc_html( $value['ad_name'] )
+											esc_html( $ad_name )
 										);
 									}
 								}

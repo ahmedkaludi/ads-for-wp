@@ -12,6 +12,7 @@
                             nextId = jQuery(this).parents("tbody").find("tr").length;
                             selectrow = selectrow.replace(/\[0\]/g, "["+nextId+"]");
                             selectrow = selectrow.replace(/\[group-0\]/g, "[group-"+group_index+"]");
+                            selectrow = selectrow.replace(/afw-select-post-type 0/g, "afw-select-post-type "+nextId);
                             jQuery(this).parents("tr").after(selectrow);adsforwpremoveHtml();adsforwpclone();
                     });
             }
@@ -906,7 +907,7 @@ jQuery( document ).ready(function($) {
                     window.history.pushState("", "", href);
                     return false;
             });
-    $('#adsforwp_ad_expire_from, #adsforwp_ad_expire_to').datepicker({
+    $('#adsforwp_ad_expire_from').datepicker({
          dateFormat: "yy-mm-dd",
          minDate: 0,
          onSelect: function(selected){

@@ -674,10 +674,9 @@ class Adsforwp_Admin_Settings {
 	}
 	public function adsforwp_ad_blocker_notice_opt_callback() {
 		$settings             = adsforwp_defaultSettings();
-		$notice_type          = esc_attr( $settings['notice_type'] );
+		$notice_type          = isset( $settings['notice_type'] ) ? esc_attr( $settings['notice_type'] ) : '';
 		$notice_title         = esc_attr( $settings['notice_title'] );
 		$notice_description   = esc_html( $settings['notice_description'] );
-		$notice_close_btn     = esc_attr( $settings['notice_close_btn'] );
 		$btn_txt              = esc_attr( $settings['btn_txt'] );
 		$notice_bg_color      = sanitize_hex_color( $settings['notice_bg_color'] );
 		$notice_txt_color     = sanitize_hex_color( $settings['notice_txt_color'] );

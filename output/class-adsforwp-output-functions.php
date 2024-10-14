@@ -1401,20 +1401,23 @@ class Adsforwp_Output_Functions {
 									$p_number   = $paragraph_id;
 
 									foreach ( $paragraphs as $index => $paragraph ) {
+									
+										if ( ! empty( $paragraph ) ) {
 
-										if ( trim( $paragraph ) ) {
-											$paragraphs[ $index ] .= $closing_p;
-										}
-
-										if ( $every_paragraphs == 1 ) {
-
-											if ( $paragraph_id == $index + 1 ) {
-													$paragraphs[ $index ] .= $ad_code;
-													$paragraph_id         += $p_number;
+											if ( trim( $paragraph ) ) {
+												$paragraphs[ $index ] .= $closing_p;
 											}
-										} elseif ( $paragraph_id == $index + 1 ) {
 
-												$paragraphs[ $index ] .= $ad_code;
+											if ( $every_paragraphs == 1 ) {
+
+												if ( $paragraph_id == $index + 1 ) {
+														$paragraphs[ $index ] .= $ad_code;
+														$paragraph_id         += $p_number;
+												}
+											} elseif ( $paragraph_id == $index + 1 ) {
+
+													$paragraphs[ $index ] .= $ad_code;
+											}
 										}
 									}
 
