@@ -299,6 +299,7 @@ class Adsforwp_View_Ad_Groups {
 			if ( ! isset( $_POST['adgroup_nonce'] ) ) {
 				return $post_id;
 			}
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 			if ( ! wp_verify_nonce( $_POST['adgroup_nonce'], 'adgroup_data' ) ) {
 				return $post_id;
 			}
@@ -316,6 +317,7 @@ class Adsforwp_View_Ad_Groups {
 				$adsforwp_ads_array = array();
 
 				if ( isset( $_POST['adsforwp_ads'] ) && is_array( $_POST['adsforwp_ads'] ) ) {
+					// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 					$adsforwp_ads_array = array_map( 'sanitize_text_field', $_POST['adsforwp_ads'] );
 				}
 

@@ -255,7 +255,7 @@ class Adsforwp_View_Visitor_Condition {
 			return;
 		}
 
-		// if our nonce isn't there, or we can't verify it, bail
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! isset( $_POST['adsforwp_visitor_condition_name_nonce'] ) || ! wp_verify_nonce( $_POST['adsforwp_visitor_condition_name_nonce'], 'adsforwp_visitor_condition_action_nonce' ) ) {
 			return;
 		}
@@ -271,6 +271,7 @@ class Adsforwp_View_Visitor_Condition {
 
 		if ( isset( $_POST['visitor_conditions_array'] ) ) {
 
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			$post_visitor_conditions_array = (array) $_POST['visitor_conditions_array'];
 			/*
 			Type casted the $_POST['visitor_conditions_array'] to (array) to make sure
@@ -308,7 +309,7 @@ class Adsforwp_View_Visitor_Condition {
 
 		if ( isset( $_POST['adsforwp_v_condition_enable'] ) ) {
 
-			$status = sanitize_text_field( $_POST['adsforwp_v_condition_enable'] );
+			$status = sanitize_text_field( wp_unslash( $_POST['adsforwp_v_condition_enable'] ) );
 
 			update_post_meta(
 				$post_id,
@@ -363,7 +364,8 @@ class Adsforwp_View_Visitor_Condition {
 				}
 				break;
 			case 'referrer_url':
-					$referrer_url = esc_url( $_SERVER['HTTP_REFERER'] );
+					// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized --Reason Using it for condition check
+					$referrer_url = isset( $_SERVER['HTTP_REFERER'] ) ? sanitize_url( $_SERVER['HTTP_REFERER'] ) : '';
 				if ( isset( $input['key_4'] ) && $input['key_3'] == 'url_custom' ) {
 					$data = $input['key_4'];
 				}
@@ -384,7 +386,8 @@ class Adsforwp_View_Visitor_Condition {
 				$result = true;
 				break;
 			case 'browser_language':
-					$browser_language = substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2 );
+					// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized --Reason Using it for condition check
+					$browser_language = isset( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) ? substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2 ) : '';
 				if ( $comparison == 'equal' ) {
 					if ( $browser_language == $data ) {
 						$result = true;
@@ -406,6 +409,7 @@ class Adsforwp_View_Visitor_Condition {
 
 				if ( isset( $_COOKIE['adsforwp-user-info'] ) ) {
 
+					// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized --Reason Using it for condition check
 					$saved_ip_list = $_COOKIE['adsforwp-user-info'];
 					$saved_ip      = trim( base64_decode( $saved_ip_list[0] ) );
 
@@ -443,7 +447,8 @@ class Adsforwp_View_Visitor_Condition {
 				break;
 
 			case 'url_parameter':
-					$url = esc_url( $_SERVER['REQUEST_URI'] );
+					// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash --Reason Using it for condition check
+					$url = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_url( $_SERVER['REQUEST_URI'] ) : '';
 				if ( $comparison == 'equal' ) {
 					if ( strpos( $url, $data ) !== false ) {
 						$result = true;
@@ -526,7 +531,8 @@ class Adsforwp_View_Visitor_Condition {
 				$user_agent_name = $this->adsforwp_detect_user_agent();
 
 				if ( isset( $input['key_5'] ) && $input['key_3'] == 'user_agent_custom' ) {
-					if ( stripos( $_SERVER['HTTP_USER_AGENT'], $input['key_5'] ) ) {
+					// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Using it for condition check
+					if ( isset( $_SERVER['HTTP_USER_AGENT'] ) && stripos( $_SERVER['HTTP_USER_AGENT'], $input['key_5'] ) ) {
 						$user_agent_name = $input['key_5'];
 					}
 					$data = $input['key_5'];
@@ -608,27 +614,29 @@ class Adsforwp_View_Visitor_Condition {
 
 	public function adsforwp_detect_user_agent() {
 			$user_agent_name = 'others';
-		if ( strpos( $_SERVER['HTTP_USER_AGENT'], 'Opera' ) || strpos( $user_agent, 'OPR/' ) ) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Using it for condition check
+			$server_user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '';
+		if ( strpos( $server_user_agent, 'Opera' ) || strpos( $user_agent, 'OPR/' ) ) {
 			$user_agent_name = 'opera';
-		} elseif ( strpos( $_SERVER['HTTP_USER_AGENT'], 'Edge' ) ) {
+		} elseif ( strpos( $server_user_agent, 'Edge' ) ) {
 			$user_agent_name = 'edge';
-		} elseif ( strpos( $_SERVER['HTTP_USER_AGENT'], 'Firefox' ) ) {
+		} elseif ( strpos( $server_user_agent, 'Firefox' ) ) {
 			$user_agent_name = 'firefox';
-		} elseif ( strpos( $_SERVER['HTTP_USER_AGENT'], 'MSIE' ) || strpos( $user_agent, 'Trident/7' ) ) {
+		} elseif ( strpos( $server_user_agent, 'MSIE' ) || strpos( $user_agent, 'Trident/7' ) ) {
 			$user_agent_name = 'internet_explorer';
-		} elseif ( stripos( $_SERVER['HTTP_USER_AGENT'], 'iPod' ) ) {
+		} elseif ( stripos( $server_user_agent, 'iPod' ) ) {
 			$user_agent_name = 'ipod';
-		} elseif ( stripos( $_SERVER['HTTP_USER_AGENT'], 'iPhone' ) ) {
+		} elseif ( stripos( $server_user_agent, 'iPhone' ) ) {
 			$user_agent_name = 'iphone';
-		} elseif ( stripos( $_SERVER['HTTP_USER_AGENT'], 'iPad' ) ) {
+		} elseif ( stripos( $server_user_agent, 'iPad' ) ) {
 			$user_agent_name = 'ipad';
-		} elseif ( stripos( $_SERVER['HTTP_USER_AGENT'], 'Android' ) ) {
+		} elseif ( stripos( $server_user_agent, 'Android' ) ) {
 			$user_agent_name = 'android';
-		} elseif ( stripos( $_SERVER['HTTP_USER_AGENT'], 'webOS' ) ) {
+		} elseif ( stripos( $server_user_agent, 'webOS' ) ) {
 			$user_agent_name = 'webos';
-		} elseif ( strpos( $_SERVER['HTTP_USER_AGENT'], 'Chrome' ) ) {
+		} elseif ( strpos( $server_user_agent, 'Chrome' ) ) {
 			$user_agent_name = 'chrome';
-		} elseif ( strpos( $_SERVER['HTTP_USER_AGENT'], 'Safari' ) ) {
+		} elseif ( strpos( $server_user_agent, 'Safari' ) ) {
 			$user_agent_name = 'safari';
 		}
 
@@ -699,16 +707,22 @@ class Adsforwp_View_Visitor_Condition {
 	public function adsforwp_get_client_ip() {
 		$ipaddress = '';
 		if ( isset( $_SERVER['HTTP_CLIENT_IP'] ) ) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Just using it for condition check
 			$ipaddress = $_SERVER['HTTP_CLIENT_IP'];
 		} elseif ( isset( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Just using it for condition check
 			$ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
 		} elseif ( isset( $_SERVER['HTTP_X_FORWARDED'] ) ) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Just using it for condition check
 			$ipaddress = $_SERVER['HTTP_X_FORWARDED'];
 		} elseif ( isset( $_SERVER['HTTP_FORWARDED_FOR'] ) ) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Just using it for condition check
 			$ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
 		} elseif ( isset( $_SERVER['HTTP_FORWARDED'] ) ) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Just using it for condition check
 			$ipaddress = $_SERVER['HTTP_FORWARDED'];
 		} elseif ( isset( $_SERVER['REMOTE_ADDR'] ) ) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Just using it for condition check
 			$ipaddress = $_SERVER['REMOTE_ADDR'];
 		} else {
 			$ipaddress = 'UNKNOWN';

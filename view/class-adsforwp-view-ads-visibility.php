@@ -96,6 +96,7 @@ class Adsforwp_View_Ads_Visibility {
 		if ( ! isset( $_POST['adsforwp_showadscurrent_nonce'] ) ) {
 			return $post_id;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! wp_verify_nonce( $_POST['adsforwp_showadscurrent_nonce'], 'adsforwp_showadscurrent_data' ) ) {
 			return $post_id;
 		}

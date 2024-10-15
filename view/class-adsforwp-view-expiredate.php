@@ -194,6 +194,7 @@ class Adsforwp_View_Expiredate {
 		if ( ! isset( $_POST['setexpiredate_nonce'] ) ) {
 			return $post_id;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! wp_verify_nonce( $_POST['setexpiredate_nonce'], 'setexpiredate_data' ) ) {
 			return $post_id;
 		}
@@ -210,6 +211,7 @@ class Adsforwp_View_Expiredate {
 			$adsforwp_days_array = array();
 
 			if ( isset( $_POST['adsforwp_ad_expire_days'] ) && is_array( $_POST['adsforwp_ad_expire_days'] ) ) {
+				// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 				$adsforwp_days_array = array_map( 'sanitize_text_field', $_POST['adsforwp_ad_expire_days'] );
 			}
 

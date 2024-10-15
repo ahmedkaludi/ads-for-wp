@@ -1045,6 +1045,7 @@ class Adsforwp_View_Ads_Type {
 		if ( ! isset( $_POST['adsforwp_adtype_nonce'] ) ) {
 			return $post_id;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! wp_verify_nonce( $_POST['adsforwp_adtype_nonce'], 'adsforwp_adtype_data' ) ) {
 			return $post_id;
 		}

@@ -255,10 +255,10 @@ function adsforwp_sort_ads_by_display_type( $query ) {
 
 	global $pagenow;
 	// Get the post type
-  //phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason : Nonce verification is not required here , using post_type for filtering
-	$post_type = isset( $_GET['post_type'] ) ? $_GET['post_type'] : '';
-  //phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason : Nonce verification is not required here , using slug for filtering
-	$slug = isset( $_GET['slug'] ) ? $_GET['slug'] : '';
+  //phpcs:ignore WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- Reason : Nonce verification is not required here , using post_type for filtering
+	$post_type = isset( $_GET['post_type'] ) ? sanitize_text_field( $_GET['post_type'] ) : '';
+  //phpcs:ignore WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- Reason : Nonce verification is not required here , using slug for filtering
+	$slug = isset( $_GET['slug'] ) ? sanitize_text_field( $_GET['slug'] ) : '';
 
 	if ( is_admin() && $pagenow == 'edit.php' && $post_type == 'adsforwp' && $slug != 'all' ) {
 	
@@ -294,8 +294,8 @@ function adsforwp_filter_by_ad_type() {
 			'ad_image'  => esc_html__( 'Image Banner Ad', 'ads-for-wp' ),
 			'custom'    => esc_html__( 'Custom Code', 'ads-for-wp' ),
 		); // Options for the filter select field
-        //phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason : setting select box value if ad-type-slug is present in url without making any sensitive changes or performing critical actions.
-		$current_plugin = isset( $_GET['ad-type-slug'] ) ? esc_attr( $_GET['ad-type-slug'] ) : '';
+        //phpcs:ignore WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- Reason : setting select box value if ad-type-slug is present in url without making any sensitive changes or performing critical actions.
+		$current_plugin = isset( $_GET['ad-type-slug'] ) ? sanitize_text_field( $_GET['ad-type-slug'] ) : '';
 		?>
 		<select name="ad-type-slug" id="ad-type-slug">
 		<option value="all" <?php selected( 'all', $current_plugin ); ?>><?php esc_html_e( 'All', 'ads-for-wp' ); ?></option>
@@ -319,10 +319,10 @@ function adsforwp_sort_ads_by_type( $query ) {
 
 	global $pagenow;
 	// Get the post type
-  //phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason : Nonce verification is not required here , using post_type for filtering
-	$post_type = isset( $_GET['post_type'] ) ? $_GET['post_type'] : '';
-   //phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason : Nonce verification is not required here , using ad-type-slug for filtering
-	$ad_type_slug = isset( $_GET['ad-type-slug'] ) ? $_GET['ad-type-slug'] : '';
+  //phpcs:ignore WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- Reason : Nonce verification is not required here , using post_type for filtering
+	$post_type = isset( $_GET['post_type'] ) ? sanitize_text_field( $_GET['post_type'] ) : '';
+   //phpcs:ignore WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- Reason : Nonce verification is not required here , using ad-type-slug for filtering
+	$ad_type_slug = isset( $_GET['ad-type-slug'] ) ? sanitize_text_field( $_GET['ad-type-slug'] ) : '';
 	if ( is_admin() && $pagenow == 'edit.php' && $post_type == 'adsforwp' && $ad_type_slug != 'all' ) {
 		
 		$query->query_vars['meta_key']     = 'select_adtype';//phpcs:ignore -- WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- just using in import button click not all the time
@@ -342,6 +342,7 @@ function adsforwp_review_notice_remindme() {
 	if ( ! isset( $_POST['adsforwp_security_nonce'] ) ) {
 		return;
 	}
+	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 	if ( ! wp_verify_nonce( $_POST['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ) {
 		return;
 	}
@@ -367,6 +368,7 @@ function adsforwp_review_notice_close() {
 	if ( ! isset( $_POST['adsforwp_security_nonce'] ) ) {
 		return;
 	}
+	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 	if ( ! wp_verify_nonce( $_POST['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ) {
 		return;
 	}
@@ -401,11 +403,12 @@ function adsforwp_import_plugin_data() {
 	if ( ! isset( $_GET['adsforwp_security_nonce'] ) ) {
 		return;
 	}
+	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 	if ( ! wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ) {
 		return;
 	}
-
-		$plugin_name         = sanitize_text_field( $_GET['plugin_name'] );
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash --Reason Data is not getting stored into database, just using this to validate the condition
+		$plugin_name         = isset( $_GET['plugin_name'] ) ? sanitize_text_field( $_GET['plugin_name'] ) : '';
 		$common_function_obj = new Adsforwp_Admin_Common_Functions();
 		$result              = array();
 
@@ -493,6 +496,7 @@ function adsforwp_send_query_message() {
 	if ( ! isset( $_POST['adsforwp_security_nonce'] ) ) {
 		return;
 	}
+	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 	if ( ! wp_verify_nonce( $_POST['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ) {
 		return;
 	}
@@ -501,7 +505,9 @@ function adsforwp_send_query_message() {
 
 		include_once ABSPATH . 'wp-includes/pluggable.php';
 		$customer_type = 'Are you a premium customer ? No';
-		$message       = sanitize_textarea_field( $_POST['message'] );
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash --Reason Data is not getting stored into database
+		$message       = isset( $_POST['message'] ) ? sanitize_textarea_field( $_POST['message'] ) : '';
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash --Reason Data is not getting stored into database
 		$premium_cus   = isset( $_POST['premium_cus'] ) ? sanitize_textarea_field( $_POST['premium_cus'] ) : '';
 		$user          = wp_get_current_user();
 		$user_data     = $user->data;
@@ -616,13 +622,13 @@ function adsforwp_save_extra_user_profile_fields( $user_id ) {
 		return false;
 	}
 
-	// Check if the nonce field is set and verify it
+	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 	if ( ! isset( $_POST['_adsforwp_adsense_nonce'] ) || ! wp_verify_nonce( $_POST['_adsforwp_adsense_nonce'], 'adsforwp_save_adsense_info' ) ) {
 		return false;
 	}
 
-	$adsense_pub_id     = sanitize_text_field( $_POST['adsense_pub_id'] );
-	$adsense_ad_slot_id = sanitize_text_field( $_POST['adsense_ad_slot_id'] );
+	$adsense_pub_id     = isset( $_POST['adsense_pub_id'] ) ? sanitize_text_field( wp_unslash( $_POST['adsense_pub_id'] ) ) : '';
+	$adsense_ad_slot_id = isset( $_POST['adsense_ad_slot_id'] ) ? sanitize_text_field( wp_unslash( $_POST['adsense_ad_slot_id'] ) ) : '';
 
 	update_user_meta( $user_id, 'adsense_pub_id', $adsense_pub_id );
 	update_user_meta( $user_id, 'adsense_ad_slot_id', $adsense_ad_slot_id );
@@ -675,6 +681,7 @@ function adsforwp_ajax_check_post_availability() {
 		return;
 	}
 
+	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 	if ( ! wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ) {
 		return;
 	}
@@ -746,7 +753,7 @@ function adsforwp_admin_link( $tab = '', $args = array() ) {
  */
 function adsforwp_analytics_admin_link( $tab = '', $args = array() ) {
 
-    //phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason : Nonce verification is not required here , using ad_id for url building
+    //phpcs:ignore WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- Reason : Nonce verification is not required here , using ad_id for url building
 	$ad_id = isset( $_GET['ad_id'] ) ? '&ad_id=' . sanitize_text_field( $_GET['ad_id'] ) : '';
 
 	$page = 'analytics';
@@ -779,7 +786,7 @@ function adsforwp_analytics_admin_link( $tab = '', $args = array() ) {
  */
 function adsforwp_get_tab( $default = '', $available = array() ) {
 
-    //phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason : Nonce verification is not required here , using tab for url tab selection
+    //phpcs:ignore WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- Reason : Nonce verification is not required here , using tab for url tab selection
 	$tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : $default;
 
 	if ( ! in_array( $tab, $available ) ) {

@@ -94,6 +94,7 @@ class Adsforwp_Amp_Compatibility {
 			return;
 		}
 
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! isset( $_POST['adsforwp_amp_compatibility_nonce'] ) || ! wp_verify_nonce( $_POST['adsforwp_amp_compatibility_nonce'], 'adsforwp_amp_compatibility_nonce' ) ) {
 			return;
 		}
@@ -103,11 +104,11 @@ class Adsforwp_Amp_Compatibility {
 		}
 
 		if ( isset( $_POST['ads-for-wp_amp_compatibilty'] ) ) {
-				update_post_meta( $post_id, 'ads-for-wp_amp_compatibilty', sanitize_text_field( $_POST['ads-for-wp_amp_compatibilty'] ) );
+				update_post_meta( $post_id, 'ads-for-wp_amp_compatibilty', sanitize_text_field( wp_unslash( $_POST['ads-for-wp_amp_compatibilty'] ) ) );
 		}
 
 		if ( isset( $_POST['ads_for_wp_non_amp_visibility'] ) ) {
-				update_post_meta( $post_id, 'ads_for_wp_non_amp_visibility', sanitize_text_field( $_POST['ads_for_wp_non_amp_visibility'] ) );
+				update_post_meta( $post_id, 'ads_for_wp_non_amp_visibility', sanitize_text_field( wp_unslash( $_POST['ads_for_wp_non_amp_visibility'] ) ) );
 		}
 	}
 }
