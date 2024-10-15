@@ -91,17 +91,18 @@ function adsforwp_store_user_info_client_side() {
 
 				$settings = adsforwp_defaultSettings();
 
-			if ( isset( $settings['adsforwp_geolocation_api'] ) && $settings['adsforwp_geolocation_api'] != '' ) {
+			if ( isset( $settings['adsforwp_geolocation_api'] ) && ! empty( trim( $settings['adsforwp_geolocation_api'] ) ) ) {
 
 				$geo_location_data = wp_remote_get( 'https://api.ipgeolocation.io/ipgeo?apiKey=' . $settings['adsforwp_geolocation_api'] . '&ip=' . $user_ip . '&fields=country_code3' );
+				if ( ! is_wp_error( $geo_location_data ) && 200 == wp_remote_retrieve_response_code( $geo_location_data ) ) {
+					$geo_location_arr = json_decode( $geo_location_data['body'], true );
 
-				$geo_location_arr = json_decode( $geo_location_data['body'], true );
+					if ( isset( $geo_location_arr['ip'] ) && isset( $geo_location_arr['country_code3'] ) ) {
 
-				if ( isset( $geo_location_arr['ip'] ) && isset( $geo_location_arr['country_code3'] ) ) {
+							setcookie( 'adsforwp-user-info[0]', trim( base64_encode( $geo_location_arr['ip'] ) ), time() + ( 86400 * 60 ), '/' );
+							setcookie( 'adsforwp-user-info[1]', trim( base64_encode( $geo_location_arr['country_code3'] ) ), time() + ( 86400 * 60 ), '/' );
 
-						setcookie( 'adsforwp-user-info[0]', trim( base64_encode( $geo_location_arr['ip'] ) ), time() + ( 86400 * 60 ), '/' );
-						setcookie( 'adsforwp-user-info[1]', trim( base64_encode( $geo_location_arr['country_code3'] ) ), time() + ( 86400 * 60 ), '/' );
-
+					}
 				}
 			}
 		}
