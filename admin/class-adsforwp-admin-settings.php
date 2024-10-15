@@ -261,7 +261,8 @@ class Adsforwp_Admin_Settings {
 			return $option;
 		}
 
-		$fileInfo = wp_check_filetype( basename( $_FILES['adsforwp_import_backup']['name'] ) );
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$fileInfo = isset( $_FILES['adsforwp_import_backup']['name'] ) ? wp_check_filetype( basename( $_FILES['adsforwp_import_backup']['name'] ) ) : array();
 
 		if ( ! empty( $fileInfo['ext'] ) && $fileInfo['ext'] == 'json' ) {
 
@@ -328,15 +329,15 @@ class Adsforwp_Admin_Settings {
 	 */
 	public function adsforwp_get_error_messages() {
 		$messages = array(
-			'invalid_variable'     => __( 'Unrecognized variable' ),
-			'invalid_record'       => __( 'Invalid record' ),
-			'invalid_account_type' => __( 'Third field should be RESELLER or DIRECT' ),
+			'invalid_variable'     => esc_html__( 'Unrecognized variable', 'ads-for-wp' ),
+			'invalid_record'       => esc_html__( 'Invalid record', 'ads-for-wp'),
+			'invalid_account_type' => esc_html__( 'Third field should be RESELLER or DIRECT', 'ads-for-wp' ),
 			/* translators: %s: Subdomain */
-			'invalid_subdomain'    => __( '%s does not appear to be a valid subdomain' ),
+			'invalid_subdomain'    => esc_html__( '%s does not appear to be a valid subdomain', 'ads-for-wp' ),
 			/* translators: %s: Exchange domain */
-			'invalid_exchange'     => __( '%s does not appear to be a valid exchange domain' ),
+			'invalid_exchange'     => esc_html__( '%s does not appear to be a valid exchange domain', 'ads-for-wp' ),
 			/* translators: %s: Alphanumeric TAG-ID */
-			'invalid_tagid'        => __( '%s does not appear to be a valid TAG-ID' ),
+			'invalid_tagid'        => esc_html__( '%s does not appear to be a valid TAG-ID', 'ads-for-wp' ),
 		);
 
 		return $messages;
@@ -674,10 +675,9 @@ class Adsforwp_Admin_Settings {
 	}
 	public function adsforwp_ad_blocker_notice_opt_callback() {
 		$settings             = adsforwp_defaultSettings();
-		$notice_type          = esc_attr( $settings['notice_type'] );
+		$notice_type          = isset( $settings['notice_type'] ) ? esc_attr( $settings['notice_type'] ) : '';
 		$notice_title         = esc_attr( $settings['notice_title'] );
 		$notice_description   = esc_html( $settings['notice_description'] );
-		$notice_close_btn     = esc_attr( $settings['notice_close_btn'] );
 		$btn_txt              = esc_attr( $settings['btn_txt'] );
 		$notice_bg_color      = sanitize_hex_color( $settings['notice_bg_color'] );
 		$notice_txt_color     = sanitize_hex_color( $settings['notice_txt_color'] );
@@ -933,7 +933,7 @@ class Adsforwp_Admin_Settings {
 			<a target="_blank" href="https://www.adsforwp.com/pricing/#pricings" style="text-decoration: none;color: white;font-weight: bold;margin-left: 0px;font-size: 13px !important; padding: 7px 9px;letter-spacing: 0.1px;border-radius: 60px;margin-right: 0px; background: linear-gradient(to right,#eb3349,#f45c43);"><?php esc_html_e( 'Upgrade to Premium', 'ads-for-wp' ); ?></a>;
 		<?php } ?>
 		 
-		<p class="fra-pro-p"><?php echo esc_html__( 'Prevent spam users to click on ads multiple times.' ); ?></p>
+		<p class="fra-pro-p"><?php echo esc_html__( 'Prevent spam users to click on ads multiple times.', 'ads-for-wp' ); ?></p>
 	</fieldset>
 
 		<?php
@@ -1043,7 +1043,7 @@ class Adsforwp_Admin_Settings {
 					<span class="afw-query-error afw_hide"><?php echo esc_html__( 'Message not sent. please check your network connection', 'ads-for-wp' ); ?></span>
 				</li> 
 				<li>
-					<strong><?php echo esc_html__( 'Are you a premium customer ?' ); ?></strong>  
+					<strong><?php echo esc_html__( 'Are you a premium customer ?', 'ads-for-wp' ); ?></strong>  
 					<select id="afw_query_premium_cus" name="afw_query_premium_cus">                       
 						<option value=""><?php echo esc_html__( 'Select', 'ads-for-wp' ); ?></option>
 						<option value="yes"><?php echo esc_html__( 'Yes', 'ads-for-wp' ); ?></option>
@@ -1099,15 +1099,19 @@ if ( ! function_exists( 'adsforwp_subscribe_newsletter' ) ) {
 		if ( ! isset( $_POST['adsforwp_security_nonce'] ) ) {
 			return;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! wp_verify_nonce( $_POST['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ) {
 			return;
 		}
 
 		$api_url    = 'http://magazine3.company/wp-json/api/central/email/subscribe';
 		$api_params = array(
-			'name'    => sanitize_text_field( $_POST['name'] ),
-			'email'   => sanitize_email( $_POST['email'] ),
-			'website' => sanitize_text_field( $_POST['website'] ),
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash --Reason Since data is not storing in the database it is not necessary to unslash the data
+			'name'    => isset( $_POST['name'] ) ? sanitize_text_field( $_POST['name'] ) : '',
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash --Reason Since data is not storing in the database it is not necessary to unslash the data
+			'email'   => isset( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : '',
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash --Reason Since data is not storing in the database it is not necessary to unslash the data
+			'website' => isset( $_POST['website'] ) ? sanitize_text_field( $_POST['website'] ) : '',
 			'type'    => 'adsforwp',
 		);
 		$response   = wp_remote_post(

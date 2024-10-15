@@ -30,6 +30,7 @@ class Adsforwp_Admin_Common_Functions {
 		if ( ! isset( $_GET['_wpnonce'] ) ) {
 			return;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! wp_verify_nonce( $_GET['_wpnonce'], '_wpnonce' ) ) {
 			return;
 		}
@@ -301,6 +302,7 @@ class Adsforwp_Admin_Common_Functions {
 		if ( ! isset( $_GET['adsforwp_security_nonce'] ) ) {
 			return;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ) {
 			return;
 		}
@@ -536,6 +538,7 @@ class Adsforwp_Admin_Common_Functions {
 		if ( ! isset( $_GET['adsforwp_security_nonce'] ) ) {
 			return;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ) {
 			return;
 		}
@@ -718,6 +721,7 @@ class Adsforwp_Admin_Common_Functions {
 		if ( ! isset( $_GET['adsforwp_security_nonce'] ) ) {
 			return;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ) {
 			return;
 		}
@@ -774,6 +778,7 @@ class Adsforwp_Admin_Common_Functions {
 		if ( ! isset( $_GET['adsforwp_security_nonce'] ) ) {
 			return;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ) {
 			return;
 		}
@@ -886,6 +891,7 @@ class Adsforwp_Admin_Common_Functions {
 		if ( ! isset( $_GET['adsforwp_security_nonce'] ) ) {
 			return;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ) {
 			return;
 		}
@@ -967,6 +973,7 @@ class Adsforwp_Admin_Common_Functions {
 		if ( ! isset( $_GET['adsforwp_security_nonce'] ) ) {
 			return;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ) {
 			return;
 		}
@@ -1048,6 +1055,7 @@ class Adsforwp_Admin_Common_Functions {
 		if ( ! isset( $_GET['adsforwp_security_nonce'] ) ) {
 			return;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ) {
 			return;
 		}
@@ -1149,6 +1157,7 @@ class Adsforwp_Admin_Common_Functions {
 		if ( ! isset( $_GET['adsforwp_security_nonce'] ) ) {
 			return;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ) {
 			return;
 		}
@@ -1176,6 +1185,7 @@ class Adsforwp_Admin_Common_Functions {
 		if ( ! isset( $_GET['adsforwp_security_nonce'] ) ) {
 			return;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ) {
 			return;
 		}
@@ -1214,6 +1224,7 @@ class Adsforwp_Admin_Common_Functions {
 		if ( ! isset( $_GET['adsforwp_security_nonce'] ) ) {
 			return;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ) {
 			return;
 		}
@@ -1321,6 +1332,7 @@ class Adsforwp_Admin_Common_Functions {
 		if ( ! isset( $_GET['adsforwp_security_nonce'] ) ) {
 			return;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ) {
 			return;
 		}
@@ -1595,6 +1607,7 @@ class Adsforwp_Admin_Common_Functions {
 		if ( ! isset( $_GET['adsforwp_security_nonce'] ) ) {
 			return;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! wp_verify_nonce( $_GET['adsforwp_security_nonce'], 'adsforwp_ajax_check_nonce' ) ) {
 			return;
 		}

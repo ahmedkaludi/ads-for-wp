@@ -300,11 +300,12 @@ class Adsforwp_Admin_Analytics {
 		if ( ! isset( $_GET['adsforwp_front_nonce'] ) ) {
 			return;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! wp_verify_nonce( $_GET['adsforwp_front_nonce'], 'adsforwp_ajax_check_front_nonce' ) ) {
 			return;
 		}
 
-			$ad_id       = sanitize_text_field( $_GET['event'] );
+			$ad_id       = isset( $_GET['event'] ) ? sanitize_text_field( wp_unslash( $_GET['event'] ) ) : '';
 			$device_name = 'amp';
 
 		if ( $ad_id ) {
@@ -324,13 +325,18 @@ class Adsforwp_Admin_Analytics {
 		if ( ! isset( $_POST['adsforwp_front_nonce'] ) ) {
 			return;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! wp_verify_nonce( $_POST['adsforwp_front_nonce'], 'adsforwp_ajax_check_front_nonce' ) ) {
 			return;
 		}
 
-			$ad_ids = array_map( 'sanitize_text_field', $_POST['ad_ids'] );
+			$ad_ids 		=	array();
+			if ( ! empty( $_POST['ad_ids'] ) ) {
+				// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+				$ad_ids 	= 	array_map( 'sanitize_text_field', $_POST['ad_ids'] );		
+			} 
 
-			$device_name = sanitize_text_field( $_POST['device_name'] );
+			$device_name = isset( $_POST['device_name'] ) ? sanitize_text_field( wp_unslash( $_POST['device_name'] ) ) : '';
 
 		if ( $ad_ids && ! $this->is_admin_user() ) {
 
@@ -366,12 +372,13 @@ class Adsforwp_Admin_Analytics {
 		if ( ! isset( $_POST['adsforwp_front_nonce'] ) ) {
 			return;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! wp_verify_nonce( $_POST['adsforwp_front_nonce'], 'adsforwp_ajax_check_front_nonce' ) ) {
 			return;
 		}
 
-			$device_name = sanitize_text_field( $_POST['device_name'] );
-			$ad_id       = sanitize_text_field( $_POST['ad_id'] );
+			$device_name = isset( $_POST['device_name'] ) ? sanitize_text_field( wp_unslash( $_POST['device_name'] ) ) : '';
+			$ad_id       = isset( $_POST['ad_id'] ) ? sanitize_text_field( wp_unslash( $_POST['ad_id'] ) ) : '';
 		if ( $ad_id && ! $this->is_admin_user() ) {
 			$this->adsforwp_insert_clicks( $ad_id, $device_name );
 		}
@@ -388,11 +395,12 @@ class Adsforwp_Admin_Analytics {
 		if ( ! isset( $_GET['adsforwp_front_nonce'] ) ) {
 			return;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! wp_verify_nonce( $_GET['adsforwp_front_nonce'], 'adsforwp_ajax_check_front_nonce' ) ) {
 			return;
 		}
 
-			$ad_id       = sanitize_text_field( $_GET['event'] );
+			$ad_id       = isset( $_GET['event'] ) ? sanitize_text_field( wp_unslash( $_GET['event'] ) ) : '';
 			$device_name = 'amp';
 
 		if ( $ad_id ) {

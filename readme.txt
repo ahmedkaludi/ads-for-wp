@@ -4,7 +4,7 @@ Tags: Ads, Media Net, AMP, Adsense, Advertisement
 Requires at least: 4.5
 Tested up to: 6.6
 Requires PHP: 5.6.20
-Stable tag: 1.9.29
+Stable tag: 1.9.30
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -68,6 +68,10 @@ Google Api Php Client library used https://github.com/googleapis/google-api-php-
 
 == Changelog ==
 
+= 1.9.30 (15 October 2024) =
+* Fixed: Issues after new version #415
+* Enhancement: Code improvement #418
+
 = 1.9.29 (17 July 2024) =
 * Fixed: Bug reported by patchstack.
 
@@ -118,43 +122,4 @@ Google Api Php Client library used https://github.com/googleapis/google-api-php-
 * Feature Added: Option added to preload image banner Ad #369
 * Bug Fixed: Improvement in Automatic Webp delivery for image Banner Ads. #365
 
-= 1.9.20 (28 June 2022) =
-* Feature Added: Automatic Webp delivery for image Banners - integration with EWWW. #365
-
-= 1.9.19 (07 June 2022) =
-* Bug Fixed: User targeting option not working on both single ads & group ads. #348
-* Bug Fixed: Allow <amp-iframe> tag in a custom ads code. #273
-
-= 1.9.18 (09 May 2022) =
-
-* Bug Fixed: PHP Warning:  Attempt to read property "ID". #359
-* Bug Fixed: The Text" Advertisement" is adding on website when we are using "generate press" theme. #349
-* Bug Fixed: Warning: Undefined array key "ad_sponsorship_label" #349
-* Bug Fixed: Updated Plugin name and Description. #361
-
-= 1.9.17 (21 April 2022) =
-
-* Bug Fixed: PHP Fatal error:  Array and string offset access syntax with curly braces is no longer supported. #352
-* Bug Fixed: Warning: in_array() expects parameter 2 to be array. #357
-
-= 1.9.16.1 (15 June 2020) =
-
-* Bug Fixed: Display of Ads on pages in non-amp version even though the display condition is set to posts has been fixed. #344
-
-= 1.9.16 (13 June 2020) =
-
-* New Feature: Created an option to add link attributes for image banner type ads. #338
-* Bug Fixed: Error in query monitor has been resolved. #325
-* Bug Fixed: Center alignment issue while using Ads through shortcode has been resolved. #329
-* Bug Fixed: Receiving Exception in queued GPT command TypeError in Console has been resolved. #326
-* Bug Fixed: Unable to display ads on page build using Elementor issue has been resolved. #323
-
-= 1.9.15.3 (17 February 2020) =
-
-* Bug Fixed: Added code to avoid the cutting of content due to 'percent of content' option #316
-
-= 1.9.15.2 (13 January 2020) =
-
-* Bug Fixed: Auto Ads script exists more than once when adsense auto ads added #309
-
-All changelog available on [GitHub](https://github.com/ahmedkaludi/ads-for-wp/releases).
+Full changelog available at [changelog.txt](https://plugins.svn.wordpress.org/ads-for-wp/trunk/changelog.txt)

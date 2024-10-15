@@ -403,11 +403,13 @@ class Adsforwp_Output_Functions {
 		if ( ! isset( $_GET['adsforwp_front_nonce'] ) ) {
 			return;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! wp_verify_nonce( $_GET['adsforwp_front_nonce'], 'adsforwp_ajax_check_front_nonce' ) ) {
 			return;
 		}
 
-		$ad_id       = sanitize_text_field( $_GET['ad_id'] );
+		//phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash --Reason using it to set the cookie, so unslash not needed
+		$ad_id       = isset( $_GET['ad_id'] ) ? sanitize_text_field( $_GET['ad_id'] ) : '';
 		$cookie_data = '';
 
 		if ( ! isset( $_COOKIE['adsforwp-stick-ad-id7'] ) && $_COOKIE['adsforwp-stick-ad-id7'] == '' ) {
@@ -424,17 +426,20 @@ class Adsforwp_Output_Functions {
 		if ( ! isset( $_GET['adsforwp_front_nonce'] ) ) {
 			return;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! wp_verify_nonce( $_GET['adsforwp_front_nonce'], 'adsforwp_ajax_check_front_nonce' ) ) {
 			return;
 		}
 
-		$ad_id = sanitize_text_field( $_GET['ad_id'] );
+		//phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash --Reason Using it to just fetch the data
+		$ad_id = isset( $_GET['ad_id'] ) ? sanitize_text_field( $_GET['ad_id'] ) : '';
 
 		$common_function_obj = new Adsforwp_Admin_Common_Functions();
 		$in_group            = $common_function_obj->adsforwp_check_ads_in_group( $ad_id );
 
 		if ( isset( $_COOKIE['adsforwp-stick-ad-id7'] ) ) {
 
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized --Reason Using it for condition check
 			$ad_id_list   = $_COOKIE['adsforwp-stick-ad-id7'];
 			$explod_ad_id = explode( ',', $ad_id_list );
 
@@ -544,6 +549,7 @@ class Adsforwp_Output_Functions {
 
 		if ( isset( $_COOKIE['adsforwp-stick-ad-id7'] ) ) {
 
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized --Reason Using it for condition check
 			$ad_id_list   = $_COOKIE['adsforwp-stick-ad-id7'];
 			$explod_ad_id = explode( ',', $ad_id_list );
 
@@ -1401,20 +1407,23 @@ class Adsforwp_Output_Functions {
 									$p_number   = $paragraph_id;
 
 									foreach ( $paragraphs as $index => $paragraph ) {
+									
+										if ( ! empty( $paragraph ) ) {
 
-										if ( trim( $paragraph ) ) {
-											$paragraphs[ $index ] .= $closing_p;
-										}
-
-										if ( $every_paragraphs == 1 ) {
-
-											if ( $paragraph_id == $index + 1 ) {
-													$paragraphs[ $index ] .= $ad_code;
-													$paragraph_id         += $p_number;
+											if ( trim( $paragraph ) ) {
+												$paragraphs[ $index ] .= $closing_p;
 											}
-										} elseif ( $paragraph_id == $index + 1 ) {
 
-												$paragraphs[ $index ] .= $ad_code;
+											if ( $every_paragraphs == 1 ) {
+
+												if ( $paragraph_id == $index + 1 ) {
+														$paragraphs[ $index ] .= $ad_code;
+														$paragraph_id         += $p_number;
+												}
+											} elseif ( $paragraph_id == $index + 1 ) {
+
+													$paragraphs[ $index ] .= $ad_code;
+											}
 										}
 									}
 

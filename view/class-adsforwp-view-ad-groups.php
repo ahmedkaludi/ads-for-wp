@@ -209,6 +209,7 @@ class Adsforwp_View_Ad_Groups {
 
 								foreach ( $this->ads_list as $value ) {
 
+									$ad_name 		  = ! empty( $value['ad_name'] ) ? $value['ad_name'] : '(no title)';
 									if ( $this->added_ad_list ) {
 										if ( ! array_key_exists( $value['ad_id'], $this->added_ad_list ) ) {
 											$meta_field_value = '[' . esc_attr( $value['ad_id'] ) . ']';
@@ -216,7 +217,7 @@ class Adsforwp_View_Ad_Groups {
 												'<option %s value="adsforwp_ads%s">%s</option>',
 												$meta_value === $meta_field_value ? 'selected' : '',
 												esc_attr( $meta_field_value ),
-												esc_attr( $value['ad_name'] )
+												esc_attr( $ad_name )
 											);
 										}
 									} else {
@@ -225,7 +226,7 @@ class Adsforwp_View_Ad_Groups {
 											'<option %s value="adsforwp_ads%s">%s</option>',
 											$meta_value === $meta_field_value ? 'selected' : '',
 											esc_attr( $meta_field_value ),
-											esc_html( $value['ad_name'] )
+											esc_html( $ad_name )
 										);
 									}
 								}
@@ -298,6 +299,7 @@ class Adsforwp_View_Ad_Groups {
 			if ( ! isset( $_POST['adgroup_nonce'] ) ) {
 				return $post_id;
 			}
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 			if ( ! wp_verify_nonce( $_POST['adgroup_nonce'], 'adgroup_data' ) ) {
 				return $post_id;
 			}
@@ -315,6 +317,7 @@ class Adsforwp_View_Ad_Groups {
 				$adsforwp_ads_array = array();
 
 				if ( isset( $_POST['adsforwp_ads'] ) && is_array( $_POST['adsforwp_ads'] ) ) {
+					// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 					$adsforwp_ads_array = array_map( 'sanitize_text_field', $_POST['adsforwp_ads'] );
 				}
 

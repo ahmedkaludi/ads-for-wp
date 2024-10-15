@@ -224,7 +224,7 @@ class Adsforwp_View_Placement {
 			return;
 		}
 
-		// if our nonce isn't there, or we can't verify it, bail
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! isset( $_POST['adsforwp_select_name_nonce'] ) || ! wp_verify_nonce( $_POST['adsforwp_select_name_nonce'], 'adsforwp_select_action_nonce' ) ) {
 			return;
 		}
@@ -239,6 +239,7 @@ class Adsforwp_View_Placement {
 			$show_globally         = false;
 
 		if ( isset( $_POST['data_group_array'] ) ) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			$post_data_group_array = (array) $_POST['data_group_array'];
 			/*
 				Type casted the $_POST['data_group_array'] to (array) to make sure
