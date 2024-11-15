@@ -1200,6 +1200,13 @@ jQuery( document ).ready(function($) {
             $("#afw_ad_blocker_notice").hide(); 
         }     
     }).change();
+    $(".afw_ad_performance_click").change(function(){
+        if($(this).is(':checked')){
+            $("#afw_ad_performance_admin_blk").show();
+        }else{
+            $("#afw_ad_performance_admin_blk").hide(); 
+        }     
+    }).change();
     $(".afw_ad_label").change(function(){
         if($(this).is(':checked')){
             $("#afw_ad_label_settings").show();
