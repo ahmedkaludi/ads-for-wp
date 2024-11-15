@@ -2,7 +2,7 @@
 Contributors: magazine3
 Tags: Ads, Media Net, AMP, Adsense, Advertisement
 Requires at least: 4.5
-Tested up to: 6.6
+Tested up to: 6.7
 Requires PHP: 5.6.20
 Stable tag: 1.9.30
 Donate link: https://www.paypal.me/Kaludi/25usd
