@@ -840,7 +840,7 @@ class Adsforwp_Output_Functions {
 							$redirect_url = get_post_meta( $ad_id, 'ad_background_redirect_url', true );
 							$after_body  .= ''
 									. '<div class="adsforwp-bg-wrapper">
-                                       <a style="background-image: url(' . esc_url( $media_value_meta['thumbnail'] ) . ')" class="adsforwp-bg-ad" target="_blank" href="' . esc_url( $redirect_url ) . '">'
+                                       <a style="background-image: url(' . esc_url( $media_value_meta['thumbnail'] ) . ')" class="adsforwp-bg-ad afw_ad afwadid-'.$ad_id.'" target="_blank" href="' . esc_url( $redirect_url ) . '" data-ad-id="'.esc_attr($ad_id).'">'
 									. '</a>'
 									. '<div class="adsforwp-bg-content">';
 							$before_body  = '</div></div>';
