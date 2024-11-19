@@ -46,17 +46,17 @@ AdsforWP is an Google Ads & Banner ads plugin built for WordPress & AMP. Easy to
 * <strong>[Premium] Lazy Load</strong>: Helps you to load when page is fully loaded or when user start engaging on page.
 
 = Active Development: =
-We are actively developing this plugin and our aim is to make this plugin into the #1 solution in the world. You can [Request a Feature](http://www.adsforwp.com/contact/) or [Report a Bug](https://github.com/ahmedkaludi/ads-for-wp/issues). The code is hosted on [Github](https://github.com/ahmedkaludi/ads-for-wp).
+We are actively developing this plugin and our aim is to make this plugin into the #1 solution in the world. You can [Request a Feature](https://www.adsforwp.com/contact/) or [Report a Bug](https://github.com/ahmedkaludi/ads-for-wp/issues). The code is hosted on [Github](https://github.com/ahmedkaludi/ads-for-wp).
 
 = Development Roadmap: =
 * <strong>A/B Testing</strong>: Find out which ads perform the most and how you can improve the ad revenue further.
 * <strong>GDPR & Privacy tools</strong>: We have got the GDPR and other privacy tools planned so that you don’t have to worry about complying with privacy laws.
 * <strong>Responsive Ads</strong>: We will be adding the responsive support to Ads to give the best viewability to ads on devices.
 * <strong>Innovation & Disruption</strong>: We are constantly evolving our product and going to introduce new features which are not being used by anyone in the world.
-* [View Full Development Roadmap](http://www.adsforwp.com/#roadmap)
+* [View Full Development Roadmap](https://www.adsforwp.com/#roadmap)
 
 = Technical Support =
-Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp). You can also [Contact us](http://www.adsforwp.com/contact/), our turn around time on email is around 12 hours. 
+Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp). You can also [Contact us](https://www.adsforwp.com/contact/), our turn around time on email is around 12 hours. 
 
 = Bug Reports =
 
