@@ -886,13 +886,16 @@ class Adsforwp_View_Ads_Type {
 	}
 	public function adsfrowp_get_all_ads(){
 		$post_id = 0;
+		//phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if(isset($_GET['post'])){
+			//phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$post_id = intval($_GET['post']);
 		}
 		$all_ads_post = get_posts(
 			array(
 				'post_type'      => 'adsforwp',
 				'posts_per_page' => -1,
+				//phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in
 				'post__not_in'=>array($post_id),
 				'post_status'    => 'publish',
 			)

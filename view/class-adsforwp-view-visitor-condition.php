@@ -322,6 +322,19 @@ class Adsforwp_View_Visitor_Condition {
 
 		}
 	}
+	public function adsfrowp_check_country_code($country_code){
+		$ip    = $this->adsforwp_get_client_ip();
+		$ipdat = wp_remote_get( 'http://www.geoplugin.net/json.gp?ip=' . $ip );
+		if ( ! is_wp_error( $ipdat ) && wp_remote_retrieve_response_code( $ipdat ) === 200 ) {
+				$body  = wp_remote_retrieve_body( $ipdat );
+				$ipdat = json_decode( $body );
+				if ( $ipdat !== null ) {
+					$country_code = $ipdat->geoplugin_countryCode;
+					$country_code = $this->adsforwp_get_three_letter_country_code_using_two($country_code);
+				}
+		}
+		return $country_code;
+	}
 	public function adsforwp_visitor_condition_logic_checker( $input ) {
 		global $post;
 
@@ -432,16 +445,7 @@ class Adsforwp_View_Visitor_Condition {
 							$result = true;
 						}
 					}else{
-						$ip    = $this->adsforwp_get_client_ip();
-						$ipdat = wp_remote_get( 'http://www.geoplugin.net/json.gp?ip=' . $ip );
-						if ( ! is_wp_error( $ipdat ) && wp_remote_retrieve_response_code( $ipdat ) === 200 ) {
-								$body  = wp_remote_retrieve_body( $ipdat );
-								$ipdat = json_decode( $body );
-								if ( $ipdat !== null ) {
-									$country_code = $ipdat->geoplugin_countryCode;
-									$country_code = $this->adsforwp_get_three_letter_country_code_using_two($country_code);
-								}
-						}
+						$country_code = $this->adsfrowp_check_country_code($country_code);
 						if ( $country_code == $data ) {
 								$result = true;
 						}
@@ -453,16 +457,7 @@ class Adsforwp_View_Visitor_Condition {
 							$result = true;
 						}
 					}else{
-						$ip    = $this->adsforwp_get_client_ip();
-						$ipdat = wp_remote_get( 'http://www.geoplugin.net/json.gp?ip=' . $ip );
-						if ( ! is_wp_error( $ipdat ) && wp_remote_retrieve_response_code( $ipdat ) === 200 ) {
-								$body  = wp_remote_retrieve_body( $ipdat );
-								$ipdat = json_decode( $body );
-								if ( $ipdat !== null ) {
-									$country_code = $ipdat->geoplugin_countryCode;
-									$country_code = $this->adsforwp_get_three_letter_country_code_using_two($country_code);
-								}
-						}
+						$country_code = $this->adsfrowp_check_country_code($country_code);
 						if ( $country_code != $data ) {
 								$result = true;
 						}
