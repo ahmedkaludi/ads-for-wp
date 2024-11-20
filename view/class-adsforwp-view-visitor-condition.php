@@ -448,8 +448,10 @@ class Adsforwp_View_Visitor_Condition {
 					}
 				}
 				if ( $comparison == 'not_equal' ) {
-					if ( $country_code != $data ) {
-						$result = true;
+					if($country_code!=""){
+						if ( $country_code != $data ) {
+							$result = true;
+						}
 					}
 				}
 				break;
