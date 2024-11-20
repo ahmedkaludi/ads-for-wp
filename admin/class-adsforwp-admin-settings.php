@@ -566,13 +566,7 @@ class Adsforwp_Admin_Settings {
 				<li><div class="adsforwp-tools-field-title">
 						<div class="adsforwp-tooltip"><strong><?php echo esc_html__( 'IP Geolocation API', 'ads-for-wp' ); ?></strong>
 						</div>
-						<input type="text" value="
-						<?php
-						if ( isset( $settings['adsforwp_geolocation_api'] ) ) {
-							echo esc_attr( $settings['adsforwp_geolocation_api'] );
-						}
-						?>
-													" id="adsforwp-geolocation-api" name="adsforwp_settings[adsforwp_geolocation_api]">                        
+						<input type="text" value="<?php echo isset($settings['adsforwp_geolocation_api'])?esc_attr( $settings['adsforwp_geolocation_api'] ):'';?>" id="adsforwp-geolocation-api" name="adsforwp_settings[adsforwp_geolocation_api]">                        
 						<span style="font-weight: 500;"> <?php esc_html__( 'Today, Request Made -: ', 'ads-for-wp' ); ?>  <?php echo esc_attr( get_option( 'adsforwp_ip_request_' . gmdate( 'Y-m-d' ) ) ); ?></span>
 						<p><?php echo esc_html__( 'Note : They have free plan which gives you 50K requests per month. For all that you need to', 'ads-for-wp' ); ?> <a href="https://ipgeolocation.io" target="_blank"><?php echo esc_html__( 'Signup', 'ads-for-wp' ); ?></a></p>
 					</div>
