@@ -757,7 +757,19 @@ class Adsforwp_View_Ads_Type {
 				'type'   => 'and',
 				'fields' => array( 
 									'select_adtype' => 'popupad',
-									'select_popupad_type' => array('specific_time','on_scroll','on_top','on_bottom') 
+									'select_popupad_type' => array('specific_time','on_top','on_bottom') 
+								),
+			),
+		),
+		array(
+			'label'    => 'Scroll Percentage',
+			'id'       => 'select_popupad_scroll_percent',
+			'type'     => 'number',
+			'required' => array(
+				'type'   => 'and',
+				'fields' => array( 
+									'select_adtype' => 'popupad',
+									'select_popupad_type' =>'on_scroll'
 								),
 			),
 		),
@@ -782,7 +794,7 @@ class Adsforwp_View_Ads_Type {
 				'type'   => 'and',
 				'fields' => array( 
 									'select_adtype' => 'popupad',
-									'select_popupad_cookie' => 'exipiry' 
+									'select_popupad_cookie' => 'expiry' 
 								),
 			),
 		),

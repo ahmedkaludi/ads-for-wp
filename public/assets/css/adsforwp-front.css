@@ -91,11 +91,12 @@
   z-index: 999;
   max-width: 100em !important;
   margin: 0 auto;;
-  visibility: hidden;
+  display: none;
+  background: #75757559;
 }
 
 .popup-ad-overlay:target {
-  visibility: visible;
+  display: block;
   opacity: 1;
 }
 .popup-ad-box {
@@ -115,7 +116,7 @@
   right: -10px;
   top: -10px;
   background: white;
-  padding: 0px 7px;
+  padding: 0px 9px;
   border-radius: 50%;
   text-decoration: none;
   cursor: pointer;
