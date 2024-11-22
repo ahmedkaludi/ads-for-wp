@@ -131,6 +131,14 @@
   left: 50%;
   transform: translate(-50%, 0);
 }
+.popup-ad-box-center .popup-ad-content {
+  animation: animatebottom 0.5s;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+}
 .popup-ad-box-top .popup-ad-content {
   animation: animatebottom 0.5s;
   position: fixed;

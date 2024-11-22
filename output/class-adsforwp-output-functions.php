@@ -323,9 +323,9 @@ class Adsforwp_Output_Functions {
 					if(!isset($_COOKIE['adsforwp_popupad'])){
 						$popup_cookie = true;
 						if($popupad_cookie=='no_expiry'){
-							setcookie('adsforwp_popupad', 'popupad', time() + (86400/2), "/");
+							$popupad_cookie_expiry_days = (86400/2);
 						}else if($popupad_cookie=='expiry'){
-							setcookie('adsforwp_popupad', 'popupad', time() + (86400 * $popupad_cookie_expiry_days), "/");
+							$popupad_cookie_expiry_days =(86400 * $popupad_cookie_expiry_days);
 						}
 					}
 					if($condition_status && $popup_cookie){
@@ -336,6 +336,8 @@ class Adsforwp_Output_Functions {
 						$ad_data['popup_type_time'] = $popup_type_time;
 						$ad_data['popup_scroll_percent'] = $select_popupad_scroll_percent;
 						$ad_data['ad_type'] = 'ad';
+						$ad_data['popupad_cookie'] = $popupad_cookie;
+						$ad_data['popupad_cookie_expiry_days'] = $popupad_cookie_expiry_days;
 						$ad_status = $service->adsforwp_is_condition( $popup_ad_id );
 						if ( $ad_status ) {
 							$content = $this->adsforwp_prepare_popup_ad_content($content, $ad_data);
@@ -353,6 +355,9 @@ class Adsforwp_Output_Functions {
 		$post_ad_id = $ad_data['post_ad_id'];
 		$popup_type_time = $ad_data['popup_type_time'];
 		$popup_scroll_percent = $ad_data['popup_scroll_percent'];
+		$popupad_cookie_expiry_days = $ad_data['popupad_cookie_expiry_days'];
+		
+		$popupad_cookie = $ad_data['popupad_cookie'];
 		$ad_code='';
 		if ( $ad_type == 'group' ) {
 			$ad_code = $this->adsforwp_group_ads( $atts = null, $ad_id, '' );
@@ -365,9 +370,16 @@ class Adsforwp_Output_Functions {
 		if($ad_code!=''){
 			$script_code = '';
 			$close_popup_function = 'function handleClosePopupAdd(){
+						let exdays = '.$popupad_cookie_expiry_days.';
+						let cname = "adsforwp_popupad";
+						let cvalue = "popupad";
 						document.getElementById("popup-ad-overlay").style.display = "none";
+						const d = new Date();
+						d.setTime(d.getTime() + (exdays));
+						let expires = "expires="+ d.toUTCString();
+						document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 					}';
-			$custom_class = 'popup-ad-box-top';
+			$custom_class = 'popup-ad-box-center';
 			if($popup_type=='instantly'){
 				$script_code = '<script type="text/javascript">
 					document.getElementById("popup-ad-overlay").style.display = "block";
@@ -387,6 +399,13 @@ class Adsforwp_Output_Functions {
 				$script_code = '<script type="text/javascript">
 					
 					window.onscroll = function() {
+						let cname = "adsforwp_popupad";
+						const regex = new RegExp(`(^| )${cname}=([^;]+)`)
+						const match = document.cookie.match(regex)
+						
+						if (match) {
+							return false;
+						}
 						let scroll_per = '.$popup_scroll_percent.';
 						let scrollTop = window.scrollY;
 						let docHeight = document.body.offsetHeight;
@@ -404,6 +423,7 @@ class Adsforwp_Output_Functions {
 				</script>';
 				}
 			}else if($popup_type=='on_top'){
+				$custom_class = 'popup-ad-box-top';
 				if($popup_type_time!=''){
 				$script_code = '<script type="text/javascript">
 					setTimeout(function(){
