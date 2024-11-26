@@ -4,7 +4,7 @@ Tags: Ads, Media Net, AMP, Adsense, Advertisement
 Requires at least: 4.5
 Tested up to: 6.7
 Requires PHP: 5.6.20
-Stable tag: 1.9.30
+Stable tag: 1.9.31
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -67,6 +67,14 @@ Chart.js library used https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Char
 Google Api Php Client library used https://github.com/googleapis/google-api-php-client - License URI: https://github.com/googleapis/google-api-php-client/blob/master/LICENSE
 
 == Changelog ==
+
+= 1.9.31 (26 November 2024) =
+* Fixed: Visitor Conditions by Country is not working #37
+* Feature: Added the Popup ads #410
+* Enhancement: Added option to insert impression and click for admin login #413
+* Fixed: Contact Us link isn't working on Easy Google Adsnes wordpress forum page #416
+* Fixed: Background Ad is not counting clicks and impression #421
+* Tested with WordPress 6.7 and updated readme.txt #422
 
 = 1.9.30 (15 October 2024) =
 * Fixed: Issues after new version #415
