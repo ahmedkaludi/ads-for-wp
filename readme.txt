@@ -126,8 +126,4 @@ Google Api Php Client library used https://github.com/googleapis/google-api-php-
 * Feature Added: Added feedback form on deactivation
 * Improvement: Removed usage tracking code . #368
 
-= 1.9.21 (07 July 2022) =
-* Feature Added: Option added to preload image banner Ad #369
-* Bug Fixed: Improvement in Automatic Webp delivery for image Banner Ads. #365
-
 Full changelog available at [changelog.txt](https://plugins.svn.wordpress.org/ads-for-wp/trunk/changelog.txt)
