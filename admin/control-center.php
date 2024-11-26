@@ -92,8 +92,7 @@ function adsforwp_store_user_info_client_side() {
 				$settings = adsforwp_defaultSettings();
 
 			if ( isset( $settings['adsforwp_geolocation_api'] ) && ! empty( trim( $settings['adsforwp_geolocation_api'] ) ) ) {
-
-				$geo_location_data = wp_remote_get( 'https://api.ipgeolocation.io/ipgeo?apiKey=' . $settings['adsforwp_geolocation_api'] . '&ip=' . $user_ip . '&fields=country_code3' );
+				$geo_location_data = wp_remote_get( 'https://api.ipgeolocation.io/ipgeo?apiKey=' . trim($settings['adsforwp_geolocation_api']) . '&ip=' . $user_ip . '&fields=country_code3' );
 				if ( ! is_wp_error( $geo_location_data ) && 200 == wp_remote_retrieve_response_code( $geo_location_data ) ) {
 					$geo_location_arr = json_decode( $geo_location_data['body'], true );
 

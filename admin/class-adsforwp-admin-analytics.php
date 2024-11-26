@@ -325,6 +325,7 @@ class Adsforwp_Admin_Analytics {
 		if ( ! isset( $_POST['adsforwp_front_nonce'] ) ) {
 			return;
 		}
+		$settings = adsforwp_defaultSettings();
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Reason Validating nonce so sanitization not needed
 		if ( ! wp_verify_nonce( $_POST['adsforwp_front_nonce'], 'adsforwp_ajax_check_front_nonce' ) ) {
 			return;
@@ -337,8 +338,21 @@ class Adsforwp_Admin_Analytics {
 			} 
 
 			$device_name = isset( $_POST['device_name'] ) ? sanitize_text_field( wp_unslash( $_POST['device_name'] ) ) : '';
-
-		if ( $ad_ids && ! $this->is_admin_user() ) {
+			$is_track_impression = false;
+			if($ad_ids){
+				$is_track_impression = true;
+			}
+			if($this->is_admin_user()){
+				if ( isset( $settings['ad_performance_tracker_for_admin'] ) && $settings['ad_performance_tracker_for_admin']==1) {
+					if($ad_ids){
+						$is_track_impression = true;
+					}
+				}else{
+					$is_track_impression = false;
+				}
+			}
+			
+			if ( $is_track_impression==true) {
 
 			foreach ( $ad_ids as $ad_id ) {
 
@@ -379,7 +393,21 @@ class Adsforwp_Admin_Analytics {
 
 			$device_name = isset( $_POST['device_name'] ) ? sanitize_text_field( wp_unslash( $_POST['device_name'] ) ) : '';
 			$ad_id       = isset( $_POST['ad_id'] ) ? sanitize_text_field( wp_unslash( $_POST['ad_id'] ) ) : '';
-		if ( $ad_id && ! $this->is_admin_user() ) {
+
+			$is_click_track = false;
+			if($ad_ids){
+				$is_click_track = true;
+			}
+			if($this->is_admin_user()){
+				if ( isset( $settings['ad_performance_tracker_for_admin'] ) && $settings['ad_performance_tracker_for_admin']==1) {
+					if($ad_ids){
+						$is_click_track = true;
+					}
+				}else{
+					$is_click_track = false;
+				}
+			}
+		if ($is_click_track==true ) {
 			$this->adsforwp_insert_clicks( $ad_id, $device_name );
 		}
 			wp_die();

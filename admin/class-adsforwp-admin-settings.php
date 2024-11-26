@@ -186,7 +186,14 @@ class Adsforwp_Admin_Settings {
 						'adsforwp_general_section',                            // Page slug
 						'adsforwp_general_section'                            // Settings Section ID
 					);
-
+					add_settings_field(
+						'adsforwp_ad_performance_tracking_for_admin',                                // ID
+						'',            // Title
+						array( $this, 'adsforwp_ad_performance_tracking_for_admin_callback' ),                    // Callback
+						'adsforwp_general_section',                            // Page slug
+						'adsforwp_general_section',                            // Settings Section ID
+						array( 'class' => 'subchild-opt' )
+					);
 					add_settings_field(
 						'adsforwp_ad_revenue_sharing',                                // ID
 						'Revenue Sharing',            // Title
@@ -559,13 +566,7 @@ class Adsforwp_Admin_Settings {
 				<li><div class="adsforwp-tools-field-title">
 						<div class="adsforwp-tooltip"><strong><?php echo esc_html__( 'IP Geolocation API', 'ads-for-wp' ); ?></strong>
 						</div>
-						<input type="text" value="
-						<?php
-						if ( isset( $settings['adsforwp_geolocation_api'] ) ) {
-							echo esc_attr( $settings['adsforwp_geolocation_api'] );
-						}
-						?>
-													" id="adsforwp-geolocation-api" name="adsforwp_settings[adsforwp_geolocation_api]">                        
+						<input type="text" value="<?php echo isset($settings['adsforwp_geolocation_api'])?esc_attr( $settings['adsforwp_geolocation_api'] ):'';?>" id="adsforwp-geolocation-api" name="adsforwp_settings[adsforwp_geolocation_api]">                        
 						<span style="font-weight: 500;"> <?php esc_html__( 'Today, Request Made -: ', 'ads-for-wp' ); ?>  <?php echo esc_attr( get_option( 'adsforwp_ip_request_' . gmdate( 'Y-m-d' ) ) ); ?></span>
 						<p><?php echo esc_html__( 'Note : They have free plan which gives you 50K requests per month. For all that you need to', 'ads-for-wp' ); ?> <a href="https://ipgeolocation.io" target="_blank"><?php echo esc_html__( 'Signup', 'ads-for-wp' ); ?></a></p>
 					</div>
@@ -814,11 +815,36 @@ class Adsforwp_Admin_Settings {
 		?>
 	<fieldset>
 			<?php
-
 			if ( isset( $settings['ad_performance_tracker'] ) ) {
-				echo '<input type="checkbox" name="adsforwp_settings[ad_performance_tracker]" class="regular-text" value="1" checked><p>' . esc_html__( 'You can enable the Ad Performance Tracking functionality which displays the Ad Impression and Ad Clicks', 'ads-for-wp' ) . ' <a href="https://adsforwp.com/docs/article/ad-performance-tracking-with-ads-for-wp/" target="_blank">' . esc_html__( 'Learn more', 'ads-for-wp' ) . '</a></p>';
+				echo '<input type="checkbox" name="adsforwp_settings[ad_performance_tracker]" class="regular-text afw_ad_performance_click" value="1" checked><p>' . esc_html__( 'You can enable the Ad Performance Tracking functionality which displays the Ad Impression and Ad Clicks', 'ads-for-wp' ) . ' <a href="https://adsforwp.com/docs/article/ad-performance-tracking-with-ads-for-wp/" target="_blank">' . esc_html__( 'Learn more', 'ads-for-wp' ) . '</a></p>';
 			} else {
 				echo '<input type="checkbox" name="adsforwp_settings[ad_performance_tracker]" class="regular-text" value="1" ><p>' . esc_html__( 'You can enable the Ad Performance Tracking functionality which displays the Ad Impression and Ad Clicks', 'ads-for-wp' ) . ' <a href="https://adsforwp.com/docs/article/ad-performance-tracking-with-ads-for-wp/" target="_blank">' . esc_html__( 'Learn more', 'ads-for-wp' ) . '</a></p>';
+			}
+
+			?>
+		 
+	</fieldset>
+	 
+		<?php
+	}
+	public function adsforwp_ad_performance_tracking_for_admin_callback() {
+		$settings = adsforwp_defaultSettings();
+		$is_parent_enabled =  'style="display:none"';
+		if ( isset( $settings['ad_performance_tracker'] ) && $settings['ad_performance_tracker']==1) {
+			$is_parent_enabled =  '';
+		}
+		$is_child_checked = '';
+		if ( isset( $settings['ad_performance_tracker_for_admin'] ) && $settings['ad_performance_tracker_for_admin']==1) {
+			$is_child_checked =  'checked';
+		}
+		?>
+	<fieldset>
+			<?php
+
+			if ( isset( $settings['ad_performance_tracker_for_admin'] ) ) {
+				echo '<span '.esc_attr($is_parent_enabled).' id="afw_ad_performance_admin_blk"><input type="checkbox" name="adsforwp_settings[ad_performance_tracker_for_admin]" class="regular-text" value="1" '.esc_attr($is_child_checked).'><p>' . esc_html__( 'You can enable for Logged in Users', 'ads-for-wp' ) . ' <a href="https://adsforwp.com/docs/article/ad-performance-tracking-with-ads-for-wp/" target="_blank">' . esc_html__( 'Learn more', 'ads-for-wp' ) . '</a></p></span>';
+			} else {
+				echo '<span '.esc_attr($is_parent_enabled).' id="afw_ad_performance_admin_blk"><input type="checkbox" name="adsforwp_settings[ad_performance_tracker_for_admin]" class="regular-text" value="1"><p>' . esc_html__( 'You can enable for Logged in Users', 'ads-for-wp' ) . ' <a href="https://adsforwp.com/docs/article/ad-performance-tracking-with-ads-for-wp/" target="_blank">' . esc_html__( 'Learn more', 'ads-for-wp' ) . '</a></p></span>';
 			}
 
 			?>

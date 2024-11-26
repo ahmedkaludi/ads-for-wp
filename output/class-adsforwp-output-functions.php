@@ -225,6 +225,8 @@ class Adsforwp_Output_Functions {
 			ob_start( array( $this, 'adsforwp_display_custom_target_ad' ) );
 
 			ob_start( array( $this, 'adsforwp_display_background_ad' ) );
+			
+			ob_start( array( $this, 'adsforwp_display_popup_ad' ) );
 	}
 	/**
 	 * This function is used to show ads based on html element target by user
@@ -292,6 +294,158 @@ class Adsforwp_Output_Functions {
 
 		}
 
+		return $content;
+	}
+	public function adsforwp_display_popup_ad($content){
+		// For single ad starts here
+		$all_ads_id = adsforwp_get_ad_ids();
+		$service    = new Adsforwp_Output_Service();
+		if ( ! empty( $all_ads_id ) ) {
+			foreach ($all_ads_id as $key => $post_ad_id) {
+				$post_meta_dataset  = get_post_meta( $post_ad_id, $key_name = '', true );
+				$ad_type            = adsforwp_rmv_warnings( $post_meta_dataset, 'select_adtype', 'adsforwp_array' );
+				if($ad_type=='popupad'){
+					$condition_status = $service->adsforwp_is_condition( $post_ad_id );
+					$popup_ad_id  = adsforwp_rmv_warnings( $post_meta_dataset, 'select_popupad', 'adsforwp_array' );
+					$popup_ad_id  = str_replace("'",'',$popup_ad_id);
+					$popup_type  = adsforwp_rmv_warnings( $post_meta_dataset, 'select_popupad_type', 'adsforwp_array' );
+					$popup_type_time  = adsforwp_rmv_warnings( $post_meta_dataset, 'select_popupad_type_time', 'adsforwp_array' );
+					$popupad_cookie  = adsforwp_rmv_warnings( $post_meta_dataset, 'select_popupad_cookie', 'adsforwp_array' );
+					$popupad_cookie_expiry_days  = adsforwp_rmv_warnings( $post_meta_dataset, 'select_popupad_cookie_expiry', 'adsforwp_array' );
+					if($popupad_cookie_expiry_days==""){
+						$popupad_cookie_expiry_days = 1;
+					}
+					$select_popupad_scroll_percent  = adsforwp_rmv_warnings( $post_meta_dataset, 'select_popupad_scroll_percent', 'adsforwp_array' );
+					if($select_popupad_scroll_percent==""){
+						$select_popupad_scroll_percent = 0;
+					}
+					$popup_cookie = false;
+					if(!isset($_COOKIE['adsforwp_popupad'])){
+						$popup_cookie = true;
+						if($popupad_cookie=='no_expiry'){
+							$popupad_cookie_expiry_days = (86400/2);
+						}else if($popupad_cookie=='expiry'){
+							$popupad_cookie_expiry_days =(86400 * $popupad_cookie_expiry_days);
+						}
+					}
+					if($condition_status && $popup_cookie){
+						$ad_data = array();
+						$ad_data['post_ad_id'] = $post_ad_id;
+						$ad_data['popup_ad_id'] = $popup_ad_id;
+						$ad_data['popup_type'] = $popup_type;
+						$ad_data['popup_type_time'] = $popup_type_time;
+						$ad_data['popup_scroll_percent'] = $select_popupad_scroll_percent;
+						$ad_data['ad_type'] = 'ad';
+						$ad_data['popupad_cookie'] = $popupad_cookie;
+						$ad_data['popupad_cookie_expiry_days'] = $popupad_cookie_expiry_days;
+						$ad_status = $service->adsforwp_is_condition( $popup_ad_id );
+						if ( $ad_status ) {
+							$content = $this->adsforwp_prepare_popup_ad_content($content, $ad_data);
+						}
+					}
+				}
+			}
+		}
+		return $content;
+	}
+	public function adsforwp_prepare_popup_ad_content($content, $ad_data){
+		$popup_type = $ad_data['popup_type'];
+		$ad_type = $ad_data['ad_type'];
+		$ad_id = $ad_data['popup_ad_id'];
+		$post_ad_id = $ad_data['post_ad_id'];
+		$popup_type_time = $ad_data['popup_type_time'];
+		$popup_scroll_percent = $ad_data['popup_scroll_percent'];
+		$popupad_cookie_expiry_days = $ad_data['popupad_cookie_expiry_days'];
+		
+		$popupad_cookie = $ad_data['popupad_cookie'];
+		$ad_code='';
+		if ( $ad_type == 'group' ) {
+			$ad_code = $this->adsforwp_group_ads( $atts = null, $ad_id, '' );
+		}
+
+		if ( $ad_type == 'ad' ) {
+			$ad_code = $this->adsforwp_get_ad_code( $ad_id, $type = 'AD' );
+		}
+		$popup_ad_content = '';
+		if($ad_code!=''){
+			$script_code = '';
+			$close_popup_function = 'function handleClosePopupAdd(){
+						let exdays = '.$popupad_cookie_expiry_days.';
+						let cname = "adsforwp_popupad";
+						let cvalue = "popupad";
+						document.getElementById("popup-ad-overlay").style.display = "none";
+						const d = new Date();
+						d.setTime(d.getTime() + (exdays));
+						let expires = "expires="+ d.toUTCString();
+						document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+					}';
+			$custom_class = 'popup-ad-box-center';
+			if($popup_type=='instantly'){
+				$script_code = '<script type="text/javascript">
+					document.getElementById("popup-ad-overlay").style.display = "block";
+					'.$close_popup_function.'
+				</script>';
+			}else if($popup_type=='specific_time'){
+				if($popup_type_time!=''){
+					$script_code = '<script type="text/javascript">
+					setTimeout(function(){
+					document.getElementById("popup-ad-overlay").style.display = "block"
+					}, '.$popup_type_time.');
+					'.$close_popup_function.'
+					</script>';
+				}
+			}else if($popup_type=='on_scroll'){
+				if($popup_scroll_percent!=''){
+				$script_code = '<script type="text/javascript">
+					
+					window.onscroll = function() {
+						let cname = "adsforwp_popupad";
+						const regex = new RegExp(`(^| )${cname}=([^;]+)`)
+						const match = document.cookie.match(regex)
+						
+						if (match) {
+							return false;
+						}
+						let scroll_per = '.$popup_scroll_percent.';
+						let scrollTop = window.scrollY;
+						let docHeight = document.body.offsetHeight;
+						let winHeight = window.innerHeight;
+						let scrollPercent = scrollTop / (docHeight - winHeight);
+						let scrollPercentRounded = Math.round(scrollPercent * 100);
+						if( scrollPercentRounded>=scroll_per  ) {
+							document.getElementById("popup-ad-overlay").style.display = "block";
+						}else{
+							document.getElementById("popup-ad-overlay").style.display = "none";
+						}
+						
+					};
+					'.$close_popup_function.'
+				</script>';
+				}
+			}else if($popup_type=='on_top'){
+				$custom_class = 'popup-ad-box-top';
+				if($popup_type_time!=''){
+				$script_code = '<script type="text/javascript">
+					setTimeout(function(){
+							document.getElementById("popup-ad-overlay").style.display = "block"
+						}, '.$popup_type_time.');
+						'.$close_popup_function.'
+				</script>';
+				}
+			}else if($popup_type=='on_bottom'){
+				$custom_class = 'popup-ad-box-bottom';
+				if($popup_type_time!=''){
+					$script_code = '<script type="text/javascript">
+					setTimeout(function(){
+							document.getElementById("popup-ad-overlay").style.display = "block";
+						}, '.$popup_type_time.');
+						'.$close_popup_function.'
+				</script>';
+				}
+			}
+			$popup_ad_content = '<div id="popup-ad-overlay" data-ad-id="'.esc_attr($post_ad_id).'"  class="popup-ad-overlay afw afw_ad_image afw_ad afwadid-'.esc_attr($post_ad_id).' '.$custom_class.'"><div class="popup-ad-box"><div class="popup-ad-content"><a class="popup-ad-close" onclick="handleClosePopupAdd()">&times;</a>'.$ad_code.'</div></div></div>'.$script_code.'</body>';
+			$content = str_replace('</body>',$popup_ad_content,$content);
+		}
 		return $content;
 	}
 	public function adsforwp_display_custom_target_ad( $content ) {
@@ -722,7 +876,7 @@ class Adsforwp_Output_Functions {
 							$redirect_url = get_post_meta( $ad_id, 'ad_background_redirect_url', true );
 							$after_body  .= ''
 									. '<div class="adsforwp-bg-wrapper">
-                                       <a style="background-image: url(' . esc_url( $media_value_meta['thumbnail'] ) . ')" class="adsforwp-bg-ad" target="_blank" href="' . esc_url( $redirect_url ) . '">'
+                                       <a style="background-image: url(' . esc_url( $media_value_meta['thumbnail'] ) . ')" class="adsforwp-bg-ad afw_ad afwadid-'.$ad_id.'" target="_blank" href="' . esc_url( $redirect_url ) . '" data-ad-id="'.esc_attr($ad_id).'">'
 									. '</a>'
 									. '<div class="adsforwp-bg-content">';
 							$before_body  = '</div></div>';

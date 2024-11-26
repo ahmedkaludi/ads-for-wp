@@ -2,9 +2,9 @@
 Contributors: magazine3
 Tags: Ads, Media Net, AMP, Adsense, Advertisement
 Requires at least: 4.5
-Tested up to: 6.6
+Tested up to: 6.7
 Requires PHP: 5.6.20
-Stable tag: 1.9.30
+Stable tag: 1.9.31
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -46,17 +46,17 @@ AdsforWP is an Google Ads & Banner ads plugin built for WordPress & AMP. Easy to
 * <strong>[Premium] Lazy Load</strong>: Helps you to load when page is fully loaded or when user start engaging on page.
 
 = Active Development: =
-We are actively developing this plugin and our aim is to make this plugin into the #1 solution in the world. You can [Request a Feature](http://www.adsforwp.com/contact/) or [Report a Bug](https://github.com/ahmedkaludi/ads-for-wp/issues). The code is hosted on [Github](https://github.com/ahmedkaludi/ads-for-wp).
+We are actively developing this plugin and our aim is to make this plugin into the #1 solution in the world. You can [Request a Feature](https://www.adsforwp.com/contact/) or [Report a Bug](https://github.com/ahmedkaludi/ads-for-wp/issues). The code is hosted on [Github](https://github.com/ahmedkaludi/ads-for-wp).
 
 = Development Roadmap: =
 * <strong>A/B Testing</strong>: Find out which ads perform the most and how you can improve the ad revenue further.
 * <strong>GDPR & Privacy tools</strong>: We have got the GDPR and other privacy tools planned so that you don’t have to worry about complying with privacy laws.
 * <strong>Responsive Ads</strong>: We will be adding the responsive support to Ads to give the best viewability to ads on devices.
 * <strong>Innovation & Disruption</strong>: We are constantly evolving our product and going to introduce new features which are not being used by anyone in the world.
-* [View Full Development Roadmap](http://www.adsforwp.com/#roadmap)
+* [View Full Development Roadmap](https://www.adsforwp.com/#roadmap)
 
 = Technical Support =
-Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp). You can also [Contact us](http://www.adsforwp.com/contact/), our turn around time on email is around 12 hours. 
+Support is provided in [Forum](https://wordpress.org/support/plugin/ads-for-wp). You can also [Contact us](https://www.adsforwp.com/contact/), our turn around time on email is around 12 hours. 
 
 = Bug Reports =
 
@@ -67,6 +67,14 @@ Chart.js library used https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Char
 Google Api Php Client library used https://github.com/googleapis/google-api-php-client - License URI: https://github.com/googleapis/google-api-php-client/blob/master/LICENSE
 
 == Changelog ==
+
+= 1.9.31 (26 November 2024) =
+* Fixed: Visitor Conditions by Country is not working #37
+* Feature: Added the Popup ads #410
+* Enhancement: Added option to insert impression and click for admin login #413
+* Fixed: Contact Us link isn't working on Easy Google Adsnes wordpress forum page #416
+* Fixed: Background Ad is not counting clicks and impression #421
+* Tested with WordPress 6.7 and updated readme.txt #422
 
 = 1.9.30 (15 October 2024) =
 * Fixed: Issues after new version #415
@@ -117,9 +125,5 @@ Google Api Php Client library used https://github.com/googleapis/google-api-php-
 = 1.9.22 (22 August 2022) =
 * Feature Added: Added feedback form on deactivation
 * Improvement: Removed usage tracking code . #368
-
-= 1.9.21 (07 July 2022) =
-* Feature Added: Option added to preload image banner Ad #369
-* Bug Fixed: Improvement in Automatic Webp delivery for image Banner Ads. #365
 
 Full changelog available at [changelog.txt](https://plugins.svn.wordpress.org/ads-for-wp/trunk/changelog.txt)

@@ -1,5 +1,13 @@
 == Changelog ==
 
+= 1.9.31 (26 November 2024) =
+* Fixed: Visitor Conditions by Country is not working #37
+* Feature: Added the Popup ads #410
+* Enhancement: Added option to insert impression and click for admin login #413
+* Fixed: Contact Us link isn't working on Easy Google Adsnes wordpress forum page #416
+* Fixed: Background Ad is not counting clicks and impression #421
+* Tested with WordPress 6.7 and updated readme.txt #422
+
 = 1.9.30 (15 October 2024) =
 * Fixed: Issues after new version #415
 * Enhancement: Code improvement #418

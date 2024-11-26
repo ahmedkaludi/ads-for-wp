@@ -11,6 +11,7 @@ class Adsforwp_View_Ads_Type {
 
 	private $screen          = array( 'adsforwp' );
 	private $common_function = null;
+	private $ads_list = array();
 	private $meta_fields     = array(
 		array(
 			'label'      => 'Ad Type',
@@ -35,6 +36,7 @@ class Adsforwp_View_Ads_Type {
 				'ad_background' => 'Background Ad',
 				'revcontent'    => 'Revcontent Ad',
 				'amp_story_ads' => 'AMP Story Ad',
+				'popupad'        => 'Popup Ad',
 				'custom'        => 'Custom Code',
 
 			),
@@ -55,6 +57,7 @@ class Adsforwp_View_Ads_Type {
 				'ad_background' => array( 'display-metabox', 'adsforwp-location' ),
 				'amp_story_ads' => array( 'display-metabox', 'setexpiredate', 'adsforwp-location', 'adsforwp_visitor_condition_metabox', 'adsforwp_placement_metabox' ),
 				'engageya'      => array( 'adsforwp-location', 'setexpiredate' ),
+				'popupad'    => array( 'display-metabox'),
 				'revcontent'    => array( 'all' ),
 				'custom'        => array( 'all' ),
 			),
@@ -720,6 +723,82 @@ class Adsforwp_View_Ads_Type {
 			),
 		),
 		array(
+			'label'    => 'Select Ad for Popup',
+			'id'         => 'select_popupad',
+			'type'       => 'select',
+			'options'    => array(),
+			'required' => array(
+				'type'   => 'and',
+				'fields' => array( 'select_adtype' => 'popupad' ),
+			),
+		),
+		array(
+			'label'    => 'Popup Type',
+			'id'         => 'select_popupad_type',
+			'type'       => 'select',
+			'options'    => array(
+				''=>'Select Popup Type',
+				'instantly' => 'Load Instantly',
+				'specific_time' => 'After Specific Time',
+				'on_scroll' => 'On Scroll',
+				'on_top' => 'Load on Top',
+				'on_bottom' => 'Load on Bottom',
+			),
+			'required' => array(
+				'type'   => 'and',
+				'fields' => array( 'select_adtype' => 'popupad' ),
+			),
+		),
+		array(
+			'label'    => 'Delay Popup (in miliseconds)',
+			'id'       => 'select_popupad_type_time',
+			'type'     => 'number',
+			'required' => array(
+				'type'   => 'and',
+				'fields' => array( 
+									'select_adtype' => 'popupad',
+									'select_popupad_type' => array('specific_time','on_top','on_bottom') 
+								),
+			),
+		),
+		array(
+			'label'    => 'Scroll Percentage',
+			'id'       => 'select_popupad_scroll_percent',
+			'type'     => 'number',
+			'required' => array(
+				'type'   => 'and',
+				'fields' => array( 
+									'select_adtype' => 'popupad',
+									'select_popupad_type' =>'on_scroll'
+								),
+			),
+		),
+		array(
+			'label'    => 'Cookie Setup',
+			'id'         => 'select_popupad_cookie',
+			'type'       => 'select',
+			'options'    => array(
+				'no_expiry' => 'No Expiry',
+				'expiry' => 'Expiry',
+			),
+			'required' => array(
+				'type'   => 'and',
+				'fields' => array( 'select_adtype' => 'popupad' ),
+			),
+		),
+		array(
+			'label'    => 'Cookie Expiry Days',
+			'id'       => 'select_popupad_cookie_expiry',
+			'type'     => 'number',
+			'required' => array(
+				'type'   => 'and',
+				'fields' => array( 
+									'select_adtype' => 'popupad',
+									'select_popupad_cookie' => 'expiry' 
+								),
+			),
+		),
+		array(
 			'label'    => 'Upload Ad Image',
 			'id'       => 'ad_background_image',
 			'type'     => 'media',
@@ -813,9 +892,45 @@ class Adsforwp_View_Ads_Type {
 		if ( $this->common_function == null ) {
 			$this->common_function = new Adsforwp_Admin_Common_Functions();
 		}
-
+		$this->adsfrowp_get_all_ads($this->meta_fields);
 		add_action( 'add_meta_boxes', array( $this, 'adsforwp_add_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'adsforwp_save_fields' ) );
+	}
+	public function adsfrowp_get_all_ads(){
+		$post_id = 0;
+		//phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if(isset($_GET['post'])){
+			//phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$post_id = intval($_GET['post']);
+		}
+		$all_ads_post = get_posts(
+			array(
+				'post_type'      => 'adsforwp',
+				'posts_per_page' => -1,
+				//phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in
+				'post__not_in'=>array($post_id),
+				'post_status'    => 'publish',
+			)
+		);
+		$post_data = array(
+			''=>'Select Ad for Pupup'
+		);
+		
+		if ( $all_ads_post ) {
+			foreach ( $all_ads_post as $ads ) {
+				$data_item = array();
+				$post_data["'".$ads->ID."'"] = $ads->post_title; 
+			}
+		}
+		
+		
+		foreach ($this->meta_fields as $key => $value) {
+			if($value['id']=='select_popupad'){
+				$value['options'] = $post_data;
+				$this->meta_fields[$key] =  $value;
+				break;
+			}
+		}
 	}
 	public function adsforwp_add_meta_boxes() {
 		foreach ( $this->screen as $single_screen ) {

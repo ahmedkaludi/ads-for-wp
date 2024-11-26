@@ -82,3 +82,67 @@
     padding-top:40px;
     display:block;
  }
+ .popup-ad-overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100em;
+  z-index: 999;
+  max-width: 100em !important;
+  margin: 0 auto;;
+  display: none;
+  background: #75757559;
+}
+
+.popup-ad-overlay:target {
+  display: block;
+  opacity: 1;
+}
+.popup-ad-box {
+  background: #fff;
+  border-radius: 5px;
+  position: relative;
+  transition: all 5s ease-in-out;
+}
+
+.popup-ad-box h2 {
+  margin-top: 0;
+  color: #333;
+  font-family: Tahoma, Arial, sans-serif;
+}
+.popup-ad-close {
+  position: absolute;
+  right: -10px;
+  top: -10px;
+  background: white;
+  padding: 0px 9px;
+  border-radius: 50%;
+  text-decoration: none;
+  cursor: pointer;
+}
+.popup-ad-box .popup-ad-close:hover {
+  color: #06D85F;
+}
+.popup-ad-box-bottom .popup-ad-content {
+  animation: animatebottom 0.5s;
+  position: fixed;
+  bottom: 5px;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+.popup-ad-box-center .popup-ad-content {
+  animation: animatebottom 0.5s;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+}
+.popup-ad-box-top .popup-ad-content {
+  animation: animatebottom 0.5s;
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
