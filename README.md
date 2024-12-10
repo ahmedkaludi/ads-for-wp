@@ -67,8 +67,10 @@ Bug reports are [welcomed on GitHub](https://github.com/ahmedkaludi/ads-for-wp/i
 
 ### Credits
 
-Chart.js library used https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js - License URI: https://github.com/chartjs/Chart.js/blob/master/LICENSE.md,
-Google Api Php Client library used https://github.com/googleapis/google-api-php-client - License URI: https://github.com/googleapis/google-api-php-client/blob/master/LICENSE
+1. Chart.js library used https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js   License URI: https://github.com/chartjs/Chart.js/blob/master/LICENSE.md
+
+2. Google Api Php Client library used https://github.com/googleapis/google-api-php-client  
+License URI: https://github.com/googleapis/google-api-php-client/blob/master/LICENSE
 
 
 Full changelog available at [changelog.txt](https://plugins.svn.wordpress.org/ads-for-wp/trunk/changelog.txt)
