@@ -1445,7 +1445,22 @@ function adsforwp_groups_update_ids_on_untrash() {
 	add_action( 'publish_adsforwp-groups', 'adsforwp_groups_published' );
 	add_action( 'trash_adsforwp-groups', 'adsforwp_groups_update_ids_on_trash' );
 	add_action( 'untrash_adsforwp-groups', 'adsforwp_groups_update_ids_on_untrash' );
+	add_action( 'save_post',  'adsforwp_delete_transient_on_save' );
+	function adsforwp_delete_transient_on_save( $post_id ) {
 
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+		
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+		$post_type = get_post_type( $post_id );
+		if( $post_type == 'adsforwp' ){
+			delete_transient( 'transient_all_groups_data' );
+			delete_transient( 'transient_all_afw_ads_data' );
+		}
+	}
 /**
  * Here, We are displaying notice in admin panel on different different actions or conditions
  */
