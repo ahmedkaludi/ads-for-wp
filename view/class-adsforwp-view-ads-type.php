@@ -875,6 +875,14 @@ class Adsforwp_View_Ads_Type {
 		),
 	);
 	public function __construct() {
+		if ( $this->common_function == null ) {
+			$this->common_function = new Adsforwp_Admin_Common_Functions();
+		}
+		add_action( 'add_meta_boxes', array( $this, 'adsforwp_add_meta_boxes' ) );
+		add_action( 'save_post', array( $this, 'adsforwp_save_fields' ) );
+		add_action( 'init', array( $this, 'adsforwp_ads_type_init' ) );
+	}
+	public function adsforwp_ads_type_init(){
 		$notice_arry                         = array(
 			'ezoic'         => '<p class="ezoic_notice"><i>' . esc_html__( 'Note: This Ad type is not implemented in AMP.', 'ads-for-wp' ) . '</i></p>',
 			'infolinks'     => '<p class="infolinks_notice"><i>' . esc_html__( 'Note: This Ad type is not implemented in AMP.', 'ads-for-wp' ) . '</i></p>',
@@ -888,13 +896,8 @@ class Adsforwp_View_Ads_Type {
 			'in_feed_ads'    => '<p class="in_feed_notice"><i>' . esc_html__( 'Note: This AdSense type is not implemented in AMP.', 'ads-for-wp' ) . '</i></p>',
 		);
 		$this->meta_fields[0]['notice']      = $notice_arry;
-			$this->meta_fields[16]['notice'] = $adsense_type_notice;
-		if ( $this->common_function == null ) {
-			$this->common_function = new Adsforwp_Admin_Common_Functions();
-		}
-		$this->adsfrowp_get_all_ads($this->meta_fields);
-		add_action( 'add_meta_boxes', array( $this, 'adsforwp_add_meta_boxes' ) );
-		add_action( 'save_post', array( $this, 'adsforwp_save_fields' ) );
+		$this->meta_fields[16]['notice'] = $adsense_type_notice;
+		$this->adsfrowp_get_all_ads();
 	}
 	public function adsfrowp_get_all_ads(){
 		$post_id = 0;
