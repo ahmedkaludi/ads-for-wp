@@ -2,9 +2,9 @@
 Contributors: magazine3
 Tags: Ads, Media Net, AMP, Adsense, Advertisement
 Requires at least: 4.5
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 5.6.20
-Stable tag: 1.9.31
+Stable tag: 1.9.32
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -67,6 +67,11 @@ Chart.js library used https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Char
 Google Api Php Client library used https://github.com/googleapis/google-api-php-client - License URI: https://github.com/googleapis/google-api-php-client/blob/master/LICENSE
 
 == Changelog ==
+
+= 1.9.32 (27 May 2025) =
+* Fixed: Notice in debug log #426
+* Fixed: Conflict with Page Builder by SiteOrigin #425
+* Need to test with WordPress 6.8 #424
 
 = 1.9.31 (26 November 2024) =
 * Fixed: Visitor Conditions by Country is not working #37

@@ -1,5 +1,11 @@
 == Changelog ==
 
+
+= 1.9.32 (27 May 2025) =
+* Fixed: Notice in debug log #426
+* Fixed: Conflict with Page Builder by SiteOrigin #425
+* Need to test with WordPress 6.8 #424
+
 = 1.9.31 (26 November 2024) =
 * Fixed: Visitor Conditions by Country is not working #37
 * Feature: Added the Popup ads #410
