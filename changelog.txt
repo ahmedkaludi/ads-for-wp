@@ -1,6 +1,9 @@
 == Changelog ==
 
 
+= 1.9.33 (15 September 2025) =
+* Tested with Wordpress 6.8.2
+
 = 1.9.32 (27 May 2025) =
 * Fixed: Notice in debug log #426
 * Fixed: Conflict with Page Builder by SiteOrigin #425
