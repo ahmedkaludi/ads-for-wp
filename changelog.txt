@@ -1,6 +1,10 @@
 == Changelog ==
 
 
+= 1.9.34 (2 December 2025) =
+* Fixed: Ad click events are not being tracked #429
+* Tested with WordPress 6.9 and updated readme.txt
+
 = 1.9.33 (15 September 2025) =
 * Tested with Wordpress 6.8.2
 
