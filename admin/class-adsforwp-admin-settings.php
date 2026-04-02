@@ -1102,6 +1102,7 @@ class Adsforwp_Admin_Settings {
 		</a>
 				<?php
 			} else {
+				// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 				do_action( 'afw_admin_upgrade_license_page' );
 			}
 			?>

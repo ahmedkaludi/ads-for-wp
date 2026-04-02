@@ -867,10 +867,10 @@ add_action( 'wp_loaded', 'adsforwp_update_ads_status' );
 /**
  * We are registering our widget here in WordPress
  */
-function register_adsforwp_ads_widget() {
+function adsforwp_register_adsforwp_ads_widget() {
 	register_widget( 'Adsforwp_Ads_Widget' );
 }
-add_action( 'widgets_init', 'register_adsforwp_ads_widget' );
+add_action( 'widgets_init', 'adsforwp_register_adsforwp_ads_widget' );
 
 /*
  *      We are registering custom post type adsforwp in WordPress

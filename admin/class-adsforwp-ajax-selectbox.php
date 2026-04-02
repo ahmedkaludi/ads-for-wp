@@ -700,7 +700,7 @@ class Adsforwp_Ajax_Selectbox {
 								$title .= '- ';
 							}
 						}
-
+						// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 						$title .= apply_filters( 'the_title', $page->post_title, $page->ID );
 						// status
 						if ( $page->post_status != 'publish' ) {
@@ -750,6 +750,7 @@ class Adsforwp_Ajax_Selectbox {
 							$choices[ $post_type ] = array();
 
 							foreach ( $posts as $post ) {
+								// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 								$title = apply_filters( 'the_title', $post->post_title, $post->ID );
 
 								// status
