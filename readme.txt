@@ -4,7 +4,7 @@ Tags: Ads, Media Net, AMP, Adsense, Advertisement
 Requires at least: 4.5
 Tested up to: 6.9
 Requires PHP: 5.6.20
-Stable tag: 1.9.34
+Stable tag: 1.9.35
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -67,6 +67,9 @@ Chart.js library used https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Char
 Google Api Php Client library used https://github.com/googleapis/google-api-php-client - License URI: https://github.com/googleapis/google-api-php-client/blob/master/LICENSE
 
 == Changelog ==
+
+= 1.9.35 (2 April 2026) =
+* Enhancement: PCP Check & Code improvement #432
 
 = 1.9.34 (2 December 2025) =
 * Fixed: Ad click events are not being tracked #429
