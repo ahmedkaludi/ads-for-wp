@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-$reasons = array(
+$adsforwp_reasons = array(
 	1 => '<li><label><input type="radio" name="adsforwp_disable_reason" value="temporary"/>' . esc_html__( 'It is only temporary', 'ads-for-wp' ) . '</label></li>',
 	2 => '<li><label><input type="radio" name="adsforwp_disable_reason" value="stopped"/>' . esc_html__( 'I stopped using Ads for WP on my site', 'ads-for-wp' ) . '</label></li>',
 	3 => '<li><label><input type="radio" name="adsforwp_disable_reason" value="missing"/>' . esc_html__( 'I miss a feature', 'ads-for-wp' ) . '</label></li>
@@ -15,7 +15,7 @@ $reasons = array(
 	6 => '<li><label><input type="radio" name="adsforwp_disable_reason" value="other"/>' . esc_html__( 'Other reason', 'ads-for-wp' ) . '</label></li>
 		<li><textarea class="mb-box other" name="adsforwp_disable_text[]" placeholder="' . esc_attr__( 'Please specify, if possible', 'ads-for-wp' ) . '"></textarea></li>',
 );
-shuffle( $reasons );
+shuffle( $adsforwp_reasons );
 ?>
 
 
@@ -25,9 +25,9 @@ shuffle( $reasons );
 		<h3><strong><?php esc_html_e( 'If you have a moment, please let us know why you are deactivating:', 'ads-for-wp' ); ?></strong></h3>
 		<ul>
 				<?php
-				foreach ( $reasons as $reason_escaped ) {
+				foreach ( $adsforwp_reasons as $adsforwp_reason_escaped ) {
 					//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Reason: Output is escaped in the esc_html__ function.
-					echo $reason_escaped;
+					echo $adsforwp_reason_escaped;
 				}
 				?>
 		</ul>
