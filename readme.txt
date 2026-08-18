@@ -1,7 +1,7 @@
 === Easy Google Adsense and Banner Ads Manager - AdsforWP ===
 Contributors: magazine3
 Tags: Ads, Media Net, AMP, Adsense, Advertisement
-Requires at least: 4.5
+Requires at least: 5.0
 Tested up to: 7.1
 Requires PHP: 5.6.20
 Stable tag: 1.9.36
