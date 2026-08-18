@@ -1,10 +1,10 @@
 === Easy Google Adsense and Banner Ads Manager - AdsforWP ===
 Contributors: magazine3
 Tags: Ads, Media Net, AMP, Adsense, Advertisement
-Requires at least: 4.5
-Tested up to: 7.0
+Requires at least: 5.0
+Tested up to: 7.1
 Requires PHP: 5.6.20
-Stable tag: 1.9.36
+Stable tag: 1.9.37
 Donate link: https://www.paypal.me/Kaludi/25usd
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -67,6 +67,9 @@ Chart.js library used https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Char
 Google Api Php Client library used https://github.com/googleapis/google-api-php-client - License URI: https://github.com/googleapis/google-api-php-client/blob/master/LICENSE
 
 == Changelog ==
+
+= 1.9.37 (18 August 2026) =
+* Tested with WordPress 7.1 and updated readme.txt
 
 = 1.9.36 (29 May 2026) =
 * Tested with WordPress 7.0 and updated readme.txt
