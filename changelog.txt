@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 1.9.37 (18 August 2026) =
+* Tested with WordPress 7.1 and updated readme.txt
+
 = 1.9.36 (29 May 2026) =
 * Tested with WordPress 7.0 and updated readme.txt
 
