@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 1.9.38 (12 November 2026) =
+* Enhancement: PCP Check & Code improvement
+
 = 1.9.37 (18 August 2026) =
 * Tested with WordPress 7.1 and updated readme.txt
 
